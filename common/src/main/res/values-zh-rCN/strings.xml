@@ -1,0 +1,4 @@
+<resources>
+    <string name="permission_rationale">需要权限来展示访问。</string>
+    <string name="permissions_not_granted">请前往设置授予权限。</string>
+</resources>

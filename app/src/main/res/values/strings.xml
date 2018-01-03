@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Audient</string>
+
+    <!--splash-->
+    <string name="splash_description">"CopyRight@2017"</string>
+
+    <!--login-->
+    <string name="label_login">Login</string>
+    <string name="login_account">To login</string>
+    <string name="login_code">Verification code login</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="hint_user_name">Please input phone number or user name</string>
+    <string name="hint_password">Please input password</string>
+    <string name="submit">Enter</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

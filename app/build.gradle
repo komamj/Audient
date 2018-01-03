@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion as int
+    defaultConfig {
+        applicationId "com.koma.audient"
+        minSdkVersion rootProject.ext.minSdkVersion as int
+        targetSdkVersion rootProject.ext.targetSdkVersion as int
+        versionCode 1000
+        versionName "1.0.00"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    //签名配置
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE_PATH)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            //不去除无用代码
+            minifyEnabled false
+            //不进行对齐
+            zipAlignEnabled false
+            //不去除无用资源
+            shrinkResources false
+        }
+
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            // 去除无用代码
+            minifyEnabled true
+            // 进行对齐
+            zipAlignEnabled true
+            // 移除无用的资源
+            shrinkResources true
+            // 配置混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 配置签名
+            signingConfig signingConfigs.release
+        }
+
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "KomaVideo_v${defaultConfig.versionName}.apk"
+            }
+        }
+    }
+
+    lintOptions {
+        disable "InvalidPackage"
+        abortOnError false
+        lintConfig file("lint.xml")
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.support_version"
+    implementation "com.android.support:design:$rootProject.ext.support_version"
+
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.support_version"
+
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint_version"
+
+    implementation "com.jakewharton:butterknife:$rootProject.ext.butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknife_version"
+
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid_version"
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava_version"
+
+    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glide_version"
+    implementation("com.github.bumptech.glide:recyclerview-integration:$rootProject.ext.glide_version") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
+
+    //dagger2
+    implementation "com.google.dagger:dagger:$rootProject.ext.dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger_version"
+
+    //leakcanary
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
+
+    implementation project(':common')
+    implementation project(':model')
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
