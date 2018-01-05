@@ -20,16 +20,25 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.AudientDao;
 import com.koma.audient.model.source.local.AudientDatabase;
 import com.koma.audient.model.source.local.LocalDataSource;
 import com.koma.audient.model.source.remote.RemoteDataSource;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by koma on 1/3/18.
@@ -37,6 +46,12 @@ import dagger.Provides;
 @Module
 public class AudientRepositoryModule {
     private static final String DB_NAME = "audient-db";
+
+    private final String mBaseUrl;
+
+    public AudientRepositoryModule(String baseUrl) {
+        this.mBaseUrl = baseUrl;
+    }
 
     @Singleton
     @Provides
@@ -68,5 +83,48 @@ public class AudientRepositoryModule {
     @Provides
     AudientDao provideAudientDao(AudientDatabase db) {
         return db.audientDao();
+    }
+
+    @Singleton
+    @Provides
+    Cache provideCache(Context context) {
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        Cache cache = new Cache(context.getCacheDir(), cacheSize);
+        return cache;
+    }
+
+    @Singleton
+    @Provides
+    Gson provideGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        return gsonBuilder.create();
+    }
+
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient(Cache cache) {
+        return new OkHttpClient.Builder().cache(cache)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    Retrofit provideRetrofit(Gson gson, OkHttpClient client) {
+        return new Retrofit.Builder()
+                .baseUrl(mBaseUrl)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    AudientApi provideAudientApi(Retrofit retrofit) {
+        return retrofit.create(AudientApi.class);
     }
 }

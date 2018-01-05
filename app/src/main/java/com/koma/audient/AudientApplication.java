@@ -20,6 +20,7 @@ import com.koma.audient.model.AudientRepositoryComponent;
 import com.koma.audient.model.AudientRepositoryModule;
 import com.koma.audient.model.DaggerAudientRepositoryComponent;
 import com.koma.common.base.BaseApplication;
+import com.koma.common.util.Constants;
 
 /**
  * Created by koma on 1/3/18.
@@ -34,7 +35,7 @@ public class AudientApplication extends BaseApplication {
 
         mRepositoryComponent = DaggerAudientRepositoryComponent.builder()
                 .applicationModule(new ApplicationModule(this))
-                .audientRepositoryModule(new AudientRepositoryModule())
+                .audientRepositoryModule(new AudientRepositoryModule(Constants.AUDIENT_HOST))
                 .build();
     }
 

@@ -18,10 +18,47 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    //签名配置
+    signingConfigs {
         release {
+            storeFile file(STORE_FILE_PATH)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            //不去除无用代码
             minifyEnabled false
+            //不进行对齐
+            zipAlignEnabled false
+            //不去除无用资源
+            shrinkResources false
+        }
+
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            // 去除无用代码
+            minifyEnabled true
+            // 进行对齐
+            zipAlignEnabled true
+            // 移除无用的资源
+            shrinkResources false
+            // 配置混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 配置签名
+            signingConfig signingConfigs.release
+        }
+
+        lintOptions {
+            disable "InvalidPackage"
+            abortOnError false
+            lintConfig file("lint.xml")
         }
     }
 }
@@ -35,9 +72,17 @@ dependencies {
     implementation "com.google.dagger:dagger:$rootProject.ext.dagger_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger_version"
 
+    //rxjava
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava_version"
+
     //room
     implementation "android.arch.persistence.room:runtime:$rootProject.room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
