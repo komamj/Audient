@@ -15,30 +15,33 @@
  */
 package com.koma.audient.model.entities;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by koma on 1/3/18.
  */
-@Entity(tableName = "audient")
-public class Audient implements Serializable {
-    private static final long serialVersionUID = 7523967970034938900L;
 
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    public long id;
+public class SearchResult implements Serializable{
+    private static final long serialVersionUID = 7523967970034938901L;
+    @SerializedName("searchSongDataResponse")
+    public SearchSongDataResponse searchSongDataResponse;
 
-    @Ignore
-    @SerializedName("res_code")
-    public String resultCode;
-    @Ignore
-    @SerializedName("res_message")
-    public String resultMessage;
+    static class SearchSongDataResponse {
+        @SerializedName("musicFileItemLists")
+        public List<MusicFileItem> musicFileItems;
+        @SerializedName("count")
+        public int count;
+    }
+
+    static class MusicFileItem {
+        @SerializedName("id")
+        public int contentId;
+        @SerializedName("music_name")
+        public String musicName;
+        @SerializedName("actor_name")
+        public String actorName;
+    }
 }
