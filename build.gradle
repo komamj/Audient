@@ -47,7 +47,7 @@ ext {
     constraint_version = '1.0.2'
     dagger_version = '2.11'
     support_version = '27.0.2'
-    glide_version = '4.4.0'
+    glide_version = '4.5.0'
     rxjava_version = '2.1.8'
     gson_version='2.8.2'
     rxandroid_version = '2.0.1'

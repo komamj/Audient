@@ -15,18 +15,25 @@
  */
 package com.koma.audient.model;
 
+import android.support.annotation.NonNull;
+
+import com.koma.audient.model.entities.Album;
+import com.koma.audient.model.entities.Lyric;
+import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
 import com.koma.audient.model.source.remote.RemoteDataSource;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by koma on 1/3/18.
- */
+import io.reactivex.Flowable;
 
 @Singleton
-public class AudientRepository {
+public class AudientRepository implements AudientDataSource {
     private final LocalDataSource mLocalDataSource;
 
     private final RemoteDataSource mRemoteDataSource;
@@ -37,5 +44,33 @@ public class AudientRepository {
         mLocalDataSource = localDataSource;
 
         mRemoteDataSource = remoteDataSource;
+    }
+
+    @Override
+    public Flowable<List<TopList.Billboard>> getTopLists() {
+        return mRemoteDataSource.getTopLists();
+    }
+
+    @Override
+    public Flowable<List<Music>> getTopSongs(@NonNull String billboardId, int count, int page) {
+        return mRemoteDataSource.getTopSongs(billboardId, count, page);
+    }
+
+    @Override
+    public Flowable<List<Music>> getSearchReults(String keyword, String musicType, int count,
+                                                 int page) {
+        return mRemoteDataSource.getSearchReults(keyword, musicType, count, page);
+    }
+
+    @Override
+    public Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName,
+                                    String type) {
+        return mRemoteDataSource.getLyric(id, idType, musicName, actorName, type);
+    }
+
+    @Override
+    public Flowable<Album> getAlbum(String id, String idType, String format, String singer,
+                                    String song) {
+        return mRemoteDataSource.getAlbum(id, idType, format, singer, song);
     }
 }

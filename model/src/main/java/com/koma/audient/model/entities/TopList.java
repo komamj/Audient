@@ -20,27 +20,23 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by koma_20 on 2018/1/7.
- */
-
 public class TopList extends Audient implements Serializable {
     private static final long serialVersionUID = 7523967970034938902L;
 
     @SerializedName("queryBillboardListResponse")
     public BillboardListResponse billboardListResponse;
 
-    static class BillboardListResponse {
+    public static class BillboardListResponse {
         @SerializedName("billboard_list")
         public BillboardList billboardList;
     }
 
-    static class BillboardList {
+    public static class BillboardList {
         @SerializedName("billboard")
         public List<Billboard> billboards;
     }
 
-    static class Billboard {
+    public static class Billboard {
         @SerializedName("billboard_id")
         public int billboardId;
         @SerializedName("billboard_name")

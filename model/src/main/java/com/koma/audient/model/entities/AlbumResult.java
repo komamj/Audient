@@ -15,27 +15,14 @@
  */
 package com.koma.audient.model.entities;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
+public class AlbumResult extends Audient {
+    @SerializedName("queryPicsResponse")
+    public PicResponse picResponse;
 
-@Entity(tableName = "audient")
-public class Audient implements Serializable {
-    private static final long serialVersionUID = 7523967970034938900L;
-
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    public long id;
-
-    @Ignore
-    @SerializedName("res_code")
-    public String resultCode;
-    @Ignore
-    @SerializedName("res_message")
-    public String resultMessage;
+    public static class PicResponse {
+        @SerializedName("item")
+        public Album album;
+    }
 }

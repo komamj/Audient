@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.model.entities;
+package com.koma.audient.play;
 
-import com.google.gson.annotations.SerializedName;
+import com.koma.audient.R;
+import com.koma.common.base.BaseFragment;
 
-import java.io.Serializable;
-import java.util.List;
+/**
+ * Created by koma on 1/8/18.
+ */
 
-public class SearchResult implements Serializable {
-    private static final long serialVersionUID = 7523967970034938901L;
+public class PlayFragment extends BaseFragment {
+    private static final String TAG = PlayFragment.class.getSimpleName();
 
-    @SerializedName("searchSongDataResponse")
-    public SearchSongDataResponse searchSongDataResponse;
+    public PlayFragment() {
+    }
 
-    public static class SearchSongDataResponse {
-        @SerializedName("musicFileItemLists")
-        public List<Music> musics;
-        @SerializedName("count")
-        public int count;
+    public static PlayFragment newInstance() {
+        PlayFragment fragment = new PlayFragment();
+        return fragment;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_play;
     }
 }

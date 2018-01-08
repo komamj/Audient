@@ -16,6 +16,8 @@
 package com.koma.audient.login;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import com.koma.audient.R;
@@ -51,6 +53,11 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

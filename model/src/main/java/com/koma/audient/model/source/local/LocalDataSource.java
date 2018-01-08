@@ -17,15 +17,21 @@ package com.koma.audient.model.source.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
+import com.koma.audient.model.entities.Album;
+import com.koma.audient.model.entities.Lyric;
+import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.TopList;
 import com.koma.audient.model.source.AudientDataSource;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by koma on 1/3/18.
- */
+import io.reactivex.Flowable;
+
 @Singleton
 public class LocalDataSource implements AudientDataSource {
     private static final String TAG = LocalDataSource.class.getSimpleName();
@@ -44,5 +50,30 @@ public class LocalDataSource implements AudientDataSource {
         mAudientDao = audientDao;
 
         mSharedPreferences = sharedPreferences;
+    }
+
+    @Override
+    public Flowable<List<TopList.Billboard>> getTopLists() {
+        return null;
+    }
+
+    @Override
+    public Flowable<List<Music>> getTopSongs(@NonNull String billboardId, int count, int page) {
+        return null;
+    }
+
+    @Override
+    public Flowable<List<Music>> getSearchReults(String keyword, String musicType, int count, int page) {
+        return null;
+    }
+
+    @Override
+    public Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName, String type) {
+        return null;
+    }
+
+    @Override
+    public Flowable<Album> getAlbum(String id, String idType, String format, String singer, String song) {
+        return null;
     }
 }

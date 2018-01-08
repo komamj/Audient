@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">"倾听者"</string>
 
+    <!--drawer-->
+    <string name="nav_exit">"退出应用"</string>
+
     <!--splash-->
     <string name="splash_description">"心传科技版权所有@2017"</string>
 
@@ -12,8 +15,17 @@
     <string name="hint_user_name">"请输入手机号码/用户名"</string>
     <string name="hint_password">"请输入密码"</string>
     <string name="submit">"登录"</string>
+    <string name="action_sign_in_short">"登录"</string>
 
     <string name="navigation_drawer_open">"打开导航栏"</string>
     <string name="navigation_drawer_close">"关闭导航栏"</string>
     <string name="action_settings">"设置"</string>
+
+    <!--main-->
+    <string-array name="page_title">
+        <item>"播放列表"</item>
+        <item>"发现"</item>
+        <item>"我的"</item>
+    </string-array>
+
 </resources>

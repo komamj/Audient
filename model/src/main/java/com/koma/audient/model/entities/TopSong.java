@@ -1,10 +1,26 @@
 package com.koma.audient.model.entities;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by koma_20 on 2018/1/7.
- */
+import java.util.List;
 
 public class TopSong extends Audient {
+    @SerializedName("QueryContentBillboardResponse")
+    public QueryContentBillboardResponse queryContentBillboardResponse;
+
+    public static class QueryContentBillboardResponse {
+        @SerializedName("page")
+        public int page;
+        @SerializedName("count")
+        public int count;
+        @SerializedName("total")
+        public int total;
+        @SerializedName("musicItemList")
+        public MusicItemList musicItemList;
+    }
+
+    public static class MusicItemList {
+        @SerializedName("musicItem")
+        public List<Music> musics;
+    }
 }

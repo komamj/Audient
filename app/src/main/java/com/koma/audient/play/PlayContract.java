@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.model.entities;
+package com.koma.audient.play;
 
-import com.google.gson.annotations.SerializedName;
+import com.koma.audient.model.entities.Music;
+import com.koma.common.base.BasePresenter;
+import com.koma.common.base.BaseView;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class SearchResult implements Serializable {
-    private static final long serialVersionUID = 7523967970034938901L;
+public interface PlayContract {
+    interface View extends BaseView<Presenter> {
+        void showLoadingError();
 
-    @SerializedName("searchSongDataResponse")
-    public SearchSongDataResponse searchSongDataResponse;
+        void showEmpty(boolean forceShow);
 
-    public static class SearchSongDataResponse {
-        @SerializedName("musicFileItemLists")
-        public List<Music> musics;
-        @SerializedName("count")
-        public int count;
+        void showProgressBar(boolean forceShow);
+
+        void showMusic(List<Music> musics);
+    }
+
+    interface Presenter extends BasePresenter {
+
     }
 }

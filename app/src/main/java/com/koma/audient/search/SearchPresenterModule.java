@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.model.entities;
+package com.koma.audient.search;
 
-import com.google.gson.annotations.SerializedName;
+import android.support.annotation.NonNull;
 
-import java.io.Serializable;
-import java.util.List;
+import dagger.Module;
+import dagger.Provides;
 
-public class SearchResult implements Serializable {
-    private static final long serialVersionUID = 7523967970034938901L;
+@Module
+public class SearchPresenterModule {
+    private final SearchContract.View mView;
 
-    @SerializedName("searchSongDataResponse")
-    public SearchSongDataResponse searchSongDataResponse;
+    public SearchPresenterModule(@NonNull SearchContract.View view) {
+        mView = view;
+    }
 
-    public static class SearchSongDataResponse {
-        @SerializedName("musicFileItemLists")
-        public List<Music> musics;
-        @SerializedName("count")
-        public int count;
+    @Provides
+    SearchContract.View provideSearchContractView() {
+        return mView;
     }
 }

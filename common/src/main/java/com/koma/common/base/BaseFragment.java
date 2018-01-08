@@ -25,8 +25,6 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
-    protected static final int PRELOAD_AHEAD_ITEMS = 3;
-
     protected Context mContext;
 
     @Override

@@ -62,8 +62,8 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    AudientDataSource provideRemoteDataSource() {
-        return new RemoteDataSource();
+    AudientDataSource provideRemoteDataSource(AudientApi audientApi) {
+        return new RemoteDataSource(audientApi);
     }
 
     @Singleton

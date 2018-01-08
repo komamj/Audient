@@ -25,9 +25,6 @@ import com.koma.audient.model.entities.Audient;
 
 import java.util.List;
 
-/**
- * Created by koma on 1/3/18.
- */
 @Dao
 public interface AudientDao {
     @Query("SELECT * FROM audient")

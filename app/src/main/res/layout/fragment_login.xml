@@ -56,7 +56,6 @@
         android:minHeight="?android:attr/actionBarSize"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:transitionGroup="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider">
@@ -66,11 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_user_name"
-            android:imeOptions="actionNext"
             android:inputType="textPersonName|textPassword"
-            android:maxLength="11"
-            android:minEms="1"
-            android:textSize="@dimen/size_login_text" />
+            android:maxLines="1"
+            android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -82,7 +79,6 @@
         android:minHeight="?android:attr/actionBarSize"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:transitionGroup="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_name">
@@ -92,11 +88,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
-            android:imeOptions="actionDone"
+            android:imeActionId="6"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
-            android:maxLength="8"
-            android:minEms="8"
-            android:textSize="@dimen/size_login_text" />
+            android:maxLines="1"
+            android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -113,13 +110,15 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/submit"
+        style="?android:textAppearanceSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@android:color/holo_orange_light"
         android:text="@string/submit"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/input_password"
         app:layout_constraintStart_toStartOf="@+id/input_password"
         app:layout_constraintTop_toBottomOf="@+id/tv_password" />
