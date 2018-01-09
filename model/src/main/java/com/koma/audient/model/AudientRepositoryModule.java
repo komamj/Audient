@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.koma.audient.model.source.AudientDataSource;
@@ -40,9 +41,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by koma on 1/3/18.
- */
 @Module
 public class AudientRepositoryModule {
     private static final String DB_NAME = "audient-db";
@@ -96,14 +94,16 @@ public class AudientRepositoryModule {
     @Singleton
     @Provides
     Gson provideGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
+        GsonBuilder gsonBuilder = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY);
         return gsonBuilder.create();
     }
 
     @Singleton
     @Provides
     OkHttpClient provideOkHttpClient(Cache cache) {
-        return new OkHttpClient.Builder().cache(cache)
+        return new OkHttpClient.Builder()
+                .cache(cache)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)

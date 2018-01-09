@@ -24,9 +24,9 @@
 
     <!--main-->
     <string-array name="page_title">
-        <item>Playlist</item>
-        <item>Find</item>
         <item>Account</item>
+        <item>Find</item>
+        <item>Playlist</item>
     </string-array>
 
 </resources>

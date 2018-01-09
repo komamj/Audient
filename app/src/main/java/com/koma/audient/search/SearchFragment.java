@@ -19,31 +19,21 @@ import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.View;
 
-import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.main.MainActivity;
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
-
-/**
- * Created by koma on 1/8/18.
- */
 
 public class SearchFragment extends BaseFragment implements SearchContract.View {
     private static final String TAG = SearchFragment.class.getSimpleName();
 
-    @BindView(R.id.search_view)
-    SearchView mSearchView;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
@@ -51,8 +41,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     private SearchAdapter mAdapter;
 
-    @Inject
-    SearchPresenter mPresenter;
+    private SearchContract.Presenter mPresenter;
 
     public SearchFragment() {
     }
@@ -67,32 +56,13 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
-
-        DaggerSearchComponent.builder()
-                .audientRepositoryComponent(
-                        ((AudientApplication) ((MainActivity) mContext).getApplication())
-                                .getRepositoryComponent())
-                .searchPresenterModule(new SearchPresenterModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mPresenter.loadSearchResults(newText);
-                return true;
-            }
-        });
+        showProgressBar(false);
 
         mAdapter = new SearchAdapter(mContext);
 
@@ -100,6 +70,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -110,7 +81,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     @Override
     public void setPresenter(SearchContract.Presenter presenter) {
-
+        mPresenter = presenter;
     }
 
     @Override
@@ -134,7 +105,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
-    public void showMusic(List<Music> musics) {
-        LogUtils.i(TAG, "showMusic count:" + musics.size());
+    public void showAudients(List<Audient> audients) {
+        LogUtils.i(TAG, "showAudients count:" + audients.size());
+
+        mAdapter.updateData(audients);
     }
 }

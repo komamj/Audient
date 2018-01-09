@@ -16,20 +16,22 @@
 package com.koma.audient.model.source.remote;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 
 import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.AlbumResult;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.LyricResult;
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.TopList;
 import com.koma.audient.model.entities.TopSong;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.common.util.Constants;
+import com.koma.common.util.LogUtils;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -52,50 +54,52 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<TopList.Billboard>> getTopLists() {
+    public Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists() {
         return mAudientApi.getTopLists(Constants.APP_ID, Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<TopList, List<TopList.Billboard>>() {
+                .map(new Function<TopList, List<TopList.BillboardListResponse.Billboard>>() {
                     @Override
-                    public List<TopList.Billboard> apply(TopList topList) throws Exception {
+                    public List<TopList.BillboardListResponse.Billboard> apply(TopList topList) throws Exception {
+                        LogUtils.i(TAG, "getTopLists topList :" + topList.resultMessage + "," + topList.resultCode);
+
                         return topList.billboardListResponse.billboardList.billboards;
                     }
                 });
     }
 
     @Override
-    public Flowable<List<Music>> getTopSongs(@NonNull String billboardId, int count, int page) {
+    public Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page) {
         return mAudientApi.getTopSongs(billboardId, count, page, Constants.APP_ID,
                 Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<TopSong, List<Music>>() {
+                .map(new Function<TopSong, List<MusicFileItem>>() {
                     @Override
-                    public List<Music> apply(TopSong topSong) throws Exception {
-                        return null;
+                    public List<MusicFileItem> apply(TopSong topSong) throws Exception {
+                        return topSong.queryContentBillboardResponse.musicItemList.musics;
                     }
                 });
     }
 
     private String getTimeStamp() {
-        DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance();
-        String timeStamp = dateFormat.format(new Date());
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStamp = simpleDateFormat.format(new Date());
         return timeStamp;
     }
 
     @Override
-    public Flowable<List<Music>> getSearchReults(String keyword, String musicType, int count,
-                                                 int page) {
+    public Flowable<List<MusicFileItem>> getSearchReults(String keyword, String musicType, int count,
+                                                         int page) {
         return mAudientApi.getMusics(keyword, musicType, count, page, Constants.APP_ID,
                 Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<SearchResult, List<Music>>() {
+                .map(new Function<SearchResult, List<MusicFileItem>>() {
                     @Override
-                    public List<Music> apply(SearchResult searchResult) throws Exception {
-                        return searchResult.searchSongDataResponse.musics;
+                    public List<MusicFileItem> apply(SearchResult searchResult) throws Exception {
+                        return searchResult.searchSongDataResponse.musicFielItemLists.musics;
                     }
                 });
     }
 
     @Override
-    public Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName, String type) {
+    public Flowable<Lyric> getLyric(String id, String idType, String musicName,
+                                    String actorName, String type) {
         return mAudientApi.getLyric(id, idType, musicName, actorName, type, Constants.APP_ID,
                 Constants.ACCESS_TOKEN, getTimeStamp())
                 .map(new Function<LyricResult, Lyric>() {
@@ -107,9 +111,11 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<Album> getAlbum(String id, String idType, String format, String singer, String song) {
-        return mAudientApi.getAlbum(id, idType, format, singer, song, Constants.APP_ID,
-                Constants.ACCESS_TOKEN, getTimeStamp())
+    public Flowable<Album> getAlbum(MusicFileItem musicFileItem) {
+        LogUtils.i(TAG, "getAlbum contentId :" + musicFileItem.contentId);
+        return mAudientApi.getAlbum(String.valueOf(musicFileItem.contentId), String.valueOf(5),
+                Constants.ALBUM_FORMAT, musicFileItem.actorName, musicFileItem.musicName,
+                Constants.APP_ID, Constants.ACCESS_TOKEN, getTimeStamp())
                 .map(new Function<AlbumResult, Album>() {
                     @Override
                     public Album apply(AlbumResult albumResult) throws Exception {

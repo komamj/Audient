@@ -17,8 +17,8 @@ package com.koma.audient.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AlbumResult extends Audient {
-    @SerializedName("queryPicsResponse")
+public class AlbumResult extends BaseResponse {
+    @SerializedName("QueryPicJTResponse")
     public PicResponse picResponse;
 
     public static class PicResponse {

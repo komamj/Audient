@@ -43,6 +43,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
 
+        <activity
+            android:name=".search.SearchActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

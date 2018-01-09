@@ -15,7 +15,7 @@
  */
 package com.koma.audient.search;
 
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -29,7 +29,7 @@ public interface SearchContract {
 
         void showProgressBar(boolean forceShow);
 
-        void showMusic(List<Music> musics);
+        void showAudients(List<Audient> audients);
     }
 
     interface Presenter extends BasePresenter {

@@ -17,25 +17,54 @@ package com.koma.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 @Entity(tableName = "audient")
-public class Audient implements Serializable {
-    private static final long serialVersionUID = 7523967970034938900L;
-
+public class Audient implements Parcelable {
     @PrimaryKey
-    @ColumnInfo(name = "id")
-    public long id;
+    @ColumnInfo(name = "content_id")
+    public long contentId;
+    @ColumnInfo(name = "music_name")
+    public String musicName;
+    @ColumnInfo(name = "actor_name")
+    public String actorName;
+    @ColumnInfo(name = "albumUrl")
+    public String albumUrl;
 
-    @Ignore
-    @SerializedName("res_code")
-    public String resultCode;
-    @Ignore
-    @SerializedName("res_message")
-    public String resultMessage;
+    public Audient() {
+    }
+
+    protected Audient(Parcel in) {
+        contentId = in.readLong();
+        musicName = in.readString();
+        actorName = in.readString();
+        albumUrl = in.readString();
+    }
+
+    public static final Creator<Audient> CREATOR = new Creator<Audient>() {
+        @Override
+        public Audient createFromParcel(Parcel in) {
+            return new Audient(in);
+        }
+
+        @Override
+        public Audient[] newArray(int size) {
+            return new Audient[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(contentId);
+        parcel.writeString(musicName);
+        parcel.writeString(actorName);
+        parcel.writeString(albumUrl);
+    }
 }

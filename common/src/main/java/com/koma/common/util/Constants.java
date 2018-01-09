@@ -15,16 +15,21 @@
  */
 package com.koma.common.util;
 
-/**
- * Created by koma on 1/5/18.
- */
-
 public final class Constants {
     public static final String APP_ID = "207777070000267100";
-
-    public static final String ACCESS_TOKEN = "e59cc379e40bfa52a0d032b85eb3f9e61512871405945";
-
+    public static final String ACCESS_TOKEN = "62e5580162f425c664d0aa45e38143221515391745219";
     public static final String AUDIENT_HOST = "http://api.189.cn/v2/music/openapi/services/v2/";
+
+    // album format
+    public static final String ALBUM_FORMAT = "jpg";
+
+    // audition dialog
+    public static final String KEY_AUDITION = "key_audition";
+    public static final String AUDITION_TAG = "audition_tag";
+
+    // response
+    public static final String RESPONSE_RES_CODE = "res_code";
+    public static final String RESPONSE_RES_MESSAGE = "res_message";
 
     private Constants() {
     }

@@ -1,23 +1,15 @@
 package com.koma.common.util;
 
 import android.app.Activity;
-import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
-import android.text.TextUtils;
 import android.view.View;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-
-/**
- * Created by koma on 12/8/17.
- */
 
 public final class Utils {
     private Utils() {

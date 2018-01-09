@@ -2,23 +2,28 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/nav_header_vertical_spacing"
+    android:paddingEnd="@dimen/nav_header_vertical_spacing"
+    android:paddingStart="@dimen/nav_header_vertical_spacing"
+    android:paddingTop="@dimen/nav_header_vertical_spacing">
 
     <ImageView
         android:id="@+id/iv_album"
-        android:layout_width="50dp"
-        android:layout_height="60dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_exit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_album"
+        app:layout_constraintEnd_toStartOf="@+id/iv_more"
         app:layout_constraintStart_toEndOf="@+id/iv_album"
         app:layout_constraintTop_toTopOf="@+id/iv_album">
 
@@ -41,5 +46,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_music_name" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/iv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="@dimen/nav_header_vertical_spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_more" />
 
 </android.support.constraint.ConstraintLayout>

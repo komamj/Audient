@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +28,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
+import com.koma.audient.dialog.audition.AuditionDialogFragment;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BaseViewHolder;
+import com.koma.common.util.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +45,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     private final GlideRequest<Drawable> mGlideRequest;
 
-    private List<Music> mData;
+    private List<Audient> mData;
 
     private final Context mContext;
 
@@ -55,6 +59,25 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 .thumbnail(0.1f);
     }
 
+    public void updateData(List<Audient> data) {
+        if (mData == null) {
+            mData = new ArrayList<>();
+
+            mData = data;
+
+            int itemCount = mData.size();
+
+            notifyItemRangeInserted(0, itemCount);
+        } else {
+            int positionStart = mData.size();
+            int itemCount = data.size();
+
+            mData.addAll(data);
+
+            notifyItemRangeInserted(positionStart, itemCount);
+        }
+    }
+
     @Override
     public SearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_search,
@@ -64,6 +87,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public void onBindViewHolder(SearchViewHolder holder, int position) {
+        mGlideRequest.load(mData.get(position).albumUrl)
+                .into(holder.mAlbum);
         holder.mMusicName.setText(mData.get(position).musicName);
         holder.mActorName.setText(mData.get(position).actorName);
     }
@@ -73,7 +98,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         return mData == null ? 0 : mData.size();
     }
 
-    static class SearchViewHolder extends BaseViewHolder {
+    class SearchViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_music_name)
@@ -81,8 +106,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         @BindView(R.id.tv_actor_name)
         TextView mActorName;
 
-        public SearchViewHolder(View view) {
+        SearchViewHolder(View view) {
             super(view);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+
+            Audient audient = mData.get(position);
+
+            AuditionDialogFragment.newInstance(audient)
+                    .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                            Constants.AUDITION_TAG);
         }
     }
 }

@@ -2,22 +2,40 @@
   "formatVersion": 1,
   "database": {
     "version": 1000,
-    "identityHash": "c4915e1632c7de119922163e6b03c491",
+    "identityHash": "7aefe113eac4c08a924058e2674c1874",
     "entities": [
       {
         "tableName": "audient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` INTEGER NOT NULL, `music_name` TEXT, `actor_name` TEXT, `albumUrl` TEXT, PRIMARY KEY(`content_id`))",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "contentId",
+            "columnName": "content_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "musicName",
+            "columnName": "music_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "actorName",
+            "columnName": "actor_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "albumUrl",
+            "columnName": "albumUrl",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "content_id"
           ],
           "autoGenerate": false
         },
@@ -27,7 +45,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c4915e1632c7de119922163e6b03c491\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7aefe113eac4c08a924058e2674c1874\")"
     ]
   }
 }

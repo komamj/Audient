@@ -23,9 +23,9 @@
 
     <!--main-->
     <string-array name="page_title">
-        <item>"播放列表"</item>
-        <item>"发现"</item>
         <item>"我的"</item>
+        <item>"发现"</item>
+        <item>"播放列表"</item>
     </string-array>
 
 </resources>

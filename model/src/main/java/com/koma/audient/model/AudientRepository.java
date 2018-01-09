@@ -19,7 +19,7 @@ import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.Lyric;
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.TopList;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
@@ -47,18 +47,18 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<TopList.Billboard>> getTopLists() {
+    public Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists() {
         return mRemoteDataSource.getTopLists();
     }
 
     @Override
-    public Flowable<List<Music>> getTopSongs(@NonNull String billboardId, int count, int page) {
+    public Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page) {
         return mRemoteDataSource.getTopSongs(billboardId, count, page);
     }
 
     @Override
-    public Flowable<List<Music>> getSearchReults(String keyword, String musicType, int count,
-                                                 int page) {
+    public Flowable<List<MusicFileItem>> getSearchReults(String keyword, String musicType, int count,
+                                                         int page) {
         return mRemoteDataSource.getSearchReults(keyword, musicType, count, page);
     }
 
@@ -69,8 +69,7 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<Album> getAlbum(String id, String idType, String format, String singer,
-                                    String song) {
-        return mRemoteDataSource.getAlbum(id, idType, format, singer, song);
+    public Flowable<Album> getAlbum(MusicFileItem musicFileItem) {
+        return mRemoteDataSource.getAlbum(musicFileItem);
     }
 }

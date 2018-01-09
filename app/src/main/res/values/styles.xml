@@ -6,6 +6,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="android:listDivider">@drawable/divider</item>
+
         <!-- Transitions settings -->
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -33,5 +35,8 @@
     <style name="LoginTheme" parent="FullScreenTheme">
         <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
+
+    <!--Dilog theme-->
+    <style name="AuditionDilogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
 
 </resources>

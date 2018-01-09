@@ -15,7 +15,7 @@
  */
 package com.koma.audient.play;
 
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -29,7 +29,7 @@ public interface PlayContract {
 
         void showProgressBar(boolean forceShow);
 
-        void showMusic(List<Music> musics);
+        void showMusic(List<MusicFileItem> musics);
     }
 
     interface Presenter extends BasePresenter {

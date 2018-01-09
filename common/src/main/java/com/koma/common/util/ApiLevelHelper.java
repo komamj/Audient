@@ -17,10 +17,6 @@ package com.koma.common.util;
 
 import android.os.Build;
 
-/**
- * Created by koma on 1/4/18.
- */
-
 public class ApiLevelHelper {
     private ApiLevelHelper() {
         //no instance

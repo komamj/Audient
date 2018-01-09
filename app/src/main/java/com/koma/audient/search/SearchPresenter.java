@@ -16,18 +16,24 @@
 package com.koma.audient.search;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.Music;
+import com.koma.audient.model.entities.Album;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class SearchPresenter implements SearchContract.Presenter {
     public static final String TAG = SearchPresenter.class.getSimpleName();
@@ -66,29 +72,59 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void loadSearchResults(String keyword) {
-        Disposable disposable = mRepository.getSearchReults(keyword, "4", 10, 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Music>>() {
-                    @Override
-                    public void onNext(List<Music> musics) {
-                        LogUtils.i(TAG, "loadSearchResults " + musics.toString());
+        mDisposables.clear();
 
+        if (mView != null) {
+            mView.showProgressBar(true);
+        }
+
+        mRepository.getSearchReults(keyword, "4", 10, 1)
+                .flatMap(new Function<List<MusicFileItem>, Flowable<MusicFileItem>>() {
+                    @Override
+                    public Flowable<MusicFileItem> apply(final List<MusicFileItem> musicFileItems) throws Exception {
+                        return Flowable.create(new FlowableOnSubscribe<MusicFileItem>() {
+                            @Override
+                            public void subscribe(FlowableEmitter<MusicFileItem> emitter) throws Exception {
+                                for (MusicFileItem musicFileItem : musicFileItems) {
+                                    LogUtils.i(TAG, "loadSearchResults musicFileItem :" + musicFileItem.musicName);
+                                    emitter.onNext(musicFileItem);
+                                }
+                                emitter.onComplete();
+                            }
+                        }, BackpressureStrategy.LATEST);
+                    }
+                }).flatMap(new Function<MusicFileItem, Flowable<Audient>>() {
+            @Override
+            public Flowable<Audient> apply(final MusicFileItem musicFileItem) throws Exception {
+                return mRepository.getAlbum(musicFileItem)
+                        .map(new Function<Album, Audient>() {
+                            @Override
+                            public Audient apply(Album album) throws Exception {
+                                Audient audient = new Audient();
+                                audient.musicName = musicFileItem.musicName;
+                                audient.contentId = musicFileItem.contentId;
+                                audient.actorName = musicFileItem.actorName;
+                                audient.albumUrl = album.url;
+                                return audient;
+                            }
+                        });
+            }
+        }).toList().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<List<Audient>>() {
+                    @Override
+                    public void onSuccess(List<Audient> audients) {
+                        LogUtils.i(TAG, "loadSearchResults onSuccess");
                         if (mView != null) {
-                            mView.showMusic(musics);
+                            mView.showProgressBar(false);
+                            mView.showAudients(audients);
                         }
                     }
 
                     @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadSearchResults error :" + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                    public void onError(Throwable e) {
+                        LogUtils.e(TAG, "loadSearchResults error :" + e.toString());
                     }
                 });
-        mDisposables.add(disposable);
     }
 }

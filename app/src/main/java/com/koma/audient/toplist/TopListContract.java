@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.model.entities;
+package com.koma.audient.toplist;
 
-import com.google.gson.annotations.SerializedName;
+import com.koma.common.base.BasePresenter;
+import com.koma.common.base.BaseView;
 
-public class Music {
-    @SerializedName("id")
-    public int contentId;
-    @SerializedName("music_name")
-    public String musicName;
-    @SerializedName("actor_name")
-    public String actorName;
+public interface TopListContract {
+    interface View extends BaseView<Presenter> {
+        void showLoadingError();
+
+        void showEmpty(boolean forceShow);
+
+        void showProgressBar(boolean forceShow);
+    }
+
+    interface Presenter extends BasePresenter {
+        void loadTopList();
+    }
 }

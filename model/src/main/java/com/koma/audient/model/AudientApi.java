@@ -25,13 +25,9 @@ import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-/**
- * Created by koma on 1/5/18.
- */
-
 public interface AudientApi {
     /**
-     * load lyric.
+     * 获取榜单列表.
      *
      * @param appID       应用ID
      * @param accessToken 访问令牌

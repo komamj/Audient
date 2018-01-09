@@ -15,6 +15,7 @@
  */
 package com.koma.audient.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -32,7 +33,8 @@ import android.view.MenuItem;
 
 import com.koma.audient.R;
 import com.koma.audient.play.PlayFragment;
-import com.koma.audient.search.SearchFragment;
+import com.koma.audient.search.SearchActivity;
+import com.koma.audient.toplist.TopListFragment;
 import com.koma.audient.user.UserFragment;
 import com.koma.common.base.BaseActivity;
 
@@ -58,7 +60,8 @@ public class MainActivity extends BaseActivity
 
     @OnClick(R.id.fab)
     void showSearchUI() {
-
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -79,20 +82,20 @@ public class MainActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(PlayFragment.newInstance());
-        fragments.add(SearchFragment.newInstance());
         fragments.add(UserFragment.newInstance());
+        fragments.add(TopListFragment.newInstance());
+        fragments.add(PlayFragment.newInstance());
 
         AudientAdapter audientAdapter = new AudientAdapter(getSupportFragmentManager(),
                 fragments, mPageTitles);
         mViewPager.setAdapter(audientAdapter);
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(2);
         mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_person);
         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_library);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_person);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_home);
     }
 
     @Override

@@ -24,5 +24,5 @@ import dagger.Component;
 @Component(dependencies = AudientRepositoryComponent.class,
         modules = SearchPresenterModule.class)
 public interface SearchComponent {
-    void inject(SearchFragment fragment);
+    void inject(SearchActivity activity);
 }

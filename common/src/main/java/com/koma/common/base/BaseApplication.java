@@ -29,7 +29,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        enableStrictMode();
+     //   enableStrictMode();
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.

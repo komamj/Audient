@@ -17,29 +17,26 @@ package com.koma.audient.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class TopList extends Audient implements Serializable {
-    private static final long serialVersionUID = 7523967970034938902L;
-
+public class TopList extends BaseResponse {
     @SerializedName("queryBillboardListResponse")
     public BillboardListResponse billboardListResponse;
 
     public static class BillboardListResponse {
         @SerializedName("billboard_list")
         public BillboardList billboardList;
-    }
 
-    public static class BillboardList {
-        @SerializedName("billboard")
-        public List<Billboard> billboards;
-    }
+        public static class BillboardList {
+            @SerializedName("billboard")
+            public List<Billboard> billboards;
+        }
 
-    public static class Billboard {
-        @SerializedName("billboard_id")
-        public int billboardId;
-        @SerializedName("billboard_name")
-        public String billboardName;
+        public static class Billboard {
+            @SerializedName("billboard_id")
+            public int billboardId;
+            @SerializedName("billboard_name")
+            public String billboardName;
+        }
     }
 }
