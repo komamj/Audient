@@ -15,13 +15,46 @@
  */
 package com.koma.audient.model.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class MusicFileItem {
+public class MusicFileItem implements Parcelable {
     @SerializedName("id")
     public int contentId;
     @SerializedName("musicname")
     public String musicName;
     @SerializedName("actorname")
     public String actorName;
+
+    protected MusicFileItem(Parcel in) {
+        contentId = in.readInt();
+        musicName = in.readString();
+        actorName = in.readString();
+    }
+
+    public static final Creator<MusicFileItem> CREATOR = new Creator<MusicFileItem>() {
+        @Override
+        public MusicFileItem createFromParcel(Parcel in) {
+            return new MusicFileItem(in);
+        }
+
+        @Override
+        public MusicFileItem[] newArray(int size) {
+            return new MusicFileItem[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(contentId);
+        parcel.writeString(musicName);
+        parcel.writeString(actorName);
+    }
 }

@@ -15,7 +15,8 @@
         android:layout_height="50dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/darker_gray" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"

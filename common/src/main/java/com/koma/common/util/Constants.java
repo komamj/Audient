@@ -24,7 +24,7 @@ public final class Constants {
     public static final String ALBUM_FORMAT = "jpg";
 
     // audition dialog
-    public static final String KEY_AUDITION = "key_audition";
+    public static final String KEY_MUSIC_FILE_ITEM = "key_musci_file_item";
     public static final String AUDITION_TAG = "audition_tag";
 
     // response

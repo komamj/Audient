@@ -15,9 +15,13 @@
  */
 package com.koma.audient.dialog.audition;
 
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.FragmentScoped;
+
 import dagger.Component;
 
-@Component(modules = AuditionPresenterModule.class)
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = AuditionPresenterModule.class)
 public interface AuditionComponent {
     void inject(AuditionDialogFragment fragment);
 }

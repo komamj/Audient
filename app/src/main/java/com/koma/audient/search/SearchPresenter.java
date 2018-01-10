@@ -16,8 +16,6 @@
 package com.koma.audient.search;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.util.LogUtils;
 
@@ -25,15 +23,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class SearchPresenter implements SearchContract.Presenter {
     public static final String TAG = SearchPresenter.class.getSimpleName();
@@ -79,7 +72,28 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
 
         mRepository.getSearchReults(keyword, "4", 10, 1)
-                .flatMap(new Function<List<MusicFileItem>, Flowable<MusicFileItem>>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<MusicFileItem>>() {
+                    @Override
+                    public void onNext(List<MusicFileItem> musicFileItems) {
+                        if (mView != null) {
+                            mView.showProgressBar(false);
+                            mView.showMusicFileItems(musicFileItems);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                })
+                /*.flatMap(new Function<List<MusicFileItem>, Flowable<MusicFileItem>>() {
                     @Override
                     public Flowable<MusicFileItem> apply(final List<MusicFileItem> musicFileItems) throws Exception {
                         return Flowable.create(new FlowableOnSubscribe<MusicFileItem>() {
@@ -117,7 +131,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                         LogUtils.i(TAG, "loadSearchResults onSuccess");
                         if (mView != null) {
                             mView.showProgressBar(false);
-                            mView.showAudients(audients);
+                            mView.showMusicFileItems(audients);
                         }
                     }
 
@@ -125,6 +139,6 @@ public class SearchPresenter implements SearchContract.Presenter {
                     public void onError(Throwable e) {
                         LogUtils.e(TAG, "loadSearchResults error :" + e.toString());
                     }
-                });
+                })*/;
     }
 }

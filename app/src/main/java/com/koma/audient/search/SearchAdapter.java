@@ -16,22 +16,16 @@
 package com.koma.audient.search;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.dialog.audition.AuditionDialogFragment;
-import com.koma.audient.helper.GlideApp;
-import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BaseViewHolder;
 import com.koma.common.util.Constants;
 
@@ -44,23 +38,15 @@ import butterknife.OnClick;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
     private static final String TAG = SearchAdapter.class.getSimpleName();
 
-    private final GlideRequest<Drawable> mGlideRequest;
-
-    private List<Audient> mData;
+    private List<MusicFileItem> mData;
 
     private final Context mContext;
 
     public SearchAdapter(Context context) {
         mContext = context;
-
-        mGlideRequest = GlideApp.with(mContext)
-                .asDrawable()
-                .centerCrop()
-                .placeholder(new ColorDrawable(Color.GRAY))
-                .thumbnail(0.1f);
     }
 
-    public void updateData(List<Audient> data) {
+    public void updateData(List<MusicFileItem> data) {
         if (mData == null) {
             mData = new ArrayList<>();
 
@@ -88,8 +74,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public void onBindViewHolder(SearchViewHolder holder, int position) {
-        mGlideRequest.load(mData.get(position).albumUrl)
-                .into(holder.mAlbum);
         holder.mMusicName.setText(mData.get(position).musicName);
         holder.mActorName.setText(mData.get(position).actorName);
     }
@@ -100,8 +84,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     }
 
     class SearchViewHolder extends BaseViewHolder implements View.OnClickListener {
-        @BindView(R.id.iv_album)
-        ImageView mAlbum;
         @BindView(R.id.tv_music_name)
         TextView mMusicName;
         @BindView(R.id.tv_actor_name)
@@ -122,9 +104,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         public void onClick(View view) {
             int position = getAdapterPosition();
 
-            Audient audient = mData.get(position);
+            MusicFileItem musicFileItem = mData.get(position);
 
-            AuditionDialogFragment.newInstance(audient)
+            AuditionDialogFragment.newInstance(musicFileItem)
                     .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
                             Constants.AUDITION_TAG);
         }

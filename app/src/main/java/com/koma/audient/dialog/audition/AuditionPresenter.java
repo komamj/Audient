@@ -15,18 +15,40 @@
  */
 package com.koma.audient.dialog.audition;
 
+import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.Album;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class AuditionPresenter implements AuditionContract.Presenter {
     private static final String TAG = AuditionPresenter.class.getSimpleName();
 
     private final AuditionContract.View mView;
 
+    private AudientRepository mRepository;
+
+    private CompositeDisposable mDisposables;
+
     @Inject
-    public AuditionPresenter(AuditionContract.View view) {
+    public AuditionPresenter(AuditionContract.View view, AudientRepository repository) {
         mView = view;
+
+        mRepository = repository;
+
+        mDisposables = new CompositeDisposable();
+    }
+
+    @Inject
+    void setUpListener() {
+        mView.setPresenter(this);
     }
 
     @Override
@@ -37,5 +59,31 @@ public class AuditionPresenter implements AuditionContract.Presenter {
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
+
+        mDisposables.clear();
+    }
+
+    @Override
+    public void loadAlbumUrl(MusicFileItem musicFileItem) {
+        Disposable disposable = mRepository.getAlbum(musicFileItem)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Album>() {
+                    @Override
+                    public void onNext(Album album) {
+                        mView.onLoadAlbumUrlFinished(album.url);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
     }
 }

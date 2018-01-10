@@ -15,13 +15,16 @@
  */
 package com.koma.audient.dialog.audition;
 
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
 public interface AuditionContract {
     interface View extends BaseView<Presenter> {
+        void onLoadAlbumUrlFinished(String url);
     }
 
     interface Presenter extends BasePresenter {
+        void loadAlbumUrl(MusicFileItem musicFileItem);
     }
 }

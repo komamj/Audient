@@ -15,6 +15,7 @@
  */
 package com.koma.audient.dialog.audition;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -24,9 +25,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
@@ -50,7 +52,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     @BindView(R.id.iv_pause)
     ImageView mPauseButton;
 
-    private Audient mAudient;
+    private MusicFileItem mMusicFileItem;
 
     @OnClick(R.id.iv_pause)
     void doPauseOrPlay() {
@@ -63,15 +65,20 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     public AuditionDialogFragment() {
     }
 
-    public static AuditionDialogFragment newInstance(Audient audient) {
+    public static AuditionDialogFragment newInstance(MusicFileItem musicFileItem) {
         AuditionDialogFragment fragment = new AuditionDialogFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.KEY_AUDITION, audient);
+        bundle.putParcelable(Constants.KEY_MUSIC_FILE_ITEM, musicFileItem);
 
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -83,11 +90,12 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AuditionDilogTheme);
 
         if (getArguments() != null) {
-            mAudient = getArguments().getParcelable(Constants.KEY_AUDITION);
+            mMusicFileItem = getArguments().getParcelable(Constants.KEY_MUSIC_FILE_ITEM);
         }
 
         // inject presenter
         DaggerAuditionComponent.builder()
+                .audientRepositoryComponent(((AudientApplication) getActivity().getApplication()).getRepositoryComponent())
                 .auditionPresenterModule(new AuditionPresenterModule(this))
                 .build()
                 .inject(this);
@@ -100,6 +108,8 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
         ButterKnife.bind(this, view);
 
+        mPresenter.loadAlbumUrl(mMusicFileItem);
+
         return view;
     }
 
@@ -109,27 +119,28 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
         LogUtils.i(TAG, "onViewCreated");
 
-        GlideApp.with(this).load(mAudient.albumUrl).into(mAlbum);
-        mActorName.setText(mAudient.actorName);
-        mMusicName.setText(mAudient.musicName);
+        mActorName.setText(mMusicFileItem.actorName);
+        mMusicName.setText(mMusicFileItem.musicName);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        LogUtils.i(TAG, "onResume");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
         LogUtils.i(TAG, "onDestroy");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
     }
 
     @Override
     public void setPresenter(AuditionContract.Presenter presenter) {
 
+    }
+
+    @Override
+    public void onLoadAlbumUrlFinished(String url) {
+        GlideApp.with(this).load(url).into(mAlbum);
     }
 }

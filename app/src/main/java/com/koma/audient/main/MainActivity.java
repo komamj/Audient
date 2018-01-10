@@ -92,10 +92,6 @@ public class MainActivity extends BaseActivity
         mViewPager.setCurrentItem(2);
         mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
-
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_person);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_library);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_home);
     }
 
     @Override
@@ -127,8 +123,9 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
