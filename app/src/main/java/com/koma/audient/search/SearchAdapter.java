@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
     private static final String TAG = SearchAdapter.class.getSimpleName();
@@ -105,6 +106,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         TextView mMusicName;
         @BindView(R.id.tv_actor_name)
         TextView mActorName;
+
+        @OnClick(R.id.iv_more)
+        void showPopupView() {
+
+        }
 
         SearchViewHolder(View view) {
             super(view);

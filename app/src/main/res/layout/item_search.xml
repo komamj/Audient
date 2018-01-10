@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:paddingBottom="@dimen/nav_header_vertical_spacing"
     android:paddingEnd="@dimen/nav_header_vertical_spacing"
     android:paddingStart="@dimen/nav_header_vertical_spacing"
@@ -29,19 +30,23 @@
 
         <TextView
             android:id="@+id/tv_music_name"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:singleLine="true"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_actor_name"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:singleLine="true"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/tv_music_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_music_name" />
 
@@ -51,7 +56,7 @@
         android:id="@+id/iv_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/nav_header_vertical_spacing"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

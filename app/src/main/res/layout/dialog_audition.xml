@@ -29,19 +29,23 @@
 
         <TextView
             android:id="@+id/tv_music_name"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:singleLine="true"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_actor_name"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:singleLine="true"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/tv_music_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_music_name" />
 
@@ -51,11 +55,11 @@
         android:id="@+id/iv_pause"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="?selectableItemBackgroundBorderless"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/iv_album"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_album"
-        app:srcCompat="@drawable/ic_play" />
+        app:srcCompat="@drawable/ic_pause" />
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/progress_bar"
