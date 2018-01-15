@@ -7,19 +7,18 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:listDivider">@drawable/divider</item>
-
-        <!-- Transitions settings -->
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -28,13 +27,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="SplashTheme" parent="FullScreenTheme">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-    </style>
-
-    <style name="LoginTheme" parent="FullScreenTheme">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-    </style>
+    <style name="SplashTheme" parent="FullScreenTheme"></style>
 
     <!--Dilog theme-->
     <style name="AuditionDilogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth" />

@@ -17,52 +17,40 @@ package com.koma.audient.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.play.PlayFragment;
+import com.koma.audient.playlist.PlaylistFragment;
 import com.koma.audient.search.SearchActivity;
 import com.koma.audient.toplist.TopListFragment;
 import com.koma.audient.user.UserFragment;
 import com.koma.common.base.BaseActivity;
+import com.koma.common.util.ActivityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 
-import butterknife.BindArray;
 import butterknife.BindView;
-import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainContract.View,
+        NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    @BindView(R.id.tab_layout)
-    TabLayout mTabLayout;
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
-    @BindArray(R.array.page_title)
-    String[] mPageTitles;
 
-    @OnClick(R.id.fab)
-    void showSearchUI() {
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-    }
+    @Inject
+    MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,20 +66,16 @@ public class MainActivity extends BaseActivity
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(UserFragment.newInstance());
-        fragments.add(TopListFragment.newInstance());
-        fragments.add(PlayFragment.newInstance());
+        // inject presenter layer
+        DaggerMainComponent.builder().audientRepositoryComponent(
+                ((AudientApplication) getApplication()).getRepositoryComponent())
+                .mainPresenterModule(new MainPresenterModule(this))
+                .build()
+                .inject(this);
 
-        AudientAdapter audientAdapter = new AudientAdapter(getSupportFragmentManager(),
-                fragments, mPageTitles);
-        mViewPager.setAdapter(audientAdapter);
-        mViewPager.setCurrentItem(2);
-        mViewPager.setOffscreenPageLimit(2);
-        mTabLayout.setupWithViewPager(mViewPager);
+        showPlaylistUI();
     }
 
     @Override
@@ -137,54 +121,62 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+        if (id == R.id.nav_playlist) {
+            showPlaylistUI();
+        } else if (id == R.id.nav_recommend) {
+            showRecommendUI();
+        } else if (id == R.id.nav_user) {
+            showUserUI();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
-        } else if (id == R.id.nav_exit) {
-            finish();
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    static class AudientAdapter extends FragmentPagerAdapter {
-        private static final int TAB_COUNT = 3;
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
 
-        private List<Fragment> mFragments;
+    }
 
-        private String[] mTitles;
-
-        public AudientAdapter(FragmentManager fm, List<Fragment> fragments, String[] titles) {
-            super(fm);
-
-            mFragments = fragments;
-
-            mTitles = titles;
+    @Override
+    public void showPlaylistUI() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.nav_playlist);
         }
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
+        mNavigationView.setCheckedItem(R.id.nav_playlist);
+
+        PlaylistFragment playlistFragment = PlaylistFragment.newInstance();
+
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), playlistFragment,
+                R.id.content_main);
+    }
+
+    @Override
+    public void showRecommendUI() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.nav_recommend);
         }
 
-        @Nullable
-        public CharSequence getPageTitle(int position) {
-            return mTitles[position];
+        TopListFragment topListFragment = TopListFragment.newInstance();
+
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), topListFragment,
+                R.id.content_main);
+    }
+
+    @Override
+    public void showUserUI() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.nav_user);
         }
 
-        @Override
-        public int getCount() {
-            return TAB_COUNT;
-        }
+        UserFragment userFragment = UserFragment.newInstance();
+
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), userFragment,
+                R.id.content_main);
     }
 }

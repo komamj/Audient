@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.dialog.audition;
+package com.koma.audient.playlist;
 
-import com.koma.audient.model.entities.MusicFileItem;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.FragmentScoped;
 
-public interface AuditionContract {
-    interface View extends BaseView<Presenter> {
-        void onLoadAlbumUrlFinished(String url);
-    }
+import dagger.Component;
 
-    interface Presenter extends BasePresenter {
-        void loadAlbumUrl(MusicFileItem musicFileItem);
-
-        void doPauseOrPlay();
-    }
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = PlaylistPresenterModule.class)
+public interface PlatlistComponent {
+    void inject(PlaylistFragment fragment);
 }

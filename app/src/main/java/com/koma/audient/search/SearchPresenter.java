@@ -85,7 +85,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
-
+                        LogUtils.e(TAG, "loadSearchResults error :" + t.toString());
                     }
 
                     @Override

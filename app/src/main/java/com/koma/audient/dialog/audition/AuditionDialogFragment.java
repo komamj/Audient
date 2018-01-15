@@ -56,7 +56,9 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
     @OnClick(R.id.iv_pause)
     void doPauseOrPlay() {
-
+        if (mPresenter != null) {
+            mPresenter.doPauseOrPlay();
+        }
     }
 
     @Inject

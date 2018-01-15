@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.main;
+package com.koma.audient.playlist;
 
 import com.koma.audient.model.AudientRepository;
 import com.koma.common.util.LogUtils;
@@ -22,17 +22,17 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class MainPresenter implements MainContract.Presenter {
-    public static final String TAG = MainPresenter.class.getSimpleName();
+public class PlaylistPresenter implements PlaylistContract.Presenter {
+    public static final String TAG = PlaylistPresenter.class.getSimpleName();
 
-    private MainContract.View mView;
+    private PlaylistContract.View mView;
 
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
 
     @Inject
-    public MainPresenter(MainContract.View view, AudientRepository repository) {
+    public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
         mView = view;
 
         mRepository = repository;

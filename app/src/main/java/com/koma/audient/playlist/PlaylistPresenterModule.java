@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.play;
+package com.koma.audient.playlist;
 
-import com.koma.audient.R;
-import com.koma.common.base.BaseFragment;
+import dagger.Module;
+import dagger.Provides;
 
-/**
- * Created by koma on 1/8/18.
- */
+@Module
+public class PlaylistPresenterModule {
+    private final PlaylistContract.View mView;
 
-public class PlayFragment extends BaseFragment {
-    private static final String TAG = PlayFragment.class.getSimpleName();
-
-    public PlayFragment() {
+    public PlaylistPresenterModule(PlaylistContract.View view) {
+        this.mView = view;
     }
 
-    public static PlayFragment newInstance() {
-        PlayFragment fragment = new PlayFragment();
-        return fragment;
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_play;
+    @Provides
+    PlaylistContract.View providePlaylistContractView() {
+        return this.mView;
     }
 }

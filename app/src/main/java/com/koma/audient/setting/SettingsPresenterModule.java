@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.dialog.audition;
+package com.koma.audient.setting;
 
-import com.koma.audient.model.entities.MusicFileItem;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import dagger.Module;
+import dagger.Provides;
 
-public interface AuditionContract {
-    interface View extends BaseView<Presenter> {
-        void onLoadAlbumUrlFinished(String url);
+@Module
+public class SettingsPresenterModule {
+    private final SettingsContract.View mView;
+
+    public SettingsPresenterModule(SettingsContract.View view) {
+        mView = view;
     }
 
-    interface Presenter extends BasePresenter {
-        void loadAlbumUrl(MusicFileItem musicFileItem);
-
-        void doPauseOrPlay();
+    @Provides
+    public SettingsContract.View provideSettingsContractView() {
+        return mView;
     }
 }

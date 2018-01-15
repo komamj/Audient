@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.search;
+package com.koma.audient.nowplaying;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.search.SearchActivity;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.ActivityUtils;
 import com.koma.common.util.LogUtils;
@@ -30,16 +32,14 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SearchActivity extends BaseActivity {
-    private static final String TAG = SearchActivity.class.getSimpleName();
+public class NowPlayingActivity extends BaseActivity {
+    private static final String TAG = NowPlayingActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.search_view)
-    SearchView mSearchView;
 
     @Inject
-    SearchPresenter mPresenter;
+    NowPlayingPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
@@ -57,75 +58,29 @@ public class SearchActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
+        NowPlayingFragment nowPlayingFragment = (NowPlayingFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
 
-        if (searchFragment == null) {
-            searchFragment = SearchFragment.newInstance();
+        if (nowPlayingFragment == null) {
+            nowPlayingFragment = NowPlayingFragment.newInstance();
 
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), searchFragment,
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), nowPlayingFragment,
                     R.id.content_main);
         }
 
-        DaggerSearchComponent.builder()
+        DaggerNowPlayingComponent.builder()
                 .audientRepositoryComponent(
                         ((AudientApplication) getApplication()).getRepositoryComponent())
-                .searchPresenterModule(new SearchPresenterModule(searchFragment))
+                .nowPlayingPresenterModule(new NowPlayingPresenterModule(nowPlayingFragment))
                 .build()
                 .inject(this);
-
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                mSearchView.clearFocus();
-                mPresenter.loadSearchResults(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        LogUtils.i(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        LogUtils.i(TAG, "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        LogUtils.i(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        LogUtils.i(TAG, "onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        LogUtils.i(TAG, "onDestroy");
-
-        if (mPresenter != null) {
-            mPresenter.unSubscribe();
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -136,7 +91,10 @@ public class SearchActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        } else if (id == android.R.id.home) {
             finish();
         }
 
@@ -145,6 +103,6 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_search;
+        return R.layout.activity_base;
     }
 }

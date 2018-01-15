@@ -32,9 +32,9 @@
         <activity
             android:name=".login.LoginActivity"
             android:exported="false"
-            android:label="@string/label_login"
+            android:label="@string/login_label"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".main.MainActivity"
@@ -45,6 +45,12 @@
 
         <activity
             android:name=".search.SearchActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".nowplaying.NowPlayingActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

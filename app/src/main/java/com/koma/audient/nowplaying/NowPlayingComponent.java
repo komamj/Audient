@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.play;
+package com.koma.audient.nowplaying;
 
 import com.koma.audient.model.AudientRepositoryComponent;
 import com.koma.common.util.ActivityScoped;
@@ -22,7 +22,7 @@ import dagger.Component;
 
 @ActivityScoped
 @Component(dependencies = AudientRepositoryComponent.class,
-        modules = PlayPresenterModule.class)
-public interface PlayComponent {
-
+        modules = NowPlayingPresenterModule.class)
+public interface NowPlayingComponent {
+    void inject(NowPlayingActivity activity);
 }

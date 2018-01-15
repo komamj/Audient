@@ -27,23 +27,29 @@ import com.koma.common.base.BaseFragment;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by koma on 1/3/18.
- */
-
 public class LoginFragment extends BaseFragment implements LoginContract.View {
     @BindView(R.id.user_name)
     EditText mUserName;
     @BindView(R.id.password)
     EditText mPassword;
 
+    @OnClick(R.id.tv_forgot_password)
+    void processForgotPassword() {
+    }
+
+    @OnClick(R.id.tv_skip)
+    void processSkip() {
+        launchMainUI();
+    }
+
+    @OnClick(R.id.tv_forgot_password)
+    void findPasssword() {
+        launchMainUI();
+    }
+
     @OnClick(R.id.submit)
     void doLogin() {
-        Intent intent = new Intent(mContext, MainActivity.class);
-        startActivity(intent);
-        ((LoginActivity) mContext).overridePendingTransition(android.R.anim.fade_in,
-                android.R.anim.fade_out);
-        ((LoginActivity) mContext).finish();
+        launchMainUI();
     }
 
     private LoginContract.Presenter mPresenter;
@@ -53,6 +59,13 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
+    }
+
+    private void launchMainUI() {
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        ((LoginActivity) mContext).finish();
     }
 
     @Override

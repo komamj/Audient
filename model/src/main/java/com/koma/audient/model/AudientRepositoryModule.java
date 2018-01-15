@@ -37,6 +37,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -95,6 +96,7 @@ public class AudientRepositoryModule {
     @Provides
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY);
         return gsonBuilder.create();
     }
@@ -102,7 +104,15 @@ public class AudientRepositoryModule {
     @Singleton
     @Provides
     OkHttpClient provideOkHttpClient(Cache cache) {
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+        if (BuildConfig.DEBUG) {
+            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            logInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        }
+
         return new OkHttpClient.Builder()
+                .addInterceptor(logInterceptor)
                 .cache(cache)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)

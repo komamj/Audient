@@ -86,4 +86,9 @@ public class AuditionPresenter implements AuditionContract.Presenter {
                 });
         mDisposables.add(disposable);
     }
+
+    @Override
+    public void doPauseOrPlay() {
+
+    }
 }

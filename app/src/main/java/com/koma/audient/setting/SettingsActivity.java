@@ -13,56 +13,72 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.login;
+package com.koma.audient.setting;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.common.base.BaseActivity;
-import com.koma.common.util.ActivityUtils;
+import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class LoginActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity {
+    private static final String TAG = SettingsActivity.class.getSimpleName();
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Inject
-    LoginPresenter mPresenter;
+    SettingsPresenter mPresenter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setSupportActionBar(mToolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        }
     }
 
     @Override
     protected void onPermissonGranted() {
-        LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
+        SettingsFragment fragment = (SettingsFragment) getFragmentManager()
                 .findFragmentById(R.id.content_main);
+        if (fragment == null) {
+            fragment = SettingsFragment.newInstance();
 
-        if (loginFragment == null) {
-            loginFragment = LoginFragment.newInstance();
-
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), loginFragment,
-                    R.id.content_main);
+            getFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
         }
 
-        DaggerLoginComponent.builder().audientRepositoryComponent(
-                ((AudientApplication) getApplication()).getRepositoryComponent())
-                .loginPresenterModule(new LoginPresenterModule(loginFragment))
-                .build();
+        DaggerSettingsComponent.builder()
+                .audientRepositoryComponent(
+                        ((AudientApplication) getApplication()).getRepositoryComponent())
+                .settingsPresenterModule(new SettingsPresenterModule(fragment))
+                .build()
+                .inject(this);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_base;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LogUtils.i(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LogUtils.i(TAG, "onPause");
     }
 
     @Override
@@ -74,14 +90,9 @@ public class LoginActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
-            finish();
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_base;
     }
 }

@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.play;
+package com.koma.audient.setting;
 
-import android.support.annotation.NonNull;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.FragmentScoped;
 
-import dagger.Module;
-import dagger.Provides;
+import dagger.Component;
 
-@Module
-public class PlayPresenterModule {
-    private final PlayContract.View mView;
-
-    public PlayPresenterModule(@NonNull PlayContract.View view) {
-        mView = view;
-    }
-
-    @Provides
-    PlayContract.View providePlayContractView() {
-        return mView;
-    }
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = SettingsPresenterModule.class)
+public interface SettingsComponent {
+    void inject(SettingsActivity activity);
 }

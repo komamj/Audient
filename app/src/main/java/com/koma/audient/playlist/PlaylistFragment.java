@@ -13,50 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.search;
+package com.koma.audient.playlist;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.nowplaying.NowPlayingActivity;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
 
-import java.util.List;
+import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class SearchFragment extends BaseFragment implements SearchContract.View {
-    private static final String TAG = SearchFragment.class.getSimpleName();
+public class PlaylistFragment extends BaseFragment implements PlaylistContract.View {
+    private static final String TAG = PlaylistFragment.class.getSimpleName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
     ContentLoadingProgressBar mProgressBar;
 
-    private SearchAdapter mAdapter;
-
-    private SearchContract.Presenter mPresenter;
-
-    public SearchFragment() {
+    @OnClick(R.id.fab)
+    void launchNowPlayingUI() {
+        Intent intent = new Intent(mContext, NowPlayingActivity.class);
+        startActivity(intent);
     }
 
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
+    private PlaylistAdapter mAdapter;
+
+    @Inject
+    PlaylistPresenter mPresenter;
+
+    public PlaylistFragment() {
+    }
+
+    public static PlaylistFragment newInstance() {
+        PlaylistFragment fragment = new PlaylistFragment();
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        LogUtils.i(TAG, "onAttach");
     }
 
     @Override
@@ -64,17 +66,22 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
+
+        DaggerPlatlistComponent.builder()
+                .audientRepositoryComponent(
+                        (((AudientApplication) getActivity().getApplication()).getRepositoryComponent()))
+                .playlistPresenterModule(new PlaylistPresenterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LogUtils.i(TAG, "onViewCreated");
+        showProgressBar(true);
 
-        showProgressBar(false);
-
-        mAdapter = new SearchAdapter(mContext);
+        mAdapter = new PlaylistAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -85,20 +92,25 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
 
-        LogUtils.i(TAG, "onActivityCreated");
+        LogUtils.i(TAG, "onResume");
+
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_search;
-    }
+    public void onPause() {
+        super.onPause();
 
-    @Override
-    public void setPresenter(SearchContract.Presenter presenter) {
-        mPresenter = presenter;
+        LogUtils.i(TAG, "onPause");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
     }
 
     @Override
@@ -122,9 +134,12 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
-    public void showMusicFileItems(List<MusicFileItem> musicFileItems) {
-        LogUtils.i(TAG, "showMusicFileItems count:" + musicFileItems.size());
+    public int getLayoutId() {
+        return R.layout.fragment_playlist;
+    }
 
-        mAdapter.updateData(musicFileItems);
+    @Override
+    public void setPresenter(PlaylistContract.Presenter presenter) {
+
     }
 }

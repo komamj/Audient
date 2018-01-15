@@ -2,17 +2,23 @@
     <string name="app_name">Audient</string>
 
     <!--drawer-->
-    <string name="nav_exit">Exit</string>
+    <string name="nav_playlist">Playlist</string>
+    <string name="nav_recommend">Recommend</string>
+    <string name="nav_user">Account</string>
+    <string name="more">More</string>
+    <string name="nav_setting">Settings</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_send">Send</string>
 
     <!--splash-->
     <string name="splash_description">"CopyRight@2017"</string>
 
     <!--login-->
-    <string name="label_login">Login</string>
-    <string name="login_account">To login</string>
-    <string name="login_code">Verification code login</string>
+    <string name="login_label">Login</string>
+    <string name="login_title">Login with phone number</string>
     <string name="forget_password">Forget password?</string>
-    <string name="hint_user_name">Please input phone number or user name</string>
+    <string name="skip">Skip</string>
+    <string name="hint_user_name">Please input phone number</string>
     <string name="hint_password">Please input password</string>
     <string name="submit">Enter</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -21,12 +27,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
-
-    <!--main-->
-    <string-array name="page_title">
-        <item>Account</item>
-        <item>Find</item>
-        <item>Playlist</item>
-    </string-array>
 
 </resources>

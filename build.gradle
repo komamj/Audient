@@ -47,6 +47,7 @@ ext {
     constraint_version = '1.0.2'
     dagger_version = '2.11'
     support_version = '27.0.2'
+    slidinguppanel_version='3.4.0'
     glide_version = '4.5.0'
     rxjava_version = '2.1.8'
     gson_version='2.8.2'

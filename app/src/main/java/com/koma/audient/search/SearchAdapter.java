@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
@@ -84,6 +85,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     }
 
     class SearchViewHolder extends BaseViewHolder implements View.OnClickListener {
+        @BindView(R.id.iv_album)
+        ImageView mAlbum;
         @BindView(R.id.tv_music_name)
         TextView mMusicName;
         @BindView(R.id.tv_actor_name)
