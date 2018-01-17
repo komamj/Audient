@@ -75,6 +75,7 @@ public class SearchActivity extends BaseActivity {
                 .inject(this);
 
         mSearchView.onActionViewExpanded();
+        mSearchView.setIconifiedByDefault(true);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
