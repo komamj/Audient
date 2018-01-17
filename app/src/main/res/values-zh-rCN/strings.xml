@@ -16,7 +16,6 @@
     <!--login-->
     <string name="login_label">"登录"</string>
     <string name="login_title">"使用手机号码登录"</string>
-    <string name="login_code">"验证码登录"</string>
     <string name="forget_password">"忘记密码?"</string>
     <string name="skip">"跳过"</string>
     <string name="hint_user_name">"请输入手机号码"</string>
@@ -28,5 +27,12 @@
     <string name="navigation_drawer_close">"关闭导航栏"</string>
     <string name="action_search">"搜索"</string>
     <string name="action_settings">"设置"</string>
+
+    <!--TabLayout-->
+    <string-array name="page_title">
+        <item>"我的"</item>
+        <item>"播放列表"</item>
+        <item>"发现"</item>
+    </string-array>
 
 </resources>

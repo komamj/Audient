@@ -16,7 +16,6 @@
 package com.koma.audient.model.source.remote;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
 
 import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Album;
@@ -54,13 +53,16 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
+    public Flowable<List<Audient>> getAudients() {
+        return null;
+    }
+
+    @Override
     public Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists() {
         return mAudientApi.getTopLists(Constants.APP_ID, Constants.ACCESS_TOKEN, getTimeStamp())
                 .map(new Function<TopList, List<TopList.BillboardListResponse.Billboard>>() {
                     @Override
                     public List<TopList.BillboardListResponse.Billboard> apply(TopList topList) throws Exception {
-                        LogUtils.i(TAG, "getTopLists topList :" + topList.resultMessage + "," + topList.resultCode);
-
                         return topList.billboardListResponse.billboardList.billboards;
                     }
                 });

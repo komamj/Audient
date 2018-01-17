@@ -28,4 +28,11 @@
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
 
+    <!--TabLayout-->
+    <string-array name="page_title">
+        <item>Me</item>
+        <item>Playlist</item>
+        <item>Find</item>
+    </string-array>
+
 </resources>

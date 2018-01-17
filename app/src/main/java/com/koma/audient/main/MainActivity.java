@@ -17,8 +17,14 @@ package com.koma.audient.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -32,10 +38,14 @@ import com.koma.audient.search.SearchActivity;
 import com.koma.audient.toplist.TopListFragment;
 import com.koma.audient.user.UserFragment;
 import com.koma.common.base.BaseActivity;
-import com.koma.common.util.ActivityUtils;
+import com.koma.common.util.LogUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindArray;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainContract.View,
@@ -44,6 +54,12 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
+    @BindArray(R.array.page_title)
+    String[] mPageTitles;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
@@ -55,6 +71,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LogUtils.i(TAG, "onCreate");
     }
 
     @Override
@@ -75,7 +93,17 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                 .build()
                 .inject(this);
 
-        showPlaylistUI();
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(UserFragment.newInstance());
+        fragments.add(PlaylistFragment.newInstance());
+        fragments.add(TopListFragment.newInstance());
+
+        AudientAdapter audientAdapter = new AudientAdapter(getSupportFragmentManager(),
+                fragments, mPageTitles);
+        mViewPager.setAdapter(audientAdapter);
+        mViewPager.setCurrentItem(1);
+        mViewPager.setOffscreenPageLimit(2);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -122,11 +150,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         int id = item.getItemId();
 
         if (id == R.id.nav_playlist) {
-            showPlaylistUI();
         } else if (id == R.id.nav_recommend) {
-            showRecommendUI();
         } else if (id == R.id.nav_user) {
-            showUserUI();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -142,41 +167,34 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     }
 
-    @Override
-    public void showPlaylistUI() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.nav_playlist);
+    static class AudientAdapter extends FragmentPagerAdapter {
+        private static final int TAB_COUNT = 3;
+
+        private List<Fragment> mFragments;
+
+        private String[] mTitles;
+
+        public AudientAdapter(FragmentManager fm, List<Fragment> fragments, String[] titles) {
+            super(fm);
+
+            mFragments = fragments;
+
+            mTitles = titles;
         }
 
-        mNavigationView.setCheckedItem(R.id.nav_playlist);
-
-        PlaylistFragment playlistFragment = PlaylistFragment.newInstance();
-
-        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), playlistFragment,
-                R.id.content_main);
-    }
-
-    @Override
-    public void showRecommendUI() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.nav_recommend);
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
         }
 
-        TopListFragment topListFragment = TopListFragment.newInstance();
-
-        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), topListFragment,
-                R.id.content_main);
-    }
-
-    @Override
-    public void showUserUI() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.nav_user);
+        @Nullable
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
         }
 
-        UserFragment userFragment = UserFragment.newInstance();
-
-        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), userFragment,
-                R.id.content_main);
+        @Override
+        public int getCount() {
+            return TAB_COUNT;
+        }
     }
 }

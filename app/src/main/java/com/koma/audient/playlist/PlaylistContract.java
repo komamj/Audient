@@ -15,19 +15,26 @@
  */
 package com.koma.audient.playlist;
 
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
+import java.util.List;
+
 public interface PlaylistContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
         void showLoadingError();
 
         void showEmpty(boolean forceShow);
 
         void showProgressBar(boolean forceShow);
+
+        void showAudients(List<Audient> audients);
     }
 
     interface Presenter extends BasePresenter {
-
+        void loadAudients();
     }
 }

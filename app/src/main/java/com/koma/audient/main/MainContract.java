@@ -20,11 +20,6 @@ import com.koma.common.base.BaseView;
 
 public interface MainContract {
     interface View extends BaseView<Presenter> {
-        void showPlaylistUI();
-
-        void showRecommendUI();
-
-        void showUserUI();
     }
 
     interface Presenter extends BasePresenter {

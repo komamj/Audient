@@ -16,6 +16,9 @@
 package com.koma.audient.search;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +29,8 @@ import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.dialog.audition.AuditionDialogFragment;
+import com.koma.audient.helper.GlideApp;
+import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BaseViewHolder;
 import com.koma.common.util.Constants;
@@ -43,8 +48,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     private final Context mContext;
 
+    private final GlideRequest<Drawable> mGlideRequest;
+
     public SearchAdapter(Context context) {
         mContext = context;
+
+        mGlideRequest = GlideApp.with(mContext)
+                .asDrawable()
+                .placeholder(new ColorDrawable(Color.GRAY));
     }
 
     public void updateData(List<MusicFileItem> data) {

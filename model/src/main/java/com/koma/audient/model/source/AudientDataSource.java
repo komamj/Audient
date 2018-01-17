@@ -18,6 +18,7 @@ package com.koma.audient.model.source;
 import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.TopList;
@@ -27,6 +28,8 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 public interface AudientDataSource {
+    Flowable<List<Audient>> getAudients();
+
     Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists();
 
     Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page);

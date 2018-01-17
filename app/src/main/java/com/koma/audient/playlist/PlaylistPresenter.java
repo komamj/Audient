@@ -16,11 +16,18 @@
 package com.koma.audient.playlist;
 
 import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class PlaylistPresenter implements PlaylistContract.Presenter {
     public static final String TAG = PlaylistPresenter.class.getSimpleName();
@@ -48,6 +55,8 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
+
+        loadAudients();
     }
 
     @Override
@@ -55,5 +64,33 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
         LogUtils.i(TAG, "unSubscribe");
 
         mDisposables.clear();
+    }
+
+    @Override
+    public void loadAudients() {
+        Disposable disposable = mRepository.getAudients()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
+                    @Override
+                    public void onNext(List<Audient> audients) {
+                        if (mView.isActive()) {
+                            mView.showProgressBar(false);
+
+                            mView.showAudients(audients);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposables.add(disposable);
     }
 }

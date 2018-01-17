@@ -18,16 +18,20 @@ package com.koma.audient.playlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.nowplaying.NowPlayingActivity;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,6 +45,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
     ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @OnClick(R.id.fab)
     void launchNowPlayingUI() {
@@ -79,7 +85,14 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        showProgressBar(true);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadAudients();
+                }
+            }
+        });
 
         mAdapter = new PlaylistAdapter(mContext);
 
@@ -114,6 +127,11 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
     public void showLoadingError() {
         LogUtils.i(TAG, "showLoadingError");
     }
@@ -131,6 +149,13 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         } else {
             mProgressBar.hide();
         }
+    }
+
+    @Override
+    public void showAudients(List<Audient> audients) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
+        mAdapter.replace(audients);
     }
 
     @Override

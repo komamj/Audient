@@ -74,6 +74,8 @@ public class SearchActivity extends BaseActivity {
                 .build()
                 .inject(this);
 
+        mSearchView.onActionViewExpanded();
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

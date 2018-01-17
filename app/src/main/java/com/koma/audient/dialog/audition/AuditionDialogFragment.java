@@ -143,6 +143,8 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
     @Override
     public void onLoadAlbumUrlFinished(String url) {
+        LogUtils.i(TAG, "url  :" + url);
+
         GlideApp.with(this).load(url).into(mAlbum);
     }
 }

@@ -63,22 +63,31 @@
 
     <TextView
         android:id="@+id/tv_favorite"
-        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         android:text="我的收藏："
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_favorite" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_favorite">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/progress_bar"
@@ -88,6 +97,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_favorite" />
+        app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout" />
 
 </android.support.constraint.ConstraintLayout>

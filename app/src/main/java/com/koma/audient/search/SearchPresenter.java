@@ -71,7 +71,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             mView.showProgressBar(true);
         }
 
-        mRepository.getSearchReults(keyword, "4", 10, 1)
+        mRepository.getSearchReults(keyword, "4", 100, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<MusicFileItem>>() {

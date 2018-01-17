@@ -15,18 +15,21 @@
  */
 package com.koma.audient;
 
+import android.app.Application;
+import android.os.StrictMode;
+
+import com.bumptech.glide.Glide;
 import com.koma.audient.model.ApplicationModule;
 import com.koma.audient.model.AudientRepositoryComponent;
 import com.koma.audient.model.AudientRepositoryModule;
 import com.koma.audient.model.DaggerAudientRepositoryComponent;
-import com.koma.common.base.BaseApplication;
 import com.koma.common.util.Constants;
+import com.koma.common.util.LogUtils;
+import com.squareup.leakcanary.LeakCanary;
 
-/**
- * Created by koma on 1/3/18.
- */
+public class AudientApplication extends Application {
+    private static final String TAG = AudientApplication.class.getSimpleName();
 
-public class AudientApplication extends BaseApplication {
     private AudientRepositoryComponent mRepositoryComponent;
 
     @Override
@@ -37,9 +40,54 @@ public class AudientApplication extends BaseApplication {
                 .applicationModule(new ApplicationModule(this))
                 .audientRepositoryModule(new AudientRepositoryModule(Constants.AUDIENT_HOST))
                 .build();
+
+        enableStrictMode();
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+
+        LeakCanary.install(this);
     }
 
     public AudientRepositoryComponent getRepositoryComponent() {
         return mRepositoryComponent;
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+        LogUtils.e(TAG, "onLowMemory");
+
+        //clear cache
+        Glide.get(this).clearMemory();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+
+        LogUtils.i(TAG, "onTrimMemory level : " + level);
+
+        if (level == TRIM_MEMORY_UI_HIDDEN) {
+            Glide.get(this).clearMemory();
+        }
+
+        Glide.get(this).trimMemory(level);
+    }
+
+    private void enableStrictMode() {
+        final StrictMode.ThreadPolicy.Builder threadPolicyBuilder =
+                new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog();
+
+        final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
+                .detectAll().penaltyLog();
+
+        threadPolicyBuilder.penaltyFlashScreen();
+        StrictMode.setThreadPolicy(threadPolicyBuilder.build());
+        StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
 }
