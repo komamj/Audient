@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.user;
+package com.koma.audient.account;
 
 import com.koma.audient.R;
-import com.koma.common.base.BaseFragment;
+import com.koma.common.base.BaseActivity;
+import com.koma.common.util.Constants;
 
-/**
- * Created by koma on 1/8/18.
- */
+public class AccountActivity extends BaseActivity {
+    private static final String TAG = AccountActivity.class.getSimpleName();
 
-public class UserFragment extends BaseFragment {
-    private static final String TAG = UserFragment.class.getSimpleName();
+    private long mId;
 
-    public UserFragment() {
-    }
+    AccountPresenter mPresenter;
 
-    public static UserFragment newInstance() {
-        UserFragment fragment = new UserFragment();
-        return fragment;
+    @Override
+    protected void onPermissonGranted() {
+        mId = getIntent().getLongExtra(Constants.ID, -1);
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_user;
+    protected int getLayoutId() {
+        return R.layout.activity_account;
     }
 }

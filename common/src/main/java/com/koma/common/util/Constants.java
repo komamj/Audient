@@ -31,6 +31,9 @@ public final class Constants {
     public static final String RESPONSE_RES_CODE = "res_code";
     public static final String RESPONSE_RES_MESSAGE = "res_message";
 
+    // comment
+    public static final String ID = "id";
+
     private Constants() {
     }
 }

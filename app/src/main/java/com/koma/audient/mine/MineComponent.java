@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.dialog.audition;
+package com.koma.audient.mine;
 
-import dagger.Module;
-import dagger.Provides;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.ActivityScoped;
 
-@Module
-public class AuditionPresenterModule {
-    private final AuditionContract.View mView;
+import dagger.Component;
 
-    public AuditionPresenterModule(AuditionContract.View view) {
-        mView = view;
-    }
+@ActivityScoped
+@Component(dependencies = AudientRepositoryComponent.class,
+        modules = MinePresenterModule.class)
+public interface MineComponent {
 
-    @Provides
-    AuditionContract.View provideAuditionContractView() {
-        return this.mView;
-    }
 }

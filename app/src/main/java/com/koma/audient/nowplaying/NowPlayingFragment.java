@@ -15,13 +15,16 @@
  */
 package com.koma.audient.nowplaying;
 
+import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koma.audient.R;
+import com.koma.audient.comment.CommentActivity;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BaseFragment;
+import com.koma.common.util.Constants;
 
 import java.util.List;
 
@@ -56,6 +59,9 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @OnClick(R.id.iv_comment)
     void processComment() {
+        Intent intent = new Intent(mContext, CommentActivity.class);
+        intent.putExtra(Constants.ID, -1);
+        startActivity(intent);
     }
 
     private NowPlayingContract.Presenter mPresenter;

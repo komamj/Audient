@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.dialog.audition;
+package com.koma.audient.mine;
 
-import com.koma.audient.model.entities.MusicFileItem;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import android.support.annotation.NonNull;
 
-public interface AuditionContract {
-    interface View extends BaseView<Presenter> {
-        void onLoadAlbumUrlFinished(String url);
+import dagger.Module;
+import dagger.Provides;
+
+@Module
+public class MinePresenterModule {
+    private final MineContract.View mView;
+
+    public MinePresenterModule(@NonNull MineContract.View view) {
+        mView = view;
     }
 
-    interface Presenter extends BasePresenter {
-        void loadAlbumUrl(MusicFileItem musicFileItem);
-
-        void doPauseOrPlay();
+    @Provides
+    MineContract.View provideUserContractView() {
+        return mView;
     }
 }

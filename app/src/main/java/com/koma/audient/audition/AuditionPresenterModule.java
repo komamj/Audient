@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.user;
-
-import android.support.annotation.NonNull;
+package com.koma.audient.audition;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class UserPresenterModule {
-    private final UserContract.View mView;
+public class AuditionPresenterModule {
+    private final AuditionContract.View mView;
 
-    public UserPresenterModule(@NonNull UserContract.View view) {
+    public AuditionPresenterModule(AuditionContract.View view) {
         mView = view;
     }
 
     @Provides
-    UserContract.View provideUserContractView() {
-        return mView;
+    AuditionContract.View provideAuditionContractView() {
+        return this.mView;
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.user;
+package com.koma.audient.mine;
 
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BasePresenter;
@@ -21,7 +21,7 @@ import com.koma.common.base.BaseView;
 
 import java.util.List;
 
-public interface UserContract {
+public interface MineContract {
     interface View extends BaseView<Presenter> {
         void showLoadingError();
 

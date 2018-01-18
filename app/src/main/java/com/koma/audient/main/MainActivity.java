@@ -36,7 +36,7 @@ import com.koma.audient.R;
 import com.koma.audient.playlist.PlaylistFragment;
 import com.koma.audient.search.SearchActivity;
 import com.koma.audient.toplist.TopListFragment;
-import com.koma.audient.user.UserFragment;
+import com.koma.audient.mine.MineFragment;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.LogUtils;
 
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                 .inject(this);
 
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(UserFragment.newInstance());
+        fragments.add(MineFragment.newInstance());
         fragments.add(PlaylistFragment.newInstance());
         fragments.add(TopListFragment.newInstance());
 

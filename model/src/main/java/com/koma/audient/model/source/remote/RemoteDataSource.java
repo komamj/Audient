@@ -21,6 +21,7 @@ import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.AlbumResult;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.MusicFileItem;
@@ -124,5 +125,10 @@ public class RemoteDataSource implements AudientDataSource {
                         return albumResult.picResponse.album;
                     }
                 });
+    }
+
+    @Override
+    public Flowable<List<Comment>> getComments(long id) {
+        return null;
     }
 }

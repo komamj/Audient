@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.TopList;
@@ -40,4 +41,6 @@ public interface AudientDataSource {
                              String type);
 
     Flowable<Album> getAlbum(MusicFileItem musicFileItem);
+
+    Flowable<List<Comment>> getComments(long id);
 }

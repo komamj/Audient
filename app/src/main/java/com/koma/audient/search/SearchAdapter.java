@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
-import com.koma.audient.dialog.audition.AuditionDialogFragment;
+import com.koma.audient.audition.AuditionDialogFragment;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.MusicFileItem;

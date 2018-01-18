@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.user;
+package com.koma.audient.audition;
 
-import com.koma.audient.model.AudientRepositoryComponent;
-import com.koma.common.util.ActivityScoped;
+import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.common.base.BasePresenter;
+import com.koma.common.base.BaseView;
 
-import dagger.Component;
+public interface AuditionContract {
+    interface View extends BaseView<Presenter> {
+        void onLoadAlbumUrlFinished(String url);
+    }
 
-@ActivityScoped
-@Component(dependencies = AudientRepositoryComponent.class,
-        modules = UserPresenterModule.class)
-public interface UserComponent {
+    interface Presenter extends BasePresenter {
+        void loadAlbumUrl(MusicFileItem musicFileItem);
 
+        void doPauseOrPlay();
+    }
 }

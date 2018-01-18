@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.dialog.audition;
+package com.koma.audient.audition;
 
-import com.koma.audient.model.AudientRepositoryComponent;
-import com.koma.common.util.FragmentScoped;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
-import dagger.Component;
+public class AuditionService extends Service {
+    private static final String TAG = AuditionService.class.getSimpleName();
 
-@FragmentScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = AuditionPresenterModule.class)
-public interface AuditionComponent {
-    void inject(AuditionDialogFragment fragment);
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }

@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.TopList;
@@ -122,6 +123,11 @@ public class LocalDataSource implements AudientDataSource {
 
     @Override
     public Flowable<Album> getAlbum(MusicFileItem musicFileItem) {
+        return null;
+    }
+
+    @Override
+    public Flowable<List<Comment>> getComments(long id) {
         return null;
     }
 }

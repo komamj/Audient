@@ -25,7 +25,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract class BaseAdapter<T, V extends BaseViewHolder> extends RecyclerView.Adapter<V> {
     protected final Context mContext;
 
     @Nullable

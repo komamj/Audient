@@ -13,47 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.user;
+package com.koma.audient.comment;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class UserPresenter implements UserContract.Presenter {
-    public static final String TAG = UserPresenter.class.getSimpleName();
+public class CommentPresenter implements CommentContract.Presenter {
+    private static final String TAG = CommentPresenter.class.getSimpleName();
 
-    private UserContract.View mView;
+    private final CommentContract.View mView;
 
-    private AudientRepository mRepository;
+    private final AudientRepository mRepository;
 
-    private CompositeDisposable mDisposables;
+    private final CompositeDisposable mDisposable;
 
     @Inject
-    public UserPresenter(UserContract.View view, AudientRepository repository) {
+    public CommentPresenter(CommentContract.View view, AudientRepository repository) {
         mView = view;
 
         mRepository = repository;
 
-        mDisposables = new CompositeDisposable();
+        mDisposable = new CompositeDisposable();
     }
 
     @Inject
-    void setUpListener() {
+    void setupListeners() {
         mView.setPresenter(this);
     }
 
     @Override
     public void subscribe() {
-        LogUtils.i(TAG, "subscribe");
+
     }
 
     @Override
     public void unSubscribe() {
-        LogUtils.i(TAG, "unSubscribe");
+        mDisposable.clear();
+    }
 
-        mDisposables.clear();
+    @Override
+    public void loadComments(long id) {
+
     }
 }

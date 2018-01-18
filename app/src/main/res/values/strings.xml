@@ -35,4 +35,8 @@
         <item>Find</item>
     </string-array>
 
+
+    <!--Comment-->
+    <string name="comment_info">The latest comments :</string>
+
 </resources>

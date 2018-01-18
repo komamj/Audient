@@ -4,7 +4,7 @@
     <!--drawer-->
     <string name="nav_playlist">"播放列表"</string>
     <string name="nav_recommend">"发现"</string>
-    <string name="nav_user">"我的"</string>
+    <string name="nav_user">"我的账户"</string>
     <string name="more">"更多"</string>
     <string name="nav_setting">设置</string>
     <string name="nav_share">"分享"</string>
@@ -34,5 +34,8 @@
         <item>"播放列表"</item>
         <item>"发现"</item>
     </string-array>
+
+    <!--Comment-->
+    <string name="comment_info">"最新评论："</string>
 
 </resources>
