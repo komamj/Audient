@@ -18,7 +18,7 @@ package com.koma.common.util;
 public final class Constants {
     public static final String APP_ID = "207777070000267100";
     public static final String ACCESS_TOKEN = "62e5580162f425c664d0aa45e38143221515391745219";
-    public static final String AUDIENT_HOST = "http://api.189.cn/v2/music/openapi/services/v2/";
+    public static final String AUDIENT_HOST = "http://101.132.122.196:8080/api/vi/openmusic/";
 
     // album format
     public static final String ALBUM_FORMAT = "jpg";
