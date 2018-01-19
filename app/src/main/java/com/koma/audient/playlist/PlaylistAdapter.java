@@ -15,16 +15,10 @@
  */
 package com.koma.audient.playlist;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,23 +28,18 @@ import android.widget.TextView;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.AudientTest;
+import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
-
-import java.util.List;
 
 import butterknife.BindView;
 
-public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
-    private final Context mContext;
+public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.PlaylistViewHolder> {
 
     private final GlideRequest<Drawable> mGlideRequest;
 
-    private List<AudientTest> mData;
-
     public PlaylistAdapter(Context context) {
-        mContext = context;
+        super(context);
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
@@ -58,66 +47,19 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
-    @SuppressLint("StaticFieldLeak")
-    @MainThread
-    public void replace(final List<AudientTest> update) {
-        if (mData == null) {
-            if (update == null) {
-                return;
-            }
-            mData = update;
-            notifyItemRangeInserted(0, update.size());
-        } else if (update == null) {
-            int oldSize = mData.size();
-            mData = null;
-            notifyItemRangeRemoved(0, oldSize);
-        } else {
-            final List<AudientTest> oldItems = mData;
-            new AsyncTask<Void, Void, DiffUtil.DiffResult>() {
-                @Override
-                protected DiffUtil.DiffResult doInBackground(Void... voids) {
-                    return DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                        @Override
-                        public int getOldListSize() {
-                            return oldItems.size();
-                        }
+    @Override
+    protected boolean areItemsTheSame(AudientTest oldItem, AudientTest newItem) {
+        return oldItem.equals(newItem);
+    }
 
-                        @Override
-                        public int getNewListSize() {
-                            return update.size();
-                        }
+    @Override
+    protected boolean areContentsTheSame(AudientTest oldItem, AudientTest newItem) {
+        return false;
+    }
 
-                        @Override
-                        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                            AudientTest oldItem = oldItems.get(oldItemPosition);
-                            AudientTest newItem = update.get(newItemPosition);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                            AudientTest oldItem = oldItems.get(oldItemPosition);
-                            AudientTest newItem = update.get(newItemPosition);
-                            return false;
-                        }
-
-                        @Nullable
-                        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                            AudientTest oldItem = oldItems.get(oldItemPosition);
-                            AudientTest newItem = update.get(newItemPosition);
-                            return false;
-                        }
-                    });
-                }
-
-                @Override
-                protected void onPostExecute(DiffUtil.DiffResult diffResult) {
-                    mData = update;
-                    diffResult.dispatchUpdatesTo(PlaylistAdapter.this);
-
-                }
-            }.execute();
-        }
+    @Override
+    protected Object getChangePayload(AudientTest oldItem, AudientTest newItem) {
+        return null;
     }
 
     @Override
@@ -137,11 +79,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         } else {
             holder.mEqualizer.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mData == null ? 0 : mData.size();
     }
 
     static class PlaylistViewHolder extends BaseViewHolder {

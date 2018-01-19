@@ -65,7 +65,7 @@ public class AudientDataFetcher implements DataFetcher<InputStream>, okhttp3.Cal
     @Override
     public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
         LogUtils.i(TAG, "loadData :" + audient.mid);
-        mAudientApi.getAlbum(audient.mid)
+        mAudientApi.getAlbum(audient.album.albumId)
                 .subscribeWith(new DisposableSubscriber<AlbumResult>() {
                     @Override
                     public void onNext(AlbumResult albumResult) {

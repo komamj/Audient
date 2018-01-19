@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
@@ -45,6 +46,8 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
+                .transition(new DrawableTransitionOptions())
+                .thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 

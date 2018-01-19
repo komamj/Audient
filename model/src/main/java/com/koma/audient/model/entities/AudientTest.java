@@ -15,8 +15,27 @@
  */
 package com.koma.audient.model.entities;
 
+import android.text.TextUtils;
+
 public class AudientTest {
     public String musicName;
     public String actorName;
     public String albumUrl;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AudientTest audientTest = (AudientTest) o;
+
+        return TextUtils.equals(musicName, audientTest.musicName)
+                && TextUtils.equals(actorName, audientTest.actorName)
+                && TextUtils.equals(albumUrl, audientTest.actorName);
+    }
 }

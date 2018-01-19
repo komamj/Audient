@@ -48,5 +48,12 @@ public class AudientGlideModule extends AppGlideModule {
     public void registerComponents(@NonNull Context context, @NonNull Glide glide,
                                    @NonNull Registry registry) {
         registry.prepend(Audient.class, InputStream.class, new AudientFactory());
+        registry.prepend(Audient.class, InputStream.class, new AudientUrlLoader.Factory());
+    }
+
+    // Disable manifest parsing to avoid adding similar modules twice.
+    @Override
+    public boolean isManifestParsingEnabled() {
+        return false;
     }
 }

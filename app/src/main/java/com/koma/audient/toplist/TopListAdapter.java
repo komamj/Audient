@@ -49,12 +49,12 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
 
     @Override
     protected boolean areItemsTheSame(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
-        return false;
+        return oldItem.topId == newItem.topId;
     }
 
     @Override
     protected boolean areContentsTheSame(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
-        return false;
+        return oldItem.equals(newItem);
     }
 
     @Override
