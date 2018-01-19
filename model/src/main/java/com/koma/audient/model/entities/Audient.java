@@ -17,54 +17,80 @@ package com.koma.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 @Entity(tableName = "audient")
-public class Audient implements Parcelable {
+public class Audient {
+    @Ignore
+    @SerializedName("album")
+    public Album album;
+    @NonNull
+    @SerializedName("mid")
     @PrimaryKey
-    @ColumnInfo(name = "content_id")
-    public long contentId;
-    @ColumnInfo(name = "music_name")
+    @ColumnInfo(name = "mid")
+    public String mid;
+    @SerializedName("name")
     public String musicName;
-    @ColumnInfo(name = "actor_name")
-    public String actorName;
-    @ColumnInfo(name = "albumUrl")
-    public String albumUrl;
+    @SerializedName("interval")
+    public long duration;
+    @Ignore
+    @SerializedName("singer")
+    public List<Singer> singer;
 
     public Audient() {
     }
 
-    protected Audient(Parcel in) {
-        contentId = in.readLong();
-        musicName = in.readString();
-        actorName = in.readString();
-        albumUrl = in.readString();
-    }
+    public static class Album {
+        @SerializedName("mid")
+        public String albumId;
 
-    public static final Creator<Audient> CREATOR = new Creator<Audient>() {
-        @Override
-        public Audient createFromParcel(Parcel in) {
-            return new Audient(in);
+        public void setAlbumId(String albumId) {
+            this.albumId = albumId;
         }
 
-        @Override
-        public Audient[] newArray(int size) {
-            return new Audient[size];
+        public String getAlbumId() {
+            return this.albumId;
         }
-    };
+    }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public static class Singer {
+        @SerializedName("name")
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(contentId);
-        parcel.writeString(musicName);
-        parcel.writeString(actorName);
-        parcel.writeString(albumUrl);
+    public String toString() {
+        return "Audient with mid " + mid + ",musicName " + musicName + ",singerName "
+                + singer.get(0).name + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Audient audient = (Audient) o;
+
+        return this.mid.equals(audient.mid) && TextUtils.equals(musicName, audient.musicName);
     }
 }

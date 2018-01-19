@@ -20,11 +20,12 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.source.AudientDataSource;
 
 import java.util.ArrayList;
@@ -59,50 +60,50 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<Audient>> getAudients() {
-        return Flowable.create(new FlowableOnSubscribe<List<Audient>>() {
+    public Flowable<List<AudientTest>> getAudientTests() {
+        return Flowable.create(new FlowableOnSubscribe<List<AudientTest>>() {
             @Override
-            public void subscribe(FlowableEmitter<List<Audient>> emitter) throws Exception {
-                List<Audient> audients = new ArrayList<>();
-                Audient audient1 = new Audient();
+            public void subscribe(FlowableEmitter<List<AudientTest>> emitter) throws Exception {
+                List<AudientTest> audientTests = new ArrayList<>();
+                AudientTest audient1 = new AudientTest();
                 audient1.actorName = "周华健";
                 audient1.musicName = "海阔天空";
                 audient1.albumUrl = "http://4galbum.ctmus.cn/scale/album/a/89/big_ma_3a89_100001059323.jpg?param=200y200";
-                audients.add(audient1);
-                Audient audient2 = new Audient();
+                audientTests.add(audient1);
+                AudientTest audient2 = new AudientTest();
                 audient2.actorName = "beyond";
                 audient2.musicName = "光辉岁月";
                 audient2.albumUrl = "http://4galbum.ctmus.cn/scale/album/f/38/big_ma_3f38_100001026441.jpg?param=200y200";
-                audients.add(audient2);
-                Audient audient3 = new Audient();
+                audientTests.add(audient2);
+                AudientTest audient3 = new AudientTest();
                 audient3.actorName = "谢霆锋";
                 audient3.musicName = "不可一世(Live 2000年12月版)";
                 audient3.albumUrl = "http://4galbum.ctmus.cn/scale/singer/0/78/big_ms_f078_100034494495.jpg?param=200y200";
-                audients.add(audient3);
-                Audient audient4 = new Audient();
+                audientTests.add(audient3);
+                AudientTest audient4 = new AudientTest();
                 audient4.actorName = "邓紫棋";
                 audient4.musicName = "喜欢你";
                 audient4.albumUrl = "http://4galbum.ctmus.cn/scale/singer/e/02/7220fc92-790d-4c93-9813-ac1c5e93584d.jpg?param=200y200";
-                audients.add(audient4);
-                Audient audient5 = new Audient();
+                audientTests.add(audient4);
+                AudientTest audient5 = new AudientTest();
                 audient5.actorName = "beyond";
                 audient5.musicName = "再见理想(live)";
                 audient5.albumUrl = "http://4galbum.ctmus.cn/scale/singer/1/d8/be43f7f4-b570-4a6e-a5af-a564c8a5ab5a.jpg?param=200y200";
-                audients.add(audient5);
-                Audient audient6 = new Audient();
+                audientTests.add(audient5);
+                AudientTest audient6 = new AudientTest();
                 audient6.actorName = "谭咏麟";
                 audient6.musicName = "一生中最爱";
                 audient6.albumUrl = "http://4galbum.ctmus.cn/scale/album/7/23/big_ma_5723_100001033202.jpg?param=200y200";
-                audients.add(audient6);
+                audientTests.add(audient6);
 
-                emitter.onNext(audients);
+                emitter.onNext(audientTests);
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
     }
 
     @Override
-    public Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists() {
+    public Flowable<List<TopListResult>> getTopLists() {
         return null;
     }
 
@@ -112,7 +113,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<MusicFileItem>> getSearchReults(String keyword, String musicType, int count, int page) {
+    public Flowable<SearchResult> getSearchReults(String keyword) {
         return null;
     }
 

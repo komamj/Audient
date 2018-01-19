@@ -16,7 +16,7 @@
 package com.koma.audient.toplist;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.TopListResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -69,14 +70,20 @@ public class TopListPresenter implements TopListContract.Presenter {
     @Override
     public void loadTopList() {
         Disposable disposable = mRepository.getTopLists()
+                .map(new Function<List<TopListResult>, List<TopListResult.TopList>>() {
+                    @Override
+                    public List<TopListResult.TopList> apply(List<TopListResult> topListResults) throws Exception {
+                        return topListResults.get(0).topLists;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<TopList.BillboardListResponse.Billboard>>() {
+                .subscribeWith(new DisposableSubscriber<List<TopListResult.TopList>>() {
                     @Override
-                    public void onNext(List<TopList.BillboardListResponse.Billboard> billboards) {
-                       /* for (TopList.Billboard billboard : billboards) {
-                           // LogUtils.i(TAG, "loadTopList billboard :" + billboard.billboardName);
-                        }*/
+                    public void onNext(List<TopListResult.TopList> topLists) {
+                        if (mView != null) {
+                            mView.showTopLists(topLists);
+                        }
                     }
 
                     @Override

@@ -13,24 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist;
+package com.koma.audient.model.entities;
 
-import com.koma.audient.model.entities.TopListResult;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
-
-import java.util.List;
-
-public interface TopListContract {
-    interface View extends BaseView<Presenter> {
-        void showLoadingError();
-
-        void showEmpty(boolean forceShow);
-
-        void showTopLists(List<TopListResult.TopList> topLists);
-    }
-
-    interface Presenter extends BasePresenter {
-        void loadTopList();
-    }
+public class AudientTest {
+    public String musicName;
+    public String actorName;
+    public String albumUrl;
 }

@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.koma.audient.model.source.AudientDataSource;
@@ -96,8 +95,7 @@ public class AudientRepositoryModule {
     @Provides
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY);
+                .setDateFormat("yyyy-MM-dd HH:mm:ss");
         return gsonBuilder.create();
     }
 

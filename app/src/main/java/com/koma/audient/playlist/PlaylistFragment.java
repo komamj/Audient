@@ -26,6 +26,7 @@ import android.view.View;
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.nowplaying.NowPlayingActivity;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
@@ -152,10 +153,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showAudients(List<Audient> audients) {
+    public void showAudients(List<AudientTest> audientTests) {
         mSwipeRefreshLayout.setRefreshing(false);
 
-        mAdapter.replace(audients);
+        mAdapter.replace(audientTests);
     }
 
     @Override

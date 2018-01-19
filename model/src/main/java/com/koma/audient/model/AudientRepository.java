@@ -18,11 +18,12 @@ package com.koma.audient.model;
 import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
 import com.koma.audient.model.source.remote.RemoteDataSource;
@@ -49,12 +50,12 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<Audient>> getAudients() {
-        return mLocalDataSource.getAudients();
+    public Flowable<List<AudientTest>> getAudientTests() {
+        return mLocalDataSource.getAudientTests();
     }
 
     @Override
-    public Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists() {
+    public Flowable<List<TopListResult>> getTopLists() {
         return mRemoteDataSource.getTopLists();
     }
 
@@ -64,9 +65,8 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<MusicFileItem>> getSearchReults(String keyword, String musicType, int count,
-                                                         int page) {
-        return mRemoteDataSource.getSearchReults(keyword, musicType, count, page);
+    public Flowable<SearchResult> getSearchReults(String keyword) {
+        return mRemoteDataSource.getSearchReults(keyword);
     }
 
     @Override

@@ -2,40 +2,34 @@
   "formatVersion": 1,
   "database": {
     "version": 1000,
-    "identityHash": "7aefe113eac4c08a924058e2674c1874",
+    "identityHash": "4c1493fd0cd0a00d827873be2ce2a5a2",
     "entities": [
       {
         "tableName": "audient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` INTEGER NOT NULL, `music_name` TEXT, `actor_name` TEXT, `albumUrl` TEXT, PRIMARY KEY(`content_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mid` TEXT NOT NULL, `musicName` TEXT, `duration` INTEGER NOT NULL, PRIMARY KEY(`mid`))",
         "fields": [
           {
-            "fieldPath": "contentId",
-            "columnName": "content_id",
-            "affinity": "INTEGER",
+            "fieldPath": "mid",
+            "columnName": "mid",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "musicName",
-            "columnName": "music_name",
+            "columnName": "musicName",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "actorName",
-            "columnName": "actor_name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "albumUrl",
-            "columnName": "albumUrl",
-            "affinity": "TEXT",
-            "notNull": false
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "content_id"
+            "mid"
           ],
           "autoGenerate": false
         },
@@ -45,7 +39,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7aefe113eac4c08a924058e2674c1874\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4c1493fd0cd0a00d827873be2ce2a5a2\")"
     ]
   }
 }

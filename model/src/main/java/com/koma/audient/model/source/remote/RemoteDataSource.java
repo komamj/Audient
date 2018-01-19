@@ -20,13 +20,13 @@ import android.support.annotation.NonNull;
 import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.AlbumResult;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.entities.TopSong;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.common.util.Constants;
@@ -54,19 +54,13 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<Audient>> getAudients() {
+    public Flowable<List<AudientTest>> getAudientTests() {
         return null;
     }
 
     @Override
-    public Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists() {
-        return mAudientApi.getTopLists(Constants.APP_ID, Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<TopList, List<TopList.BillboardListResponse.Billboard>>() {
-                    @Override
-                    public List<TopList.BillboardListResponse.Billboard> apply(TopList topList) throws Exception {
-                        return topList.billboardListResponse.billboardList.billboards;
-                    }
-                });
+    public Flowable<List<TopListResult>> getTopLists() {
+        return mAudientApi.getTopLists();
     }
 
     @Override
@@ -88,16 +82,8 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<MusicFileItem>> getSearchReults(String keyword, String musicType, int count,
-                                                         int page) {
-        return mAudientApi.getMusics(keyword, musicType, count, page, Constants.APP_ID,
-                Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<SearchResult, List<MusicFileItem>>() {
-                    @Override
-                    public List<MusicFileItem> apply(SearchResult searchResult) throws Exception {
-                        return searchResult.searchSongDataResponse.musicFielItemLists.musics;
-                    }
-                });
+    public Flowable<SearchResult> getSearchReults(String keyword) {
+        return mAudientApi.getSeachResults(keyword);
     }
 
     @Override
@@ -115,10 +101,8 @@ public class RemoteDataSource implements AudientDataSource {
 
     @Override
     public Flowable<Album> getAlbum(MusicFileItem musicFileItem) {
-        LogUtils.i(TAG, "getAlbum contentId :" + musicFileItem.contentId);
-        return mAudientApi.getAlbum(String.valueOf(musicFileItem.contentId), String.valueOf(5),
-                Constants.ALBUM_FORMAT, musicFileItem.actorName, musicFileItem.musicName,
-                Constants.APP_ID, Constants.ACCESS_TOKEN, getTimeStamp())
+        LogUtils.i(TAG, "getAlbum mid :" + musicFileItem.contentId);
+        return mAudientApi.getAlbum(String.valueOf(musicFileItem.contentId))
                 .map(new Function<AlbumResult, Album>() {
                     @Override
                     public Album apply(AlbumResult albumResult) throws Exception {

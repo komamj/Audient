@@ -19,8 +19,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,53 +26,41 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
-import com.koma.audient.audition.AuditionDialogFragment;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.Audient;
+import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
-import com.koma.common.util.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
+public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchViewHolder> {
     private static final String TAG = SearchAdapter.class.getSimpleName();
-
-    private List<MusicFileItem> mData;
-
-    private final Context mContext;
 
     private final GlideRequest<Drawable> mGlideRequest;
 
     public SearchAdapter(Context context) {
-        mContext = context;
+        super(context);
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
-    public void updateData(List<MusicFileItem> data) {
-        if (mData == null) {
-            mData = new ArrayList<>();
+    @Override
+    protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
+        return false;
+    }
 
-            mData = data;
+    @Override
+    protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
+        return false;
+    }
 
-            int itemCount = mData.size();
-
-            notifyItemRangeInserted(0, itemCount);
-        } else {
-            int positionStart = mData.size();
-            int itemCount = data.size();
-
-            mData.addAll(data);
-
-            notifyItemRangeInserted(positionStart, itemCount);
-        }
+    @Override
+    protected Object getChangePayload(Audient oldItem, Audient newItem) {
+        return null;
     }
 
     @Override
@@ -86,8 +72,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public void onBindViewHolder(SearchViewHolder holder, int position) {
+        mGlideRequest.load(mData.get(position)).into(holder.mAlbum);
+
         holder.mMusicName.setText(mData.get(position).musicName);
-        holder.mActorName.setText(mData.get(position).actorName);
+        holder.mActorName.setText(mData.get(position).singer.get(0).getName());
     }
 
     @Override
@@ -118,11 +106,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         public void onClick(View view) {
             int position = getAdapterPosition();
 
-            MusicFileItem musicFileItem = mData.get(position);
+            /*MusicFileItem musicFileItem = mData.get(position);
 
             AuditionDialogFragment.newInstance(musicFileItem)
                     .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
-                            Constants.AUDITION_TAG);
+                            Constants.AUDITION_TAG);*/
         }
     }
 }

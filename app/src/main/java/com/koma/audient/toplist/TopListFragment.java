@@ -16,7 +16,7 @@
 package com.koma.audient.toplist;
 
 import android.os.Bundle;
-import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,8 +24,12 @@ import android.view.View;
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.audient.main.MainActivity;
+import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,8 +40,8 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
-    ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TopListAdapter mAdapter;
 
@@ -75,7 +79,14 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        showProgressBar(true);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadTopList();
+                }
+            }
+        });
 
         mAdapter = new TopListAdapter(mContext);
 
@@ -83,6 +94,7 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -124,12 +136,9 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     }
 
     @Override
-    public void showProgressBar(boolean forceShow) {
-        LogUtils.i(TAG, "showProressBar forceShow :" + forceShow);
-        if (forceShow) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+    public void showTopLists(List<TopListResult.TopList> topLists) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
+        mAdapter.replace(topLists);
     }
 }

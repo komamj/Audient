@@ -15,7 +15,7 @@
  */
 package com.koma.audient.playlist;
 
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -31,7 +31,7 @@ public interface PlaylistContract {
 
         void showProgressBar(boolean forceShow);
 
-        void showAudients(List<Audient> audients);
+        void showAudients(List<AudientTest> audients);
     }
 
     interface Presenter extends BasePresenter {

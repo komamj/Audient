@@ -35,6 +35,7 @@ import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.base.BaseViewHolder;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
     private final GlideRequest<Drawable> mGlideRequest;
 
-    private List<Audient> mData;
+    private List<AudientTest> mData;
 
     public PlaylistAdapter(Context context) {
         mContext = context;
@@ -59,7 +60,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
     @SuppressLint("StaticFieldLeak")
     @MainThread
-    public void replace(final List<Audient> update) {
+    public void replace(final List<AudientTest> update) {
         if (mData == null) {
             if (update == null) {
                 return;
@@ -71,7 +72,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
             mData = null;
             notifyItemRangeRemoved(0, oldSize);
         } else {
-            final List<Audient> oldItems = mData;
+            final List<AudientTest> oldItems = mData;
             new AsyncTask<Void, Void, DiffUtil.DiffResult>() {
                 @Override
                 protected DiffUtil.DiffResult doInBackground(Void... voids) {
@@ -88,22 +89,22 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
                         @Override
                         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                            Audient oldItem = oldItems.get(oldItemPosition);
-                            Audient newItem = update.get(newItemPosition);
+                            AudientTest oldItem = oldItems.get(oldItemPosition);
+                            AudientTest newItem = update.get(newItemPosition);
                             return false;
                         }
 
                         @Override
                         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                            Audient oldItem = oldItems.get(oldItemPosition);
-                            Audient newItem = update.get(newItemPosition);
+                            AudientTest oldItem = oldItems.get(oldItemPosition);
+                            AudientTest newItem = update.get(newItemPosition);
                             return false;
                         }
 
                         @Nullable
                         public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                            Audient oldItem = oldItems.get(oldItemPosition);
-                            Audient newItem = update.get(newItemPosition);
+                            AudientTest oldItem = oldItems.get(oldItemPosition);
+                            AudientTest newItem = update.get(newItemPosition);
                             return false;
                         }
                     });

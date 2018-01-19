@@ -16,7 +16,8 @@
 package com.koma.audient.search;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.SearchResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -25,6 +26,8 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -71,15 +74,23 @@ public class SearchPresenter implements SearchContract.Presenter {
             mView.showProgressBar(true);
         }
 
-        mRepository.getSearchReults(keyword, "4", 100, 1)
+        LogUtils.i(TAG, "loadSearchResults :" + keyword);
+
+        Disposable disposable = mRepository.getSearchReults(keyword)
+                .map(new Function<SearchResult, List<Audient>>() {
+                    @Override
+                    public List<Audient> apply(SearchResult searchResult) throws Exception {
+                        return searchResult.dataBean.songBean.audients;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<MusicFileItem>>() {
+                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
-                    public void onNext(List<MusicFileItem> musicFileItems) {
+                    public void onNext(List<Audient> audients) {
                         if (mView != null) {
                             mView.showProgressBar(false);
-                            mView.showMusicFileItems(musicFileItems);
+                            mView.showAudients(audients);
                         }
                     }
 
@@ -92,53 +103,8 @@ public class SearchPresenter implements SearchContract.Presenter {
                     public void onComplete() {
 
                     }
-                })
-                /*.flatMap(new Function<List<MusicFileItem>, Flowable<MusicFileItem>>() {
-                    @Override
-                    public Flowable<MusicFileItem> apply(final List<MusicFileItem> musicFileItems) throws Exception {
-                        return Flowable.create(new FlowableOnSubscribe<MusicFileItem>() {
-                            @Override
-                            public void subscribe(FlowableEmitter<MusicFileItem> emitter) throws Exception {
-                                for (MusicFileItem musicFileItem : musicFileItems) {
-                                    LogUtils.i(TAG, "loadSearchResults musicFileItem :" + musicFileItem.musicName);
-                                    emitter.onNext(musicFileItem);
-                                }
-                                emitter.onComplete();
-                            }
-                        }, BackpressureStrategy.LATEST);
-                    }
-                }).flatMap(new Function<MusicFileItem, Flowable<Audient>>() {
-            @Override
-            public Flowable<Audient> apply(final MusicFileItem musicFileItem) throws Exception {
-                return mRepository.getAlbum(musicFileItem)
-                        .map(new Function<Album, Audient>() {
-                            @Override
-                            public Audient apply(Album album) throws Exception {
-                                Audient audient = new Audient();
-                                audient.musicName = musicFileItem.musicName;
-                                audient.contentId = musicFileItem.contentId;
-                                audient.actorName = musicFileItem.actorName;
-                                audient.albumUrl = album.url;
-                                return audient;
-                            }
-                        });
-            }
-        }).toList().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Audient>>() {
-                    @Override
-                    public void onSuccess(List<Audient> audients) {
-                        LogUtils.i(TAG, "loadSearchResults onSuccess");
-                        if (mView != null) {
-                            mView.showProgressBar(false);
-                            mView.showMusicFileItems(audients);
-                        }
-                    }
+                });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtils.e(TAG, "loadSearchResults error :" + e.toString());
-                    }
-                })*/;
+        mDisposables.add(disposable);
     }
 }

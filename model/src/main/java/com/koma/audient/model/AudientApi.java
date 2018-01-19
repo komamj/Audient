@@ -18,25 +18,22 @@ package com.koma.audient.model;
 import com.koma.audient.model.entities.AlbumResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.entities.TopSong;
+
+import java.util.List;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface AudientApi {
     /**
      * 获取榜单列表.
-     *
-     * @param appID       应用ID
-     * @param accessToken 访问令牌
-     * @param timeStamp   时间戳，格式为：yyyy-MM-dd HH:mm:ss
      */
-    @GET("content/contentbillboardservice/querybillboardlist")
-    Flowable<TopList> getTopLists(@Query("app_id") String appID,
-                                  @Query("access_token") String accessToken,
-                                  @Query("timestamp") String timeStamp);
+    @GET("toplist")
+    Flowable<List<TopListResult>> getTopLists();
 
     /**
      * 获取对应榜单的歌曲.
@@ -60,21 +57,10 @@ public interface AudientApi {
     /**
      * 获取搜索结果.
      *
-     * @param keyword     关键字.
-     * @param type        返回歌曲类型，1=结果包含彩铃；2=包含振铃；4=包含全曲；1-2=包含彩铃振铃
-     * @param count       单页返回记录数 默认为10
-     * @param page        返回结果的页码，默认为 1
-     * @param appID       应用ID
-     * @param accessToken 访问令牌
-     * @param timeStamp   时间戳，格式为：yyyy-MM-dd HH:mm:ss
+     * @param keyword 关键字.
      */
-    @GET("searchmusic/search/searchmusic")
-    Flowable<SearchResult> getMusics(@Query("key_word") String keyword,
-                                     @Query("type") String type,
-                                     @Query("count") int count, @Query("page") int page,
-                                     @Query("app_id") String appID,
-                                     @Query("access_token") String accessToken,
-                                     @Query("timestamp") String timeStamp);
+    @GET("search")
+    Flowable<SearchResult> getSeachResults(@Query("w") String keyword);
 
     /**
      * 获取歌词.
@@ -100,20 +86,8 @@ public interface AudientApi {
     /**
      * 获取专辑图片.
      *
-     * @param id          内容id.
-     * @param idType      id类型 类型如下： 0=歌手id， 1=彩铃id 2=振铃id 4=全曲id 5=内容id 6=资源id
-     *                    7=专辑id
-     * @param format      格式
-     * @param singer      歌手名。当id参数为0时，该字段生效。
-     * @param song        歌曲名。当id参数为0时，该字段生效。
-     * @param appID       应用ID
-     * @param accessToken 访问令牌
-     * @param timeStamp   时间戳，格式为：yyyy-MM-dd HH:mm:ss
+     * @param id 专辑id.
      */
-    @GET("picture/picture/findalbumpic")
-    Flowable<AlbumResult> getAlbum(@Query("id") String id, @Query("id_type") String idType,
-                                   @Query("format") String format, @Query("singer") String singer,
-                                   @Query("song") String song, @Query("app_id") String appID,
-                                   @Query("access_token") String accessToken,
-                                   @Query("timestamp") String timeStamp);
+    @GET("album/{id}/pic")
+    Flowable<AlbumResult> getAlbum(@Path("id") String id);
 }

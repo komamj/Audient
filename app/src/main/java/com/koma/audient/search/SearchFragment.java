@@ -23,7 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.koma.audient.R;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
@@ -122,9 +122,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
-    public void showMusicFileItems(List<MusicFileItem> musicFileItems) {
-        LogUtils.i(TAG, "showMusicFileItems count:" + musicFileItems.size());
+    public void showAudients(List<Audient> audients) {
+        LogUtils.i(TAG, "showAudients count:" + audients.size());
 
-        mAdapter.updateData(musicFileItems);
+        mAdapter.replace(audients);
     }
 }

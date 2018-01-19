@@ -19,27 +19,26 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.TopListResult;
+import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
+import butterknife.BindView;
 
-public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.TopListViewHolder> {
+public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAdapter.TopListViewHolder> {
     private final GlideRequest<Drawable> mGlideRequest;
 
-    private List<TopList> mData;
-
-    private final Context mContext;
-
     public TopListAdapter(Context context) {
-        mContext = context;
+        super(context);
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
@@ -48,33 +47,44 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.TopListV
                 .thumbnail(0.1f);
     }
 
-    public void updateData(List<TopList> data) {
-        if (mData == null) {
-            mData = new ArrayList<>();
-
-            mData = data;
-
-            int itemCount = mData.size();
-
-            notifyItemRangeInserted(0, itemCount);
-        } else {
-            int positionStart = mData.size();
-            int itemCount = data.size();
-
-            mData.addAll(data);
-
-            notifyItemRangeInserted(positionStart, itemCount);
-        }
+    @Override
+    protected boolean areItemsTheSame(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
+        return false;
     }
 
     @Override
-    public TopListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    protected boolean areContentsTheSame(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
+        return false;
+    }
+
+    @Override
+    protected Object getChangePayload(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
         return null;
     }
 
     @Override
-    public void onBindViewHolder(TopListViewHolder holder, int position) {
+    public TopListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_top_list, parent, false);
 
+        return new TopListViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(TopListViewHolder holder, int position) {
+        TopListResult.TopList topList = mData.get(position);
+        mGlideRequest.load(topList.picUrl).into(holder.mAlbum);
+        holder.mFirstSong.setText(buildString(topList.songBeans.get(0)));
+        holder.mSecondSong.setText(buildString(topList.songBeans.get(1)));
+        holder.mThirdSong.setText(buildString(topList.songBeans.get(2)));
+    }
+
+    private String buildString(TopListResult.TopList.SongBean songBean) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(songBean.musicName);
+        stringBuilder.append(" - ");
+        stringBuilder.append(songBean.actorName);
+
+        return stringBuilder.toString();
     }
 
     @Override
@@ -83,7 +93,16 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.TopListV
     }
 
     class TopListViewHolder extends BaseViewHolder {
-        public TopListViewHolder(View itemView) {
+        @BindView(R.id.iv_album)
+        ImageView mAlbum;
+        @BindView(R.id.tv_first_song)
+        TextView mFirstSong;
+        @BindView(R.id.tv_second_song)
+        TextView mSecondSong;
+        @BindView(R.id.tv_third_song)
+        TextView mThirdSong;
+
+        TopListViewHolder(View itemView) {
             super(itemView);
         }
     }

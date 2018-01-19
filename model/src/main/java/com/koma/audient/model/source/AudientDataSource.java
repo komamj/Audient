@@ -18,24 +18,25 @@ package com.koma.audient.model.source;
 import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
-import com.koma.audient.model.entities.TopList;
+import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.TopListResult;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 
 public interface AudientDataSource {
-    Flowable<List<Audient>> getAudients();
+    Flowable<List<AudientTest>> getAudientTests();
 
-    Flowable<List<TopList.BillboardListResponse.Billboard>> getTopLists();
+    Flowable<List<TopListResult>> getTopLists();
 
     Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page);
 
-    Flowable<List<MusicFileItem>> getSearchReults(String keyword, String musicType, int count, int page);
+    Flowable<SearchResult> getSearchReults(String keyword);
 
     Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName,
                              String type);

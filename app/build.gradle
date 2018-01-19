@@ -96,6 +96,12 @@ dependencies {
     implementation "com.google.dagger:dagger:$rootProject.ext.dagger_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger_version"
 
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.7.0'
+
     //leakcanary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"

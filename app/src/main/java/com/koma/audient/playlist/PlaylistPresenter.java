@@ -16,7 +16,7 @@
 package com.koma.audient.playlist;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -68,12 +68,12 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
 
     @Override
     public void loadAudients() {
-        Disposable disposable = mRepository.getAudients()
+        Disposable disposable = mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
+                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
                     @Override
-                    public void onNext(List<Audient> audients) {
+                    public void onNext(List<AudientTest> audients) {
                         if (mView.isActive()) {
                             mView.showProgressBar(false);
 
