@@ -2,21 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1000,
-    "identityHash": "4c1493fd0cd0a00d827873be2ce2a5a2",
+    "identityHash": "ce7c777c8f401e705b9909a7d652e169",
     "entities": [
       {
         "tableName": "audient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mid` TEXT NOT NULL, `musicName` TEXT, `duration` INTEGER NOT NULL, PRIMARY KEY(`mid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `duration` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "mid",
-            "columnName": "mid",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "musicName",
-            "columnName": "musicName",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -29,7 +29,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "mid"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -39,7 +39,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4c1493fd0cd0a00d827873be2ce2a5a2\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ce7c777c8f401e705b9909a7d652e169\")"
     ]
   }
 }

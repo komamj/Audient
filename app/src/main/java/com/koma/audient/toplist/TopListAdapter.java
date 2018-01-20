@@ -42,9 +42,9 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
-                .centerCrop()
-                .placeholder(new ColorDrawable(Color.GRAY))
-                .thumbnail(0.1f);
+                .dontAnimate()
+                .thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
         return mData == null ? 0 : mData.size();
     }
 
-    class TopListViewHolder extends BaseViewHolder {
+    class TopListViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_first_song)
@@ -104,6 +104,15 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
 
         TopListViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+
+            //todo launch detail ui.
         }
     }
 }

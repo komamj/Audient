@@ -17,12 +17,12 @@ package com.koma.audient.model.source;
 
 import android.support.annotation.NonNull;
 
-import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public interface AudientDataSource {
     Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName,
                              String type);
 
-    Flowable<Album> getAlbum(MusicFileItem musicFileItem);
+    Flowable<SongDetailResult> getSongDetailResult(String id);
 
     Flowable<List<Comment>> getComments(long id);
 }

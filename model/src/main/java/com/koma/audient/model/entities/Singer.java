@@ -15,11 +15,38 @@
  */
 package com.koma.audient.model.entities;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Album {
+public class Singer {
     @SerializedName("mid")
     public String id;
     @SerializedName("name")
     public String name;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("singer has id :");
+        builder.append(id);
+        builder.append(",name :");
+        builder.append(name);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Singer singer = (Singer) o;
+
+        return TextUtils.equals(this.id, singer.id) && TextUtils.equals(this.name, singer.name);
+    }
 }

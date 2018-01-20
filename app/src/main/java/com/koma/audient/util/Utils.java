@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.model.entities;
+package com.koma.audient.util;
 
-import com.google.gson.annotations.SerializedName;
-
-public class Album {
-    @SerializedName("mid")
-    public String id;
-    @SerializedName("name")
-    public String name;
+public class Utils {
 }

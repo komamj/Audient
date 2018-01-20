@@ -15,9 +15,10 @@
  */
 package com.koma.audient.model;
 
-import com.koma.audient.model.entities.AlbumResult;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.entities.TopSong;
 
@@ -83,11 +84,6 @@ public interface AudientApi {
                                    @Query("access_token") String accessToken,
                                    @Query("timestamp") String timeStamp);
 
-    /**
-     * 获取专辑图片.
-     *
-     * @param id 专辑id.
-     */
-    @GET("album/{id}/pic")
-    Flowable<AlbumResult> getAlbum(@Path("id") String id);
+    @GET("{id}")
+    Flowable<SongDetailResult> getSongDetailResult(@Path("id") String id);
 }

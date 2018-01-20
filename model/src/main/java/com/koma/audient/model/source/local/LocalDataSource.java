@@ -19,12 +19,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.koma.audient.model.entities.Album;
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.source.AudientDataSource;
 
@@ -123,7 +123,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<Album> getAlbum(MusicFileItem musicFileItem) {
+    public Flowable<SongDetailResult> getSongDetailResult(String id) {
         return null;
     }
 

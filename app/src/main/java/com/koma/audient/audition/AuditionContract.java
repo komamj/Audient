@@ -15,17 +15,17 @@
  */
 package com.koma.audient.audition;
 
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
 public interface AuditionContract {
     interface View extends BaseView<Presenter> {
-        void onLoadAlbumUrlFinished(String url);
+        void onLoadFinished(Audient audient);
     }
 
     interface Presenter extends BasePresenter {
-        void loadAlbumUrl(MusicFileItem musicFileItem);
+        void loadAudient(String id);
 
         void doPauseOrPlay();
     }

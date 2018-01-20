@@ -84,8 +84,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 onPermissonGranted();
             } else {
                 Snackbar.make(getWindow().getDecorView(), R.string.permissions_not_granted,
-                        Snackbar.LENGTH_INDEFINITE)
+                        Snackbar.LENGTH_SHORT)
                         .show();
+                finish();
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

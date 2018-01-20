@@ -19,19 +19,21 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.koma.audient.R;
+import com.koma.audient.audition.AuditionDialogFragment;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
+import com.koma.common.util.Constants;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,7 +48,7 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
-                .transition(new DrawableTransitionOptions())
+                .dontAnimate()
                 .thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
@@ -77,8 +79,8 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
     public void onBindViewHolder(SearchViewHolder holder, int position) {
         mGlideRequest.load(mData.get(position)).into(holder.mAlbum);
 
-        holder.mMusicName.setText(mData.get(position).musicName);
-        holder.mActorName.setText(mData.get(position).singer.get(0).getName());
+        holder.mMusicName.setText(mData.get(position).name);
+        holder.mActorName.setText(mData.get(position).singer.get(0).name);
     }
 
     @Override
@@ -109,11 +111,9 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
         public void onClick(View view) {
             int position = getAdapterPosition();
 
-            /*MusicFileItem musicFileItem = mData.get(position);
-
-            AuditionDialogFragment.newInstance(musicFileItem)
+            AuditionDialogFragment.newInstance(mData.get(position).id)
                     .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
-                            Constants.AUDITION_TAG);*/
+                            Constants.AUDITION_TAG);
         }
     }
 }

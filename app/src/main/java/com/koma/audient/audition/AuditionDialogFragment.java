@@ -16,6 +16,8 @@
 package com.koma.audient.audition;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -28,7 +30,7 @@ import android.widget.TextView;
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
@@ -52,7 +54,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     @BindView(R.id.iv_pause)
     ImageView mPauseButton;
 
-    private MusicFileItem mMusicFileItem;
+    private String mId;
 
     @OnClick(R.id.iv_pause)
     void doPauseOrPlay() {
@@ -67,11 +69,11 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     public AuditionDialogFragment() {
     }
 
-    public static AuditionDialogFragment newInstance(MusicFileItem musicFileItem) {
+    public static AuditionDialogFragment newInstance(String id) {
         AuditionDialogFragment fragment = new AuditionDialogFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.KEY_MUSIC_FILE_ITEM, musicFileItem);
+        bundle.putString(Constants.KEY_AUDIENT_ID, id);
 
         fragment.setArguments(bundle);
 
@@ -92,7 +94,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AuditionDilogTheme);
 
         if (getArguments() != null) {
-            mMusicFileItem = getArguments().getParcelable(Constants.KEY_MUSIC_FILE_ITEM);
+            mId = getArguments().getString(Constants.KEY_AUDIENT_ID);
         }
 
         // inject presenter
@@ -110,19 +112,9 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
         ButterKnife.bind(this, view);
 
-        mPresenter.loadAlbumUrl(mMusicFileItem);
+        mPresenter.loadAudient(mId);
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        LogUtils.i(TAG, "onViewCreated");
-
-        mActorName.setText(mMusicFileItem.actorName);
-        mMusicName.setText(mMusicFileItem.musicName);
     }
 
     @Override
@@ -142,9 +134,13 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     }
 
     @Override
-    public void onLoadAlbumUrlFinished(String url) {
-        LogUtils.i(TAG, "url  :" + url);
-
-        GlideApp.with(this).load(url).into(mAlbum);
+    public void onLoadFinished(Audient audient) {
+        GlideApp.with(this).load(audient)
+                .thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY))
+                .dontAnimate()
+                .into(mAlbum);
+        mActorName.setText(audient.singer.get(0).name);
+        mMusicName.setText(audient.name);
     }
 }

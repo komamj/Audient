@@ -43,7 +43,8 @@ public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.Pl
 
         mGlideRequest = GlideApp.with(mContext)
                 .asDrawable()
-                .circleCrop()
+                .dontAnimate()
+                .thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 

@@ -45,7 +45,7 @@ public class AudientUrlLoader extends BaseGlideUrlLoader<Audient> {
     private String buildUrl(Audient audient) {
         StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
         builder.append("album/");
-        builder.append(audient.album.albumId);
+        builder.append(audient.album.id);
         builder.append("/pic");
 
         return builder.toString();

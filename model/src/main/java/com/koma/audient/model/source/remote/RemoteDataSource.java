@@ -18,19 +18,17 @@ package com.koma.audient.model.source.remote;
 import android.support.annotation.NonNull;
 
 import com.koma.audient.model.AudientApi;
-import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.AlbumResult;
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
+import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.entities.TopSong;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.common.util.Constants;
-import com.koma.common.util.LogUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -100,15 +98,8 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<Album> getAlbum(MusicFileItem musicFileItem) {
-        LogUtils.i(TAG, "getAlbum mid :" + musicFileItem.contentId);
-        return mAudientApi.getAlbum(String.valueOf(musicFileItem.contentId))
-                .map(new Function<AlbumResult, Album>() {
-                    @Override
-                    public Album apply(AlbumResult albumResult) throws Exception {
-                        return albumResult.picResponse.album;
-                    }
-                });
+    public Flowable<SongDetailResult> getSongDetailResult(String id) {
+        return mAudientApi.getSongDetailResult(id);
     }
 
     @Override

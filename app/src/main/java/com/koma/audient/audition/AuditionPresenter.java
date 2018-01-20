@@ -16,8 +16,8 @@
 package com.koma.audient.audition;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -64,14 +65,20 @@ public class AuditionPresenter implements AuditionContract.Presenter {
     }
 
     @Override
-    public void loadAlbumUrl(MusicFileItem musicFileItem) {
-        Disposable disposable = mRepository.getAlbum(musicFileItem)
+    public void loadAudient(String id) {
+        Disposable disposable = mRepository.getSongDetailResult(id)
+                .map(new Function<SongDetailResult, Audient>() {
+                    @Override
+                    public Audient apply(SongDetailResult songDetailResult) throws Exception {
+                        return songDetailResult.audients.get(0);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Album>() {
+                .subscribeWith(new DisposableSubscriber<Audient>() {
                     @Override
-                    public void onNext(Album album) {
-                        mView.onLoadAlbumUrlFinished(album.url);
+                    public void onNext(Audient audient) {
+                        mView.onLoadFinished(audient);
                     }
 
                     @Override

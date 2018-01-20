@@ -28,55 +28,37 @@ import java.util.List;
 
 @Entity(tableName = "audient")
 public class Audient {
-    @Ignore
-    @SerializedName("album")
-    public Album album;
     @NonNull
     @SerializedName("mid")
     @PrimaryKey
-    @ColumnInfo(name = "mid")
-    public String mid;
+    @ColumnInfo(name = "id")
+    public String id;
     @SerializedName("name")
-    public String musicName;
+    public String name;
     @SerializedName("interval")
     public long duration;
     @Ignore
     @SerializedName("singer")
     public List<Singer> singer;
+    @Ignore
+    @SerializedName("album")
+    public Album album;
 
     public Audient() {
     }
 
-    public static class Album {
-        @SerializedName("mid")
-        public String albumId;
-
-        public void setAlbumId(String albumId) {
-            this.albumId = albumId;
-        }
-
-        public String getAlbumId() {
-            return this.albumId;
-        }
-    }
-
-    public static class Singer {
-        @SerializedName("name")
-        public String name;
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-    }
-
     @Override
     public String toString() {
-        return "Audient with mid " + mid + ",musicName " + musicName + ",singerName "
-                + singer.get(0).name + '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append("Audient with id ");
+        builder.append(id);
+        builder.append(",name ");
+        builder.append(name);
+        builder.append(",singer ");
+        builder.append(singer.get(0).toString());
+        builder.append(",album ");
+        builder.append(album.toString());
+        return builder.toString();
     }
 
     @Override
@@ -91,6 +73,6 @@ public class Audient {
 
         Audient audient = (Audient) o;
 
-        return this.mid.equals(audient.mid) && TextUtils.equals(musicName, audient.musicName);
+        return TextUtils.equals(this.id, audient.id) && TextUtils.equals(name, audient.name);
     }
 }
