@@ -17,7 +17,6 @@ package com.koma.audient.model;
 
 import android.support.annotation.NonNull;
 
-import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.Lyric;
@@ -25,6 +24,7 @@ import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
 import com.koma.audient.model.source.remote.RemoteDataSource;
@@ -58,6 +58,11 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<List<TopListResult>> getTopLists() {
         return mRemoteDataSource.getTopLists();
+    }
+
+    @Override
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId) {
+        return mRemoteDataSource.getToplistDetail(topId);
     }
 
     @Override

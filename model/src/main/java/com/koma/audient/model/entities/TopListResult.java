@@ -37,7 +37,7 @@ public class TopListResult {
         public long listenedCount;
         @SerializedName("songlist")
         public List<SongBean> songBeans;
-        @SerializedName("topid")
+        @SerializedName("topID")
         public int topId;
         @SerializedName("update_key")
         public String updateTime;

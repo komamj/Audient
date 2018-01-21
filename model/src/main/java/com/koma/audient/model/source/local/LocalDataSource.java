@@ -26,6 +26,7 @@ import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.source.AudientDataSource;
 
 import java.util.ArrayList;
@@ -104,6 +105,11 @@ public class LocalDataSource implements AudientDataSource {
 
     @Override
     public Flowable<List<TopListResult>> getTopLists() {
+        return null;
+    }
+
+    @Override
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId) {
         return null;
     }
 

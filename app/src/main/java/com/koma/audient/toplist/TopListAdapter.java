@@ -16,6 +16,7 @@
 package com.koma.audient.toplist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -29,8 +30,10 @@ import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.toplist.detail.TopListDetailActivity;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
+import com.koma.common.util.Constants;
 
 import butterknife.BindView;
 
@@ -111,8 +114,9 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-
-            //todo launch detail ui.
+            Intent intent = new Intent(mContext, TopListDetailActivity.class);
+            intent.putExtra(Constants.KEY_TOP_ID, mData.get(position).topId);
+            mContext.startActivity(intent);
         }
     }
 }

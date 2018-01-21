@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist;
+package com.koma.audient.toplist.detail;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,40 +21,36 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.main.MainActivity;
-import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class TopListFragment extends BaseFragment implements TopListContract.View {
-    private static final String TAG = TopListFragment.class.getSimpleName();
+public class ToplistDetailFragment extends BaseFragment implements ToplistDetailContract.View {
+    private static final String TAG = ToplistDetailFragment.class.getSimpleName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private boolean mIsPrepared;
+    private int mTopId;
 
-    private TopListAdapter mAdapter;
+    private ToplistDetailAdapter mAdapter;
 
-    @Inject
-    TopListPresenter mPresenter;
+    private ToplistDetailContract.Presenter mPresenter;
 
-    public TopListFragment() {
+    public ToplistDetailFragment() {
     }
 
-    public static TopListFragment newInstance() {
-        TopListFragment fragment = new TopListFragment();
+    public static ToplistDetailFragment newInstance(int topId) {
+        ToplistDetailFragment fragment = new ToplistDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.KEY_TOP_ID, topId);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -64,46 +60,27 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
         LogUtils.i(TAG, "onCreate");
 
-        DaggerTopListComponent.builder()
-                .audientRepositoryComponent(
-                        ((AudientApplication) ((MainActivity) mContext).getApplication()).getRepositoryComponent())
-                .topListPresenterModule(new TopListPresenterModule(this))
-                .build()
-                .inject(this);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
-
-        if (isVisibleToUser && mIsPrepared) {
-            if (mPresenter != null) {
-                mPresenter.subscribe();
-            }
+        if (getArguments() != null) {
+            mTopId = getArguments().getInt(Constants.KEY_TOP_ID);
         }
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_toplist;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        LogUtils.i(TAG, "onViewCreated");
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadTopList();
+                    mPresenter.loadToplistDetail(mTopId);
                 }
             }
         });
 
-        mAdapter = new TopListAdapter(mContext);
+        mAdapter = new ToplistDetailAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -112,39 +89,23 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
 
-        mIsPrepared = true;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        LogUtils.i(TAG, "onDestroy");
-
         if (mPresenter != null) {
-            mPresenter.unSubscribe();
+            mPresenter.loadToplistDetail(mTopId);
         }
     }
 
     @Override
-    public void setPresenter(TopListContract.Presenter presenter) {
-
+    public int getLayoutId() {
+        return R.layout.fragment_base;
     }
 
     @Override
-    public void showLoadingError() {
-        LogUtils.i(TAG, "showLoadingError");
+    public void setPresenter(ToplistDetailContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override
-    public void showEmpty(boolean forceShow) {
-        LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
-    }
-
-    @Override
-    public void showTopLists(List<TopListResult.TopList> topLists) {
-        mSwipeRefreshLayout.setRefreshing(false);
-
-        mAdapter.replace(topLists);
+    public int getTopId() {
+        return this.mTopId;
     }
 }

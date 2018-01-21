@@ -27,6 +27,9 @@ public final class Constants {
     public static final String KEY_AUDIENT_ID = "key_auident_id";
     public static final String AUDITION_TAG = "audition_tag";
 
+    // toplist detail
+    public static final String KEY_TOP_ID = "key_top_id";
+
     // response
     public static final String RESPONSE_RES_CODE = "res_code";
     public static final String RESPONSE_RES_MESSAGE = "res_message";

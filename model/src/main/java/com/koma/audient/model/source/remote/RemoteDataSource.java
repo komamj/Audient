@@ -27,6 +27,7 @@ import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.entities.TopSong;
+import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.common.util.Constants;
 
@@ -59,6 +60,11 @@ public class RemoteDataSource implements AudientDataSource {
     @Override
     public Flowable<List<TopListResult>> getTopLists() {
         return mAudientApi.getTopLists();
+    }
+
+    @Override
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId) {
+        return mAudientApi.getToplistDetail(topId);
     }
 
     @Override

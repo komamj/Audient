@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.mine;
+package com.koma.audient.toplist.detail;
 
-import com.koma.audient.model.AudientRepositoryComponent;
-import com.koma.common.util.ActivityScoped;
+import dagger.Module;
+import dagger.Provides;
 
-import dagger.Component;
+@Module
+public class ToplistDetailPresenterModule {
+    private final ToplistDetailContract.View mView;
 
-@ActivityScoped
-@Component(dependencies = AudientRepositoryComponent.class,
-        modules = MinePresenterModule.class)
-public interface MineComponent {
-    void inject(MineFragment fragment);
+    public ToplistDetailPresenterModule(ToplistDetailContract.View view) {
+        mView = view;
+    }
+
+
+    @Provides
+    ToplistDetailContract.View provideToplistDetailContractView() {
+        return this.mView;
+    }
 }

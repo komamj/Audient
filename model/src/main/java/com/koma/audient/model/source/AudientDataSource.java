@@ -24,6 +24,7 @@ import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistDetailResult;
 
 import java.util.List;
 
@@ -33,6 +34,8 @@ public interface AudientDataSource {
     Flowable<List<AudientTest>> getAudientTests();
 
     Flowable<List<TopListResult>> getTopLists();
+
+    Flowable<ToplistDetailResult> getToplistDetail(int topId);
 
     Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page);
 

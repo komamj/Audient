@@ -15,7 +15,6 @@
  */
 package com.koma.audient.comment;
 
-import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;

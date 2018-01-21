@@ -25,7 +25,6 @@ import android.view.View;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.nowplaying.NowPlayingActivity;
 import com.koma.audient.widget.AudientItemDecoration;
@@ -48,6 +47,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     ContentLoadingProgressBar mProgressBar;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private boolean mIsPrepared;
 
     @OnClick(R.id.fab)
     void launchNowPlayingUI() {
@@ -83,6 +84,19 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
+
+        if (isVisibleToUser && mIsPrepared) {
+            if (mPresenter != null) {
+                mPresenter.subscribe();
+            }
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -103,13 +117,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        LogUtils.i(TAG, "onResume");
+        mIsPrepared = true;
 
         if (mPresenter != null) {
             mPresenter.subscribe();
@@ -117,8 +126,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
 
         LogUtils.i(TAG, "onPause");
 

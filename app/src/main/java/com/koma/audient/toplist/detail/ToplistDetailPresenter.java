@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.playlist;
+package com.koma.audient.toplist.detail;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.common.util.LogUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,17 +27,17 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class PlaylistPresenter implements PlaylistContract.Presenter {
-    public static final String TAG = PlaylistPresenter.class.getSimpleName();
+public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
+    private static final String TAG = ToplistDetailPresenter.class.getSimpleName();
 
-    private PlaylistContract.View mView;
+    private final ToplistDetailContract.View mView;
 
-    private AudientRepository mRepository;
+    private final AudientRepository mRepository;
 
-    private CompositeDisposable mDisposables;
+    private final CompositeDisposable mDisposables;
 
     @Inject
-    public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
+    public ToplistDetailPresenter(ToplistDetailContract.View view, AudientRepository repository) {
         mView = view;
 
         mRepository = repository;
@@ -48,7 +46,7 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     }
 
     @Inject
-    void setUpListener() {
+    void setupListeners() {
         mView.setPresenter(this);
     }
 
@@ -56,35 +54,31 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
-        loadAudients();
+        loadToplistDetail(mView.getTopId());
     }
 
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
-
         mDisposables.clear();
     }
 
     @Override
-    public void loadAudients() {
+    public void loadToplistDetail(int topId) {
         mDisposables.clear();
 
-        Disposable disposable = mRepository.getAudientTests()
+        Disposable disposable = mRepository.getToplistDetail(topId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
+                .subscribeWith(new DisposableSubscriber<ToplistDetailResult>() {
                     @Override
-                    public void onNext(List<AudientTest> audients) {
-                        if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                    public void onNext(ToplistDetailResult toplistDetailResult) {
 
-                            mView.showAudients(audients);
-                        }
                     }
 
                     @Override
                     public void onError(Throwable t) {
+                        LogUtils.e(TAG, "getToplistDetail error :" + t.toString());
                     }
 
                     @Override
