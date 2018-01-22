@@ -116,6 +116,7 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
             int position = getAdapterPosition();
             Intent intent = new Intent(mContext, TopListDetailActivity.class);
             intent.putExtra(Constants.KEY_TOP_ID, mData.get(position).topId);
+            intent.putExtra(Constants.KEY_SHOW_TIME, mData.get(position).showTime);
             mContext.startActivity(intent);
         }
     }
