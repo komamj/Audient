@@ -79,7 +79,7 @@ public class NowPlayingActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.playing_menu, menu);
         return true;
     }
 
@@ -94,6 +94,8 @@ public class NowPlayingActivity extends BaseActivity {
         if (id == R.id.action_search) {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
+        } else if (id == R.id.action_share) {
+
         } else if (id == android.R.id.home) {
             finish();
         }

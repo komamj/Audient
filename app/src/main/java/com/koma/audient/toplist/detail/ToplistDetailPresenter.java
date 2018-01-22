@@ -54,7 +54,7 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
-        loadToplistDetail(mView.getTopId());
+        loadToplistDetail(mView.getTopId(), mView.getShowTime());
     }
 
     @Override
@@ -64,10 +64,10 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     }
 
     @Override
-    public void loadToplistDetail(int topId) {
+    public void loadToplistDetail(int topId, String showTime) {
         mDisposables.clear();
 
-        Disposable disposable = mRepository.getToplistDetail(topId)
+        Disposable disposable = mRepository.getToplistDetail(topId, showTime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<ToplistDetailResult>() {

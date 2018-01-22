@@ -27,6 +27,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+
+    <!--Search menu-->
+    <string name="action_playlist">Add to playlist</string>
+    <string name="action_favorite">Add to my favorite</string>
+    <string name="action_comment">View comments</string>
 
     <!--TabLayout-->
     <string-array name="page_title">
@@ -35,8 +41,9 @@
         <item>Find</item>
     </string-array>
 
-
     <!--Comment-->
     <string name="comment_info">The latest comments :</string>
 
+    <!--Audition-->
+    <string name="audition_title">Audition for 30 seconds</string>
 </resources>

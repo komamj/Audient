@@ -35,7 +35,7 @@ public interface AudientDataSource {
 
     Flowable<List<TopListResult>> getTopLists();
 
-    Flowable<ToplistDetailResult> getToplistDetail(int topId);
+    Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime);
 
     Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page);
 

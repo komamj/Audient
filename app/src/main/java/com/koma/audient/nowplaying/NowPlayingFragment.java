@@ -52,6 +52,11 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     }
 
+    @OnClick(R.id.fab_thumb_up)
+    void thumbUp() {
+
+    }
+
     @OnClick(R.id.iv_favorite)
     void processFavorite() {
 

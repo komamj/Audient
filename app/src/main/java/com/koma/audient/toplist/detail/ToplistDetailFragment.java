@@ -39,6 +39,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
     private int mTopId;
 
+    private String mShowTime;
+
     private ToplistDetailAdapter mAdapter;
 
     private ToplistDetailContract.Presenter mPresenter;
@@ -46,10 +48,11 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     public ToplistDetailFragment() {
     }
 
-    public static ToplistDetailFragment newInstance(int topId) {
+    public static ToplistDetailFragment newInstance(int topId, String showTime) {
         ToplistDetailFragment fragment = new ToplistDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_TOP_ID, topId);
+        bundle.putString(Constants.KEY_SHOW_TIME, showTime);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -62,6 +65,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
         if (getArguments() != null) {
             mTopId = getArguments().getInt(Constants.KEY_TOP_ID);
+
+            mShowTime = getArguments().getString(Constants.KEY_SHOW_TIME);
         }
     }
 
@@ -75,7 +80,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadToplistDetail(mTopId);
+                    mPresenter.loadToplistDetail(mTopId, mShowTime);
                 }
             }
         });
@@ -90,7 +95,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-            mPresenter.loadToplistDetail(mTopId);
+            mPresenter.loadToplistDetail(mTopId, mShowTime);
         }
     }
 
@@ -107,5 +112,10 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     @Override
     public int getTopId() {
         return this.mTopId;
+    }
+
+    @Override
+    public String getShowTime() {
+        return this.mShowTime;
     }
 }

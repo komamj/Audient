@@ -39,8 +39,8 @@ public class TopListResult {
         public List<SongBean> songBeans;
         @SerializedName("topID")
         public int topId;
-        @SerializedName("update_key")
-        public String updateTime;
+        @SerializedName("showtime")
+        public String showTime;
 
         @Override
         public boolean equals(Object o) {

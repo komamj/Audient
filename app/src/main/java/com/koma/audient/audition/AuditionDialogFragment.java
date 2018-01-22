@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.koma.audient.AudientApplication;
@@ -40,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AuditionDialogFragment extends DialogFragment implements AuditionContract.View {
+public class AuditionDialogFragment extends DialogFragment implements AuditionContract.View, SeekBar.OnSeekBarChangeListener {
     private static final String TAG = AuditionDialogFragment.class.getSimpleName();
 
     @BindView(R.id.tv_actor_name)
@@ -91,7 +92,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
         LogUtils.i(TAG, "onCreate");
 
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AuditionDilogTheme);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AuditionDilogTheme);
 
         if (getArguments() != null) {
             mId = getArguments().getString(Constants.KEY_AUDIENT_ID);
@@ -111,6 +112,8 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
         View view = inflater.inflate(R.layout.dialog_audition, container, false);
 
         ButterKnife.bind(this, view);
+
+        mProgressBar.setOnSeekBarChangeListener(this);
 
         mPresenter.loadAudient(mId);
 
@@ -142,5 +145,20 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
                 .into(mAlbum);
         mActorName.setText(audient.singer.get(0).name);
         mMusicName.setText(audient.name);
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

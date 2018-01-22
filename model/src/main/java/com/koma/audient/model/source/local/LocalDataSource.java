@@ -109,7 +109,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId) {
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
         return null;
     }
 

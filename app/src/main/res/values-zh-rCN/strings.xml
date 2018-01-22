@@ -27,6 +27,12 @@
     <string name="navigation_drawer_close">"关闭导航栏"</string>
     <string name="action_search">"搜索"</string>
     <string name="action_settings">"设置"</string>
+    <string name="action_share">"分享"</string>
+
+    <!--Search menu-->
+    <string name="action_playlist">"加入播放列表"</string>
+    <string name="action_favorite">"加入收藏"</string>
+    <string name="action_comment">"查看评论"</string>
 
     <!--TabLayout-->
     <string-array name="page_title">
@@ -37,5 +43,8 @@
 
     <!--Comment-->
     <string name="comment_info">"最新评论："</string>
+
+    <!--Audition-->
+    <string name="audition_title">"试听30秒"</string>
 
 </resources>

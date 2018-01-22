@@ -19,7 +19,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.PlaylistViewHolder> {
 
@@ -75,21 +78,29 @@ public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.Pl
         mGlideRequest.load(mData.get(position).albumUrl).into(holder.mAlbum);
         holder.mMusicName.setText(mData.get(position).musicName);
         holder.mActorName.setText(mData.get(position).actorName);
-        if (position == 0) {
-            holder.mEqualizer.setVisibility(View.VISIBLE);
-        } else {
-            holder.mEqualizer.setVisibility(View.GONE);
-        }
     }
 
-    static class PlaylistViewHolder extends BaseViewHolder {
+    class PlaylistViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_music_name)
         TextView mMusicName;
         @BindView(R.id.tv_actor_name)
         TextView mActorName;
-        @BindView(R.id.ic_equalizer)
+
+        @OnClick(R.id.ic_more)
+        void showPopupMenu(View view) {
+            PopupMenu popupMenu = new PopupMenu(mContext, view);
+            popupMenu.getMenuInflater().inflate(R.menu.playlist_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return false;
+                }
+            });
+            popupMenu.show();
+        }
+
         ImageView mEqualizer;
 
         PlaylistViewHolder(View itemView) {

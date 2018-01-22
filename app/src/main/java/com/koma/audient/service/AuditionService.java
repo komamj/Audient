@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.audition;
+package com.koma.audient.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+
+import com.koma.common.util.LogUtils;
 
 public class AuditionService extends Service {
     private static final String TAG = AuditionService.class.getSimpleName();
@@ -27,5 +29,19 @@ public class AuditionService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        LogUtils.i(TAG, "onCreate");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtils.i(TAG, "onStartCommand");
+
+        return START_NOT_STICKY;
     }
 }

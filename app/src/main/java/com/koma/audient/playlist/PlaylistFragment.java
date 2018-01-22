@@ -100,6 +100,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        showProgressBar(true);
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

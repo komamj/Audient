@@ -9,13 +9,12 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,6 +26,17 @@
             android:scaleType="centerCrop"
             app:srcCompat="@android:color/darker_gray" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_thumb_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:scaleType="centerCrop"
+            android:tint="@android:color/white"
+            app:borderWidth="0dp"
+            app:srcCompat="@drawable/ic_thumb_up" />
+
     </android.support.v7.widget.CardView>
 
     <ProgressBar
@@ -34,6 +44,8 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:progress="10"
         app:layout_constraintEnd_toEndOf="@+id/card_view"
         app:layout_constraintStart_toStartOf="@+id/card_view"
@@ -80,6 +92,19 @@
         app:layout_constraintStart_toStartOf="@+id/card_view"
         app:layout_constraintTop_toBottomOf="@+id/tv_song" />
 
+    <TextView
+        android:id="@+id/tv_lyric"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:paddingBottom="@dimen/nav_header_vertical_spacing"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:text="仍然自由自我\n永远高唱我歌\n走遍千里"
+        app:layout_constraintBottom_toTopOf="@+id/fab_next"
+        app:layout_constraintEnd_toEndOf="@+id/card_view"
+        app:layout_constraintStart_toStartOf="@+id/card_view"
+        app:layout_constraintTop_toBottomOf="@+id/tv_singer" />
+
     <ImageView
         android:id="@+id/iv_favorite"
         android:layout_width="wrap_content"
@@ -87,9 +112,9 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/nav_header_vertical_spacing"
         android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fab_next"
         app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/tv_singer"
         app:srcCompat="@drawable/ic_unfavorite" />
 
     <android.support.design.widget.FloatingActionButton
@@ -98,32 +123,21 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv_comment"
         app:layout_constraintStart_toEndOf="@+id/iv_favorite"
-        app:layout_constraintTop_toBottomOf="@+id/tv_singer"
         app:srcCompat="@drawable/ic_next" />
 
     <ImageView
         android:id="@+id/iv_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/nav_header_vertical_spacing"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/nav_header_vertical_spacing"
         android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/card_view"
         app:layout_constraintStart_toEndOf="@+id/fab_next"
-        app:layout_constraintTop_toBottomOf="@+id/tv_singer"
         app:srcCompat="@drawable/ic_comment" />
-
-    <TextView
-        android:id="@+id/tv_lyric"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:gravity="center"
-        android:text="仍然自由自我"
-        app:layout_constraintEnd_toEndOf="@+id/card_view"
-        app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/fab_next" />
 
 </android.support.constraint.ConstraintLayout>

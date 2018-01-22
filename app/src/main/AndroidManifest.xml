@@ -73,8 +73,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
 
+        <!--audition-->
         <service
-            android:name=".audition.AuditionService"
+            android:name=".service.AuditionService"
             android:exported="false" />
 
     </application>

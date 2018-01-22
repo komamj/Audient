@@ -50,11 +50,12 @@ public class TopListDetailActivity extends BaseActivity {
         }
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
+        String showTime = getIntent().getStringExtra(Constants.KEY_SHOW_TIME);
 
         ToplistDetailFragment fragment = (ToplistDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
         if (fragment == null) {
-            fragment = ToplistDetailFragment.newInstance(topId);
+            fragment = ToplistDetailFragment.newInstance(topId, showTime);
 
             getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
         }

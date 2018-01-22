@@ -61,8 +61,8 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId) {
-        return mRemoteDataSource.getToplistDetail(topId);
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
+        return mRemoteDataSource.getToplistDetail(topId, showTime);
     }
 
     @Override

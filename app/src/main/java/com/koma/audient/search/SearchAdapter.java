@@ -16,11 +16,14 @@
 package com.koma.audient.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.audition.AuditionDialogFragment;
+import com.koma.audient.comment.CommentActivity;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.Audient;
@@ -97,8 +101,27 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
         TextView mActorName;
 
         @OnClick(R.id.iv_more)
-        void showPopupView() {
-
+        void showPopupView(View view) {
+            PopupMenu popupMenu = new PopupMenu(mContext, view);
+            popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_playlist:
+                            break;
+                        case R.id.action_favorite:
+                            break;
+                        case R.id.action_comment:
+                            Intent intent = new Intent(mContext, CommentActivity.class);
+                            intent.putExtra(Constants.ID, mData.get(getAdapterPosition()).id);
+                            mContext.startActivity(intent);
+                            break;
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
         }
 
         SearchViewHolder(View view) {

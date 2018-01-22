@@ -16,6 +16,7 @@
 package com.koma.audient.toplist;
 
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +45,8 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private boolean mIsPrepared;
+
+    private boolean mIsLoaded;
 
     private TopListAdapter mAdapter;
 
@@ -78,7 +81,9 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
         LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
 
-        if (isVisibleToUser && mIsPrepared) {
+        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
+            mSwipeRefreshLayout.setRefreshing(true);
+
             if (mPresenter != null) {
                 mPresenter.subscribe();
             }
@@ -143,6 +148,8 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
     @Override
     public void showTopLists(List<TopListResult.TopList> topLists) {
+        mIsLoaded = true;
+
         mSwipeRefreshLayout.setRefreshing(false);
 
         mAdapter.replace(topLists);

@@ -40,7 +40,7 @@ public interface AudientApi {
      * 获取榜单详情
      */
     @GET("toplist/{id}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId);
+    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId, @Query("date") String showTime);
 
     /**
      * 获取对应榜单的歌曲.

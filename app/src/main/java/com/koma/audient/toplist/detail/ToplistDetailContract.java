@@ -21,9 +21,11 @@ import com.koma.common.base.BaseView;
 public interface ToplistDetailContract {
     interface View extends BaseView<Presenter> {
         int getTopId();
+
+        String getShowTime();
     }
 
     interface Presenter extends BasePresenter {
-        void loadToplistDetail(int topId);
+        void loadToplistDetail(int topId, String showTime);
     }
 }
