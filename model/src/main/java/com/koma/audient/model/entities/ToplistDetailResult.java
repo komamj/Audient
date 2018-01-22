@@ -17,10 +17,27 @@ package com.koma.audient.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ToplistDetailResult {
     @SerializedName("songlist")
-    public ToplistDetail toplistDetail;
+    public List<ToplistDetail> toplistDetails;
 
     public static class ToplistDetail {
+        @SerializedName("data")
+        public DataBean dataBean;
+
+        public static class DataBean {
+            @SerializedName("songmid")
+            public String id;
+            @SerializedName("songname")
+            public String name;
+            @SerializedName("albummid")
+            public String albumId;
+            @SerializedName("albumname")
+            public String albumName;
+            @SerializedName("singer")
+            public Singer singer;
+        }
     }
 }

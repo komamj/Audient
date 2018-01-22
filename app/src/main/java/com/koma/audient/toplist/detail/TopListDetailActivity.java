@@ -15,21 +15,29 @@
  */
 package com.koma.audient.toplist.detail;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.helper.GlideApp;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.Constants;
+import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
 public class TopListDetailActivity extends BaseActivity {
+    private static final String TAG = TopListDetailActivity.class.getSimpleName();
+
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.toolbar)
@@ -42,6 +50,16 @@ public class TopListDetailActivity extends BaseActivity {
     ToplistDetailPresenter mPresenter;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+        super.onCreate(savedInstanceState);
+
+        LogUtils.i(TAG, "onCreate");
+    }
+
+    @Override
     protected void onPermissonGranted() {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
@@ -51,6 +69,10 @@ public class TopListDetailActivity extends BaseActivity {
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
         String showTime = getIntent().getStringExtra(Constants.KEY_SHOW_TIME);
+        String picUrl = getIntent().getStringExtra(Constants.KEY_PIC_URL);
+
+        GlideApp.with(this).load(picUrl).thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY)).into(mAlbum);
 
         ToplistDetailFragment fragment = (ToplistDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
