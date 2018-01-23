@@ -15,7 +15,7 @@
  */
 package com.koma.audient.mine;
 
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -23,15 +23,24 @@ import java.util.List;
 
 public interface MineContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
         void showLoadingError();
 
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void showFavoriteProgressBar(boolean forceShow);
 
-        void showMusic(List<MusicFileItem> musics);
+        void showUserProgressBar(boolean forceShow);
+
+        void showFavorite(List<AudientTest> audientTests);
+
+        void showUser(List<AudientTest> audientTests);
     }
 
     interface Presenter extends BasePresenter {
+        void loadFavorite();
+
+        void loadUser();
     }
 }

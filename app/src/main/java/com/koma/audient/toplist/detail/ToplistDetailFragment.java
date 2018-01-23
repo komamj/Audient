@@ -22,10 +22,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.koma.audient.R;
+import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -85,6 +88,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             }
         });
 
+        mSwipeRefreshLayout.setRefreshing(true);
+
         mAdapter = new ToplistDetailAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);
@@ -110,6 +115,11 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     }
 
     @Override
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
     public int getTopId() {
         return this.mTopId;
     }
@@ -117,5 +127,12 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     @Override
     public String getShowTime() {
         return this.mShowTime;
+    }
+
+    @Override
+    public void showToplistDetail(List<ToplistDetailResult.ToplistDetail> toplistDetails) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
+        mAdapter.update(toplistDetails);
     }
 }

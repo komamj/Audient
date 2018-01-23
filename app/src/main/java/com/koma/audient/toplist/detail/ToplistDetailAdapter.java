@@ -16,16 +16,43 @@
 package com.koma.audient.toplist.detail;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.koma.audient.R;
+import com.koma.audient.audition.AuditionDialogFragment;
+import com.koma.audient.comment.CommentActivity;
+import com.koma.audient.helper.GlideApp;
+import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
+import com.koma.common.util.Constants;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.ToplistDetail, ToplistDetailAdapter.ToplistDetailViewHolder> {
+    private final GlideRequest<Drawable> mGlideRequest;
+
     public ToplistDetailAdapter(Context context) {
         super(context);
+
+        mGlideRequest = GlideApp.with(mContext)
+                .asDrawable()
+                .dontAnimate()
+                .thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY));
     }
 
     @Override
@@ -45,17 +72,76 @@ public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.Toplis
 
     @Override
     public ToplistDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_toplist_detail, parent,
+                false);
+
+        return new ToplistDetailViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ToplistDetailViewHolder holder, int position) {
+        ToplistDetailResult.ToplistDetail toplistDetail = mData.get(position);
 
+        mGlideRequest.load(buildUrl(toplistDetail.dataBean.albumId)).into(holder.mAlbum);
+
+        holder.mMusicName.setText(toplistDetail.dataBean.name);
+        holder.mActorName.setText(toplistDetail.dataBean.singer.get(0).name);
     }
 
-    class ToplistDetailViewHolder extends BaseViewHolder {
+    private static String buildUrl(String albumId) {
+        StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
+        builder.append("album/");
+        builder.append(albumId);
+        builder.append("/pic");
+
+        return builder.toString();
+    }
+
+    class ToplistDetailViewHolder extends BaseViewHolder implements View.OnClickListener {
+        @BindView(R.id.iv_album)
+        ImageView mAlbum;
+        @BindView(R.id.tv_music_name)
+        TextView mMusicName;
+        @BindView(R.id.tv_actor_name)
+        TextView mActorName;
+
+        @OnClick(R.id.iv_more)
+        void showPopupView(View view) {
+            PopupMenu popupMenu = new PopupMenu(mContext, view);
+            popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_playlist:
+                            break;
+                        case R.id.action_favorite:
+                            break;
+                        case R.id.action_comment:
+                            Intent intent = new Intent(mContext, CommentActivity.class);
+                            intent.putExtra(Constants.ID, mData.get(getAdapterPosition()).dataBean.id);
+                            mContext.startActivity(intent);
+                            break;
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        }
+
         public ToplistDetailViewHolder(View view) {
             super(view);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+
+            AuditionDialogFragment.newInstance(mData.get(position).dataBean.id)
+                    .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                            Constants.AUDITION_TAG);
         }
     }
 }

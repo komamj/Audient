@@ -19,7 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.koma.audient.R;
-import com.koma.audient.login.LoginActivity;
+import com.koma.audient.main.MainActivity;
 import com.koma.common.base.BaseActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -46,7 +46,7 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         Intent intent = new Intent(SplashActivity.this,
-                                LoginActivity.class);
+                                MainActivity.class);
                         startActivity(intent);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         SplashActivity.this.finish();

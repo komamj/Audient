@@ -15,14 +15,21 @@
  */
 package com.koma.audient.toplist.detail;
 
+import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
+import java.util.List;
+
 public interface ToplistDetailContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
         int getTopId();
 
         String getShowTime();
+
+        void showToplistDetail(List<ToplistDetailResult.ToplistDetail> toplistDetails);
     }
 
     interface Presenter extends BasePresenter {

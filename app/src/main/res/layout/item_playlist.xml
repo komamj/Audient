@@ -13,10 +13,10 @@
         android:id="@+id/iv_album"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/darker_gray" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info_layout"
@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_album"
-        app:layout_constraintEnd_toStartOf="@+id/ic_more"
+        app:layout_constraintEnd_toStartOf="@+id/iv_more"
         app:layout_constraintStart_toEndOf="@+id/iv_album"
         app:layout_constraintTop_toTopOf="@+id/iv_album">
 
@@ -54,7 +54,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/ic_more"
+        android:id="@+id/iv_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"

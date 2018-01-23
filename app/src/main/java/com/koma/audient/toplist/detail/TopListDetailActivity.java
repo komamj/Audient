@@ -33,6 +33,7 @@ import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 
 public class TopListDetailActivity extends BaseActivity {
@@ -42,9 +43,11 @@ public class TopListDetailActivity extends BaseActivity {
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
     @BindView(R.id.iv_album)
     ImageView mAlbum;
+
+    @BindColor(R.color.colorAccent)
+    int mColorAccent;
 
     @Inject
     ToplistDetailPresenter mPresenter;
@@ -62,17 +65,22 @@ public class TopListDetailActivity extends BaseActivity {
     @Override
     protected void onPermissonGranted() {
         setSupportActionBar(mToolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
+        String toplistName = getIntent().getStringExtra(Constants.KEY_top_list_name);
         String showTime = getIntent().getStringExtra(Constants.KEY_SHOW_TIME);
         String picUrl = getIntent().getStringExtra(Constants.KEY_PIC_URL);
 
         GlideApp.with(this).load(picUrl).thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY)).into(mAlbum);
+
+        mCollapsingToolbarLayout.setTitle(toplistName);
+        mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
 
         ToplistDetailFragment fragment = (ToplistDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);

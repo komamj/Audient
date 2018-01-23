@@ -84,8 +84,8 @@
         android:progressTint="@color/colorAccent"
         android:thumbTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pause"
+        app:layout_constraintStart_toStartOf="@+id/iv_album"
         app:layout_constraintTop_toBottomOf="@+id/iv_album" />
 
 </android.support.constraint.ConstraintLayout>

@@ -29,6 +29,7 @@ public final class Constants {
 
     // toplist detail
     public static final String KEY_TOP_ID = "key_top_id";
+    public static final String KEY_top_list_name = "key_top_list_name";
     public static final String KEY_SHOW_TIME = "key_show_time";
     public static final String KEY_PIC_URL = "key_pic_url";
 

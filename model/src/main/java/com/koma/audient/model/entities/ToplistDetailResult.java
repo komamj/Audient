@@ -37,7 +37,7 @@ public class ToplistDetailResult {
             @SerializedName("albumname")
             public String albumName;
             @SerializedName("singer")
-            public Singer singer;
+            public List<Singer> singer;
         }
     }
 }

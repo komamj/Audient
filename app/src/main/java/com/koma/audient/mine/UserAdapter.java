@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.playlist;
+package com.koma.audient.mine;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -37,11 +37,10 @@ import com.koma.common.base.BaseViewHolder;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.PlaylistViewHolder> {
-
+public class UserAdapter extends BaseAdapter<AudientTest, UserAdapter.MineViewHolder> {
     private final GlideRequest<Drawable> mGlideRequest;
 
-    public PlaylistAdapter(Context context) {
+    public UserAdapter(Context context) {
         super(context);
 
         mGlideRequest = GlideApp.with(mContext)
@@ -67,20 +66,20 @@ public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.Pl
     }
 
     @Override
-    public PlaylistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_playlist,
                 parent, false);
-        return new PlaylistViewHolder(view);
+        return new MineViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PlaylistViewHolder holder, int position) {
+    public void onBindViewHolder(MineViewHolder holder, int position) {
         mGlideRequest.load(mData.get(position).albumUrl).into(holder.mAlbum);
         holder.mMusicName.setText(mData.get(position).musicName);
         holder.mActorName.setText(mData.get(position).actorName);
     }
 
-    class PlaylistViewHolder extends BaseViewHolder {
+    class MineViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_music_name)
@@ -101,8 +100,8 @@ public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.Pl
             popupMenu.show();
         }
 
-        PlaylistViewHolder(View itemView) {
-            super(itemView);
+        public MineViewHolder(View view) {
+            super(view);
         }
     }
 }

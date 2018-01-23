@@ -16,11 +16,15 @@
 package com.koma.audient.mine;
 
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
 
@@ -28,10 +32,24 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 public class MineFragment extends BaseFragment implements MineContract.View {
     private static final String TAG = MineFragment.class.getSimpleName();
 
+    @BindView(R.id.recycler_view_favorite)
+    RecyclerView mRecyclerViewFavorite;
+    @BindView(R.id.recycler_view_user)
+    RecyclerView mRecyclerViewUser;
+    @BindView(R.id.progress_bar_favorite)
+    ContentLoadingProgressBar mFavoriteProgressBar;
+    @BindView(R.id.progress_bar_user)
+    ContentLoadingProgressBar mUserProgressBar;
+
     private boolean mIsPrepared;
+
+    private UserAdapter mUserAdapter;
+    private FavoriteAdapter mFavoriteAdapter;
 
     @Inject
     MinePresenter mPresenter;
@@ -74,6 +92,21 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
         LogUtils.i(TAG, "onViewCreated");
 
+        mUserAdapter = new UserAdapter(mContext);
+
+        mFavoriteAdapter = new FavoriteAdapter(mContext);
+
+        LinearLayoutManager layoutManagerFavorite = new LinearLayoutManager(mContext);
+        layoutManagerFavorite.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerViewFavorite.setLayoutManager(layoutManagerFavorite);
+        mRecyclerViewFavorite.setAdapter(mFavoriteAdapter);
+
+        LinearLayoutManager layoutManagerUser = new LinearLayoutManager(mContext);
+        layoutManagerUser.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerViewUser.setLayoutManager(layoutManagerUser);
+        mRecyclerViewUser.addItemDecoration(new AudientItemDecoration(mContext));
+        mRecyclerViewUser.setAdapter(mUserAdapter);
+
         mIsPrepared = true;
     }
 
@@ -99,6 +132,11 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     }
 
     @Override
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
     public void showLoadingError() {
 
     }
@@ -109,12 +147,30 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     }
 
     @Override
-    public void showProgressBar(boolean forceShow) {
-
+    public void showFavoriteProgressBar(boolean forceShow) {
+        if (forceShow) {
+            mFavoriteProgressBar.show();
+        } else {
+            mFavoriteProgressBar.hide();
+        }
     }
 
     @Override
-    public void showMusic(List<MusicFileItem> musics) {
+    public void showUserProgressBar(boolean forceShow) {
+        if (forceShow) {
+            mUserProgressBar.show();
+        } else {
+            mUserProgressBar.hide();
+        }
+    }
 
+    @Override
+    public void showFavorite(List<AudientTest> audientTests) {
+        mFavoriteAdapter.update(audientTests);
+    }
+
+    @Override
+    public void showUser(List<AudientTest> audientTests) {
+        mUserAdapter.update(audientTests);
     }
 }

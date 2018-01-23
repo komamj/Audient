@@ -16,11 +16,17 @@
 package com.koma.audient.mine;
 
 import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class MinePresenter implements MineContract.Presenter {
     public static final String TAG = MinePresenter.class.getSimpleName();
@@ -48,6 +54,10 @@ public class MinePresenter implements MineContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
+
+        loadFavorite();
+
+        loadUser();
     }
 
     @Override
@@ -55,5 +65,59 @@ public class MinePresenter implements MineContract.Presenter {
         LogUtils.i(TAG, "unSubscribe");
 
         mDisposables.clear();
+    }
+
+    @Override
+    public void loadFavorite() {
+        mRepository.getAudientTests()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
+                    @Override
+                    public void onNext(List<AudientTest> audientTests) {
+                        if (mView.isActive()) {
+                            mView.showFavoriteProgressBar(false);
+
+                            mView.showFavorite(audientTests);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void loadUser() {
+        mRepository.getAudientTests()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
+                    @Override
+                    public void onNext(List<AudientTest> audientTests) {
+                        if (mView.isActive()) {
+                            mView.showUserProgressBar(false);
+
+                            mView.showUser(audientTests);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
