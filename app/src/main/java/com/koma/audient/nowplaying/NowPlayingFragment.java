@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.comment.CommentActivity;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
 
@@ -105,7 +105,7 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
-    public void showMusic(List<MusicFileItem> musics) {
+    public void showMusic(List<AudientTest> audientTests) {
 
     }
 }

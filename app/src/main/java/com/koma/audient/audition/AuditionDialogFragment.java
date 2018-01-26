@@ -35,14 +35,18 @@ import com.koma.audient.model.entities.Audient;
 import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AuditionDialogFragment extends DialogFragment implements AuditionContract.View, SeekBar.OnSeekBarChangeListener {
+public class AuditionDialogFragment extends DialogFragment implements AuditionContract.View {
     private static final String TAG = AuditionDialogFragment.class.getSimpleName();
+
+    private static final int LIMITED_TIME = 30;
 
     @BindView(R.id.tv_actor_name)
     TextView mActorName;
@@ -113,9 +117,34 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
         ButterKnife.bind(this, view);
 
-        mProgressBar.setOnSeekBarChangeListener(this);
+        mProgressBar.setMax((int) getLimitedTime());
+        mProgressBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    int userSelectedPosition = 0;
 
-        mPresenter.loadAudient(mId);
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser) {
+                            userSelectedPosition = progress;
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        if (mPresenter != null) {
+                            mPresenter.seekTo(userSelectedPosition);
+                        }
+                    }
+                });
+
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
 
         return view;
     }
@@ -137,28 +166,60 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     }
 
     @Override
-    public void onLoadFinished(Audient audient) {
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
+    public long getLimitedTime() {
+        return TimeUnit.SECONDS.toMillis(LIMITED_TIME);
+    }
+
+    @Override
+    public String getAudientId() {
+        return this.mId;
+    }
+
+    @Override
+    public void showAudient(Audient audient) {
         GlideApp.with(this).load(audient)
                 .thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY))
                 .dontAnimate()
                 .into(mAlbum);
-        mActorName.setText(audient.singer.get(0).name);
+        mActorName.setText(audient.artist.name);
         mMusicName.setText(audient.name);
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+    public void setMaxProgress(int progress) {
+        LogUtils.i(TAG, "setMaxProgress :" + TimeUnit.SECONDS.toMillis(progress));
 
+        mProgressBar.setMax(progress);
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
+    public void showProgress(int progress) {
+        LogUtils.i(TAG, "showProgress :" + progress);
 
+        mProgressBar.setProgress(progress);
     }
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
+    public void showSecondaryProgress(int progress) {
+        LogUtils.i(TAG, "showSecondaryProgress :" + progress);
 
+        mProgressBar.setSecondaryProgress(progress);
+    }
+
+    @Override
+    public void updateControllView(int playState) {
+        if (playState == Constants.PLAYING) {
+            mPauseButton.setImageResource(R.drawable.ic_pause);
+        } else if (playState == Constants.PAUSED) {
+            mPauseButton.setImageResource(R.drawable.ic_play);
+        } else if (playState == Constants.COMPLETED) {
+            mPauseButton.setImageResource(R.drawable.ic_replay);
+        }
     }
 }

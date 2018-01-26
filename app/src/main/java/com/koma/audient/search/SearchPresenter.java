@@ -80,7 +80,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                 .map(new Function<SearchResult, List<Audient>>() {
                     @Override
                     public List<Audient> apply(SearchResult searchResult) throws Exception {
-                        return searchResult.dataBean.songBean.audients;
+                        return searchResult.dataBean.audients;
                     }
                 })
                 .subscribeOn(Schedulers.io())

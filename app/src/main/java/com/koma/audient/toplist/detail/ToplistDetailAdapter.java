@@ -113,8 +113,6 @@ public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.Toplis
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.action_playlist:
-                            break;
                         case R.id.action_favorite:
                             break;
                         case R.id.action_comment:

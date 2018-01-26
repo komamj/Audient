@@ -15,7 +15,7 @@
  */
 package com.koma.audient.nowplaying;
 
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.AudientTest;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -29,7 +29,7 @@ public interface NowPlayingContract {
 
         void showProgressBar(boolean forceShow);
 
-        void showMusic(List<MusicFileItem> musics);
+        void showMusic(List<AudientTest> audientTests);
     }
 
     interface Presenter extends BasePresenter {

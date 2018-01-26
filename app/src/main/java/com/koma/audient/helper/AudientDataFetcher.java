@@ -26,7 +26,6 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.util.ContentLengthInputStream;
 import com.bumptech.glide.util.Preconditions;
 import com.koma.audient.model.AudientApi;
-import com.koma.audient.model.entities.AlbumResult;
 import com.koma.audient.model.entities.Audient;
 import com.koma.common.util.LogUtils;
 
@@ -34,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;

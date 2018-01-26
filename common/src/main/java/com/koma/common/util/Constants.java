@@ -15,6 +15,11 @@
  */
 package com.koma.common.util;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 public final class Constants {
     public static final String APP_ID = "207777070000267100";
     public static final String ACCESS_TOKEN = "62e5580162f425c664d0aa45e38143221515391745219";
@@ -26,6 +31,16 @@ public final class Constants {
     // audition dialog
     public static final String KEY_AUDIENT_ID = "key_auident_id";
     public static final String AUDITION_TAG = "audition_tag";
+
+    public static final int UNKNOWN = 0;
+    public static final int PLAYING = 1;
+    public static final int PAUSED = 2;
+    public static final int COMPLETED = 3;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({UNKNOWN, PLAYING, PAUSED, COMPLETED})
+    public @interface PlayState {
+    }
 
     // toplist detail
     public static final String KEY_TOP_ID = "key_top_id";
@@ -39,6 +54,7 @@ public final class Constants {
 
     // comment
     public static final String ID = "id";
+    public static final String NAME = "name";
 
     private Constants() {
     }

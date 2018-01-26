@@ -15,20 +15,23 @@
  */
 package com.koma.audient.model.entities;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Singer {
-    @SerializedName("mid")
+public class Artist {
+    @ColumnInfo(name = "artist_id")
+    @SerializedName("id")
     public String id;
+    @ColumnInfo(name = "artist_name")
     @SerializedName("name")
     public String name;
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("singer has id :");
+        builder.append("artist with id :");
         builder.append(id);
         builder.append(",name :");
         builder.append(name);
@@ -45,8 +48,8 @@ public class Singer {
             return false;
         }
 
-        Singer singer = (Singer) o;
+        Artist artist = (Artist) o;
 
-        return TextUtils.equals(this.id, singer.id) && TextUtils.equals(this.name, singer.name);
+        return TextUtils.equals(this.id, artist.id) && TextUtils.equals(this.name, artist.name);
     }
 }

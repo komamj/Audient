@@ -84,7 +84,7 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
         mGlideRequest.load(mData.get(position)).into(holder.mAlbum);
 
         holder.mMusicName.setText(mData.get(position).name);
-        holder.mActorName.setText(mData.get(position).singer.get(0).name);
+        holder.mActorName.setText(mData.get(position).artist.name);
     }
 
     @Override
@@ -100,6 +100,11 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
         @BindView(R.id.tv_actor_name)
         TextView mActorName;
 
+        @OnClick(R.id.iv_playlist_add)
+        void addToPlaylis() {
+
+        }
+
         @OnClick(R.id.iv_more)
         void showPopupView(View view) {
             PopupMenu popupMenu = new PopupMenu(mContext, view);
@@ -108,8 +113,6 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.action_playlist:
-                            break;
                         case R.id.action_favorite:
                             break;
                         case R.id.action_comment:

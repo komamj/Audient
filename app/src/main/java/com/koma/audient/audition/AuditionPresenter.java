@@ -15,13 +15,25 @@
  */
 package com.koma.audient.audition;
 
+import android.media.MediaPlayer;
+import android.text.TextUtils;
+
 import com.koma.audient.model.AudientRepository;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.File;
+import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.SongDetailResult;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
+
+import org.reactivestreams.Publisher;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -29,7 +41,9 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class AuditionPresenter implements AuditionContract.Presenter {
+public class AuditionPresenter implements AuditionContract.Presenter,
+        MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener,
+        MediaPlayer.OnPreparedListener {
     private static final String TAG = AuditionPresenter.class.getSimpleName();
 
     private final AuditionContract.View mView;
@@ -37,6 +51,8 @@ public class AuditionPresenter implements AuditionContract.Presenter {
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
+
+    private MediaPlayer mMediaPlayer;
 
     @Inject
     public AuditionPresenter(AuditionContract.View view, AudientRepository repository) {
@@ -55,11 +71,26 @@ public class AuditionPresenter implements AuditionContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
+
+        loadAudient(mView.getAudientId());
+
+        loadFile(mView.getAudientId());
+    }
+
+    private void initializeMediaPlayer() {
+        if (mMediaPlayer == null) {
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setOnPreparedListener(this);
+            mMediaPlayer.setOnBufferingUpdateListener(this);
+            mMediaPlayer.setOnCompletionListener(this);
+        }
     }
 
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
+
+        release();
 
         mDisposables.clear();
     }
@@ -70,7 +101,7 @@ public class AuditionPresenter implements AuditionContract.Presenter {
                 .map(new Function<SongDetailResult, Audient>() {
                     @Override
                     public Audient apply(SongDetailResult songDetailResult) throws Exception {
-                        return songDetailResult.audients.get(0);
+                        return songDetailResult.audient;
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -78,7 +109,74 @@ public class AuditionPresenter implements AuditionContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<Audient>() {
                     @Override
                     public void onNext(Audient audient) {
-                        mView.onLoadFinished(audient);
+                        mView.showAudient(audient);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadAudient onError:" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposables.add(disposable);
+    }
+
+    @Override
+    public void loadMedia(String url) {
+        initializeMediaPlayer();
+
+        try {
+            mMediaPlayer.setDataSource(url);
+        } catch (Exception e) {
+            LogUtils.e(TAG, "loadMedia error :" + e.toString());
+        }
+
+        try {
+            mMediaPlayer.prepareAsync();
+        } catch (Exception e) {
+            LogUtils.e(TAG, "loadMedia prepare error :" + e.toString());
+        }
+    }
+
+    @Override
+    public void loadFile(String id) {
+        Disposable disposable = mRepository.getFileResult(id)
+                .map(new Function<FileResult, List<File>>() {
+                    @Override
+                    public List<File> apply(FileResult fileResult) throws Exception {
+                        return fileResult.files;
+                    }
+                })
+                .flatMap(new Function<List<File>, Publisher<File>>() {
+                    @Override
+                    public Publisher<File> apply(List<File> files) throws Exception {
+                        for (File file : files) {
+                            if (!TextUtils.isEmpty(file.url)) {
+                                return Flowable.just(file);
+                            }
+                        }
+                        return Flowable.fromIterable(files);
+                    }
+                })
+                .map(new Function<File, String>() {
+                    @Override
+                    public String apply(File file) throws Exception {
+                        return file.url;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<String>() {
+                    @Override
+                    public void onNext(String url) {
+                        LogUtils.i(TAG, "url :" + url);
+
+                        loadMedia(url);
                     }
 
                     @Override
@@ -91,11 +189,169 @@ public class AuditionPresenter implements AuditionContract.Presenter {
 
                     }
                 });
+
         mDisposables.add(disposable);
     }
 
     @Override
-    public void doPauseOrPlay() {
+    public void pause() {
+        if (mMediaPlayer == null) {
+            return;
+        }
 
+        mMediaPlayer.pause();
+
+        if (mView.isActive()) {
+            mView.updateControllView(Constants.PAUSED);
+        }
+    }
+
+    @Override
+    public void play() {
+        if (mMediaPlayer == null) {
+            return;
+        }
+
+        mMediaPlayer.start();
+
+        if (mView.isActive()) {
+            mView.updateControllView(Constants.PLAYING);
+        }
+
+        refreshProgress();
+    }
+
+    @Override
+    public void stop() {
+        if (mMediaPlayer == null) {
+            return;
+        }
+
+        mMediaPlayer.stop();
+
+        if (mView.isActive()) {
+            mView.updateControllView(Constants.PAUSED);
+        }
+
+        refreshProgress();
+    }
+
+    @Override
+    public void doPauseOrPlay() {
+        if (isCompleted()) {
+            replay();
+        } else if (isPlaying()) {
+            pause();
+        } else {
+            play();
+        }
+    }
+
+    private void refreshProgress() {
+        Disposable disposable = Flowable.interval(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Long>() {
+                    @Override
+                    public void onNext(Long aLong) {
+                        if (isPlaying()) {
+                            int currentPosition = getCurrentPosition();
+
+                            if (currentPosition >= mView.getLimitedTime()) {
+                                pause();
+
+                                if (mView.isActive()) {
+                                    mView.updateControllView(Constants.COMPLETED);
+                                }
+                            }
+
+                            if (mView.isActive()) {
+                                mView.showProgress(currentPosition);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposables.add(disposable);
+    }
+
+    private boolean isPlaying() {
+        if (mMediaPlayer != null) {
+            return mMediaPlayer.isPlaying();
+        }
+
+        return false;
+    }
+
+    private boolean isCompleted() {
+        if (getCurrentPosition() >= mView.getLimitedTime()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void seekTo(int position) {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.seekTo(position);
+        }
+    }
+
+    private int getCurrentPosition() {
+        if (mMediaPlayer != null) {
+            return mMediaPlayer.getCurrentPosition();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void replay() {
+        seekTo(0);
+
+        play();
+    }
+
+    private void release() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mediaPlayer, int position) {
+        LogUtils.i(TAG, "onBufferingUpdate position :" + position);
+
+        if (mView.isActive()) {
+            mView.showSecondaryProgress(position);
+        }
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        /*int duration = mMediaPlayer.getDuration();
+
+        if (mView.isActive()) {
+            mView.setMaxProgress(duration);
+        }*/
+
+        play();
     }
 }

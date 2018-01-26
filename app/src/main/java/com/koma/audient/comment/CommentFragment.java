@@ -31,6 +31,7 @@ import com.koma.common.util.LogUtils;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CommentFragment extends BaseFragment implements CommentContract.View {
     private static final String TAG = CommentFragment.class.getSimpleName();
@@ -39,6 +40,11 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @OnClick(R.id.fab)
+    void showEditView() {
+
+    }
 
     private CommentAdapter mAdapter;
 

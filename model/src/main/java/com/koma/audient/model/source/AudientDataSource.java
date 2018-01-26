@@ -15,12 +15,10 @@
  */
 package com.koma.audient.model.source;
 
-import android.support.annotation.NonNull;
-
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
-import com.koma.audient.model.entities.Lyric;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.FileResult;
+import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
@@ -37,14 +35,13 @@ public interface AudientDataSource {
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime);
 
-    Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page);
-
     Flowable<SearchResult> getSearchReults(String keyword);
 
-    Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName,
-                             String type);
+    Flowable<LyricResult> getLyric(String id);
 
     Flowable<SongDetailResult> getSongDetailResult(String id);
+
+    Flowable<FileResult> getFileResult(String id);
 
     Flowable<List<Comment>> getComments(long id);
 }

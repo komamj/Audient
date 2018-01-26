@@ -15,21 +15,16 @@
  */
 package com.koma.audient.model.source.remote;
 
-import android.support.annotation.NonNull;
-
 import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
-import com.koma.audient.model.entities.Lyric;
+import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
-import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
-import com.koma.audient.model.entities.TopSong;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.source.AudientDataSource;
-import com.koma.common.util.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +34,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 
 @Singleton
 public class RemoteDataSource implements AudientDataSource {
@@ -67,18 +61,6 @@ public class RemoteDataSource implements AudientDataSource {
         return mAudientApi.getToplistDetail(topId, showTime);
     }
 
-    @Override
-    public Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page) {
-        return mAudientApi.getTopSongs(billboardId, count, page, Constants.APP_ID,
-                Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<TopSong, List<MusicFileItem>>() {
-                    @Override
-                    public List<MusicFileItem> apply(TopSong topSong) throws Exception {
-                        return topSong.queryContentBillboardResponse.musicItemList.musics;
-                    }
-                });
-    }
-
     private String getTimeStamp() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timeStamp = simpleDateFormat.format(new Date());
@@ -91,21 +73,18 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<Lyric> getLyric(String id, String idType, String musicName,
-                                    String actorName, String type) {
-        return mAudientApi.getLyric(id, idType, musicName, actorName, type, Constants.APP_ID,
-                Constants.ACCESS_TOKEN, getTimeStamp())
-                .map(new Function<LyricResult, Lyric>() {
-                    @Override
-                    public Lyric apply(LyricResult lyricResult) throws Exception {
-                        return lyricResult.queryLyricResponse.lyric;
-                    }
-                });
+    public Flowable<LyricResult> getLyric(String id) {
+        return mAudientApi.getLyricResult(id);
     }
 
     @Override
     public Flowable<SongDetailResult> getSongDetailResult(String id) {
         return mAudientApi.getSongDetailResult(id);
+    }
+
+    @Override
+    public Flowable<FileResult> getFileResult(String id) {
+        return mAudientApi.getFileResult(id);
     }
 
     @Override

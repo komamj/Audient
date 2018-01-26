@@ -16,31 +16,31 @@
 package com.koma.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 @Entity(tableName = "audient")
 public class Audient {
     @NonNull
-    @SerializedName("mid")
+    @SerializedName("id")
     @PrimaryKey
     @ColumnInfo(name = "id")
     public String id;
+    @ColumnInfo(name = "name")
     @SerializedName("name")
     public String name;
+    @ColumnInfo(name = "duration")
     @SerializedName("interval")
     public long duration;
-    @Ignore
-    @SerializedName("singer")
-    public List<Singer> singer;
-    @Ignore
+    @Embedded
+    @SerializedName("artist")
+    public Artist artist;
+    @Embedded
     @SerializedName("album")
     public Album album;
 
@@ -54,8 +54,8 @@ public class Audient {
         builder.append(id);
         builder.append(",name ");
         builder.append(name);
-        builder.append(",singer ");
-        builder.append(singer.get(0).toString());
+        builder.append(",artist ");
+        builder.append(artist.toString());
         builder.append(",album ");
         builder.append(album.toString());
         return builder.toString();
@@ -73,6 +73,8 @@ public class Audient {
 
         Audient audient = (Audient) o;
 
-        return TextUtils.equals(this.id, audient.id) && TextUtils.equals(name, audient.name);
+        return TextUtils.equals(this.id, audient.id) && this.duration == audient.duration
+                && TextUtils.equals(name, audient.name) && this.artist.equals(audient.artist)
+                && this.album.equals(audient.album);
     }
 }

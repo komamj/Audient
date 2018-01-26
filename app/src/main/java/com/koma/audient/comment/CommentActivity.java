@@ -53,9 +53,11 @@ public class CommentActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        mCollapsingToolbarLayout.setTitle("海阔天空");
-
         long id = getIntent().getLongExtra(Constants.ID, -1);
+
+        String name = getIntent().getStringExtra(Constants.NAME);
+
+        mCollapsingToolbarLayout.setTitle(name);
 
         CommentFragment commentFragment = (CommentFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
@@ -93,6 +95,6 @@ public class CommentActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_comment;
+        return R.layout.activity_detail_base;
     }
 }

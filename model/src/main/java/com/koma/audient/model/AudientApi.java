@@ -15,11 +15,11 @@
  */
 package com.koma.audient.model;
 
+import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
-import com.koma.audient.model.entities.TopSong;
 import com.koma.audient.model.entities.ToplistDetailResult;
 
 import java.util.List;
@@ -43,25 +43,6 @@ public interface AudientApi {
     Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId, @Query("date") String showTime);
 
     /**
-     * 获取对应榜单的歌曲.
-     *
-     * @param billboardId 榜单ID。通过【产品信息】.【获取榜单列表】接口获取“榜单id”.
-     * @param count       单页返回记录数 默认为10
-     * @param page        查询记录的开始数, 默认为 1. 例如总数为30的, 当查询开始数为1, count为10的时候,
-     *                    返回的记录数为第1到第10条, 如果需要获得11-20的记录, 则可以将page设为11,
-     *                    count为10的时候, 则返回的记录数为第11到第20条, 依此类推.
-     * @param appID       应用ID
-     * @param accessToken 访问令牌
-     * @param timeStamp   时间戳，格式为：yyyy-MM-dd HH:mm:ss
-     */
-    @GET("content/contentbillboardservice/querycontentbillboard")
-    Flowable<TopSong> getTopSongs(@Query("billboard_id") String billboardId,
-                                  @Query("count") int count, @Query("page") int page,
-                                  @Query("app_id") String appID,
-                                  @Query("access_token") String accessToken,
-                                  @Query("timestamp") String timeStamp);
-
-    /**
      * 获取搜索结果.
      *
      * @param keyword 关键字.
@@ -72,24 +53,14 @@ public interface AudientApi {
     /**
      * 获取歌词.
      *
-     * @param id          内容id.
-     * @param idType      类型 0=歌曲ID，1=资源ID
-     * @param musicName   歌曲名
-     * @param actorName   歌手名
-     * @param type        歌词类型 类型值分别为：txt、lrc
-     * @param appID       应用ID
-     * @param accessToken 访问令牌
-     * @param timeStamp   时间戳，格式为：yyyy-MM-dd HH:mm:ss
+     * @param id
      */
-    @GET("lyric/lyric/querylyric")
-    Flowable<LyricResult> getLyric(@Query("id") String id, @Query("id_type") String idType,
-                                   @Query("music_name") String musicName,
-                                   @Query("actor_name") String actorName,
-                                   @Query("type") String type,
-                                   @Query("app_id") String appID,
-                                   @Query("access_token") String accessToken,
-                                   @Query("timestamp") String timeStamp);
+    @GET("{id}/lyric")
+    Flowable<LyricResult> getLyricResult(@Path("id") String id);
 
     @GET("{id}")
     Flowable<SongDetailResult> getSongDetailResult(@Path("id") String id);
+
+    @GET("{id}/url")
+    Flowable<FileResult> getFileResult(@Path("id") String id);
 }

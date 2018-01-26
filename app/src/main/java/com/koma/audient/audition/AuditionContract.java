@@ -18,15 +18,44 @@ package com.koma.audient.audition;
 import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
+import com.koma.common.util.Constants;
 
 public interface AuditionContract {
     interface View extends BaseView<Presenter> {
-        void onLoadFinished(Audient audient);
+        boolean isActive();
+
+        long getLimitedTime();
+
+        String getAudientId();
+
+        void showAudient(Audient audient);
+
+        void setMaxProgress(int progress);
+
+        void showProgress(int progress);
+
+        void showSecondaryProgress(int progress);
+
+        void updateControllView(@Constants.PlayState int playState);
     }
 
     interface Presenter extends BasePresenter {
         void loadAudient(String id);
 
+        void loadMedia(String url);
+
+        void loadFile(String id);
+
+        void pause();
+
+        void play();
+
+        void stop();
+
         void doPauseOrPlay();
+
+        void seekTo(int position);
+
+        void replay();
     }
 }

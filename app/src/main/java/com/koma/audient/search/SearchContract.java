@@ -16,7 +16,6 @@
 package com.koma.audient.search;
 
 import com.koma.audient.model.entities.Audient;
-import com.koma.audient.model.entities.MusicFileItem;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 

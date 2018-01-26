@@ -18,6 +18,8 @@ package com.koma.audient.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 public class Lyric {
-    @SerializedName("text")
-    public String text;
+    @SerializedName("lyric")
+    public String lyric;
+    @SerializedName("trans")
+    public String translation;
 }

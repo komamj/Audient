@@ -21,24 +21,13 @@ import java.util.List;
 
 public class SearchResult {
     /**
-     * code : 0
-     * data : {"keyword":"四季","priority":0,"qc":[],"semantic":{"curnum":0,"curpage":1,"list":[],"totalnum":0},"song":{"curnum":28,"curpage":1,"list":[{"action":{"alert":100002,"icons":8060,"msg":16,"switch":17413891},"album":{"id":2106708,"id":"0011gDoK1KiXBI","name":"四季","subtitle":"","title":"四季","title_hilight":"<em>四季<\/em>"},"chinesesinger":0,"desc":"","desc_hilight":"","docid":"7562074659741560533","file":{"media_mid":"004GGiIn3318EZ","size_128":3918563,"size_320":9796114,"size_aac":5884183,"size_ape":0,"size_dts":0,"size_flac":0,"size_ogg":5221991,"size_try":0,"strMediaMid":"004GGiIn3318EZ","try_begin":0,"try_end":0},"fnote":4009,"genre":1,"grp":[],"id":108549992,"index_album":1,"index_cd":0,"interval":244,"isonly":1,"ksong":{"id":2363908,"id":"002rci8S4FnvhB"},"language":1,"lyric":"","lyric_hilight":"","id":"002ex7Ug3EZzVm","mv":{"id":0,"vid":""},"name":"四季","newStatus":2,"nt":10002,"pay":{"pay_down":1,"pay_month":1,"pay_play":0,"pay_status":0,"price_album":0,"price_track":200,"time_free":0},"pure":0,"singer":[{"id":143,"id":"003Nz2So3XXYek","name":"陈奕迅","title":"陈奕迅","title_hilight":"陈奕迅","type":0,"uin":0}],"status":0,"subtitle":"","t":1,"tag":10,"time_public":"2016-09-29","title":"四季","title_hilight":"<em>四季<\/em>","type":0,"url":"http://stream10.qqmusic.qq.com/108549992.wma","ver":0,"volume":{"gain":-4.238999843597412,"lra":9.206000328063965,"peak":0.9570000171661377}}],"totalnum":366},"taglist":[],"totaltime":0,"zhida":{"chinesesinger":0,"type":0}}
-     * message :
-     * notice :
-     * subcode : 0
-     * time : 1516279227
-     * tips :
+     * {"data":{"keyword":"黄家驹","currentPage":1,"currentNumber":147,"items":[{"id":"001yS0N33yPm1B","name":"海阔天空","interval":324,"album":{"id":"002qcJuX3lO3EZ","name":"乐与怒"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"002pKRoX4Qbafa","name":"光辉岁月","interval":298,"album":{"id":"001C2BRX15iE4B","name":"命运派对"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"000DIFHv0PjOHH","name":"不再犹豫","interval":250,"album":{"id":"000DWELJ4Y7U3P","name":"黄家驹原作精选集"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"004Gyue33FERTT","name":"真的爱你","interval":275,"album":{"id":"000eOgmK1fN8Cs","name":"BEYOND IV"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"00247u9f23fivj","name":"谁伴我闯荡","interval":251,"album":{"id":"000DWELJ4Y7U3P","name":"黄家驹原作精选集"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"001mbYZr3QR68r","name":"喜欢你","interval":273,"album":{"id":"001oHxZZ1pAQn4","name":"秘密警察"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"001M0E9Z30ixjI","name":"灰色轨迹","interval":327,"album":{"id":"000DWELJ4Y7U3P","name":"黄家驹原作精选集"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"003Bm0EC2bevBk","name":"大地","interval":264,"album":{"id":"002OfzpN3ZTdf1","name":"4拍4"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"003ZUKRH4CCoei","name":"冷雨夜","interval":302,"album":{"id":"000DWELJ4Y7U3P","name":"黄家驹原作精选集"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"000lIkuJ1CQHpI","name":"情人","interval":317,"album":{"id":"002qcJuX3lO3EZ","name":"乐与怒"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"000nnbeh1CX79k","name":"无尽空虚","interval":279,"album":{"id":"000fRELw0ShGt1","name":"无尽空虚"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"003LEsqM1DZJF7","name":"无悔这一生","interval":235,"album":{"id":"003XXfx92RMtUh","name":"真的见证"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"004ALzmy3bSS31","name":"逝去日子","interval":227,"album":{"id":"000eOgmK1fN8Cs","name":"BEYOND IV"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"00362wdo2VbWvD","name":"曾是拥有","interval":268,"album":{"id":"000eOgmK1fN8Cs","name":"BEYOND IV"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"0007kTiZ1kWBvK","name":"午夜怨曲","interval":272,"album":{"id":"003XXfx92RMtUh","name":"真的见证"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"0029GXbo0FgT5F","name":"再见理想","interval":287,"album":{"id":"001YfPBA0OhnOS","name":"缝纫机乐队 电影原声音乐"},"artist":{"id":"003bD7bY1MBaBg","name":"黄家驹"},"extendProps":null},{"id":"002eaFHp1H0ApQ","name":"农民","interval":317,"album":{"id":"004ex7iR3S9VcR","name":"继续革命"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"0027oAiI4evyih","name":"不可一世","interval":255,"album":{"id":"004ex7iR3S9VcR","name":"继续革命"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"000chkjP2u8C8j","name":"大地","interval":262,"album":{"id":"002V6dOT1me0fJ","name":"大地"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null},{"id":"001ZWACH1NF8QF","name":"旧日的足迹","interval":261,"album":{"id":"002MGTsZ3Zl6JH","name":"现代舞台"},"artist":{"id":"002pUZT93gF4Cu","name":"BEYOND"},"extendProps":null}]},"code":0,"message":null}
      */
     @SerializedName("data")
     public DataBean dataBean;
 
     public static class DataBean {
-        @SerializedName("song")
-        public SongBean songBean;
-
-        public static class SongBean {
-            @SerializedName("list")
-            public List<Audient> audients;
-        }
+        @SerializedName("items")
+        public List<Audient> audients;
     }
 }

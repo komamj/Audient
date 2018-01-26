@@ -30,8 +30,8 @@ public interface AudientDao {
     @Query("SELECT * FROM audient")
     List<Audient> getAllAudients();
 
-    @Query("SELECT * FROM audient WHERE id = (:mid)")
-    Audient findById(String mid);
+    @Query("SELECT * FROM audient WHERE id = (:id)")
+    Audient findById(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAudients(Audient... audients);

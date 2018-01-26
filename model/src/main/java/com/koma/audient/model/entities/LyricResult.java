@@ -17,12 +17,7 @@ package com.koma.audient.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LyricResult extends BaseResponse {
-    @SerializedName("queryLyricResponse")
-    public LyricResponse queryLyricResponse;
-
-    public static class LyricResponse {
-        @SerializedName("lyric")
-        public Lyric lyric;
-    }
+public class LyricResult {
+    @SerializedName("data")
+    public Lyric lyric;
 }

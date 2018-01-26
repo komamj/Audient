@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1000,
-    "identityHash": "ce7c777c8f401e705b9909a7d652e169",
+    "identityHash": "c27ff212d1f17a3231d88f7592983cda",
     "entities": [
       {
         "tableName": "audient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `duration` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `duration` INTEGER NOT NULL, `artist_id` TEXT, `artist_name` TEXT, `album_id` TEXT, `album_name` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -25,6 +25,30 @@
             "columnName": "duration",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "artist.id",
+            "columnName": "artist_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "artist.name",
+            "columnName": "artist_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "album.id",
+            "columnName": "album_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "album.name",
+            "columnName": "album_name",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -39,7 +63,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ce7c777c8f401e705b9909a7d652e169\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c27ff212d1f17a3231d88f7592983cda\")"
     ]
   }
 }

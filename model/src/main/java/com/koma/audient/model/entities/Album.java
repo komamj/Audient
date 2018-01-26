@@ -15,11 +15,15 @@
  */
 package com.koma.audient.model.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Album {
-    @SerializedName("mid")
+    @ColumnInfo(name = "album_id")
+    @SerializedName("id")
     public String id;
+    @ColumnInfo(name = "album_name")
     @SerializedName("name")
     public String name;
 }

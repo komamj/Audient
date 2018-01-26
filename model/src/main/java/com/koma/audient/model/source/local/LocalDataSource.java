@@ -17,12 +17,11 @@ package com.koma.audient.model.source.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
-import com.koma.audient.model.entities.Lyric;
-import com.koma.audient.model.entities.MusicFileItem;
+import com.koma.audient.model.entities.FileResult;
+import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.TopListResult;
@@ -79,17 +78,17 @@ public class LocalDataSource implements AudientDataSource {
                 AudientTest audient3 = new AudientTest();
                 audient3.actorName = "谢霆锋";
                 audient3.musicName = "不可一世(Live 2000年12月版)";
-                audient3.albumUrl = "http://4galbum.ctmus.cn/scale/singer/0/78/big_ms_f078_100034494495.jpg?param=200y200";
+                audient3.albumUrl = "http://4galbum.ctmus.cn/scale/artist/0/78/big_ms_f078_100034494495.jpg?param=200y200";
                 audientTests.add(audient3);
                 AudientTest audient4 = new AudientTest();
                 audient4.actorName = "邓紫棋";
                 audient4.musicName = "喜欢你";
-                audient4.albumUrl = "http://4galbum.ctmus.cn/scale/singer/e/02/7220fc92-790d-4c93-9813-ac1c5e93584d.jpg?param=200y200";
+                audient4.albumUrl = "http://4galbum.ctmus.cn/scale/artist/e/02/7220fc92-790d-4c93-9813-ac1c5e93584d.jpg?param=200y200";
                 audientTests.add(audient4);
                 AudientTest audient5 = new AudientTest();
                 audient5.actorName = "beyond";
                 audient5.musicName = "再见理想(live)";
-                audient5.albumUrl = "http://4galbum.ctmus.cn/scale/singer/1/d8/be43f7f4-b570-4a6e-a5af-a564c8a5ab5a.jpg?param=200y200";
+                audient5.albumUrl = "http://4galbum.ctmus.cn/scale/artist/1/d8/be43f7f4-b570-4a6e-a5af-a564c8a5ab5a.jpg?param=200y200";
                 audientTests.add(audient5);
                 AudientTest audient6 = new AudientTest();
                 audient6.actorName = "谭咏麟";
@@ -114,22 +113,22 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<MusicFileItem>> getTopSongs(@NonNull String billboardId, int count, int page) {
-        return null;
-    }
-
-    @Override
     public Flowable<SearchResult> getSearchReults(String keyword) {
         return null;
     }
 
     @Override
-    public Flowable<Lyric> getLyric(String id, String idType, String musicName, String actorName, String type) {
+    public Flowable<LyricResult> getLyric(String id) {
         return null;
     }
 
     @Override
     public Flowable<SongDetailResult> getSongDetailResult(String id) {
+        return null;
+    }
+
+    @Override
+    public Flowable<FileResult> getFileResult(String id) {
         return null;
     }
 
