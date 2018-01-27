@@ -15,6 +15,7 @@
  */
 package com.koma.audient.toplist.detail;
 
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
@@ -29,7 +30,7 @@ public interface ToplistDetailContract {
 
         String getShowTime();
 
-        void showToplistDetail(List<ToplistDetailResult.ToplistDetail> toplistDetails);
+        void showToplistDetail(List<Audient> audients);
     }
 
     interface Presenter extends BasePresenter {

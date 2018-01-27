@@ -20,24 +20,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ToplistDetailResult {
-    @SerializedName("songlist")
-    public List<ToplistDetail> toplistDetails;
+    @SerializedName("data")
+    public DataBean dataBean;
 
-    public static class ToplistDetail {
-        @SerializedName("data")
-        public DataBean dataBean;
-
-        public static class DataBean {
-            @SerializedName("songmid")
-            public String id;
-            @SerializedName("songname")
-            public String name;
-            @SerializedName("albummid")
-            public String albumId;
-            @SerializedName("albumname")
-            public String albumName;
-            @SerializedName("artist")
-            public List<Artist> singer;
-        }
+    public static class DataBean {
+        @SerializedName("items")
+        public List<Audient> audients;
     }
 }

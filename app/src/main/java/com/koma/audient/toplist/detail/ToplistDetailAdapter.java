@@ -34,7 +34,7 @@ import com.koma.audient.audition.AuditionDialogFragment;
 import com.koma.audient.comment.CommentActivity;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 import com.koma.common.util.Constants;
@@ -42,7 +42,7 @@ import com.koma.common.util.Constants;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.ToplistDetail, ToplistDetailAdapter.ToplistDetailViewHolder> {
+public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdapter.ToplistDetailViewHolder> {
     private final GlideRequest<Drawable> mGlideRequest;
 
     public ToplistDetailAdapter(Context context) {
@@ -56,17 +56,17 @@ public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.Toplis
     }
 
     @Override
-    protected boolean areItemsTheSame(ToplistDetailResult.ToplistDetail oldItem, ToplistDetailResult.ToplistDetail newItem) {
+    protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
         return false;
     }
 
     @Override
-    protected boolean areContentsTheSame(ToplistDetailResult.ToplistDetail oldItem, ToplistDetailResult.ToplistDetail newItem) {
+    protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
         return false;
     }
 
     @Override
-    protected Object getChangePayload(ToplistDetailResult.ToplistDetail oldItem, ToplistDetailResult.ToplistDetail newItem) {
+    protected Object getChangePayload(Audient oldItem, Audient newItem) {
         return null;
     }
 
@@ -80,12 +80,12 @@ public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.Toplis
 
     @Override
     public void onBindViewHolder(ToplistDetailViewHolder holder, int position) {
-        ToplistDetailResult.ToplistDetail toplistDetail = mData.get(position);
+        Audient audient = mData.get(position);
 
-        mGlideRequest.load(buildUrl(toplistDetail.dataBean.albumId)).into(holder.mAlbum);
+        mGlideRequest.load(buildUrl(audient.album.id)).into(holder.mAlbum);
 
-        holder.mMusicName.setText(toplistDetail.dataBean.name);
-        holder.mActorName.setText(toplistDetail.dataBean.singer.get(0).name);
+        holder.mMusicName.setText(audient.name);
+        holder.mActorName.setText(audient.artist.name);
     }
 
     private static String buildUrl(String albumId) {
@@ -117,7 +117,7 @@ public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.Toplis
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra(Constants.ID, mData.get(getAdapterPosition()).dataBean.id);
+                            intent.putExtra(Constants.ID, mData.get(getAdapterPosition()).id);
                             mContext.startActivity(intent);
                             break;
                     }
@@ -137,7 +137,7 @@ public class ToplistDetailAdapter extends BaseAdapter<ToplistDetailResult.Toplis
         public void onClick(View view) {
             int position = getAdapterPosition();
 
-            AuditionDialogFragment.newInstance(mData.get(position).dataBean.id)
+            AuditionDialogFragment.newInstance(mData.get(position).id)
                     .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
                             Constants.AUDITION_TAG);
         }

@@ -22,7 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.koma.audient.R;
-import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
@@ -130,9 +130,9 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     }
 
     @Override
-    public void showToplistDetail(List<ToplistDetailResult.ToplistDetail> toplistDetails) {
+    public void showToplistDetail(List<Audient> audients) {
         mSwipeRefreshLayout.setRefreshing(false);
 
-        mAdapter.update(toplistDetails);
+        mAdapter.update(audients);
     }
 }

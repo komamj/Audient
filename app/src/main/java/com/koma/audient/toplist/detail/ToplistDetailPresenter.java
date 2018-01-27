@@ -16,6 +16,7 @@
 package com.koma.audient.toplist.detail;
 
 import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.common.util.LogUtils;
 
@@ -71,19 +72,19 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
         mDisposables.clear();
 
         Disposable disposable = mRepository.getToplistDetail(topId, showTime)
-                .map(new Function<ToplistDetailResult, List<ToplistDetailResult.ToplistDetail>>() {
+                .map(new Function<ToplistDetailResult, List<Audient>>() {
                     @Override
-                    public List<ToplistDetailResult.ToplistDetail> apply(ToplistDetailResult toplistDetailResult) throws Exception {
-                        return toplistDetailResult.toplistDetails;
+                    public List<Audient> apply(ToplistDetailResult toplistDetailResult) throws Exception {
+                        return toplistDetailResult.dataBean.audients;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<ToplistDetailResult.ToplistDetail>>() {
+                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
-                    public void onNext(List<ToplistDetailResult.ToplistDetail> toplistDetails) {
+                    public void onNext(List<Audient> audients) {
                         if (mView.isActive()) {
-                            mView.showToplistDetail(toplistDetails);
+                            mView.showToplistDetail(audients);
                         }
                     }
 
