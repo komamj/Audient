@@ -21,7 +21,7 @@ import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
-import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
@@ -54,7 +54,7 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<TopListResult>> getTopLists() {
+    public Flowable<List<ToplistResult>> getTopLists() {
         return mRemoteDataSource.getTopLists();
     }
 

@@ -73,7 +73,7 @@ public class TopListDetailActivity extends BaseActivity {
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
         String toplistName = getIntent().getStringExtra(Constants.KEY_top_list_name);
-        String showTime = getIntent().getStringExtra(Constants.KEY_SHOW_TIME);
+        String showTime = getIntent().getStringExtra(Constants.KEY_UPDATE);
         String picUrl = getIntent().getStringExtra(Constants.KEY_PIC_URL);
 
         GlideApp.with(this).load(picUrl).thumbnail(0.1f)

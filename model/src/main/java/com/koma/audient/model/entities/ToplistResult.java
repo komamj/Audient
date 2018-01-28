@@ -21,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class TopListResult {
+public class ToplistResult {
     @SerializedName("List")
     public List<TopList> topLists;
 
@@ -41,6 +41,8 @@ public class TopListResult {
         public int topId;
         @SerializedName("showtime")
         public String showTime;
+        @SerializedName("update_key")
+        public String updateKey;
 
         @Override
         public boolean equals(Object o) {
@@ -55,7 +57,8 @@ public class TopListResult {
             TopList topList = (TopList) o;
 
             return this.topId == topList.topId && TextUtils.equals(listName, topList.listName)
-                    && TextUtils.equals(picUrl, topList.picUrl);
+                    && TextUtils.equals(picUrl, topList.picUrl)
+                    && TextUtils.equals(this.updateKey, topList.updateKey);
         }
 
         public static class SongBean {

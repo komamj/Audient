@@ -16,7 +16,7 @@
 package com.koma.audient.toplist;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -70,17 +70,17 @@ public class TopListPresenter implements TopListContract.Presenter {
     @Override
     public void loadTopList() {
         Disposable disposable = mRepository.getTopLists()
-                .map(new Function<List<TopListResult>, List<TopListResult.TopList>>() {
+                .map(new Function<List<ToplistResult>, List<ToplistResult.TopList>>() {
                     @Override
-                    public List<TopListResult.TopList> apply(List<TopListResult> topListResults) throws Exception {
+                    public List<ToplistResult.TopList> apply(List<ToplistResult> topListResults) throws Exception {
                         return topListResults.get(0).topLists;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<TopListResult.TopList>>() {
+                .subscribeWith(new DisposableSubscriber<List<ToplistResult.TopList>>() {
                     @Override
-                    public void onNext(List<TopListResult.TopList> topLists) {
+                    public void onNext(List<ToplistResult.TopList> topLists) {
                         if (mView != null) {
                             mView.showTopLists(topLists);
                         }

@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.toplist.detail.TopListDetailActivity;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
@@ -37,7 +37,7 @@ import com.koma.common.util.Constants;
 
 import butterknife.BindView;
 
-public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAdapter.TopListViewHolder> {
+public class TopListAdapter extends BaseAdapter<ToplistResult.TopList, TopListAdapter.TopListViewHolder> {
     private final GlideRequest<Drawable> mGlideRequest;
 
     public TopListAdapter(Context context) {
@@ -51,17 +51,17 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
     }
 
     @Override
-    protected boolean areItemsTheSame(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
+    protected boolean areItemsTheSame(ToplistResult.TopList oldItem, ToplistResult.TopList newItem) {
         return oldItem.topId == newItem.topId;
     }
 
     @Override
-    protected boolean areContentsTheSame(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
+    protected boolean areContentsTheSame(ToplistResult.TopList oldItem, ToplistResult.TopList newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(TopListResult.TopList oldItem, TopListResult.TopList newItem) {
+    protected Object getChangePayload(ToplistResult.TopList oldItem, ToplistResult.TopList newItem) {
         return null;
     }
 
@@ -74,14 +74,14 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
 
     @Override
     public void onBindViewHolder(TopListViewHolder holder, int position) {
-        TopListResult.TopList topList = mData.get(position);
+        ToplistResult.TopList topList = mData.get(position);
         mGlideRequest.load(topList.picUrl).into(holder.mAlbum);
         holder.mFirstSong.setText(buildString(topList.songBeans.get(0)));
         holder.mSecondSong.setText(buildString(topList.songBeans.get(1)));
         holder.mThirdSong.setText(buildString(topList.songBeans.get(2)));
     }
 
-    private String buildString(TopListResult.TopList.SongBean songBean) {
+    private String buildString(ToplistResult.TopList.SongBean songBean) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(songBean.musicName);
         stringBuilder.append(" - ");
@@ -114,11 +114,11 @@ public class TopListAdapter extends BaseAdapter<TopListResult.TopList, TopListAd
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            TopListResult.TopList topList = mData.get(position);
+            ToplistResult.TopList topList = mData.get(position);
             Intent intent = new Intent(mContext, TopListDetailActivity.class);
             intent.putExtra(Constants.KEY_TOP_ID, topList.topId);
             intent.putExtra(Constants.KEY_top_list_name, topList.listName);
-            intent.putExtra(Constants.KEY_SHOW_TIME, topList.showTime);
+            intent.putExtra(Constants.KEY_UPDATE, topList.updateKey);
             intent.putExtra(Constants.KEY_PIC_URL, topList.picUrl);
             mContext.startActivity(intent);
         }

@@ -55,7 +55,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         ToplistDetailFragment fragment = new ToplistDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_TOP_ID, topId);
-        bundle.putString(Constants.KEY_SHOW_TIME, showTime);
+        bundle.putString(Constants.KEY_UPDATE, showTime);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -69,7 +69,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         if (getArguments() != null) {
             mTopId = getArguments().getInt(Constants.KEY_TOP_ID);
 
-            mShowTime = getArguments().getString(Constants.KEY_SHOW_TIME);
+            mShowTime = getArguments().getString(Constants.KEY_UPDATE);
         }
     }
 

@@ -15,7 +15,7 @@
  */
 package com.koma.audient.toplist;
 
-import com.koma.audient.model.entities.TopListResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -27,7 +27,7 @@ public interface TopListContract {
 
         void showEmpty(boolean forceShow);
 
-        void showTopLists(List<TopListResult.TopList> topLists);
+        void showTopLists(List<ToplistResult.TopList> topLists);
     }
 
     interface Presenter extends BasePresenter {

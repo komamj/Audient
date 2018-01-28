@@ -19,8 +19,8 @@ import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
-import com.koma.audient.model.entities.TopListResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.ToplistResult;
 
 import java.util.List;
 
@@ -34,13 +34,14 @@ public interface AudientApi {
      * 获取榜单列表.
      */
     @GET("toplist")
-    Flowable<List<TopListResult>> getTopLists();
+    Flowable<List<ToplistResult>> getTopLists();
 
     /**
      * 获取榜单详情
      */
     @GET("toplist/{id}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId, @Query("date") String showTime);
+    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
+                                                   @Query("date") String updateKey);
 
     /**
      * 获取搜索结果.
