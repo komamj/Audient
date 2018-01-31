@@ -15,6 +15,7 @@
  */
 package com.koma.audient.comment;
 
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Comment;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
@@ -23,10 +24,24 @@ import java.util.List;
 
 public interface CommentContract {
     interface View extends BaseView<Presenter> {
-        void show(List<Comment> comments);
+        String getAudientId();
+
+        void showAudient(Audient audient);
+
+        void showComments(List<Comment> comments);
+
+        boolean isActive();
+
+        void showLoadingError();
+
+        void showEmpty(boolean forceShow);
+
+        void showProgressBar(boolean forceShow);
     }
 
     interface Presenter extends BasePresenter {
-        void loadComments(long id);
+        void loadAudient(String id);
+
+        void loadComments(String id);
     }
 }

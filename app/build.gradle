@@ -10,6 +10,13 @@ android {
         versionName "1.0.00"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    //指定java版本1.7
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     //签名配置
     signingConfigs {
         release {
@@ -49,7 +56,7 @@ android {
 
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "KomaVideo_v${defaultConfig.versionName}.apk"
+                outputFileName = "Audient_v${defaultConfig.versionName}.apk"
             }
         }
     }

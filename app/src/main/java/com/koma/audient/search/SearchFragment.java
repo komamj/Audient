@@ -21,6 +21,7 @@ import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.model.entities.Audient;
@@ -39,6 +40,8 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
     ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.tv_empty)
+    TextView mEmptyView;
 
     private SearchAdapter mAdapter;
 
@@ -102,6 +105,11 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
     public void showLoadingError() {
         LogUtils.i(TAG, "showLoadingError");
     }
@@ -109,11 +117,23 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void showEmpty(boolean forceShow) {
         LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
+
+        if (forceShow) {
+            mRecyclerView.setVisibility(View.GONE);
+
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
+
 
     @Override
     public void showProgressBar(boolean forceShow) {
         LogUtils.i(TAG, "showProressBar forceShow :" + forceShow);
+
+        showEmpty(false);
+
         if (forceShow) {
             mProgressBar.show();
         } else {
@@ -124,6 +144,8 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void showAudients(List<Audient> audients) {
         LogUtils.i(TAG, "showAudients count:" + audients.size());
+
+        mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.replace(audients);
     }

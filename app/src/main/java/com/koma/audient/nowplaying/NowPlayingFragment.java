@@ -16,17 +16,23 @@
 package com.koma.audient.nowplaying;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.comment.CommentActivity;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.helper.GlideApp;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Lyric;
+import com.koma.audient.util.Utils;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
-
-import java.util.List;
+import com.koma.common.util.LogUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,10 +48,12 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     TextView mCurrent;
     @BindView(R.id.tv_duration)
     TextView mDuration;
-    @BindView(R.id.tv_song)
-    TextView mSong;
-    @BindView(R.id.tv_singer)
-    TextView mSinger;
+    @BindView(R.id.tv_name)
+    TextView mMusicName;
+    @BindView(R.id.tv_singer_name)
+    TextView mSingerName;
+
+    private String mPicUrl;
 
     @OnClick(R.id.fab_next)
     void skipNext() {
@@ -65,18 +73,36 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     @OnClick(R.id.iv_comment)
     void processComment() {
         Intent intent = new Intent(mContext, CommentActivity.class);
-        intent.putExtra(Constants.ID, -1);
+        intent.putExtra(Constants.KEY_AUDIENT_ID, mId);
+        intent.putExtra(Constants.KEY_PIC_URL, mPicUrl);
+        intent.putExtra(Constants.KEY_NAME, mMusicName.getText());
         startActivity(intent);
     }
+
+    private String mId;
 
     private NowPlayingContract.Presenter mPresenter;
 
     public NowPlayingFragment() {
     }
 
-    public static NowPlayingFragment newInstance() {
+    public static NowPlayingFragment newInstance(String id) {
         NowPlayingFragment fragment = new NowPlayingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.KEY_AUDIENT_ID, id);
+        fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LogUtils.i(TAG, "onCreate");
+
+        if (getArguments() != null) {
+            mId = getArguments().getString(Constants.KEY_AUDIENT_ID);
+        }
     }
 
     @Override
@@ -87,6 +113,16 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     @Override
     public void setPresenter(NowPlayingContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public String getAudientId() {
+        return this.mId;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.isAdded();
     }
 
     @Override
@@ -105,7 +141,45 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
-    public void showMusic(List<AudientTest> audientTests) {
+    public void onResume() {
+        super.onResume();
 
+        LogUtils.i(TAG, "onResume");
+
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LogUtils.i(TAG, "onPause");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
+    }
+
+    @Override
+    public void showAudient(Audient audient) {
+        mPicUrl = Utils.buildUrl(audient);
+
+        GlideApp.with(this)
+                .asDrawable()
+                .thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY))
+                .load(audient)
+                .into(mAlbum);
+
+        mDuration.setText(DateUtils.formatElapsedTime(audient.duration));
+        mMusicName.setText(audient.name);
+        mSingerName.setText(audient.artist.name);
+    }
+
+    @Override
+    public void showLyric(Lyric lyric) {
+        LogUtils.i(TAG, "showLyric :" + lyric.lyric);
     }
 }

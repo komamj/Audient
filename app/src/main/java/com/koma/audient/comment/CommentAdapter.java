@@ -30,10 +30,12 @@ import com.koma.audient.model.entities.Comment;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentViewHolder> {
-
     private final GlideRequest<Drawable> mGlideRequest;
 
     public CommentAdapter(Context context) {
@@ -43,6 +45,19 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
                 .asDrawable()
                 .circleCrop()
                 .placeholder(R.drawable.ic_user);
+    }
+
+    public void addComment(Comment comment) {
+        if (mData == null) {
+            mData = new ArrayList<>();
+            mData.add(comment);
+
+            notifyItemInserted(0);
+        } else {
+            mData.add(comment);
+
+            notifyItemInserted(mData.size());
+        }
     }
 
     @Override
@@ -62,19 +77,20 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
 
     @Override
     public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_comment, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_comment, parent,
+                false);
 
         return new CommentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-        mGlideRequest.load("").into(holder.mUserImage);
-    }
+        Comment comment = mData.get(position);
 
-    @Override
-    public int getItemCount() {
-        return 10;
+        mGlideRequest.load(comment).into(holder.mUserImage);
+        holder.mMessage.setText(comment.message);
+        holder.mUserName.setText(comment.userName);
+        holder.mTime.setText(comment.time);
     }
 
     static class CommentViewHolder extends BaseViewHolder {
@@ -82,8 +98,14 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         ImageView mUserImage;
         @BindView(R.id.tv_user)
         TextView mUserName;
+        @BindView(R.id.tv_comment)
+        TextView mMessage;
         @BindView(R.id.tv_time)
         TextView mTime;
+
+        @OnClick(R.id.iv_thumb_up)
+        void thumbUp() {
+        }
 
         CommentViewHolder(View view) {
             super(view);

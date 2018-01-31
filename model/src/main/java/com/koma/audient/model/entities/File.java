@@ -15,6 +15,8 @@
  */
 package com.koma.audient.model.entities;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 public class File {
@@ -22,4 +24,30 @@ public class File {
     public String url;
     @SerializedName("br")
     public int bitRate;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("file with url ");
+        builder.append(url);
+        builder.append(",bitRate ");
+        builder.append(bitRate);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        File file = (File) o;
+
+        return TextUtils.equals(this.url, file.url)
+                && this.bitRate == file.bitRate;
+    }
 }

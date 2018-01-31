@@ -17,13 +17,13 @@ package com.koma.audient.model.source.remote;
 
 import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.AudientTest;
-import com.koma.audient.model.entities.Comment;
+import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
-import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.source.AudientDataSource;
 
 import java.text.SimpleDateFormat;
@@ -52,7 +52,7 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopLists() {
+    public Flowable<List<ToplistResult>> getTopList() {
         return mAudientApi.getTopLists();
     }
 
@@ -61,19 +61,13 @@ public class RemoteDataSource implements AudientDataSource {
         return mAudientApi.getToplistDetail(topId, showTime);
     }
 
-    private String getTimeStamp() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timeStamp = simpleDateFormat.format(new Date());
-        return timeStamp;
-    }
-
     @Override
-    public Flowable<SearchResult> getSearchReults(String keyword) {
+    public Flowable<SearchResult> getSearchReult(String keyword) {
         return mAudientApi.getSeachResults(keyword);
     }
 
     @Override
-    public Flowable<LyricResult> getLyric(String id) {
+    public Flowable<LyricResult> getLyricResult(String id) {
         return mAudientApi.getLyricResult(id);
     }
 
@@ -88,7 +82,7 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<Comment>> getComments(long id) {
+    public Flowable<CommentResult> getCommentResult(String id) {
         return null;
     }
 }

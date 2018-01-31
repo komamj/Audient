@@ -82,9 +82,9 @@ public class UserAdapter extends BaseAdapter<AudientTest, UserAdapter.MineViewHo
     class MineViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
-        @BindView(R.id.tv_music_name)
+        @BindView(R.id.tv_name)
         TextView mMusicName;
-        @BindView(R.id.tv_actor_name)
+        @BindView(R.id.tv_artist_name)
         TextView mActorName;
 
         @OnClick(R.id.iv_more)

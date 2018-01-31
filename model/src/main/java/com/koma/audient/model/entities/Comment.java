@@ -16,4 +16,9 @@
 package com.koma.audient.model.entities;
 
 public class Comment {
+    public String userId;
+    public String userName;
+    public String message;
+    public String time;
+
 }

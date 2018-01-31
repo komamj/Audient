@@ -100,9 +100,9 @@ public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdap
     class ToplistDetailViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
-        @BindView(R.id.tv_music_name)
+        @BindView(R.id.tv_name)
         TextView mMusicName;
-        @BindView(R.id.tv_actor_name)
+        @BindView(R.id.tv_artist_name)
         TextView mActorName;
 
         @OnClick(R.id.iv_more)
@@ -117,7 +117,7 @@ public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdap
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra(Constants.ID, mData.get(getAdapterPosition()).id);
+                            intent.putExtra(Constants.KEY_AUDIENT_ID, mData.get(getAdapterPosition()).id);
                             mContext.startActivity(intent);
                             break;
                     }

@@ -15,6 +15,8 @@
  */
 package com.koma.audient.model.entities;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Lyric {
@@ -22,4 +24,30 @@ public class Lyric {
     public String lyric;
     @SerializedName("trans")
     public String translation;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("lyric with ");
+        builder.append(lyric);
+        builder.append(",translation ");
+        builder.append(translation);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Lyric lyric = (Lyric) o;
+
+        return TextUtils.equals(this.lyric, lyric.lyric)
+                && this.translation.equals(lyric.translation);
+    }
 }

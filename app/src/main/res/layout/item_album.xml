@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
+    android:fitsSystemWindows="true"
     android:paddingBottom="@dimen/nav_header_vertical_spacing"
     android:paddingEnd="@dimen/nav_header_vertical_spacing"
     android:paddingStart="@dimen/nav_header_vertical_spacing"
@@ -19,8 +19,8 @@
         android:gravity="start"
         android:maxLines="1"
         android:singleLine="true"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_playlist_add"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_album"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +33,7 @@
         android:gravity="start"
         android:maxLines="1"
         android:singleLine="true"
-        android:textSize="13sp"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_name"
         app:layout_constraintStart_toStartOf="@+id/tv_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_name" />
@@ -42,33 +42,22 @@
         android:id="@+id/iv_album"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/tv_artist_name"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toStartOf="@+id/tv_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_name"
-        app:srcCompat="@android:color/darker_gray" />
+        app:layout_constraintTop_toTopOf="@+id/tv_name" />
 
     <ImageView
-        android:id="@+id/iv_playlist_add"
+        android:id="@+id/iv_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="@dimen/nav_header_vertical_spacing"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_artist_name"
-        app:layout_constraintEnd_toStartOf="@+id/iv_more"
-        app:layout_constraintTop_toTopOf="@+id/tv_name"
-        app:srcCompat="@drawable/ic_playlist_add" />
-
-    <ImageView
-        android:id="@+id/iv_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="@dimen/nav_header_vertical_spacing"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_artist_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_name"
-        app:srcCompat="@drawable/ic_more" />
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_album"
+        app:layout_constraintEnd_toEndOf="@+id/iv_album"
+        app:layout_constraintStart_toStartOf="@+id/iv_album"
+        app:layout_constraintTop_toTopOf="@+id/iv_album"
+        app:srcCompat="@drawable/ic_unfavorite" />
 
 </android.support.constraint.ConstraintLayout>

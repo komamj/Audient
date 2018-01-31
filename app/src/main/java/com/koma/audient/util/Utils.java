@@ -15,5 +15,28 @@
  */
 package com.koma.audient.util;
 
+import com.koma.audient.model.entities.Audient;
+import com.koma.common.util.Constants;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Utils {
+    private Utils() {
+    }
+
+    public static String buildUrl(Audient audient) {
+        StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
+        builder.append("album/");
+        builder.append(audient.album.id);
+        builder.append("/pic");
+
+        return builder.toString();
+    }
+
+    public static String getTimeStamp() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStamp = simpleDateFormat.format(new Date());
+        return timeStamp;
+    }
 }

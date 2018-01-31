@@ -15,24 +15,31 @@
  */
 package com.koma.audient.nowplaying;
 
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Lyric;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
-import java.util.List;
-
 public interface NowPlayingContract {
     interface View extends BaseView<Presenter> {
+        String getAudientId();
+
+        boolean isActive();
+
         void showLoadingError();
 
         void showEmpty(boolean forceShow);
 
         void showProgressBar(boolean forceShow);
 
-        void showMusic(List<AudientTest> audientTests);
+        void showAudient(Audient audient);
+
+        void showLyric(Lyric lyric);
     }
 
     interface Presenter extends BasePresenter {
+        void loadAudient(String id);
 
+        void loadLyric(String id);
     }
 }

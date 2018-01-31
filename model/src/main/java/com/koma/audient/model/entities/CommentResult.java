@@ -13,26 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.account;
+package com.koma.audient.model.entities;
 
-import com.koma.audient.R;
-import com.koma.common.base.BaseActivity;
-import com.koma.common.util.Constants;
+import java.util.List;
 
-public class AccountActivity extends BaseActivity {
-    private static final String TAG = AccountActivity.class.getSimpleName();
-
-    private long mId;
-
-    AccountPresenter mPresenter;
-
-    @Override
-    protected void onPermissonGranted() {
-        mId = getIntent().getLongExtra(Constants.KEY_AUDIENT_ID, -1);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_account;
-    }
+public class CommentResult {
+    public List<Comment> comments;
 }

@@ -16,13 +16,13 @@
 package com.koma.audient.model;
 
 import com.koma.audient.model.entities.AudientTest;
-import com.koma.audient.model.entities.Comment;
+import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
-import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
 import com.koma.audient.model.source.remote.RemoteDataSource;
@@ -54,8 +54,8 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopLists() {
-        return mRemoteDataSource.getTopLists();
+    public Flowable<List<ToplistResult>> getTopList() {
+        return mRemoteDataSource.getTopList();
     }
 
     @Override
@@ -64,13 +64,13 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<SearchResult> getSearchReults(String keyword) {
-        return mRemoteDataSource.getSearchReults(keyword);
+    public Flowable<SearchResult> getSearchReult(String keyword) {
+        return mRemoteDataSource.getSearchReult(keyword);
     }
 
     @Override
-    public Flowable<LyricResult> getLyric(String id) {
-        return mRemoteDataSource.getLyric(id);
+    public Flowable<LyricResult> getLyricResult(String id) {
+        return mRemoteDataSource.getLyricResult(id);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<Comment>> getComments(long id) {
-        return null;
+    public Flowable<CommentResult> getCommentResult(String id) {
+        return mLocalDataSource.getCommentResult(id);
     }
 }

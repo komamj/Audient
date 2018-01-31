@@ -20,12 +20,13 @@ import android.content.SharedPreferences;
 
 import com.koma.audient.model.entities.AudientTest;
 import com.koma.audient.model.entities.Comment;
+import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
-import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.source.AudientDataSource;
 
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopLists() {
+    public Flowable<List<ToplistResult>> getTopList() {
         return null;
     }
 
@@ -113,12 +114,12 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<SearchResult> getSearchReults(String keyword) {
+    public Flowable<SearchResult> getSearchReult(String keyword) {
         return null;
     }
 
     @Override
-    public Flowable<LyricResult> getLyric(String id) {
+    public Flowable<LyricResult> getLyricResult(String id) {
         return null;
     }
 
@@ -133,7 +134,28 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<Comment>> getComments(long id) {
-        return null;
+    public Flowable<CommentResult> getCommentResult(String id) {
+        return Flowable.create(new FlowableOnSubscribe<CommentResult>() {
+            @Override
+            public void subscribe(FlowableEmitter<CommentResult> emitter) throws Exception {
+                CommentResult commentResult = new CommentResult();
+                List<Comment> comments = new ArrayList<>();
+                Comment comment1 = new Comment();
+                comment1.time = "2018-01-30 20:10";
+                comment1.userName = "流氓";
+                comment1.message = "真几把难听.";
+                comments.add(comment1);
+
+                Comment comment2 = new Comment();
+                comment2.time = "2018-01-31 00:10";
+                comment2.userName = "Koma";
+                comment2.message = "这首歌旋律感觉还可以.";
+                comments.add(comment2);
+
+                commentResult.comments = comments;
+                emitter.onNext(commentResult);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
     }
 }

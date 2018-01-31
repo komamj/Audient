@@ -16,6 +16,7 @@
 package com.koma.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -26,4 +27,29 @@ public class Album {
     @ColumnInfo(name = "album_name")
     @SerializedName("name")
     public String name;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("album with id :");
+        builder.append(id);
+        builder.append(",name :");
+        builder.append(name);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Album album = (Album) o;
+
+        return TextUtils.equals(this.id, album.id) && TextUtils.equals(this.name, album.name);
+    }
 }

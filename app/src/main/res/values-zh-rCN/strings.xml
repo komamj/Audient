@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">"倾听者"</string>
+    <string name="app_name">"音悦"</string>
 
-    <!--drawer-->
+    <!--Drawer-->
     <string name="nav_playlist">"播放列表"</string>
     <string name="nav_recommend">"发现"</string>
     <string name="nav_user">"我的账户"</string>
@@ -10,10 +10,10 @@
     <string name="nav_share">"分享"</string>
     <string name="nav_send">"反馈"</string>
 
-    <!--splash-->
+    <!--Splash-->
     <string name="splash_description">"心传科技版权所有@2017"</string>
 
-    <!--login-->
+    <!--Login-->
     <string name="login_label">"登录"</string>
     <string name="login_title">"使用手机号码登录"</string>
     <string name="forget_password">"忘记密码?"</string>
@@ -29,10 +29,11 @@
     <string name="action_settings">"设置"</string>
     <string name="action_share">"分享"</string>
 
-    <!--Search menu-->
+    <!--Search-->
     <string name="action_playlist">"加入播放列表"</string>
     <string name="action_favorite">"加入收藏"</string>
     <string name="action_comment">"查看评论"</string>
+    <string name="search_no_result">"没有相关音乐,请换个关键词试试。"</string>
 
     <!--TabLayout-->
     <string-array name="page_title">
@@ -42,7 +43,8 @@
     </string-array>
 
     <!--Comment-->
-    <string name="comment_info">"最新评论："</string>
+    <string name="comment_label">"评论"</string>
+    <string name="no_comment">"还没有评论，抢沙发。"</string>
 
     <!--Audition-->
     <string name="audition_title">"试听30秒"</string>

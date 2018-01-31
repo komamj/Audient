@@ -22,8 +22,7 @@
             android:id="@+id/iv_album"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:srcCompat="@android:color/darker_gray" />
+            android:scaleType="centerCrop" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_thumb_up"
@@ -68,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
 
     <TextView
-        android:id="@+id/tv_song"
+        android:id="@+id/tv_name"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_current" />
 
     <TextView
-        android:id="@+id/tv_singer"
+        android:id="@+id/tv_singer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
@@ -89,7 +88,7 @@
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/card_view"
         app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/tv_song" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <TextView
         android:id="@+id/tv_lyric"
@@ -102,7 +101,7 @@
         app:layout_constraintBottom_toTopOf="@+id/fab_next"
         app:layout_constraintEnd_toEndOf="@+id/card_view"
         app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/tv_singer" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_singer_name" />
 
     <ImageView
         android:id="@+id/iv_favorite"

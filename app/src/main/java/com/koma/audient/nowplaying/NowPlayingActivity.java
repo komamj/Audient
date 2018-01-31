@@ -38,6 +38,8 @@ public class NowPlayingActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+    private String mId = "001yS0N33yPm1B";
+
     @Inject
     NowPlayingPresenter mPresenter;
 
@@ -62,7 +64,7 @@ public class NowPlayingActivity extends BaseActivity {
                 .findFragmentById(R.id.content_main);
 
         if (nowPlayingFragment == null) {
-            nowPlayingFragment = NowPlayingFragment.newInstance();
+            nowPlayingFragment = NowPlayingFragment.newInstance(mId);
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), nowPlayingFragment,
                     R.id.content_main);

@@ -74,7 +74,7 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
 
     @Override
     public SearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_search,
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_audition,
                 parent, false);
         return new SearchViewHolder(view);
     }
@@ -95,9 +95,9 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
     class SearchViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
-        @BindView(R.id.tv_music_name)
+        @BindView(R.id.tv_name)
         TextView mMusicName;
-        @BindView(R.id.tv_actor_name)
+        @BindView(R.id.tv_artist_name)
         TextView mActorName;
 
         @OnClick(R.id.iv_playlist_add)
@@ -112,12 +112,14 @@ public class SearchAdapter extends BaseAdapter<Audient, SearchAdapter.SearchView
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
+                    Audient audient = mData.get(getAdapterPosition());
+
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra(Constants.ID, mData.get(getAdapterPosition()).id);
+                            intent.putExtra(Constants.KEY_AUDIENT_ID, audient.id);
                             mContext.startActivity(intent);
                             break;
                     }

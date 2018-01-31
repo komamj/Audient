@@ -15,16 +15,16 @@
  */
 package com.koma.audient.comment;
 
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.ActivityUtils;
 import com.koma.common.util.Constants;
+import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
@@ -33,16 +33,20 @@ import butterknife.BindView;
 public class CommentActivity extends BaseActivity {
     private static final String TAG = CommentActivity.class.getSimpleName();
 
-    @BindView(R.id.collapsing_toolbar_layout)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.iv_album)
-    ImageView mAlbum;
+    private String mId;
 
     @Inject
     CommentPresenter mPresenter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LogUtils.i(TAG, "onCreate");
+    }
 
     @Override
     protected void onPermissonGranted() {
@@ -53,17 +57,13 @@ public class CommentActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        long id = getIntent().getLongExtra(Constants.ID, -1);
-
-        String name = getIntent().getStringExtra(Constants.NAME);
-
-        mCollapsingToolbarLayout.setTitle(name);
+        mId = getIntent().getStringExtra(Constants.KEY_AUDIENT_ID);
 
         CommentFragment commentFragment = (CommentFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
 
         if (commentFragment == null) {
-            commentFragment = CommentFragment.newInstance(id);
+            commentFragment = CommentFragment.newInstance(mId);
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), commentFragment,
                     R.id.content_main);
@@ -75,7 +75,6 @@ public class CommentActivity extends BaseActivity {
                 .commentPresenterModule(new CommentPresenterModule(commentFragment))
                 .build()
                 .inject(this);
-
     }
 
     @Override
@@ -95,6 +94,6 @@ public class CommentActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_detail_base;
+        return R.layout.activity_base;
     }
 }

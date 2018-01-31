@@ -48,9 +48,9 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
     private static final int LIMITED_TIME = 30;
 
-    @BindView(R.id.tv_actor_name)
+    @BindView(R.id.tv_artist_name)
     TextView mActorName;
-    @BindView(R.id.tv_music_name)
+    @BindView(R.id.tv_name)
     TextView mMusicName;
     @BindView(R.id.progress_bar)
     AppCompatSeekBar mProgressBar;

@@ -25,11 +25,12 @@ public final class Constants {
     public static final String ACCESS_TOKEN = "62e5580162f425c664d0aa45e38143221515391745219";
     public static final String AUDIENT_HOST = "http://101.132.122.196:8080/api/v1/openmusic/";
 
+    public static final String KEY_AUDIENT_ID = "key_auident_id";
+
     // album format
     public static final String ALBUM_FORMAT = "jpg";
 
     // audition dialog
-    public static final String KEY_AUDIENT_ID = "key_auident_id";
     public static final String AUDITION_TAG = "audition_tag";
 
     public static final int UNKNOWN = 0;
@@ -53,8 +54,7 @@ public final class Constants {
     public static final String RESPONSE_RES_MESSAGE = "res_message";
 
     // comment
-    public static final String ID = "id";
-    public static final String NAME = "name";
+    public static final String KEY_NAME = "name";
 
     private Constants() {
     }

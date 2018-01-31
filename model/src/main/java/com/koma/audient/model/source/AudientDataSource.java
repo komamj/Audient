@@ -16,13 +16,13 @@
 package com.koma.audient.model.source;
 
 import com.koma.audient.model.entities.AudientTest;
-import com.koma.audient.model.entities.Comment;
+import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
-import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
+import com.koma.audient.model.entities.ToplistResult;
 
 import java.util.List;
 
@@ -31,17 +31,17 @@ import io.reactivex.Flowable;
 public interface AudientDataSource {
     Flowable<List<AudientTest>> getAudientTests();
 
-    Flowable<List<ToplistResult>> getTopLists();
+    Flowable<List<ToplistResult>> getTopList();
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime);
 
-    Flowable<SearchResult> getSearchReults(String keyword);
+    Flowable<SearchResult> getSearchReult(String keyword);
 
-    Flowable<LyricResult> getLyric(String id);
+    Flowable<LyricResult> getLyricResult(String id);
 
     Flowable<SongDetailResult> getSongDetailResult(String id);
 
     Flowable<FileResult> getFileResult(String id);
 
-    Flowable<List<Comment>> getComments(long id);
+    Flowable<CommentResult> getCommentResult(String id);
 }

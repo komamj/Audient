@@ -68,15 +68,23 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void loadSearchResults(String keyword) {
+        LogUtils.i(TAG, "loadSearchResults :" + keyword);
+
         mDisposables.clear();
+
+        if (isInvalid(keyword)) {
+            if (mView.isActive()) {
+                mView.showEmpty(true);
+            }
+
+            return;
+        }
 
         if (mView != null) {
             mView.showProgressBar(true);
         }
 
-        LogUtils.i(TAG, "loadSearchResults :" + keyword);
-
-        Disposable disposable = mRepository.getSearchReults(keyword)
+        Disposable disposable = mRepository.getSearchReult(keyword)
                 .map(new Function<SearchResult, List<Audient>>() {
                     @Override
                     public List<Audient> apply(SearchResult searchResult) throws Exception {
@@ -88,7 +96,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
                     public void onNext(List<Audient> audients) {
-                        if (mView != null) {
+                        if (mView.isActive()) {
                             mView.showProgressBar(false);
                             mView.showAudients(audients);
                         }
@@ -97,6 +105,12 @@ public class SearchPresenter implements SearchContract.Presenter {
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "loadSearchResults error :" + t.toString());
+
+                        if (mView.isActive()) {
+                            mView.showProgressBar(false);
+
+                            mView.showLoadingError();
+                        }
                     }
 
                     @Override
@@ -106,5 +120,11 @@ public class SearchPresenter implements SearchContract.Presenter {
                 });
 
         mDisposables.add(disposable);
+    }
+
+    private boolean isInvalid(String word) {
+        String keyword = word.trim().toUpperCase();
+
+        return keyword.contains("DJ") || keyword.contains("哀乐");
     }
 }

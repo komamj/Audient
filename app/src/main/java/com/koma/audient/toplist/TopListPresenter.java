@@ -69,7 +69,7 @@ public class TopListPresenter implements TopListContract.Presenter {
 
     @Override
     public void loadTopList() {
-        Disposable disposable = mRepository.getTopLists()
+        Disposable disposable = mRepository.getTopList()
                 .map(new Function<List<ToplistResult>, List<ToplistResult.TopList>>() {
                     @Override
                     public List<ToplistResult.TopList> apply(List<ToplistResult> topListResults) throws Exception {

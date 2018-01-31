@@ -26,7 +26,7 @@ import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.koma.audient.model.entities.Audient;
-import com.koma.common.util.Constants;
+import com.koma.audient.util.Utils;
 
 import java.io.InputStream;
 
@@ -39,17 +39,9 @@ public class AudientUrlLoader extends BaseGlideUrlLoader<Audient> {
 
     @Override
     protected String getUrl(Audient audient, int width, int height, Options options) {
-        return buildUrl(audient);
+        return Utils.buildUrl(audient);
     }
 
-    private String buildUrl(Audient audient) {
-        StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
-        builder.append("album/");
-        builder.append(audient.album.id);
-        builder.append("/pic");
-
-        return builder.toString();
-    }
 
     @Override
     public boolean handles(@NonNull Audient audient) {

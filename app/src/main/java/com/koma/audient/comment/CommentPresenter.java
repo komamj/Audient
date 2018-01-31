@@ -16,10 +16,22 @@
 package com.koma.audient.comment;
 
 import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Comment;
+import com.koma.audient.model.entities.CommentResult;
+import com.koma.audient.model.entities.SongDetailResult;
+import com.koma.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class CommentPresenter implements CommentContract.Presenter {
     private static final String TAG = CommentPresenter.class.getSimpleName();
@@ -46,7 +58,7 @@ public class CommentPresenter implements CommentContract.Presenter {
 
     @Override
     public void subscribe() {
-
+        LogUtils.i(TAG, "subscribe");
     }
 
     @Override
@@ -55,7 +67,75 @@ public class CommentPresenter implements CommentContract.Presenter {
     }
 
     @Override
-    public void loadComments(long id) {
+    public void loadAudient(String id) {
+        LogUtils.i(TAG, "loadAudient id" + id);
 
+        Disposable disposable = mRepository.getSongDetailResult(id)
+                .map(new Function<SongDetailResult, Audient>() {
+                    @Override
+                    public Audient apply(SongDetailResult songDetailResult) throws Exception {
+                        return songDetailResult.audient;
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Audient>() {
+                    @Override
+                    public void onNext(Audient audient) {
+                        if (mView.isActive()) {
+                            mView.showAudient(audient);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadComments error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposable.add(disposable);
+    }
+
+    @Override
+    public void loadComments(String id) {
+        Disposable disposable = mRepository.getCommentResult(id)
+                .map(new Function<CommentResult, List<Comment>>() {
+                    @Override
+                    public List<Comment> apply(CommentResult commentResult) throws Exception {
+                        return commentResult.comments;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Comment>>() {
+                    @Override
+                    public void onNext(List<Comment> comments) {
+                        if (mView.isActive()) {
+                            mView.showComments(comments);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadComments error :" + t.toString());
+
+                        if (mView.isActive()) {
+                            mView.showLoadingError();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()) {
+                            mView.showProgressBar(false);
+                        }
+                    }
+                });
+
+        mDisposable.add(disposable);
     }
 }

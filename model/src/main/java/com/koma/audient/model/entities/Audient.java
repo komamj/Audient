@@ -50,7 +50,7 @@ public class Audient {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Audient with id ");
+        builder.append("audient with id ");
         builder.append(id);
         builder.append(",name ");
         builder.append(name);
