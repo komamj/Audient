@@ -16,13 +16,14 @@
 package com.koma.audient.comment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
@@ -36,14 +37,15 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentViewHolder> {
-    private final GlideRequest<Drawable> mGlideRequest;
+    private final GlideRequest<Bitmap> mGlideRequest;
 
     public CommentAdapter(Context context) {
         super(context);
 
         mGlideRequest = GlideApp.with(mContext)
-                .asDrawable()
-                .circleCrop()
+                .asBitmap()
+                .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(R.drawable.ic_user);
     }
 

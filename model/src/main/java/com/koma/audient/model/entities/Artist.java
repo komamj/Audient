@@ -16,17 +16,48 @@
 package com.koma.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Ignore;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Artist {
+public class Artist implements Parcelable {
     @ColumnInfo(name = "artist_id")
     @SerializedName("id")
     public String id;
     @ColumnInfo(name = "artist_name")
     @SerializedName("name")
     public String name;
+
+    public Artist() {
+    }
+
+    @Ignore
+    public Artist(String id, String name) {
+        this.id = id;
+
+        this.name = name;
+    }
+
+    @Ignore
+    protected Artist(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+    }
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -51,5 +82,16 @@ public class Artist {
         Artist artist = (Artist) o;
 
         return TextUtils.equals(this.id, artist.id) && TextUtils.equals(this.name, artist.name);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
     }
 }

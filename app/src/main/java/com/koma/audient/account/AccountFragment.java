@@ -35,7 +35,7 @@ public class AccountFragment extends BaseFragment implements AccountContract.Vie
     public static AccountFragment newInstance(long id) {
         AccountFragment fragment = new AccountFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong(Constants.KEY_AUDIENT_ID, id);
+        bundle.putLong(Constants.KEY_AUDIENT, id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -47,7 +47,7 @@ public class AccountFragment extends BaseFragment implements AccountContract.Vie
         LogUtils.i(TAG, "onCreate");
 
         if (getArguments() != null) {
-            mId = getArguments().getLong(Constants.KEY_AUDIENT_ID);
+            mId = getArguments().getLong(Constants.KEY_AUDIENT);
         }
     }
 

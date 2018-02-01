@@ -29,7 +29,6 @@ import com.koma.audient.comment.CommentActivity;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Lyric;
-import com.koma.audient.util.Utils;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
@@ -53,8 +52,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     @BindView(R.id.tv_singer_name)
     TextView mSingerName;
 
-    private String mPicUrl;
-
     @OnClick(R.id.fab_next)
     void skipNext() {
 
@@ -73,24 +70,19 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     @OnClick(R.id.iv_comment)
     void processComment() {
         Intent intent = new Intent(mContext, CommentActivity.class);
-        intent.putExtra(Constants.KEY_AUDIENT_ID, mId);
-        intent.putExtra(Constants.KEY_PIC_URL, mPicUrl);
-        intent.putExtra(Constants.KEY_NAME, mMusicName.getText());
+        intent.putExtra(Constants.KEY_AUDIENT, mAudient);
         startActivity(intent);
     }
 
-    private String mId;
+    private Audient mAudient;
 
     private NowPlayingContract.Presenter mPresenter;
 
     public NowPlayingFragment() {
     }
 
-    public static NowPlayingFragment newInstance(String id) {
+    public static NowPlayingFragment newInstance() {
         NowPlayingFragment fragment = new NowPlayingFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.KEY_AUDIENT_ID, id);
-        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -99,10 +91,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
-
-        if (getArguments() != null) {
-            mId = getArguments().getString(Constants.KEY_AUDIENT_ID);
-        }
     }
 
     @Override
@@ -113,11 +101,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     @Override
     public void setPresenter(NowPlayingContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public String getAudientId() {
-        return this.mId;
     }
 
     @Override
@@ -163,8 +146,8 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
-    public void showAudient(Audient audient) {
-        mPicUrl = Utils.buildUrl(audient);
+    public void showNowPlaying(Audient audient) {
+        mAudient = audient;
 
         GlideApp.with(this)
                 .asDrawable()

@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist.detail;
+package com.koma.audient.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
 import com.koma.audient.audition.AuditionDialogFragment;
 import com.koma.audient.comment.CommentActivity;
@@ -42,27 +44,35 @@ import com.koma.common.util.Constants;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdapter.ToplistDetailViewHolder> {
-    private final GlideRequest<Drawable> mGlideRequest;
+public class AudientAdapter extends BaseAdapter<Audient, AudientAdapter.AudientViewHolder> {
+    private static final String TAG = AudientAdapter.class.getSimpleName();
 
-    public ToplistDetailAdapter(Context context) {
+    private EventListener mEventListener;
+
+    private final GlideRequest<Bitmap> mGlideRequest;
+
+    public AudientAdapter(Context context) {
         super(context);
 
         mGlideRequest = GlideApp.with(mContext)
-                .asDrawable()
-                .dontAnimate()
+                .asBitmap()
                 .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
+    }
+
+    public void setEventListener(EventListener listener) {
+        this.mEventListener = listener;
     }
 
     @Override
     protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
-        return false;
+        return TextUtils.equals(oldItem.id, newItem.id);
     }
 
     @Override
     protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
-        return false;
+        return oldItem.equals(newItem);
     }
 
     @Override
@@ -71,39 +81,37 @@ public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdap
     }
 
     @Override
-    public ToplistDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_toplist_detail, parent,
-                false);
+    public AudientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_audition,
+                parent, false);
 
-        return new ToplistDetailViewHolder(view);
+        return new AudientViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ToplistDetailViewHolder holder, int position) {
+    public void onBindViewHolder(AudientViewHolder holder, int position) {
         Audient audient = mData.get(position);
 
-        mGlideRequest.load(buildUrl(audient.album.id)).into(holder.mAlbum);
+        mGlideRequest.load(audient).into(holder.mAlbum);
 
-        holder.mMusicName.setText(audient.name);
-        holder.mActorName.setText(audient.artist.name);
+        holder.mName.setText(audient.name);
+        holder.mArtistName.setText(audient.artist.name);
     }
 
-    private static String buildUrl(String albumId) {
-        StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
-        builder.append("album/");
-        builder.append(albumId);
-        builder.append("/pic");
-
-        return builder.toString();
-    }
-
-    class ToplistDetailViewHolder extends BaseViewHolder implements View.OnClickListener {
+    class AudientViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_name)
-        TextView mMusicName;
+        TextView mName;
         @BindView(R.id.tv_artist_name)
-        TextView mActorName;
+        TextView mArtistName;
+
+        @OnClick(R.id.iv_playlist_add)
+        void addToPlaylis() {
+            if (mEventListener != null) {
+                mEventListener.onPlaylistChanged(mData.get(getAdapterPosition()));
+            }
+        }
 
         @OnClick(R.id.iv_more)
         void showPopupView(View view) {
@@ -112,12 +120,17 @@ public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdap
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
+                    Audient audient = mData.get(getAdapterPosition());
+
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
+                            if (mEventListener != null) {
+                                mEventListener.onFavoriteMenuClick(audient);
+                            }
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra(Constants.KEY_AUDIENT_ID, mData.get(getAdapterPosition()).id);
+                            intent.putExtra(Constants.KEY_AUDIENT, audient);
                             mContext.startActivity(intent);
                             break;
                     }
@@ -127,7 +140,7 @@ public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdap
             popupMenu.show();
         }
 
-        public ToplistDetailViewHolder(View view) {
+        AudientViewHolder(View view) {
             super(view);
 
             itemView.setOnClickListener(this);
@@ -137,9 +150,15 @@ public class ToplistDetailAdapter extends BaseAdapter<Audient, ToplistDetailAdap
         public void onClick(View view) {
             int position = getAdapterPosition();
 
-            AuditionDialogFragment.newInstance(mData.get(position).id)
+            AuditionDialogFragment.newInstance(mData.get(position))
                     .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
                             Constants.AUDITION_TAG);
         }
+    }
+
+    public interface EventListener {
+        void onFavoriteMenuClick(Audient audient);
+
+        void onPlaylistChanged(Audient audient);
     }
 }

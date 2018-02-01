@@ -19,13 +19,15 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "audient")
-public class Audient {
+public class Audient implements Parcelable {
     @NonNull
     @SerializedName("id")
     @PrimaryKey
@@ -46,6 +48,26 @@ public class Audient {
 
     public Audient() {
     }
+
+    protected Audient(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        duration = in.readLong();
+        artist = in.readParcelable(Artist.class.getClassLoader());
+        album = in.readParcelable(Album.class.getClassLoader());
+    }
+
+    public static final Creator<Audient> CREATOR = new Creator<Audient>() {
+        @Override
+        public Audient createFromParcel(Parcel in) {
+            return new Audient(in);
+        }
+
+        @Override
+        public Audient[] newArray(int size) {
+            return new Audient[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -76,5 +98,19 @@ public class Audient {
         return TextUtils.equals(this.id, audient.id) && this.duration == audient.duration
                 && TextUtils.equals(name, audient.name) && this.artist.equals(audient.artist)
                 && this.album.equals(audient.album);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeLong(duration);
+        parcel.writeParcelable(artist, i);
+        parcel.writeParcelable(album, i);
     }
 }

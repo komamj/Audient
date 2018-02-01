@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist.detail;
+package com.koma.audient.toplist;
 
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.ToplistDetailResult;

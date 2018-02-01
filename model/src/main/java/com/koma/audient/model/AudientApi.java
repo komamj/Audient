@@ -17,6 +17,7 @@ package com.koma.audient.model;
 
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
@@ -64,4 +65,7 @@ public interface AudientApi {
 
     @GET("{id}/url")
     Flowable<FileResult> getFileResult(@Path("id") String id);
+
+    @GET("nowplaying")
+    Flowable<NowPlayingResult> getNowPlayingResult();
 }

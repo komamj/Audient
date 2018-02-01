@@ -15,12 +15,20 @@
  */
 package com.koma.audient.comment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.helper.GlideApp;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.ActivityUtils;
 import com.koma.common.util.Constants;
@@ -29,20 +37,35 @@ import com.koma.common.util.LogUtils;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CommentActivity extends BaseActivity {
     private static final String TAG = CommentActivity.class.getSimpleName();
 
+    @BindView(R.id.collapsing_toolbar_layout)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.iv_album)
+    ImageView mAlbum;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
 
-    private String mId;
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        EditCommentDialogFragment.newInstance().show(getSupportFragmentManager(), null);
+    }
+
+    private Audient mAudient;
 
     @Inject
     CommentPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
@@ -57,13 +80,21 @@ public class CommentActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        mId = getIntent().getStringExtra(Constants.KEY_AUDIENT_ID);
+        mAudient = getIntent().getParcelableExtra(Constants.KEY_AUDIENT);
+
+        mFab.setImageResource(R.drawable.ic_add);
+
+        GlideApp.with(this)
+                .load(mAudient)
+                .thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY))
+                .into(mAlbum);
 
         CommentFragment commentFragment = (CommentFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
 
         if (commentFragment == null) {
-            commentFragment = CommentFragment.newInstance(mId);
+            commentFragment = CommentFragment.newInstance(mAudient);
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), commentFragment,
                     R.id.content_main);
@@ -94,6 +125,6 @@ public class CommentActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_base;
+        return R.layout.activity_detail_base;
     }
 }

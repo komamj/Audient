@@ -19,14 +19,17 @@ import com.koma.audient.model.AudientRepository;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Lyric;
 import com.koma.audient.model.entities.LyricResult;
-import com.koma.audient.model.entities.SongDetailResult;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.common.util.LogUtils;
+
+import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -58,9 +61,7 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
-        loadAudient(mView.getAudientId());
-
-        loadLyric(mView.getAudientId());
+        loadNowPlaying();
     }
 
     @Override
@@ -71,49 +72,37 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
     }
 
     @Override
-    public void loadAudient(String id) {
-        Disposable disposable = mRepository.getSongDetailResult(id)
-                .map(new Function<SongDetailResult, Audient>() {
+    public void loadNowPlaying() {
+        mDisposables.clear();
+
+        Disposable disposable = mRepository.getNowPlayingResult()
+                .map(new Function<NowPlayingResult, Audient>() {
                     @Override
-                    public Audient apply(SongDetailResult songDetailResult) throws Exception {
-                        return songDetailResult.audient;
+                    public Audient apply(NowPlayingResult nowPlayingResult) throws Exception {
+                        return nowPlayingResult.audient;
                     }
-                })
-                .subscribeOn(Schedulers.io())
+                }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Audient>() {
+                .doOnNext(new Consumer<Audient>() {
                     @Override
-                    public void onNext(Audient audient) {
+                    public void accept(Audient audient) throws Exception {
                         if (mView.isActive()) {
-                            mView.showAudient(audient);
+                            mView.showNowPlaying(audient);
                         }
                     }
-
+                }).observeOn(Schedulers.io())
+                .flatMap(new Function<Audient, Publisher<Lyric>>() {
                     @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadAudient error :" + t.toString());
+                    public Publisher<Lyric> apply(Audient audient) throws Exception {
+                        return mRepository.getLyricResult(audient.id)
+                                .map(new Function<LyricResult, Lyric>() {
+                                    @Override
+                                    public Lyric apply(LyricResult lyricResult) throws Exception {
+                                        return lyricResult.lyric;
+                                    }
+                                });
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-        mDisposables.add(disposable);
-    }
-
-    @Override
-    public void loadLyric(String id) {
-        Disposable disposable = mRepository.getLyricResult(id)
-                .map(new Function<LyricResult, Lyric>() {
-                    @Override
-                    public Lyric apply(LyricResult lyricResult) throws Exception {
-                        return lyricResult.lyric;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<Lyric>() {
                     @Override
                     public void onNext(Lyric lyric) {
@@ -124,7 +113,7 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadLyric error :" + t.toString());
+                        LogUtils.e(TAG, "loadNowPlaying error :" + t.toString());
                     }
 
                     @Override

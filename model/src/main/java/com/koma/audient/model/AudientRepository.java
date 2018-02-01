@@ -15,10 +15,11 @@
  */
 package com.koma.audient.model;
 
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
@@ -49,7 +50,7 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<AudientTest>> getAudientTests() {
+    public Flowable<List<Audient>> getAudientTests() {
         return mLocalDataSource.getAudientTests();
     }
 
@@ -86,5 +87,10 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
         return mLocalDataSource.getCommentResult(id);
+    }
+
+    @Override
+    public Flowable<NowPlayingResult> getNowPlayingResult() {
+        return mLocalDataSource.getNowPlayingResult();
     }
 }

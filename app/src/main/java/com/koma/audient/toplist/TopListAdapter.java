@@ -17,20 +17,20 @@ package com.koma.audient.toplist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.ToplistResult;
-import com.koma.audient.toplist.detail.TopListDetailActivity;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 import com.koma.common.util.Constants;
@@ -38,15 +38,15 @@ import com.koma.common.util.Constants;
 import butterknife.BindView;
 
 public class TopListAdapter extends BaseAdapter<ToplistResult.TopList, TopListAdapter.TopListViewHolder> {
-    private final GlideRequest<Drawable> mGlideRequest;
+    private final GlideRequest<Bitmap> mGlideRequest;
 
     public TopListAdapter(Context context) {
         super(context);
 
         mGlideRequest = GlideApp.with(mContext)
-                .asDrawable()
-                .dontAnimate()
+                .asBitmap()
                 .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 

@@ -59,7 +59,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     @BindView(R.id.iv_pause)
     ImageView mPauseButton;
 
-    private String mId;
+    private Audient mAudient;
 
     @OnClick(R.id.iv_pause)
     void doPauseOrPlay() {
@@ -74,11 +74,11 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     public AuditionDialogFragment() {
     }
 
-    public static AuditionDialogFragment newInstance(String id) {
+    public static AuditionDialogFragment newInstance(Audient audient) {
         AuditionDialogFragment fragment = new AuditionDialogFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.KEY_AUDIENT_ID, id);
+        bundle.putParcelable(Constants.KEY_AUDIENT, audient);
 
         fragment.setArguments(bundle);
 
@@ -99,7 +99,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AuditionDilogTheme);
 
         if (getArguments() != null) {
-            mId = getArguments().getString(Constants.KEY_AUDIENT_ID);
+            mAudient = getArguments().getParcelable(Constants.KEY_AUDIENT);
         }
 
         // inject presenter
@@ -177,7 +177,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
     @Override
     public String getAudientId() {
-        return this.mId;
+        return this.mAudient.id;
     }
 
     @Override

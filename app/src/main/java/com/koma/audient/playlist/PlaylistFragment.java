@@ -16,16 +16,22 @@
 package com.koma.audient.playlist;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.helper.GlideApp;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.nowplaying.NowPlayingActivity;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
@@ -47,6 +53,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     ContentLoadingProgressBar mProgressBar;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.iv_album)
+    ImageView mAlbum;
+    @BindView(R.id.tv_name)
+    TextView mName;
 
     private boolean mIsPrepared;
 
@@ -164,10 +174,23 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showAudients(List<AudientTest> audientTests) {
+    public void showNowPlaying(Audient audient) {
+        GlideApp.with(this)
+                .asBitmap()
+                .load(audient)
+                .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
+                .placeholder(new ColorDrawable(Color.GRAY))
+                .into(mAlbum);
+
+        mName.setText(audient.name);
+    }
+
+    @Override
+    public void showAudients(List<Audient> audients) {
         mSwipeRefreshLayout.setRefreshing(false);
 
-        mAdapter.replace(audientTests);
+        mAdapter.replace(audients);
     }
 
     @Override

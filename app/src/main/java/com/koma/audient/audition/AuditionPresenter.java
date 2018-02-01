@@ -114,7 +114,7 @@ public class AuditionPresenter implements AuditionContract.Presenter,
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadAudient onError:" + t.toString());
+                        LogUtils.e(TAG, "loadNowPlaying onError:" + t.toString());
                     }
 
                     @Override

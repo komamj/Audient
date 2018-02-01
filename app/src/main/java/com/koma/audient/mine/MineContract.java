@@ -15,7 +15,7 @@
  */
 package com.koma.audient.mine;
 
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
@@ -33,9 +33,9 @@ public interface MineContract {
 
         void showUserProgressBar(boolean forceShow);
 
-        void showFavorite(List<AudientTest> audientTests);
+        void showFavorite(List<Audient> audients);
 
-        void showUser(List<AudientTest> audientTests);
+        void showUser(List<Audient> audients);
     }
 
     interface Presenter extends BasePresenter {

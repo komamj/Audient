@@ -16,10 +16,8 @@
 package com.koma.audient.comment;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.CommentResult;
-import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -64,40 +62,6 @@ public class CommentPresenter implements CommentContract.Presenter {
     @Override
     public void unSubscribe() {
         mDisposable.clear();
-    }
-
-    @Override
-    public void loadAudient(String id) {
-        LogUtils.i(TAG, "loadAudient id" + id);
-
-        Disposable disposable = mRepository.getSongDetailResult(id)
-                .map(new Function<SongDetailResult, Audient>() {
-                    @Override
-                    public Audient apply(SongDetailResult songDetailResult) throws Exception {
-                        return songDetailResult.audient;
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Audient>() {
-                    @Override
-                    public void onNext(Audient audient) {
-                        if (mView.isActive()) {
-                            mView.showAudient(audient);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadComments error :" + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-        mDisposable.add(disposable);
     }
 
     @Override

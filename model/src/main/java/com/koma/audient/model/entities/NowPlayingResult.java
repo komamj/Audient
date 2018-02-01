@@ -13,15 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist.detail;
+package com.koma.audient.model.entities;
 
-import com.koma.audient.model.AudientRepositoryComponent;
-import com.koma.common.util.FragmentScoped;
-
-import dagger.Component;
-
-@FragmentScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = ToplistDetailPresenterModule.class)
-public interface ToplistDetailComponent {
-    void inject(TopListDetailActivity activity);
+public class NowPlayingResult {
+    public Audient audient;
 }

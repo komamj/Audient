@@ -16,9 +16,9 @@
 package com.koma.audient.mine;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,41 +27,42 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class FavoriteAdapter extends BaseAdapter<AudientTest, FavoriteAdapter.FavoriteViewHolder> {
-    private final GlideRequest<Drawable> mGlideRequest;
+public class FavoriteAdapter extends BaseAdapter<Audient, FavoriteAdapter.FavoriteViewHolder> {
+    private final GlideRequest<Bitmap> mGlideRequest;
 
     public FavoriteAdapter(Context context) {
         super(context);
 
         mGlideRequest = GlideApp.with(mContext)
-                .asDrawable()
-                .dontAnimate()
+                .asBitmap()
                 .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
     @Override
-    protected boolean areItemsTheSame(AudientTest oldItem, AudientTest newItem) {
+    protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected boolean areContentsTheSame(AudientTest oldItem, AudientTest newItem) {
+    protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
         return false;
     }
 
     @Override
-    protected Object getChangePayload(AudientTest oldItem, AudientTest newItem) {
+    protected Object getChangePayload(Audient oldItem, Audient newItem) {
         return null;
     }
 
@@ -74,9 +75,11 @@ public class FavoriteAdapter extends BaseAdapter<AudientTest, FavoriteAdapter.Fa
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        mGlideRequest.load(mData.get(position).albumUrl).into(holder.mAlbum);
-        holder.mMusicName.setText(mData.get(position).musicName);
-        holder.mActorName.setText(mData.get(position).actorName);
+        Audient audient = mData.get(position);
+
+        mGlideRequest.load(audient).into(holder.mAlbum);
+        holder.mMusicName.setText(audient.name);
+        holder.mActorName.setText(audient.artist.name);
     }
 
     public class FavoriteViewHolder extends BaseViewHolder {

@@ -60,7 +60,7 @@
             android:exported="false"
             android:label="@string/comment_label"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/FullScreenTheme"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
@@ -70,7 +70,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".toplist.detail.TopListDetailActivity"
+            android:name=".toplist.TopListDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />

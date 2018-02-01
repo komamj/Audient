@@ -16,18 +16,17 @@
 package com.koma.audient.model.source.remote;
 
 import com.koma.audient.model.AudientApi;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.source.AudientDataSource;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,7 +46,7 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<AudientTest>> getAudientTests() {
+    public Flowable<List<Audient>> getAudientTests() {
         return null;
     }
 
@@ -83,6 +82,11 @@ public class RemoteDataSource implements AudientDataSource {
 
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
+        return null;
+    }
+
+    @Override
+    public Flowable<NowPlayingResult> getNowPlayingResult() {
         return null;
     }
 }

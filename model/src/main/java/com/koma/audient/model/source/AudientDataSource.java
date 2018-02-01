@@ -15,10 +15,11 @@
  */
 package com.koma.audient.model.source;
 
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
@@ -29,7 +30,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 public interface AudientDataSource {
-    Flowable<List<AudientTest>> getAudientTests();
+    Flowable<List<Audient>> getAudientTests();
 
     Flowable<List<ToplistResult>> getTopList();
 
@@ -44,4 +45,6 @@ public interface AudientDataSource {
     Flowable<FileResult> getFileResult(String id);
 
     Flowable<CommentResult> getCommentResult(String id);
+
+    Flowable<NowPlayingResult> getNowPlayingResult();
 }

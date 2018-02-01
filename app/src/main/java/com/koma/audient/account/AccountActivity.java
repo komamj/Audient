@@ -28,7 +28,7 @@ public class AccountActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
-        mId = getIntent().getLongExtra(Constants.KEY_AUDIENT_ID, -1);
+        mId = getIntent().getLongExtra(Constants.KEY_AUDIENT, -1);
     }
 
     @Override

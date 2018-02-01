@@ -16,7 +16,7 @@
 package com.koma.audient.mine;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -72,13 +72,13 @@ public class MinePresenter implements MineContract.Presenter {
         mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
+                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
-                    public void onNext(List<AudientTest> audientTests) {
+                    public void onNext(List<Audient> audients) {
                         if (mView.isActive()) {
                             mView.showFavoriteProgressBar(false);
 
-                            mView.showFavorite(audientTests);
+                            mView.showFavorite(audients);
                         }
                     }
 
@@ -99,13 +99,13 @@ public class MinePresenter implements MineContract.Presenter {
         mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
+                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
-                    public void onNext(List<AudientTest> audientTests) {
+                    public void onNext(List<Audient> audients) {
                         if (mView.isActive()) {
                             mView.showUserProgressBar(false);
 
-                            mView.showUser(audientTests);
+                            mView.showUser(audients);
                         }
                     }
 

@@ -23,7 +23,8 @@ import android.view.View;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.base.AudientAdapter;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
@@ -48,7 +49,8 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
     private boolean mIsPrepared;
 
-    private UserAdapter mUserAdapter;
+    private AudientAdapter mAdapter;
+
     private FavoriteAdapter mFavoriteAdapter;
 
     @Inject
@@ -92,7 +94,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
         LogUtils.i(TAG, "onViewCreated");
 
-        mUserAdapter = new UserAdapter(mContext);
+        mAdapter = new AudientAdapter(mContext);
 
         mFavoriteAdapter = new FavoriteAdapter(mContext);
 
@@ -105,7 +107,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         layoutManagerUser.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerViewUser.setLayoutManager(layoutManagerUser);
         mRecyclerViewUser.addItemDecoration(new AudientItemDecoration(mContext));
-        mRecyclerViewUser.setAdapter(mUserAdapter);
+        mRecyclerViewUser.setAdapter(mAdapter);
 
         mIsPrepared = true;
     }
@@ -164,13 +166,14 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         }
     }
 
+
     @Override
-    public void showFavorite(List<AudientTest> audientTests) {
-        mFavoriteAdapter.update(audientTests);
+    public void showFavorite(List<Audient> audients) {
+        mFavoriteAdapter.replace(audients);
     }
 
     @Override
-    public void showUser(List<AudientTest> audientTests) {
-        mUserAdapter.update(audientTests);
+    public void showUser(List<Audient> audients) {
+        mAdapter.replace(audients);
     }
 }

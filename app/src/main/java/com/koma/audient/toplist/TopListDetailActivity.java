@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist.detail;
+package com.koma.audient.toplist;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,8 +34,8 @@ import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
-import butterknife.BindColor;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class TopListDetailActivity extends BaseActivity {
     private static final String TAG = TopListDetailActivity.class.getSimpleName();
@@ -45,9 +46,13 @@ public class TopListDetailActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.iv_album)
     ImageView mAlbum;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
 
-    @BindColor(R.color.colorAccent)
-    int mColorAccent;
+    @OnClick(R.id.fab)
+    void onFabClick() {
+
+    }
 
     @Inject
     ToplistDetailPresenter mPresenter;
@@ -70,6 +75,8 @@ public class TopListDetailActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
+
+        mFab.setImageResource(R.drawable.ic_unfavorite);
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
         String toplistName = getIntent().getStringExtra(Constants.KEY_top_list_name);

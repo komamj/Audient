@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist.detail;
+package com.koma.audient.toplist;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.koma.audient.R;
+import com.koma.audient.base.AudientAdapter;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
@@ -44,7 +45,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
     private String mShowTime;
 
-    private ToplistDetailAdapter mAdapter;
+    private AudientAdapter mAdapter;
 
     private ToplistDetailContract.Presenter mPresenter;
 
@@ -90,7 +91,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
         mSwipeRefreshLayout.setRefreshing(true);
 
-        mAdapter = new ToplistDetailAdapter(mContext);
+        mAdapter = new AudientAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

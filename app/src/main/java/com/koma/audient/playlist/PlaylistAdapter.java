@@ -16,10 +16,12 @@
 package com.koma.audient.playlist;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,42 +29,45 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
+import com.koma.audient.comment.CommentActivity;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
+import com.koma.common.util.Constants;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.PlaylistViewHolder> {
+public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.PlaylistViewHolder> {
 
-    private final GlideRequest<Drawable> mGlideRequest;
+    private final GlideRequest<Bitmap> mGlideRequest;
 
     public PlaylistAdapter(Context context) {
         super(context);
 
         mGlideRequest = GlideApp.with(mContext)
-                .asDrawable()
-                .dontAnimate()
+                .asBitmap()
                 .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
     @Override
-    protected boolean areItemsTheSame(AudientTest oldItem, AudientTest newItem) {
+    protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
+        return TextUtils.equals(oldItem.id, newItem.id);
+    }
+
+    @Override
+    protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected boolean areContentsTheSame(AudientTest oldItem, AudientTest newItem) {
-        return false;
-    }
-
-    @Override
-    protected Object getChangePayload(AudientTest oldItem, AudientTest newItem) {
+    protected Object getChangePayload(Audient oldItem, Audient newItem) {
         return null;
     }
 
@@ -75,27 +80,41 @@ public class PlaylistAdapter extends BaseAdapter<AudientTest, PlaylistAdapter.Pl
 
     @Override
     public void onBindViewHolder(PlaylistViewHolder holder, int position) {
-        mGlideRequest.load(mData.get(position).albumUrl).into(holder.mAlbum);
-        holder.mMusicName.setText(mData.get(position).musicName);
-        holder.mActorName.setText(mData.get(position).actorName);
+        Audient audient = mData.get(position);
+
+        mGlideRequest.load(audient).into(holder.mAlbum);
+
+        holder.mName.setText(audient.name);
+        holder.mArtistName.setText(audient.artist.name);
     }
 
     class PlaylistViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_name)
-        TextView mMusicName;
+        TextView mName;
         @BindView(R.id.tv_artist_name)
-        TextView mActorName;
+        TextView mArtistName;
 
         @OnClick(R.id.iv_more)
         void showPopupMenu(View view) {
             PopupMenu popupMenu = new PopupMenu(mContext, view);
-            popupMenu.getMenuInflater().inflate(R.menu.playlist_menu, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    return false;
+                    Audient audient = mData.get(getAdapterPosition());
+
+                    switch (item.getItemId()) {
+                        case R.id.action_favorite:
+                            break;
+                        case R.id.action_comment:
+                            Intent intent = new Intent(mContext, CommentActivity.class);
+                            intent.putExtra(Constants.KEY_AUDIENT, audient);
+                            mContext.startActivity(intent);
+                            break;
+                    }
+                    return true;
                 }
             });
             popupMenu.show();

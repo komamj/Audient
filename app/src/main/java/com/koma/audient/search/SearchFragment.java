@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.koma.audient.R;
+import com.koma.audient.base.AudientAdapter;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
@@ -43,7 +44,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @BindView(R.id.tv_empty)
     TextView mEmptyView;
 
-    private SearchAdapter mAdapter;
+    private AudientAdapter mAdapter;
 
     private SearchContract.Presenter mPresenter;
 
@@ -77,7 +78,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
         showProgressBar(false);
 
-        mAdapter = new SearchAdapter(mContext);
+        mAdapter = new AudientAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

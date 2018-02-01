@@ -22,8 +22,6 @@ import com.koma.common.base.BaseView;
 
 public interface NowPlayingContract {
     interface View extends BaseView<Presenter> {
-        String getAudientId();
-
         boolean isActive();
 
         void showLoadingError();
@@ -32,14 +30,12 @@ public interface NowPlayingContract {
 
         void showProgressBar(boolean forceShow);
 
-        void showAudient(Audient audient);
+        void showNowPlaying(Audient audient);
 
         void showLyric(Lyric lyric);
     }
 
     interface Presenter extends BasePresenter {
-        void loadAudient(String id);
-
-        void loadLyric(String id);
+        void loadNowPlaying();
     }
 }

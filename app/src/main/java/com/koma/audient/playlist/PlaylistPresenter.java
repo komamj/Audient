@@ -16,7 +16,8 @@
 package com.koma.audient.playlist;
 
 import com.koma.audient.model.AudientRepository;
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -56,6 +58,8 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
+        loadNowPlaying();
+
         loadAudients();
     }
 
@@ -67,15 +71,45 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     }
 
     @Override
-    public void loadAudients() {
-        mDisposables.clear();
+    public void loadNowPlaying() {
+        Disposable disposable = mRepository.getNowPlayingResult()
+                .map(new Function<NowPlayingResult, Audient>() {
+                    @Override
+                    public Audient apply(NowPlayingResult nowPlayingResult) throws Exception {
+                        return nowPlayingResult.audient;
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Audient>() {
+                    @Override
+                    public void onNext(Audient audient) {
+                        if (mView.isActive()) {
+                            mView.showNowPlaying(audient);
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadNowPlaying error " + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposables.add(disposable);
+    }
+
+    @Override
+    public void loadAudients() {
         Disposable disposable = mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<AudientTest>>() {
+                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
-                    public void onNext(List<AudientTest> audients) {
+                    public void onNext(List<Audient> audients) {
                         if (mView.isActive()) {
                             mView.showProgressBar(false);
 
@@ -85,6 +119,7 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadAudients error " + t.toString());
                     }
 
                     @Override

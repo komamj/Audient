@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.comment;
+package com.koma.audient.toplist;
 
-import com.koma.audient.model.entities.Comment;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import dagger.Module;
+import dagger.Provides;
 
-import java.util.List;
+@Module
+public class ToplistDetailPresenterModule {
+    private final ToplistDetailContract.View mView;
 
-public interface CommentContract {
-    interface View extends BaseView<Presenter> {
-        void showComments(List<Comment> comments);
-
-        boolean isActive();
-
-        void showLoadingError();
-
-        void showEmpty(boolean forceShow);
-
-        void showProgressBar(boolean forceShow);
+    public ToplistDetailPresenterModule(ToplistDetailContract.View view) {
+        mView = view;
     }
 
-    interface Presenter extends BasePresenter {
-        void loadComments(String id);
+
+    @Provides
+    ToplistDetailContract.View provideToplistDetailContractView() {
+        return this.mView;
     }
 }

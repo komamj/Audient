@@ -20,8 +20,7 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
-
+public class BaseViewHolder extends RecyclerView.ViewHolder {
     public BaseViewHolder(View view) {
         super(view);
 

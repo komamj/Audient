@@ -18,11 +18,14 @@ package com.koma.audient.model.source.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.koma.audient.model.entities.AudientTest;
+import com.koma.audient.model.entities.Album;
+import com.koma.audient.model.entities.Artist;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
+import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
@@ -61,43 +64,55 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<AudientTest>> getAudientTests() {
-        return Flowable.create(new FlowableOnSubscribe<List<AudientTest>>() {
+    public Flowable<List<Audient>> getAudientTests() {
+        return Flowable.create(new FlowableOnSubscribe<List<Audient>>() {
             @Override
-            public void subscribe(FlowableEmitter<List<AudientTest>> emitter) throws Exception {
-                List<AudientTest> audientTests = new ArrayList<>();
-                AudientTest audient1 = new AudientTest();
-                audient1.actorName = "周华健";
-                audient1.musicName = "海阔天空";
-                audient1.albumUrl = "http://4galbum.ctmus.cn/scale/album/a/89/big_ma_3a89_100001059323.jpg?param=200y200";
-                audientTests.add(audient1);
-                AudientTest audient2 = new AudientTest();
-                audient2.actorName = "beyond";
-                audient2.musicName = "光辉岁月";
-                audient2.albumUrl = "http://4galbum.ctmus.cn/scale/album/f/38/big_ma_3f38_100001026441.jpg?param=200y200";
-                audientTests.add(audient2);
-                AudientTest audient3 = new AudientTest();
-                audient3.actorName = "谢霆锋";
-                audient3.musicName = "不可一世(Live 2000年12月版)";
-                audient3.albumUrl = "http://4galbum.ctmus.cn/scale/artist/0/78/big_ms_f078_100034494495.jpg?param=200y200";
-                audientTests.add(audient3);
-                AudientTest audient4 = new AudientTest();
-                audient4.actorName = "邓紫棋";
-                audient4.musicName = "喜欢你";
-                audient4.albumUrl = "http://4galbum.ctmus.cn/scale/artist/e/02/7220fc92-790d-4c93-9813-ac1c5e93584d.jpg?param=200y200";
-                audientTests.add(audient4);
-                AudientTest audient5 = new AudientTest();
-                audient5.actorName = "beyond";
-                audient5.musicName = "再见理想(live)";
-                audient5.albumUrl = "http://4galbum.ctmus.cn/scale/artist/1/d8/be43f7f4-b570-4a6e-a5af-a564c8a5ab5a.jpg?param=200y200";
-                audientTests.add(audient5);
-                AudientTest audient6 = new AudientTest();
-                audient6.actorName = "谭咏麟";
-                audient6.musicName = "一生中最爱";
-                audient6.albumUrl = "http://4galbum.ctmus.cn/scale/album/7/23/big_ma_5723_100001033202.jpg?param=200y200";
-                audientTests.add(audient6);
+            public void subscribe(FlowableEmitter<List<Audient>> emitter) throws Exception {
+                List<Audient> audients = new ArrayList<>();
+                Audient audient1 = new Audient();
+                audient1.id = "001yS0N33yPm1B";
+                audient1.duration = 324;
+                audient1.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
+                audient1.name = "海阔天空";
+                audient1.album = new Album("002qcJuX3lO3EZ", "乐与怒");
+                audients.add(audient1);
+                Audient audient2 = new Audient();
+                audient2.id = "002pKRoX4Qbafa";
+                audient2.duration = 298;
+                audient2.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
+                audient2.name = "光辉岁月";
+                audient2.album = new Album("001C2BRX15iE4B", "命运派对");
+                audients.add(audient2);
+                Audient audient3 = new Audient();
+                audient3.id = "000DIFHv0PjOHH";
+                audient3.duration = 250;
+                audient3.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
+                audient3.name = "不再犹豫";
+                audient3.album = new Album("000DWELJ4Y7U3P", "黄家驹原作精选集");
+                audients.add(audient3);
+                Audient audient4 = new Audient();
+                audient4.id = "004Gyue33FERTT";
+                audient4.duration = 275;
+                audient4.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
+                audient4.name = "真的爱你";
+                audient4.album = new Album("000eOgmK1fN8Cs", "BEYOND IV");
+                audients.add(audient4);
+                Audient audient5 = new Audient();
+                audient1.id = "00247u9f23fivj";
+                audient5.duration = 251;
+                audient5.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
+                audient5.name = "谁伴我闯荡";
+                audient5.album = new Album("000DWELJ4Y7U3P", "黄家驹原作精选集");
+                audients.add(audient5);
+                Audient audient6 = new Audient();
+                audient6.id = "001mbYZr3QR68r";
+                audient6.duration = 273;
+                audient6.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
+                audient6.name = "喜欢你";
+                audient6.album = new Album("001oHxZZ1pAQn4", "秘密警察");
+                audients.add(audient6);
 
-                emitter.onNext(audientTests);
+                emitter.onNext(audients);
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
@@ -154,6 +169,26 @@ public class LocalDataSource implements AudientDataSource {
 
                 commentResult.comments = comments;
                 emitter.onNext(commentResult);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
+    }
+
+    @Override
+    public Flowable<NowPlayingResult> getNowPlayingResult() {
+        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
+            @Override
+            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
+                NowPlayingResult nowPlayingResult = new NowPlayingResult();
+                Audient audient = new Audient();
+                audient.id = "003evjhg3qIe9S";
+                audient.duration = 260;
+                audient.artist = new Artist("0040D7gK4aI54k", "谭咏麟");
+                audient.name = "一生中最爱";
+                audient.album = new Album("0018tEZm032RCk", "神话1991");
+                nowPlayingResult.audient = audient;
+
+                emitter.onNext(nowPlayingResult);
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);

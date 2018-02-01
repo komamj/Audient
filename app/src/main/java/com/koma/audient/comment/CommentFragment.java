@@ -15,11 +15,8 @@
  */
 package com.koma.audient.comment;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,10 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
-import com.koma.audient.helper.GlideApp;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Comment;
-import com.koma.audient.util.Utils;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
@@ -39,7 +34,6 @@ import com.koma.common.util.LogUtils;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class CommentFragment extends BaseFragment implements CommentContract.View {
     private static final String TAG = CommentFragment.class.getSimpleName();
@@ -50,42 +44,20 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.iv_album)
-    ImageView mAlbum;
-    @BindView(R.id.iv_favorite)
-    ImageView mFavorite;
-    @BindView(R.id.tv_name)
-    TextView mMusicName;
-    @BindView(R.id.tv_artist_name)
-    TextView mArtistName;
-    @BindView(R.id.edit_text)
-    AppCompatEditText mEditText;
-
-    @OnClick(R.id.iv_send)
-    void onSendClick() {
-        Comment comment = new Comment();
-        comment.message = mEditText.getText().toString();
-        comment.time = Utils.getTimeStamp();
-        comment.userName = "Koma";
-
-        mEditText.clearFocus();
-
-        mAdapter.addComment(comment);
-    }
 
     private CommentAdapter mAdapter;
 
     private CommentContract.Presenter mPresenter;
 
-    private String mId;
+    private Audient mAudient;
 
     public CommentFragment() {
     }
 
-    public static CommentFragment newInstance(String id) {
+    public static CommentFragment newInstance(Audient audient) {
         CommentFragment fragment = new CommentFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.KEY_AUDIENT_ID, id);
+        bundle.putParcelable(Constants.KEY_AUDIENT, audient);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -97,7 +69,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
         LogUtils.i(TAG, "onCreate");
 
         if (getArguments() != null) {
-            mId = getArguments().getString(Constants.KEY_AUDIENT_ID);
+            mAudient = getArguments().getParcelable(Constants.KEY_AUDIENT);
         }
     }
 
@@ -111,7 +83,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadComments(mId);
+                    mPresenter.loadComments(mAudient.id);
                 }
             }
         });
@@ -127,9 +99,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
 
         // load data
         if (mPresenter != null) {
-            mPresenter.loadAudient(mId);
-
-            mPresenter.loadComments(mId);
+            mPresenter.loadComments(mAudient.id);
         }
     }
 
@@ -152,22 +122,6 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     @Override
     public void setPresenter(CommentContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public String getAudientId() {
-        return this.mId;
-    }
-
-    @Override
-    public void showAudient(Audient audient) {
-        GlideApp.with(this)
-                .load(audient)
-                .placeholder(new ColorDrawable(Color.GRAY))
-                .into(mAlbum);
-
-        mMusicName.setText(audient.name);
-        mArtistName.setText(audient.artist.name);
     }
 
     @Override

@@ -5,96 +5,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_album"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swipe_refresh_layout"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/nav_header_vertical_spacing"
-            android:paddingEnd="@dimen/nav_header_vertical_spacing"
-            android:paddingStart="@dimen/nav_header_vertical_spacing"
-            android:paddingTop="@dimen/nav_header_vertical_spacing">
-
-            <TextView
-                android:id="@+id/tv_name"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:gravity="start|center_vertical"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="sadasd"
-                android:textSize="26sp"
-                app:layout_constraintBottom_toBottomOf="@+id/guideline"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_album"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_artist_name"
-                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/nav_header_vertical_spacing"
-                android:gravity="start|center_vertical"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="sadasd"
-                android:textSize="23sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_name"
-                app:layout_constraintTop_toBottomOf="@+id/guideline" />
-
-            <ImageView
-                android:id="@+id/iv_album"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:foreground="@color/colorDivider"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="w,1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
-
-            <ImageView
-                android:id="@+id/iv_favorite"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_album"
-                app:layout_constraintEnd_toEndOf="@+id/iv_album"
-                app:layout_constraintStart_toStartOf="@+id/iv_album"
-                app:layout_constraintTop_toTopOf="@+id/iv_album"
-                app:srcCompat="@drawable/ic_unfavorite" />
-
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/card_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_album">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -116,55 +34,5 @@
         app:layout_constraintEnd_toEndOf="@id/swipe_refresh_layout"
         app:layout_constraintStart_toStartOf="@id/swipe_refresh_layout"
         app:layout_constraintTop_toTopOf="@id/swipe_refresh_layout" />
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swipe_refresh_layout">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/nav_header_vertical_spacing"
-            android:paddingEnd="@dimen/nav_header_vertical_spacing"
-            android:paddingStart="@dimen/nav_header_vertical_spacing"
-            android:paddingTop="@dimen/nav_header_vertical_spacing">
-
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="请写下您的评论..."
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLines="3"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/iv_send"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
-                android:layout_marginStart="@dimen/nav_header_vertical_spacing"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="4dp"
-                android:scaleType="centerCrop"
-                android:tint="@color/colorAccent"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_text"
-                app:layout_constraintTop_toTopOf="@+id/edit_text"
-                app:srcCompat="@drawable/ic_menu_send" />
-
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

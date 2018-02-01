@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.toplist.detail;
+package com.koma.audient.toplist;
 
-import dagger.Module;
-import dagger.Provides;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.FragmentScoped;
 
-@Module
-public class ToplistDetailPresenterModule {
-    private final ToplistDetailContract.View mView;
+import dagger.Component;
 
-    public ToplistDetailPresenterModule(ToplistDetailContract.View view) {
-        mView = view;
-    }
-
-
-    @Provides
-    ToplistDetailContract.View provideToplistDetailContractView() {
-        return this.mView;
-    }
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = ToplistDetailPresenterModule.class)
+public interface ToplistDetailComponent {
+    void inject(TopListDetailActivity activity);
 }

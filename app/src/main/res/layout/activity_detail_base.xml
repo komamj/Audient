@@ -15,14 +15,17 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/nav_header_height"
+            android:layout_height="300dp"
+            android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleGravity="center"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="@color/colorPrimaryDark"
             app:toolbarId="@+id/toolbar">
 
-            <ImageView
+            <com.koma.audient.widget.SquareImageView
                 android:id="@+id/iv_album"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -41,6 +44,16 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@android:color/white"
+        app:borderWidth="0dp"
+        app:layout_anchor="@+id/app_bar"
+        app:layout_anchorGravity="bottom|end" />
 
     <FrameLayout
         android:id="@+id/content_main"

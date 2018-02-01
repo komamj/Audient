@@ -23,9 +23,11 @@ import android.view.MenuItem;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.search.SearchActivity;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.ActivityUtils;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
@@ -37,8 +39,6 @@ public class NowPlayingActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
-    private String mId = "001yS0N33yPm1B";
 
     @Inject
     NowPlayingPresenter mPresenter;
@@ -64,7 +64,7 @@ public class NowPlayingActivity extends BaseActivity {
                 .findFragmentById(R.id.content_main);
 
         if (nowPlayingFragment == null) {
-            nowPlayingFragment = NowPlayingFragment.newInstance(mId);
+            nowPlayingFragment = NowPlayingFragment.newInstance();
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), nowPlayingFragment,
                     R.id.content_main);
