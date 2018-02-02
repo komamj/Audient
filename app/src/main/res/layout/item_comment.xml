@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_user">
 
         <TextView
-            android:id="@+id/tv_user"
+            android:id="@+id/tv_dynamic"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,8 +49,8 @@
             android:singleLine="true"
             android:text="2018-01-18 20:21"
             android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_user"
-            app:layout_constraintTop_toBottomOf="@+id/tv_user" />
+            app:layout_constraintStart_toStartOf="@+id/tv_dynamic"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dynamic" />
 
     </android.support.constraint.ConstraintLayout>
 

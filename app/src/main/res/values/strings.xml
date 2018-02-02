@@ -29,6 +29,11 @@
     <string name="action_settings">Settings</string>
     <string name="action_share">Share</string>
 
+    <!--Mine-->
+    <string name="my_favorite">My favorite:</string>
+    <string name="my_dynamic">My dynamic:</string>
+    <string name="default_favorite">My love</string>
+
     <!--Search-->
     <string name="action_playlist">Add to playlist</string>
     <string name="action_favorite">Add to my favorite</string>

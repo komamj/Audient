@@ -25,7 +25,7 @@
             app:statusBarScrim="@color/colorPrimaryDark"
             app:toolbarId="@+id/toolbar">
 
-            <com.koma.audient.widget.SquareImageView
+            <ImageView
                 android:id="@+id/iv_album"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

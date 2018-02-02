@@ -29,6 +29,11 @@
     <string name="action_settings">"设置"</string>
     <string name="action_share">"分享"</string>
 
+    <!--Mine-->
+    <string name="my_favorite">"我的收藏:"</string>
+    <string name="my_dynamic">"我的动态:"</string>
+    <string name="default_favorite">"我喜欢"</string>
+
     <!--Search-->
     <string name="action_playlist">"加入播放列表"</string>
     <string name="action_favorite">"加入收藏"</string>

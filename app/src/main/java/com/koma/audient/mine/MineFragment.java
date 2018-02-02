@@ -40,7 +40,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
     @BindView(R.id.recycler_view_favorite)
     RecyclerView mRecyclerViewFavorite;
-    @BindView(R.id.recycler_view_user)
+    @BindView(R.id.recycler_view_dynamic)
     RecyclerView mRecyclerViewUser;
     @BindView(R.id.progress_bar_favorite)
     ContentLoadingProgressBar mFavoriteProgressBar;
@@ -169,7 +169,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
     @Override
     public void showFavorite(List<Audient> audients) {
-        mFavoriteAdapter.replace(audients);
+
     }
 
     @Override

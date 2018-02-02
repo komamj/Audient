@@ -98,7 +98,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
     static class CommentViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_user)
         ImageView mUserImage;
-        @BindView(R.id.tv_user)
+        @BindView(R.id.tv_dynamic)
         TextView mUserName;
         @BindView(R.id.tv_comment)
         TextView mMessage;

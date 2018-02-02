@@ -19,26 +19,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.helper.GlideRequest;
-import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Favorite;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
-public class FavoriteAdapter extends BaseAdapter<Audient, FavoriteAdapter.FavoriteViewHolder> {
+public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.FavoriteViewHolder> {
     private final GlideRequest<Bitmap> mGlideRequest;
 
     public FavoriteAdapter(Context context) {
@@ -52,17 +48,17 @@ public class FavoriteAdapter extends BaseAdapter<Audient, FavoriteAdapter.Favori
     }
 
     @Override
-    protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
-        return oldItem.equals(newItem);
-    }
-
-    @Override
-    protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
+    protected boolean areItemsTheSame(Favorite oldItem, Favorite newItem) {
         return false;
     }
 
     @Override
-    protected Object getChangePayload(Audient oldItem, Audient newItem) {
+    protected boolean areContentsTheSame(Favorite oldItem, Favorite newItem) {
+        return false;
+    }
+
+    @Override
+    protected Object getChangePayload(Favorite oldItem, Favorite newItem) {
         return null;
     }
 
@@ -75,33 +71,17 @@ public class FavoriteAdapter extends BaseAdapter<Audient, FavoriteAdapter.Favori
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        Audient audient = mData.get(position);
+        mGlideRequest.load("").into(holder.mAlbum);
+    }
 
-        mGlideRequest.load(audient).into(holder.mAlbum);
-        holder.mMusicName.setText(audient.name);
-        holder.mActorName.setText(audient.artist.name);
+    @Override
+    public int getItemCount() {
+        return mData == null ? 1 : mData.size();
     }
 
     public class FavoriteViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
-        @BindView(R.id.tv_name)
-        TextView mMusicName;
-        @BindView(R.id.tv_artist_name)
-        TextView mActorName;
-
-        @OnClick(R.id.iv_more)
-        void showPopupMenu(View view) {
-            PopupMenu popupMenu = new PopupMenu(mContext, view);
-            popupMenu.getMenuInflater().inflate(R.menu.playlist_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    return false;
-                }
-            });
-            popupMenu.show();
-        }
 
         public FavoriteViewHolder(View view) {
             super(view);

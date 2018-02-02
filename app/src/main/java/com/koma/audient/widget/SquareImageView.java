@@ -40,6 +40,6 @@ public class SquareImageView extends AppCompatImageView {
     @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+        super.onMeasure(heightMeasureSpec, heightMeasureSpec);
     }
 }
