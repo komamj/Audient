@@ -20,16 +20,20 @@ import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.common.util.LogUtils;
 
+import org.reactivestreams.Publisher;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class SearchPresenter implements SearchContract.Presenter {
     public static final String TAG = SearchPresenter.class.getSimpleName();
@@ -85,26 +89,30 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
 
         Disposable disposable = mRepository.getSearchReult(keyword)
-                .map(new Function<SearchResult, List<Audient>>() {
+                .flatMap(new Function<SearchResult, Publisher<Audient>>() {
                     @Override
-                    public List<Audient> apply(SearchResult searchResult) throws Exception {
-                        return searchResult.dataBean.audients;
+                    public Publisher<Audient> apply(SearchResult searchResult) throws Exception {
+                        return Flowable.fromIterable(searchResult.dataBean.audients);
                     }
                 })
+                .filter(new Predicate<Audient>() {
+                    @Override
+                    public boolean test(Audient audient) throws Exception {
+                        String name = audient.name.trim().toUpperCase();
+                        String artistName = audient.artist.name.trim().toUpperCase();
+                        String albumName = audient.album.name.trim().toUpperCase();
+
+                        return !name.contains("DJ") && !name.contains("哀乐")
+                                && !artistName.contains("DJ") && !artistName.contains("哀乐")
+                                && !albumName.contains("DJ") && !albumName.contains("哀乐");
+                    }
+                }).toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
+                .doOnError(new Consumer<Throwable>() {
                     @Override
-                    public void onNext(List<Audient> audients) {
-                        if (mView.isActive()) {
-                            mView.showProgressBar(false);
-                            mView.showAudients(audients);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadSearchResults error :" + t.toString());
+                    public void accept(Throwable throwable) throws Exception {
+                        LogUtils.e(TAG, "loadSearchResults error :" + throwable.toString());
 
                         if (mView.isActive()) {
                             mView.showProgressBar(false);
@@ -112,10 +120,14 @@ public class SearchPresenter implements SearchContract.Presenter {
                             mView.showLoadingError();
                         }
                     }
-
+                })
+                .subscribe(new Consumer<List<Audient>>() {
                     @Override
-                    public void onComplete() {
-
+                    public void accept(List<Audient> audients) throws Exception {
+                        if (mView.isActive()) {
+                            mView.showProgressBar(false);
+                            mView.showAudients(audients);
+                        }
                     }
                 });
 
