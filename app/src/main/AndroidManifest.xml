@@ -58,6 +58,7 @@
         <activity
             android:name=".comment.CommentActivity"
             android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/comment_label"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme"

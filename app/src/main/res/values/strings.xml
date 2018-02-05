@@ -2,9 +2,9 @@
     <string name="app_name">Audient</string>
 
     <!--Drawer-->
-    <string name="nav_playlist">Playlist</string>
+    <string name="nav_track">My track</string>
     <string name="nav_recommend">Recommend</string>
-    <string name="nav_user">Account</string>
+    <string name="nav_user_info">Account info</string>
     <string name="more">More</string>
     <string name="nav_setting">Settings</string>
     <string name="nav_share">Share</string>

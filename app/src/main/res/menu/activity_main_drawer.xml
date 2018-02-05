@@ -3,36 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/user_group">
         <item
-            android:id="@+id/nav_playlist"
-            android:icon="@drawable/ic_playlist"
-            android:title="@string/nav_playlist" />
-        <item
-            android:id="@+id/nav_recommend"
-            android:icon="@drawable/ic_library"
-            android:title="@string/nav_recommend" />
-        <item
-            android:id="@+id/nav_user"
+            android:id="@+id/nav_user_info"
             android:icon="@drawable/ic_user"
-            android:title="@string/nav_user" />
+            android:title="@string/nav_user_info" />
+        <item
+            android:id="@+id/nav_track"
+            android:icon="@drawable/ic_track"
+            android:title="@string/nav_track" />
     </group>
 
-    <item android:title="@string/more">
-        <menu>
-            <item
-                android:id="@+id/nav_setting"
-                android:icon="@drawable/ic_settings"
-                android:title="@string/action_settings" />
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/nav_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/nav_send" />
-        </menu>
-    </item>
+    <group android:id="@+id/more">
+
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/action_settings" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/nav_share" />
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/nav_send" />
+    </group>
 
 </menu>

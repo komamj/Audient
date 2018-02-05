@@ -15,6 +15,7 @@
  */
 package com.koma.audient.comment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -22,10 +23,12 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.koma.audient.R;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.util.Utils;
+import com.koma.common.util.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +40,8 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
     @BindView(R.id.edit_text)
     AppCompatEditText mEditText;
 
+    private Context mContext;
+
     @OnClick(R.id.iv_send)
     void onSendClick() {
         Comment comment = new Comment();
@@ -47,6 +52,9 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
         mEditText.setText("");
         mEditText.clearFocus();
 
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
+
         dismiss();
     }
 
@@ -54,6 +62,15 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
         EditCommentDialogFragment fragment = new EditCommentDialogFragment();
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        LogUtils.i(TAG, "onAttach");
+
+        mContext = context;
     }
 
     @Override

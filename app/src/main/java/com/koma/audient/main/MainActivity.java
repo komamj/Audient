@@ -33,10 +33,10 @@ import android.view.MenuItem;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.mine.MineFragment;
 import com.koma.audient.playlist.PlaylistFragment;
 import com.koma.audient.search.SearchActivity;
 import com.koma.audient.toplist.TopListFragment;
-import com.koma.audient.mine.MineFragment;
 import com.koma.common.base.BaseActivity;
 import com.koma.common.util.LogUtils;
 
@@ -149,9 +149,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_playlist) {
-        } else if (id == R.id.nav_recommend) {
-        } else if (id == R.id.nav_user) {
+        if (id == R.id.nav_user_info) {
+        } else if (id == R.id.nav_track) {
+        } else if (id == R.id.nav_setting) {
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
