@@ -102,9 +102,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                         String artistName = audient.artist.name.trim().toUpperCase();
                         String albumName = audient.album.name.trim().toUpperCase();
 
-                        return !name.contains("DJ") && !name.contains("哀乐")
-                                && !artistName.contains("DJ") && !artistName.contains("哀乐")
-                                && !albumName.contains("DJ") && !albumName.contains("哀乐");
+                        return !isInvalid(name) && !isInvalid(artistName) && !isInvalid(albumName);
                     }
                 }).toList()
                 .subscribeOn(Schedulers.io())
@@ -137,6 +135,18 @@ public class SearchPresenter implements SearchContract.Presenter {
     private boolean isInvalid(String word) {
         String keyword = word.trim().toUpperCase();
 
-        return keyword.contains("DJ") || keyword.contains("哀乐");
+        return keyword.contains("DJ") || keyword.contains("哀") || keyword.contains("葬")
+                || keyword.contains("FUNERAL") || keyword.contains("棺") || keyword.contains("蛊")
+                || keyword.contains("灵") || keyword.contains("魂") || keyword.contains("SOUL")
+                || keyword.contains("诅") || keyword.contains("咒") || keyword.contains("呪")
+                || keyword.contains("亡") || keyword.contains("舞曲") || keyword.contains("disco")
+                || keyword.contains("迪斯科") || keyword.contains("卡拉") || keyword.contains("OK")
+                || keyword.contains("蹦") || keyword.contains("劲爆") || keyword.contains("舞")
+                || keyword.contains("DANCE") || keyword.contains("节奏") || keyword.contains("嗨")
+                || keyword.contains("HIGH") || keyword.contains("REMIX") || keyword.contains("MIX")
+                || keyword.contains("摇") || keyword.contains("DOWNTEMPO") || keyword.contains("滚")
+                || keyword.contains("ROCK") || keyword.contains("说唱") || keyword.contains("RAP")
+                || keyword.contains("嘻哈") || keyword.contains("动次") || keyword.contains("打次")
+                || keyword.contains("打碟") || keyword.contains("电音") || keyword.contains("控");
     }
 }
