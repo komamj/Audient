@@ -34,6 +34,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MineFragment extends BaseFragment implements MineContract.View {
     private static final String TAG = MineFragment.class.getSimpleName();
@@ -46,6 +47,11 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     ContentLoadingProgressBar mFavoriteProgressBar;
     @BindView(R.id.progress_bar_user)
     ContentLoadingProgressBar mUserProgressBar;
+
+    @OnClick(R.id.iv_add_playlist)
+    void showAddPlaylistDilog() {
+        AddFavoritesDialog.show(getChildFragmentManager());
+    }
 
     private boolean mIsPrepared;
 
@@ -125,7 +131,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_user;
+        return R.layout.fragment_mine;
     }
 
     @Override

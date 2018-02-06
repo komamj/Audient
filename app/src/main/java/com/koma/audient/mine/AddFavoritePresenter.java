@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.main;
+package com.koma.audient.mine;
 
 import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.common.util.LogUtils;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class MainPresenter implements MainContract.Presenter {
-    public static final String TAG = MainPresenter.class.getSimpleName();
+public class AddFavoritePresenter implements AddFavoriteContract.Presenter {
+    public static final String TAG = AddFavoritePresenter.class.getSimpleName();
 
-    private MainContract.View mView;
+    private AddFavoriteContract.View mView;
 
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
 
     @Inject
-    public MainPresenter(MainContract.View view, AudientRepository repository) {
+    public AddFavoritePresenter(AddFavoriteContract.View view, AudientRepository repository) {
         mView = view;
 
         mRepository = repository;
@@ -62,19 +62,19 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void loadLoginStatus() {
-        Disposable disposable = mRepository.getLoginStatus()
+    public void addToPlaylist(String name) {
+        mRepository.getFavoriteResult(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Boolean>() {
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
                     @Override
-                    public void onNext(Boolean isLogin) {
-                        mView.showLoginView(isLogin);
+                    public void onNext(BaseResponse baseResponse) {
+
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadLoginStatus error :" + t.toString());
+                        LogUtils.e(TAG, "addToPlaylist error :" + t.toString());
                     }
 
                     @Override
@@ -82,7 +82,5 @@ public class MainPresenter implements MainContract.Presenter {
 
                     }
                 });
-
-        mDisposables.add(disposable);
     }
 }

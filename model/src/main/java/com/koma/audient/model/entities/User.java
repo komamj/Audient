@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.login;
+package com.koma.audient.model.entities;
 
-import com.koma.audient.model.entities.User;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import com.google.gson.annotations.SerializedName;
 
-public class LoginContract {
-    interface View extends BaseView<Presenter> {
-        void onLoginFinished();
-    }
-
-    interface Presenter extends BasePresenter {
-        void login(User user);
-    }
+public class User {
+    @SerializedName("username")
+    public String userName;
+    @SerializedName("customUsername")
+    public boolean isDefaultName;
+    @SerializedName("password")
+    public String password;
+    @SerializedName("confirmPassword")
+    public String confirmPassword;
 }

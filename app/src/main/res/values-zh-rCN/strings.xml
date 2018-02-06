@@ -33,6 +33,7 @@
     <string name="my_favorite">"我的收藏:"</string>
     <string name="my_dynamic">"我的动态:"</string>
     <string name="default_favorite">"我喜欢"</string>
+    <string name="add_playlist">"新建歌单"</string>
 
     <!--Search-->
     <string name="action_playlist">"加入播放列表"</string>

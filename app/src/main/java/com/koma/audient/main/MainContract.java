@@ -20,8 +20,10 @@ import com.koma.common.base.BaseView;
 
 public interface MainContract {
     interface View extends BaseView<Presenter> {
+        void showLoginView(boolean isLogin);
     }
 
     interface Presenter extends BasePresenter {
+        void loadLoginStatus();
     }
 }

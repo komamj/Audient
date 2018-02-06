@@ -33,6 +33,7 @@
     <string name="my_favorite">My favorite:</string>
     <string name="my_dynamic">My dynamic:</string>
     <string name="default_favorite">My love</string>
+    <string name="add_playlist">Add playlist</string>
 
     <!--Search-->
     <string name="action_playlist">Add to playlist</string>

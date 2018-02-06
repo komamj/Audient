@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.login;
+package com.koma.audient.mine;
 
-import com.koma.audient.model.entities.User;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
 
-public class LoginContract {
+public interface AddFavoriteContract {
     interface View extends BaseView<Presenter> {
-        void onLoginFinished();
     }
 
     interface Presenter extends BasePresenter {
-        void login(User user);
+        void addToPlaylist(String name);
     }
 }

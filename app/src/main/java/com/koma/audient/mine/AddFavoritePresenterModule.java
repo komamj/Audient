@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.login;
+package com.koma.audient.mine;
 
-import com.koma.audient.model.entities.User;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import dagger.Module;
+import dagger.Provides;
 
-public class LoginContract {
-    interface View extends BaseView<Presenter> {
-        void onLoginFinished();
+@Module
+public class AddFavoritePresenterModule {
+    private final AddFavoriteContract.View mView;
+
+    public AddFavoritePresenterModule(AddFavoriteContract.View view) {
+        mView = view;
     }
 
-    interface Presenter extends BasePresenter {
-        void login(User user);
+    @Provides
+    AddFavoriteContract.View provideAddFavoriteContractView() {
+        return this.mView;
     }
 }

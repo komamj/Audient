@@ -17,6 +17,7 @@ package com.koma.audient.model.source.remote;
 
 import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
@@ -25,6 +26,7 @@ import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
+import com.koma.audient.model.entities.User;
 import com.koma.audient.model.source.AudientDataSource;
 
 import java.util.List;
@@ -88,5 +90,25 @@ public class RemoteDataSource implements AudientDataSource {
     @Override
     public Flowable<NowPlayingResult> getNowPlayingResult() {
         return null;
+    }
+
+    @Override
+    public Flowable<Boolean> getLoginStatus() {
+        return null;
+    }
+
+    @Override
+    public Flowable<BaseResponse> getLoginResult(User user) {
+        return mAudientApi.getLoginResult(user);
+    }
+
+    @Override
+    public Flowable<Boolean> setLoginStatus(boolean loginStatus) {
+        return null;
+    }
+
+    @Override
+    public Flowable<BaseResponse> getFavoriteResult(String name) {
+        return mAudientApi.getFavoriteResult(name);
     }
 }

@@ -21,16 +21,28 @@ import android.view.MenuItem;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.model.entities.User;
 import com.koma.common.base.BaseActivity;
-import com.koma.common.util.ActivityUtils;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @OnClick(R.id.btn_login)
+    void loginWeChat() {
+        User user = new User();
+        user.userName = "koma_mj";
+        user.confirmPassword = "201124koma";
+        user.isDefaultName = false;
+        user.password = "201124koma";
+
+        mPresenter.login(user);
+    }
 
     @Inject
     LoginPresenter mPresenter;
@@ -38,31 +50,24 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    protected void onPermissonGranted() {
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
-    }
 
-    @Override
-    protected void onPermissonGranted() {
-        LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.content_main);
-
-        if (loginFragment == null) {
-            loginFragment = LoginFragment.newInstance();
-
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), loginFragment,
-                    R.id.content_main);
-        }
-
-        DaggerLoginComponent.builder().audientRepositoryComponent(
+        // inject presenter layer
+        DaggerLoginComponenet.builder().audientRepositoryComponent(
                 ((AudientApplication) getApplication()).getRepositoryComponent())
-                .loginPresenterModule(new LoginPresenterModule(loginFragment))
-                .build();
+                .loginPresenterModule(new LoginPresenterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -82,6 +87,17 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_base;
+        return R.layout.activity_login;
+    }
+
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void onLoginFinished() {
+        this.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

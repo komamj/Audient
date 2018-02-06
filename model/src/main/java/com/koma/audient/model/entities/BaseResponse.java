@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.login;
+package com.koma.audient.model.entities;
 
-import com.koma.audient.model.AudientRepositoryComponent;
-import com.koma.common.util.FragmentScoped;
+import com.google.gson.annotations.SerializedName;
 
-import dagger.Component;
+public class BaseResponse {
+    @SerializedName("code")
+    public int resultCode;
+    @SerializedName("data")
+    public DataBean dataBean;
+    @SerializedName("message")
+    public String message;
 
-/**
- * Created by koma on 1/3/18.
- */
-@FragmentScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = LoginPresenterModule.class)
-public interface LoginComponent {
-    void inject(LoginActivity activity);
+    public static class DataBean {
+
+    }
 }

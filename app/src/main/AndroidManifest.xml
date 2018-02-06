@@ -34,7 +34,7 @@
             android:exported="false"
             android:label="@string/login_label"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/LoginTheme" />
 
         <activity
             android:name=".main.MainActivity"
@@ -57,8 +57,8 @@
 
         <activity
             android:name=".comment.CommentActivity"
-            android:exported="false"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="false"
             android:label="@string/comment_label"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme"

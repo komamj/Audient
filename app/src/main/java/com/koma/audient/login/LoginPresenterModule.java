@@ -18,9 +18,6 @@ package com.koma.audient.login;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by koma on 1/3/18.
- */
 @Module
 public class LoginPresenterModule {
     private final LoginContract.View mView;
@@ -31,6 +28,6 @@ public class LoginPresenterModule {
 
     @Provides
     LoginContract.View provideLoginContractView() {
-        return mView;
+        return this.mView;
     }
 }

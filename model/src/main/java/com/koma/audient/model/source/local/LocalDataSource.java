@@ -24,12 +24,14 @@ import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
+import com.koma.audient.model.entities.User;
 import com.koma.audient.model.source.AudientDataSource;
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ import io.reactivex.FlowableOnSubscribe;
 @Singleton
 public class LocalDataSource implements AudientDataSource {
     private static final String TAG = LocalDataSource.class.getSimpleName();
+
+    private static final String LOGIN_TAG = "is_login";
 
     private final Context mContext;
 
@@ -192,5 +196,43 @@ public class LocalDataSource implements AudientDataSource {
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
+    }
+
+    @Override
+    public Flowable<Boolean> getLoginStatus() {
+        return Flowable.create(new FlowableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
+                emitter.onNext(mSharedPreferences.getBoolean(LOGIN_TAG, false));
+
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
+    }
+
+    @Override
+    public Flowable<BaseResponse> getLoginResult(User user) {
+        return null;
+    }
+
+    @Override
+    public Flowable<Boolean> setLoginStatus(final boolean loginStatus) {
+        return Flowable.create(new FlowableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
+                mSharedPreferences.edit()
+                        .putBoolean(LOGIN_TAG, loginStatus)
+                        .apply();
+
+                emitter.onNext(loginStatus);
+
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
+    }
+
+    @Override
+    public Flowable<BaseResponse> getFavoriteResult(String name) {
+        return null;
     }
 }

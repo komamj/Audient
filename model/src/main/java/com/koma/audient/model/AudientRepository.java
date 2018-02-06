@@ -16,6 +16,7 @@
 package com.koma.audient.model;
 
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
@@ -24,6 +25,7 @@ import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
+import com.koma.audient.model.entities.User;
 import com.koma.audient.model.source.AudientDataSource;
 import com.koma.audient.model.source.local.LocalDataSource;
 import com.koma.audient.model.source.remote.RemoteDataSource;
@@ -92,5 +94,25 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<NowPlayingResult> getNowPlayingResult() {
         return mLocalDataSource.getNowPlayingResult();
+    }
+
+    @Override
+    public Flowable<Boolean> getLoginStatus() {
+        return mLocalDataSource.getLoginStatus();
+    }
+
+    @Override
+    public Flowable<BaseResponse> getLoginResult(User user) {
+        return mRemoteDataSource.getLoginResult(user);
+    }
+
+    @Override
+    public Flowable<Boolean> setLoginStatus(boolean loginStatus) {
+        return mLocalDataSource.setLoginStatus(loginStatus);
+    }
+
+    @Override
+    public Flowable<BaseResponse> getFavoriteResult(String name) {
+        return mRemoteDataSource.getFavoriteResult(name);
     }
 }

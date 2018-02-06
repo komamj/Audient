@@ -30,9 +30,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.login.LoginActivity;
 import com.koma.audient.mine.MineFragment;
 import com.koma.audient.playlist.PlaylistFragment;
 import com.koma.audient.search.SearchActivity;
@@ -64,6 +69,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    Button mLoginButton;
+    TextView mName;
+    ImageView mUserImage;
 
     @Inject
     MainPresenter mPresenter;
@@ -86,6 +94,19 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = mNavigationView.getHeaderView(0);
+        mName = headerView.findViewById(R.id.tv_user_name);
+        mUserImage = headerView.findViewById(R.id.iv_user);
+        mLoginButton = headerView.findViewById(R.id.btn_login);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
         // inject presenter layer
         DaggerMainComponent.builder().audientRepositoryComponent(
                 ((AudientApplication) getApplication()).getRepositoryComponent())
@@ -104,6 +125,28 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         mViewPager.setCurrentItem(1);
         mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LogUtils.i(TAG, "onResume");
+
+        if (mPresenter != null) {
+            mPresenter.loadLoginStatus();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LogUtils.i(TAG, "onPause");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
     }
 
     @Override
@@ -165,6 +208,19 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
 
+    }
+
+    @Override
+    public void showLoginView(boolean isLogin) {
+        if (isLogin) {
+            mLoginButton.setVisibility(View.GONE);
+            mName.setVisibility(View.VISIBLE);
+            mUserImage.setVisibility(View.VISIBLE);
+        } else {
+            mLoginButton.setVisibility(View.VISIBLE);
+            mName.setVisibility(View.GONE);
+            mUserImage.setVisibility(View.GONE);
+        }
     }
 
     static class AudientAdapter extends FragmentPagerAdapter {

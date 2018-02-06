@@ -15,6 +15,7 @@
  */
 package com.koma.audient.model;
 
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -22,11 +23,14 @@ import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
+import com.koma.audient.model.entities.User;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -34,13 +38,13 @@ public interface AudientApi {
     /**
      * 获取榜单列表.
      */
-    @GET("toplist")
+    @GET("api/v1/openmusic/toplist")
     Flowable<List<ToplistResult>> getTopLists();
 
     /**
      * 获取榜单详情
      */
-    @GET("toplist/{id}")
+    @GET("api/v1/openmusic/toplist/{id}")
     Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
                                                    @Query("date") String updateKey);
 
@@ -49,7 +53,7 @@ public interface AudientApi {
      *
      * @param keyword 关键字.
      */
-    @GET("search")
+    @GET("api/v1/openmusic/search")
     Flowable<SearchResult> getSeachResults(@Query("w") String keyword);
 
     /**
@@ -57,15 +61,21 @@ public interface AudientApi {
      *
      * @param id
      */
-    @GET("{id}/lyric")
+    @GET("api/v1/openmusic/{id}/lyric")
     Flowable<LyricResult> getLyricResult(@Path("id") String id);
 
-    @GET("{id}")
+    @GET("api/v1/openmusic/{id}")
     Flowable<SongDetailResult> getSongDetailResult(@Path("id") String id);
 
-    @GET("{id}/url")
+    @GET("api/v1/openmusic/{id}/url")
     Flowable<FileResult> getFileResult(@Path("id") String id);
 
     @GET("nowplaying")
     Flowable<NowPlayingResult> getNowPlayingResult();
+
+    @POST("account/register/user")
+    Flowable<BaseResponse> getLoginResult(@Body User user);
+
+    @POST("api/v1/favorites")
+    Flowable<BaseResponse> getFavoriteResult(@Body String name);
 }

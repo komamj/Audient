@@ -16,6 +16,7 @@
 package com.koma.audient.model.source;
 
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
@@ -24,6 +25,7 @@ import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
+import com.koma.audient.model.entities.User;
 
 import java.util.List;
 
@@ -47,4 +49,12 @@ public interface AudientDataSource {
     Flowable<CommentResult> getCommentResult(String id);
 
     Flowable<NowPlayingResult> getNowPlayingResult();
+
+    Flowable<Boolean> getLoginStatus();
+
+    Flowable<BaseResponse> getLoginResult(User user);
+
+    Flowable<Boolean> setLoginStatus(boolean loginStatus);
+
+    Flowable<BaseResponse> getFavoriteResult(String name);
 }

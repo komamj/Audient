@@ -15,16 +15,13 @@
  */
 package com.koma.audient.login;
 
-import com.koma.audient.model.entities.User;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.ActivityScoped;
 
-public class LoginContract {
-    interface View extends BaseView<Presenter> {
-        void onLoginFinished();
-    }
+import dagger.Component;
 
-    interface Presenter extends BasePresenter {
-        void login(User user);
-    }
+@ActivityScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = LoginPresenterModule.class)
+public interface LoginComponenet {
+    void inject(LoginActivity activity);
 }

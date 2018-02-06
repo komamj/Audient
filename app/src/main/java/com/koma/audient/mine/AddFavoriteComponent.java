@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.login;
+package com.koma.audient.mine;
 
-import com.koma.audient.model.entities.User;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.FragmentScoped;
 
-public class LoginContract {
-    interface View extends BaseView<Presenter> {
-        void onLoginFinished();
-    }
+import dagger.Component;
 
-    interface Presenter extends BasePresenter {
-        void login(User user);
-    }
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = AddFavoritePresenterModule.class)
+public interface AddFavoriteComponent {
+    void inject(AddFavoritesDialog dialogFragment);
 }

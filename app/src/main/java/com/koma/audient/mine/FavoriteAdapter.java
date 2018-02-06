@@ -35,6 +35,7 @@ import com.koma.common.base.BaseViewHolder;
 import butterknife.BindView;
 
 public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.FavoriteViewHolder> {
+
     private final GlideRequest<Bitmap> mGlideRequest;
 
     public FavoriteAdapter(Context context) {
@@ -66,12 +67,13 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
     public FavoriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_favorite,
                 parent, false);
+
         return new FavoriteViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        mGlideRequest.load("").into(holder.mAlbum);
+        mGlideRequest.load("").into(((FavoriteViewHolder) holder).mAlbum);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
         return mData == null ? 1 : mData.size();
     }
 
-    public class FavoriteViewHolder extends BaseViewHolder {
+    class FavoriteViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
 
