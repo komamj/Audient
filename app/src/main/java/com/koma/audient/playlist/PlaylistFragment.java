@@ -16,8 +16,6 @@
 package com.koma.audient.playlist;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -177,10 +175,11 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     public void showNowPlaying(Audient audient) {
         GlideApp.with(this)
                 .asBitmap()
+                .circleCrop()
                 .load(audient)
                 .thumbnail(0.1f)
                 .transition(new BitmapTransitionOptions().crossFade())
-                .placeholder(new ColorDrawable(Color.GRAY))
+                .placeholder(R.drawable.ic_album)
                 .into(mAlbum);
 
         mName.setText(audient.mediaName);

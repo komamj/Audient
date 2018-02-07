@@ -101,8 +101,10 @@ public class SearchPresenter implements SearchContract.Presenter {
                         String name = audient.mediaName.trim().toUpperCase();
                         String artistName = audient.artistName.trim().toUpperCase();
                         String albumName = audient.albumName.trim().toUpperCase();
+                        String title = audient.title.trim().toUpperCase();
 
-                        return !isInvalid(name) && !isInvalid(artistName) && !isInvalid(albumName);
+                        return !isInvalid(name) && !isInvalid(artistName) && !isInvalid(albumName)
+                                && !isInvalid(title);
                     }
                 }).toList()
                 .subscribeOn(Schedulers.io())
