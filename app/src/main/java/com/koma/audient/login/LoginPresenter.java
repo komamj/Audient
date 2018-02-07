@@ -17,6 +17,7 @@ package com.koma.audient.login;
 
 import com.koma.audient.model.AudientRepository;
 import com.koma.audient.model.entities.BaseResponse;
+import com.koma.audient.model.entities.Token;
 import com.koma.audient.model.entities.User;
 import com.koma.common.util.LogUtils;
 
@@ -27,6 +28,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -68,6 +70,16 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(User user) {
+        mRepository.getToken("koma_mj", "201124koma")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Token>() {
+                    @Override
+                    public void accept(Token token) throws Exception {
+                        LogUtils.i(TAG, "token :" + token.accessToken);
+                    }
+                });
+
         Disposable disposable = mRepository.getLoginResult(user)
                 .flatMap(new Function<BaseResponse, Publisher<Boolean>>() {
                     @Override
@@ -84,9 +96,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<Boolean>() {
                     @Override
                     public void onNext(Boolean status) {
-                        if (status) {
-                            mView.onLoginFinished();
-                        }
+                        mView.onLoginFinished();
                     }
 
                     @Override

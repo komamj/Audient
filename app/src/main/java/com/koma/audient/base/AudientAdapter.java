@@ -67,7 +67,7 @@ public class AudientAdapter extends BaseAdapter<Audient, AudientAdapter.AudientV
 
     @Override
     protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
-        return TextUtils.equals(oldItem.id, newItem.id);
+        return TextUtils.equals(oldItem.mediaId, newItem.mediaId);
     }
 
     @Override
@@ -94,8 +94,8 @@ public class AudientAdapter extends BaseAdapter<Audient, AudientAdapter.AudientV
 
         mGlideRequest.load(audient).into(holder.mAlbum);
 
-        holder.mName.setText(audient.name);
-        holder.mArtistName.setText(audient.artist.name);
+        holder.mName.setText(audient.mediaName);
+        holder.mArtistName.setText(audient.artistName);
     }
 
     class AudientViewHolder extends BaseViewHolder implements View.OnClickListener {

@@ -20,7 +20,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koma.audient.R;
@@ -83,7 +82,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadComments(mAudient.id);
+                    mPresenter.loadComments(mAudient.mediaId);
                 }
             }
         });
@@ -99,7 +98,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
 
         // load data
         if (mPresenter != null) {
-            mPresenter.loadComments(mAudient.id);
+            mPresenter.loadComments(mAudient.mediaId);
         }
     }
 

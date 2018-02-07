@@ -98,9 +98,9 @@ public class SearchPresenter implements SearchContract.Presenter {
                 .filter(new Predicate<Audient>() {
                     @Override
                     public boolean test(Audient audient) throws Exception {
-                        String name = audient.name.trim().toUpperCase();
-                        String artistName = audient.artist.name.trim().toUpperCase();
-                        String albumName = audient.album.name.trim().toUpperCase();
+                        String name = audient.mediaName.trim().toUpperCase();
+                        String artistName = audient.artistName.trim().toUpperCase();
+                        String albumName = audient.albumName.trim().toUpperCase();
 
                         return !isInvalid(name) && !isInvalid(artistName) && !isInvalid(albumName);
                     }

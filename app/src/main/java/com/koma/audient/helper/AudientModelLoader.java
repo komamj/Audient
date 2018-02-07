@@ -46,7 +46,7 @@ public class AudientModelLoader implements ModelLoader<Audient, InputStream> {
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull Audient audient, int width, int height,
                                                @NonNull Options options) {
-        LogUtils.i(TAG, "loadData :" + audient.id + "width :" + width + ",height:" + height);
+        LogUtils.i(TAG, "loadData :" + audient.mediaId + "width :" + width + ",height:" + height);
 
         return new LoadData<>(new ObjectKey(audient),
                 new AudientDataFetcher(mClient, mAudientApi, audient));

@@ -18,17 +18,16 @@ package com.koma.audient.model.source.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.koma.audient.model.entities.Album;
-import com.koma.audient.model.entities.Artist;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.CommentResult;
 import com.koma.audient.model.entities.FileResult;
-import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
+import com.koma.audient.model.entities.Token;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.User;
@@ -74,46 +73,58 @@ public class LocalDataSource implements AudientDataSource {
             public void subscribe(FlowableEmitter<List<Audient>> emitter) throws Exception {
                 List<Audient> audients = new ArrayList<>();
                 Audient audient1 = new Audient();
-                audient1.id = "001yS0N33yPm1B";
+                audient1.mediaId = "001yS0N33yPm1B";
                 audient1.duration = 324;
-                audient1.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
-                audient1.name = "海阔天空";
-                audient1.album = new Album("002qcJuX3lO3EZ", "乐与怒");
+                audient1.artistId = "002pUZT93gF4Cu";
+                audient1.artistName = "BEYOND";
+                audient1.mediaName = "海阔天空";
+                audient1.albumId = "002qcJuX3lO3EZ";
+                audient1.albumName = "乐与怒";
                 audients.add(audient1);
                 Audient audient2 = new Audient();
-                audient2.id = "002pKRoX4Qbafa";
+                audient2.mediaId = "002pKRoX4Qbafa";
                 audient2.duration = 298;
-                audient2.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
-                audient2.name = "光辉岁月";
-                audient2.album = new Album("001C2BRX15iE4B", "命运派对");
+                audient2.artistId = "002pUZT93gF4Cu";
+                audient2.artistName = "BEYOND";
+                audient2.mediaName = "光辉岁月";
+                audient2.albumId = "001C2BRX15iE4B";
+                audient2.albumName = "命运派对";
                 audients.add(audient2);
                 Audient audient3 = new Audient();
-                audient3.id = "000DIFHv0PjOHH";
+                audient3.mediaId = "000DIFHv0PjOHH";
                 audient3.duration = 250;
-                audient3.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
-                audient3.name = "不再犹豫";
-                audient3.album = new Album("000DWELJ4Y7U3P", "黄家驹原作精选集");
+                audient3.artistId = "002pUZT93gF4Cu";
+                audient3.artistName = "BEYOND";
+                audient3.mediaName = "不再犹豫";
+                audient3.albumId = "000DWELJ4Y7U3P";
+                audient3.albumName = "黄家驹原作精选集";
                 audients.add(audient3);
                 Audient audient4 = new Audient();
-                audient4.id = "004Gyue33FERTT";
+                audient4.mediaId = "004Gyue33FERTT";
                 audient4.duration = 275;
-                audient4.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
-                audient4.name = "真的爱你";
-                audient4.album = new Album("000eOgmK1fN8Cs", "BEYOND IV");
+                audient4.artistId = "002pUZT93gF4Cu";
+                audient4.artistName = "BEYOND";
+                audient4.mediaName = "真的爱你";
+                audient4.albumId = "000eOgmK1fN8Cs";
+                audient4.albumName = "BEYOND IV";
                 audients.add(audient4);
                 Audient audient5 = new Audient();
-                audient1.id = "00247u9f23fivj";
+                audient1.mediaId = "00247u9f23fivj";
                 audient5.duration = 251;
-                audient5.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
-                audient5.name = "谁伴我闯荡";
-                audient5.album = new Album("000DWELJ4Y7U3P", "黄家驹原作精选集");
+                audient5.artistId = "002pUZT93gF4Cu";
+                audient5.artistName = "BEYOND";
+                audient5.mediaName = "谁伴我闯荡";
+                audient5.albumId = "000DWELJ4Y7U3P";
+                audient5.albumName = "黄家驹原作精选集";
                 audients.add(audient5);
                 Audient audient6 = new Audient();
-                audient6.id = "001mbYZr3QR68r";
+                audient6.mediaId = "001mbYZr3QR68r";
                 audient6.duration = 273;
-                audient6.artist = new Artist("002pUZT93gF4Cu", "BEYOND");
-                audient6.name = "喜欢你";
-                audient6.album = new Album("001oHxZZ1pAQn4", "秘密警察");
+                audient6.artistId = "002pUZT93gF4Cu";
+                audient6.artistName = "BEYOND";
+                audient6.mediaName = "喜欢你";
+                audient6.albumId = "001oHxZZ1pAQn4";
+                audient6.albumName = "秘密警察";
                 audients.add(audient6);
 
                 emitter.onNext(audients);
@@ -185,11 +196,13 @@ public class LocalDataSource implements AudientDataSource {
             public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
                 NowPlayingResult nowPlayingResult = new NowPlayingResult();
                 Audient audient = new Audient();
-                audient.id = "003evjhg3qIe9S";
+                audient.mediaId = "003evjhg3qIe9S";
                 audient.duration = 260;
-                audient.artist = new Artist("0040D7gK4aI54k", "谭咏麟");
-                audient.name = "一生中最爱";
-                audient.album = new Album("0018tEZm032RCk", "神话1991");
+                audient.artistId = "0040D7gK4aI54k";
+                audient.artistName = "谭咏麟";
+                audient.mediaName = "一生中最爱";
+                audient.albumId = "0018tEZm032RCk";
+                audient.albumName = "神话1991";
                 nowPlayingResult.audient = audient;
 
                 emitter.onNext(nowPlayingResult);
@@ -233,6 +246,11 @@ public class LocalDataSource implements AudientDataSource {
 
     @Override
     public Flowable<BaseResponse> getFavoriteResult(String name) {
+        return null;
+    }
+
+    @Override
+    public Flowable<Token> getToken(String userName, String password) {
         return null;
     }
 }

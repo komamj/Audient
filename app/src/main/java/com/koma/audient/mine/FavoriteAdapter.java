@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.R;
@@ -74,6 +75,10 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
         mGlideRequest.load("").into(((FavoriteViewHolder) holder).mAlbum);
+
+        if (position == 0) {
+            holder.mAlbumName.setText(R.string.default_favorite);
+        }
     }
 
     @Override
@@ -82,6 +87,8 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
     }
 
     class FavoriteViewHolder extends BaseViewHolder {
+        @BindView(R.id.tv_album_name)
+        TextView mAlbumName;
         @BindView(R.id.iv_album)
         ImageView mAlbum;
 

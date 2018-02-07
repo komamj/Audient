@@ -17,7 +17,10 @@ package com.koma.audient.mine;
 
 import com.koma.audient.model.AudientRepository;
 import com.koma.audient.model.entities.BaseResponse;
+import com.koma.audient.util.MessageEvent;
 import com.koma.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -68,8 +71,8 @@ public class AddFavoritePresenter implements AddFavoriteContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
-
+                    public void onNext(BaseResponse response) {
+                        EventBus.getDefault().post(MessageEvent.MESSAGE_ADD_FAVORITES_COMPLETED);
                     }
 
                     @Override

@@ -24,10 +24,12 @@ import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
+import com.koma.audient.model.entities.Token;
 import com.koma.audient.model.entities.ToplistDetailResult;
 import com.koma.audient.model.entities.ToplistResult;
 import com.koma.audient.model.entities.User;
 import com.koma.audient.model.source.AudientDataSource;
+import com.koma.common.util.Constants;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ import io.reactivex.Flowable;
 @Singleton
 public class RemoteDataSource implements AudientDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
+
+    private String mAccessToken = "ff5043d5-1357-41e1-b35c-2a48a32acc13";
 
     private final AudientApi mAudientApi;
 
@@ -109,6 +113,12 @@ public class RemoteDataSource implements AudientDataSource {
 
     @Override
     public Flowable<BaseResponse> getFavoriteResult(String name) {
-        return mAudientApi.getFavoriteResult(name);
+        return mAudientApi.getFavoriteResult(mAccessToken, name);
+    }
+
+    @Override
+    public Flowable<Token> getToken(String userName, String password) {
+        return mAudientApi.getAccessToken(userName, password, Constants.GRANT_TYPE,
+                Constants.CLIENT_ID, Constants.CLIENT_SECRET);
     }
 }

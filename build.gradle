@@ -56,5 +56,6 @@ ext {
     room_version = '1.0.0'
     retrofit_version = '2.3.0'
     interceptor_version = '3.7.0'
+    eventbus_version = '3.1.1'
     leakcanary_version = '1.5.1'
 }

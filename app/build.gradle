@@ -103,6 +103,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.interceptor_version"
 
+    implementation "org.greenrobot:eventbus:$rootProject.eventbus_version"
+
     //leakcanary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"

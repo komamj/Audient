@@ -27,8 +27,8 @@ public class Utils {
 
     public static String buildUrl(Audient audient) {
         StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
-        builder.append("album/");
-        builder.append(audient.album.id);
+        builder.append("api/v1/openmusic/album/");
+        builder.append(audient.albumId);
         builder.append("/pic");
 
         return builder.toString();

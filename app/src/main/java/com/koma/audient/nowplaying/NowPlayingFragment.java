@@ -157,8 +157,8 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
                 .into(mAlbum);
 
         mDuration.setText(DateUtils.formatElapsedTime(audient.duration));
-        mMusicName.setText(audient.name);
-        mSingerName.setText(audient.artist.name);
+        mMusicName.setText(audient.mediaName);
+        mSingerName.setText(audient.artistName);
     }
 
     @Override

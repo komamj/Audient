@@ -21,9 +21,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public final class Constants {
-    public static final String APP_ID = "207777070000267100";
-    public static final String ACCESS_TOKEN = "62e5580162f425c664d0aa45e38143221515391745219";
     public static final String AUDIENT_HOST = "http://101.132.122.196:8080/";
+    public static final String CLIENT_ID = "USER_CLIENT";
+    public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
+    public static final String GRANT_TYPE = "password";
+    public static final String USER_NAME = "";
+    public static final String PASSWORD = "";
 
     public static final String KEY_AUDIENT = "key_auident";
 

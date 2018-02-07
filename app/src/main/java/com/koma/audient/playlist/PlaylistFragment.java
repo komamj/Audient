@@ -183,7 +183,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .placeholder(new ColorDrawable(Color.GRAY))
                 .into(mAlbum);
 
-        mName.setText(audient.name);
+        mName.setText(audient.mediaName);
     }
 
     @Override

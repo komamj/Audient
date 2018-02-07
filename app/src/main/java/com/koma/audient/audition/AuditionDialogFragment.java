@@ -177,7 +177,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
     @Override
     public String getAudientId() {
-        return this.mAudient.id;
+        return this.mAudient.mediaId;
     }
 
     @Override
@@ -187,8 +187,8 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
                 .placeholder(new ColorDrawable(Color.GRAY))
                 .dontAnimate()
                 .into(mAlbum);
-        mActorName.setText(audient.artist.name);
-        mMusicName.setText(audient.name);
+        mActorName.setText(audient.artistName);
+        mMusicName.setText(audient.mediaName);
     }
 
     @Override

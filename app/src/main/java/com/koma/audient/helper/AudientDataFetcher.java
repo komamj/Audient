@@ -62,7 +62,7 @@ public class AudientDataFetcher implements DataFetcher<InputStream>, okhttp3.Cal
 
     @Override
     public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
-        LogUtils.i(TAG, "loadData :" + audient.id);
+        LogUtils.i(TAG, "loadData :" + audient.mediaId);
 
         GlideUrl glideUrl = new GlideUrl("");
 

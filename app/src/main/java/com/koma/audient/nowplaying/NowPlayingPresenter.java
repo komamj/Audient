@@ -94,7 +94,7 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
                 .flatMap(new Function<Audient, Publisher<Lyric>>() {
                     @Override
                     public Publisher<Lyric> apply(Audient audient) throws Exception {
-                        return mRepository.getLyricResult(audient.id)
+                        return mRepository.getLyricResult(audient.mediaId)
                                 .map(new Function<LyricResult, Lyric>() {
                                     @Override
                                     public Lyric apply(LyricResult lyricResult) throws Exception {

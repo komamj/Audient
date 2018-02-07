@@ -2,21 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1000,
-    "identityHash": "c27ff212d1f17a3231d88f7592983cda",
+    "identityHash": "7c41dc4d050349f8a5adddd9a6154ac2",
     "entities": [
       {
         "tableName": "audient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `duration` INTEGER NOT NULL, `artist_id` TEXT, `artist_name` TEXT, `album_id` TEXT, `album_name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mediaId` TEXT NOT NULL, `mediaName` TEXT, `duration` INTEGER NOT NULL, `title` TEXT, `artist_id` TEXT, `artist_name` TEXT, `album_id` TEXT, `album_name` TEXT, PRIMARY KEY(`mediaId`))",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "mediaName",
+            "columnName": "mediaName",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -27,25 +27,31 @@
             "notNull": true
           },
           {
-            "fieldPath": "artist.id",
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "artistId",
             "columnName": "artist_id",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "artist.name",
+            "fieldPath": "artistName",
             "columnName": "artist_name",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "album.id",
+            "fieldPath": "albumId",
             "columnName": "album_id",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "album.name",
+            "fieldPath": "albumName",
             "columnName": "album_name",
             "affinity": "TEXT",
             "notNull": false
@@ -53,7 +59,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "mediaId"
           ],
           "autoGenerate": false
         },
@@ -63,7 +69,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c27ff212d1f17a3231d88f7592983cda\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7c41dc4d050349f8a5adddd9a6154ac2\")"
     ]
   }
 }

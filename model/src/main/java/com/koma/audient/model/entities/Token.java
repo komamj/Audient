@@ -15,12 +15,26 @@
  */
 package com.koma.audient.model.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+
 import com.google.gson.annotations.SerializedName;
 
-public class SongDetailResult {
-    /**
-     * {"data":{"mediaId":"002pKRoX4Qbafa","mediaName":"光辉岁月","interval":298,"album":{"mediaId":"001C2BRX15iE4B","mediaName":"命运派对"},"artist":{"mediaId":"002pUZT93gF4Cu","mediaName":"BEYOND"},"file":{"size_320mp3":11949657,"size_192ogg":6851084,"size_128mp3":4779985,"size_96aac":3614211,"size_48aac":1875054,"size_24aac":932555,"size_flac":30977024,"size_ape":30680488,"size_dts":0,"size_192acc":null,"media_mid":"002pKRoX4Qbafa"}},"code":0,"message":null}
-     */
-    @SerializedName("data")
-    public Audient audient;
+@Entity(tableName = "token")
+public class Token {
+    @ColumnInfo(name = "access_token")
+    @SerializedName("access_token")
+    public String accessToken;
+    @ColumnInfo(name = "token_type")
+    @SerializedName("token_type")
+    public String tokenType;
+    @ColumnInfo(name = "refresh_token")
+    @SerializedName("refresh_token")
+    public String refreshToken;
+    @ColumnInfo(name = "expires_in")
+    @SerializedName("expires_in")
+    public String expiresIn;
+    @ColumnInfo(name = "scope")
+    @SerializedName("scope")
+    public String scope;
 }

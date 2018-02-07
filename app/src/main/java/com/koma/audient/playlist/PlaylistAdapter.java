@@ -58,7 +58,7 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
 
     @Override
     protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
-        return TextUtils.equals(oldItem.id, newItem.id);
+        return TextUtils.equals(oldItem.mediaId, newItem.mediaId);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
 
         mGlideRequest.load(audient).into(holder.mAlbum);
 
-        holder.mName.setText(audient.name);
-        holder.mArtistName.setText(audient.artist.name);
+        holder.mName.setText(audient.mediaName);
+        holder.mArtistName.setText(audient.artistName);
     }
 
     class PlaylistViewHolder extends BaseViewHolder {
