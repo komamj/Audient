@@ -17,6 +17,7 @@ package com.koma.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -37,4 +38,35 @@ public class Token {
     @ColumnInfo(name = "scope")
     @SerializedName("scope")
     public String scope;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("token with accessToken ");
+        builder.append(accessToken);
+        builder.append(",tokenType ");
+        builder.append(tokenType);
+        builder.append(",refreshToken ");
+        builder.append(refreshToken);
+        builder.append(",expiresIn ");
+        builder.append(expiresIn);
+        builder.append(",scope ");
+        builder.append(scope);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Token token = (Token) o;
+
+        return TextUtils.equals(this.accessToken, token.accessToken);
+    }
 }

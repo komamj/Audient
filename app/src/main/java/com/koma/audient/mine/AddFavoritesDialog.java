@@ -90,7 +90,7 @@ public class AddFavoritesDialog extends DialogFragment implements AddFavoriteCon
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (mPresenter != null) {
-                    mPresenter.addToPlaylist(mEditText.getText().toString());
+                    mPresenter.addFavorite(mEditText.getText().toString());
                 }
             }
         });

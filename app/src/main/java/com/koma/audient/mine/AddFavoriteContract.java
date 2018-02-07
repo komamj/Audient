@@ -23,6 +23,6 @@ public interface AddFavoriteContract {
     }
 
     interface Presenter extends BasePresenter {
-        void addToPlaylist(String name);
+        void addFavorite(String name);
     }
 }

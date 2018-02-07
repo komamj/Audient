@@ -43,7 +43,7 @@ import io.reactivex.Flowable;
 public class RemoteDataSource implements AudientDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
-    private String mAccessToken = "ff5043d5-1357-41e1-b35c-2a48a32acc13";
+    private String mAccessToken = "94465b96-9c2d-45ad-8014-cd9de4ae521c";
 
     private final AudientApi mAudientApi;
 
@@ -113,8 +113,8 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> postFavorite(String name) {
-        return mAudientApi.postFavorite(mAccessToken, name);
+    public Flowable<BaseResponse> addFavorite(String name) {
+        return mAudientApi.addFavorite(mAccessToken, name);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<FavoriteResult> getFavoriteresult() {
-        return mAudientApi.getFavoriteResult();
+    public Flowable<FavoriteResult> getFavoriteResult() {
+        return mAudientApi.getFavoriteResult(mAccessToken);
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.koma.audient.model;
 
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.FavoriteResult;
 import com.koma.audient.model.entities.FileResult;
@@ -31,10 +32,12 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -83,14 +86,32 @@ public interface AudientApi {
 
     @FormUrlEncoded
     @POST("oauth/token")
-    Flowable<Token> getAccessToken(@Field("username") String userName, @Field("password") String password,
-                                   @Field("grant_type") String grantType, @Field("client_id") String clientId,
+    Flowable<Token> getAccessToken(@Field("username") String userName,
+                                   @Field("password") String password,
+                                   @Field("grant_type") String grantType,
+                                   @Field("client_id") String clientId,
                                    @Field("client_secret") String clientSecret);
 
+    @FormUrlEncoded
     @POST("api/v1/favorites")
-    Flowable<BaseResponse> postFavorite(@Header("Authorization") String access_token,
-                                        @Body String name);
+    Flowable<BaseResponse> addFavorite(@Header("Authorization") String access_token,
+                                       @Field("name") String name);
 
     @GET("api/v1/favorites/my")
-    Flowable<FavoriteResult> getFavoriteResult();
+    Flowable<FavoriteResult> getFavoriteResult(@Header("Authorization") String access_token);
+
+    @POST("api/v1/favorites/{id}/items")
+    Flowable<BaseResponse> addToFavorite(@Header("Authorization") String access_token,
+                                         @Path("id") String favoriteId,
+                                         @Body Audient audient);
+
+    @DELETE("api/v1/favorites/items/{id}")
+    Flowable<BaseResponse> deleteFavorite(@Header("Authorization") String access_token,
+                                          @Path("id") String favoriteId);
+
+    @FormUrlEncoded
+    @PATCH("api/v1/favorites/")
+    Flowable<BaseResponse> modifyFavoriteName(@Header("Authorization") String access_token,
+                                              @Field("id") String favoriteId,
+                                              @Field("name") String name);
 }

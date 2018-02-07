@@ -15,6 +15,8 @@
  */
 package com.koma.audient.model.entities;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Favorite {
@@ -32,4 +34,37 @@ public class Favorite {
     public String createDate;
     @SerializedName("modifyDate")
     public String modifyDate;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("favorite with favoriteId ");
+        builder.append(favoriteId);
+        builder.append(",favoriteName ");
+        builder.append(favoriteName);
+        builder.append(",userId ");
+        builder.append(userId);
+        builder.append(",createDate ");
+        builder.append(createDate);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Favorite favorite = (Favorite) o;
+
+        return TextUtils.equals(this.favoriteId, favorite.favoriteId)
+                && TextUtils.equals(userId, favorite.userId)
+                && TextUtils.equals(this.favoriteName, favorite.favoriteName)
+                && TextUtils.equals(this.createDate, favorite.createDate)
+                && TextUtils.equals(this.modifyDate, favorite.modifyDate);
+    }
 }

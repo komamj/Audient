@@ -75,11 +75,11 @@ public class MinePresenter implements MineContract.Presenter {
     public void loadFavorites() {
         LogUtils.i(TAG, "loadFavorites");
 
-        Disposable disposable = mRepository.getFavoriteresult()
+        Disposable disposable = mRepository.getFavoriteResult()
                 .map(new Function<FavoriteResult, List<Favorite>>() {
                     @Override
                     public List<Favorite> apply(FavoriteResult favoriteResult) throws Exception {
-                        return null;
+                        return favoriteResult.favorites;
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -87,6 +87,8 @@ public class MinePresenter implements MineContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<List<Favorite>>() {
                     @Override
                     public void onNext(List<Favorite> favorites) {
+                        LogUtils.i(TAG, "loadfavorites " + favorites.toString());
+
                         if (mView.isActive()) {
                             mView.showFavoriteProgressBar(false);
 

@@ -25,8 +25,6 @@ public final class Constants {
     public static final String CLIENT_ID = "USER_CLIENT";
     public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
     public static final String GRANT_TYPE = "password";
-    public static final String USER_NAME = "";
-    public static final String PASSWORD = "";
 
     public static final String KEY_AUDIENT = "key_auident";
 

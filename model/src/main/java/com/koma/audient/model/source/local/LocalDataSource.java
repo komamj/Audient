@@ -246,7 +246,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> postFavorite(String name) {
+    public Flowable<BaseResponse> addFavorite(String name) {
         return null;
     }
 
@@ -256,7 +256,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<FavoriteResult> getFavoriteresult() {
+    public Flowable<FavoriteResult> getFavoriteResult() {
         return null;
     }
 }

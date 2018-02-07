@@ -76,7 +76,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .subscribe(new Consumer<Token>() {
                     @Override
                     public void accept(Token token) throws Exception {
-                        LogUtils.i(TAG, "token :" + token.accessToken);
+                        LogUtils.i(TAG, "token :" + token.toString());
                     }
                 });
 

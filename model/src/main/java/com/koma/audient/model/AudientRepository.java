@@ -114,17 +114,17 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> postFavorite(String name) {
-        return mRemoteDataSource.postFavorite(name);
+    public Flowable<BaseResponse> addFavorite(String name) {
+        return mRemoteDataSource.addFavorite(name);
     }
 
     @Override
     public Flowable<Token> getToken(String userName, String password) {
-        return mRemoteDataSource.getToken("koma_mj", "201124koma");
+        return mRemoteDataSource.getToken(userName, password);
     }
 
     @Override
-    public Flowable<FavoriteResult> getFavoriteresult() {
-        return mRemoteDataSource.getFavoriteresult();
+    public Flowable<FavoriteResult> getFavoriteResult() {
+        return mRemoteDataSource.getFavoriteResult();
     }
 }

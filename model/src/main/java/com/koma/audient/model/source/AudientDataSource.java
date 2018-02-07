@@ -58,9 +58,9 @@ public interface AudientDataSource {
 
     Flowable<Boolean> setLoginStatus(boolean loginStatus);
 
-    Flowable<BaseResponse> postFavorite(String name);
+    Flowable<BaseResponse> addFavorite(String name);
 
     Flowable<Token> getToken(String userName, String password);
 
-    Flowable<FavoriteResult> getFavoriteresult();
+    Flowable<FavoriteResult> getFavoriteResult();
 }

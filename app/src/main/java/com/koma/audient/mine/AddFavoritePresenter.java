@@ -65,8 +65,8 @@ public class AddFavoritePresenter implements AddFavoriteContract.Presenter {
     }
 
     @Override
-    public void addToPlaylist(String name) {
-        mRepository.postFavorite(name)
+    public void addFavorite(String name) {
+        mRepository.addFavorite(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
@@ -77,7 +77,7 @@ public class AddFavoritePresenter implements AddFavoriteContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "addToPlaylist error :" + t.toString());
+                        LogUtils.e(TAG, "addFavorite error :" + t.toString());
                     }
 
                     @Override
