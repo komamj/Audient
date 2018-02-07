@@ -17,6 +17,8 @@ package com.koma.audient.mine;
 
 import com.koma.audient.model.AudientRepository;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Favorite;
+import com.koma.audient.model.entities.FavoriteResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -25,6 +27,8 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -55,9 +59,9 @@ public class MinePresenter implements MineContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
-        loadFavorite();
+        loadFavorites();
 
-        loadUser();
+        loadDynamics();
     }
 
     @Override
@@ -68,23 +72,31 @@ public class MinePresenter implements MineContract.Presenter {
     }
 
     @Override
-    public void loadFavorite() {
-        mRepository.getAudientTests()
+    public void loadFavorites() {
+        LogUtils.i(TAG, "loadFavorites");
+
+        Disposable disposable = mRepository.getFavoriteresult()
+                .map(new Function<FavoriteResult, List<Favorite>>() {
+                    @Override
+                    public List<Favorite> apply(FavoriteResult favoriteResult) throws Exception {
+                        return null;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
+                .subscribeWith(new DisposableSubscriber<List<Favorite>>() {
                     @Override
-                    public void onNext(List<Audient> audients) {
+                    public void onNext(List<Favorite> favorites) {
                         if (mView.isActive()) {
                             mView.showFavoriteProgressBar(false);
 
-                            mView.showFavorite(audients);
+                            mView.showFavorites(favorites);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-
+                        LogUtils.e(TAG, "loadFavorites error " + t.toString());
                     }
 
                     @Override
@@ -92,11 +104,13 @@ public class MinePresenter implements MineContract.Presenter {
 
                     }
                 });
+
+        mDisposables.add(disposable);
     }
 
     @Override
-    public void loadUser() {
-        mRepository.getAudientTests()
+    public void loadDynamics() {
+        Disposable disposable = mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Audient>>() {
@@ -105,13 +119,13 @@ public class MinePresenter implements MineContract.Presenter {
                         if (mView.isActive()) {
                             mView.showUserProgressBar(false);
 
-                            mView.showUser(audients);
+                            mView.showDynamics(audients);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-
+                        LogUtils.e(TAG, "loadDynamics error " + t.toString());
                     }
 
                     @Override
@@ -119,5 +133,7 @@ public class MinePresenter implements MineContract.Presenter {
 
                     }
                 });
+
+        mDisposables.add(disposable);
     }
 }

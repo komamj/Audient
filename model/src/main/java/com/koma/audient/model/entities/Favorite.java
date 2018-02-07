@@ -15,7 +15,21 @@
  */
 package com.koma.audient.model.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Favorite {
-    public String id;
-    public String name;
+    @SerializedName("id")
+    public String favoriteId;
+    @SerializedName("name")
+    public String favoriteName;
+    @SerializedName("def")
+    public boolean isDefault;
+    @SerializedName("userId")
+    public String userId;
+    @SerializedName("itemCount")
+    public int itemCount;
+    @SerializedName("createDate")
+    public String createDate;
+    @SerializedName("modifyDate")
+    public String modifyDate;
 }

@@ -19,6 +19,7 @@ import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.CommentResult;
+import com.koma.audient.model.entities.FavoriteResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -112,13 +113,18 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> getFavoriteResult(String name) {
-        return mAudientApi.getFavoriteResult(mAccessToken, name);
+    public Flowable<BaseResponse> postFavorite(String name) {
+        return mAudientApi.postFavorite(mAccessToken, name);
     }
 
     @Override
     public Flowable<Token> getToken(String userName, String password) {
         return mAudientApi.getAccessToken(userName, password, Constants.GRANT_TYPE,
                 Constants.CLIENT_ID, Constants.CLIENT_SECRET);
+    }
+
+    @Override
+    public Flowable<FavoriteResult> getFavoriteresult() {
+        return mAudientApi.getFavoriteResult();
     }
 }

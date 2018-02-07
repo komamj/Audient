@@ -16,6 +16,7 @@
 package com.koma.audient.model;
 
 import com.koma.audient.model.entities.BaseResponse;
+import com.koma.audient.model.entities.FavoriteResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -87,6 +88,9 @@ public interface AudientApi {
                                    @Field("client_secret") String clientSecret);
 
     @POST("api/v1/favorites")
-    Flowable<BaseResponse> getFavoriteResult(@Header("Authorization") String access_token,
-                                             @Body String name);
+    Flowable<BaseResponse> postFavorite(@Header("Authorization") String access_token,
+                                        @Body String name);
+
+    @GET("api/v1/favorites/my")
+    Flowable<FavoriteResult> getFavoriteResult();
 }

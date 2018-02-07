@@ -15,8 +15,15 @@
  */
 package com.koma.audient.model.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class FavoriteResult {
+    @SerializedName("code")
+    public int resultCode;
+    @SerializedName("data")
     public List<Favorite> favorites;
+    @SerializedName("message")
+    public String message;
 }

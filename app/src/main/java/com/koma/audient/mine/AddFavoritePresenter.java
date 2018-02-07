@@ -66,7 +66,7 @@ public class AddFavoritePresenter implements AddFavoriteContract.Presenter {
 
     @Override
     public void addToPlaylist(String name) {
-        mRepository.getFavoriteResult(name)
+        mRepository.postFavorite(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {

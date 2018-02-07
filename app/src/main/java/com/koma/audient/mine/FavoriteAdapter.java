@@ -34,6 +34,7 @@ import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.FavoriteViewHolder> {
 
@@ -74,7 +75,7 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        mGlideRequest.load("").into(((FavoriteViewHolder) holder).mAlbum);
+        mGlideRequest.load("").into(holder.mAlbum);
 
         if (position == 0) {
             holder.mAlbumName.setText(R.string.default_favorite);
@@ -91,6 +92,11 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
         TextView mAlbumName;
         @BindView(R.id.iv_album)
         ImageView mAlbum;
+
+        @OnClick(R.id.iv_more)
+        void onMoreClick() {
+
+        }
 
         public FavoriteViewHolder(View view) {
             super(view);

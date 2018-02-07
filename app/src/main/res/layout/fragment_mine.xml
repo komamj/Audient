@@ -38,9 +38,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_favorite"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="160dp"
         android:scrollbars="none"
-        app:layout_constraintDimensionRatio="w,1:3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_favorite" />

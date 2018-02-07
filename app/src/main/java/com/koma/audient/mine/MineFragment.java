@@ -25,9 +25,15 @@ import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.audient.base.AudientAdapter;
 import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.Favorite;
+import com.koma.audient.util.MessageEvent;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -55,7 +61,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
     private boolean mIsPrepared;
 
-    private AudientAdapter mAdapter;
+    private AudientAdapter mDynamicAdapter;
 
     private FavoriteAdapter mFavoriteAdapter;
 
@@ -95,12 +101,13 @@ public class MineFragment extends BaseFragment implements MineContract.View {
                 .inject(this);
     }
 
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         LogUtils.i(TAG, "onViewCreated");
 
-        mAdapter = new AudientAdapter(mContext);
+        mDynamicAdapter = new AudientAdapter(mContext);
 
         mFavoriteAdapter = new FavoriteAdapter(mContext);
 
@@ -113,9 +120,36 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         layoutManagerUser.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerViewUser.setLayoutManager(layoutManagerUser);
         mRecyclerViewUser.addItemDecoration(new AudientItemDecoration(mContext));
-        mRecyclerViewUser.setAdapter(mAdapter);
+        mRecyclerViewUser.setAdapter(mDynamicAdapter);
 
         mIsPrepared = true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        LogUtils.i(TAG, "onStart");
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(int message) {
+        if (message == MessageEvent.MESSAGE_ADD_FAVORITES_COMPLETED) {
+            if (mPresenter != null) {
+                mPresenter.loadFavorites();
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        LogUtils.i(TAG, "onStop");
+
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -172,14 +206,13 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         }
     }
 
-
     @Override
-    public void showFavorite(List<Audient> audients) {
-
+    public void showFavorites(List<Favorite> favorites) {
+        mFavoriteAdapter.replace(favorites);
     }
 
     @Override
-    public void showUser(List<Audient> audients) {
-        mAdapter.replace(audients);
+    public void showDynamics(List<Audient> audients) {
+        mDynamicAdapter.replace(audients);
     }
 }

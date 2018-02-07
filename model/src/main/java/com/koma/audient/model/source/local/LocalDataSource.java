@@ -22,6 +22,7 @@ import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.CommentResult;
+import com.koma.audient.model.entities.FavoriteResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -245,12 +246,17 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> getFavoriteResult(String name) {
+    public Flowable<BaseResponse> postFavorite(String name) {
         return null;
     }
 
     @Override
     public Flowable<Token> getToken(String userName, String password) {
+        return null;
+    }
+
+    @Override
+    public Flowable<FavoriteResult> getFavoriteresult() {
         return null;
     }
 }
