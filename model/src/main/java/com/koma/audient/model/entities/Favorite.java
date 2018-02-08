@@ -15,11 +15,13 @@
  */
 package com.koma.audient.model.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Favorite {
+public class Favorite implements Parcelable {
     @SerializedName("id")
     public String favoriteId;
     @SerializedName("name")
@@ -34,6 +36,28 @@ public class Favorite {
     public String createDate;
     @SerializedName("modifyDate")
     public String modifyDate;
+
+    protected Favorite(Parcel in) {
+        favoriteId = in.readString();
+        favoriteName = in.readString();
+        isDefault = in.readByte() != 0;
+        userId = in.readString();
+        itemCount = in.readInt();
+        createDate = in.readString();
+        modifyDate = in.readString();
+    }
+
+    public static final Creator<Favorite> CREATOR = new Creator<Favorite>() {
+        @Override
+        public Favorite createFromParcel(Parcel in) {
+            return new Favorite(in);
+        }
+
+        @Override
+        public Favorite[] newArray(int size) {
+            return new Favorite[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -66,5 +90,21 @@ public class Favorite {
                 && TextUtils.equals(this.favoriteName, favorite.favoriteName)
                 && TextUtils.equals(this.createDate, favorite.createDate)
                 && TextUtils.equals(this.modifyDate, favorite.modifyDate);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(favoriteId);
+        parcel.writeString(favoriteName);
+        parcel.writeByte((byte) (isDefault ? 1 : 0));
+        parcel.writeString(userId);
+        parcel.writeInt(itemCount);
+        parcel.writeString(createDate);
+        parcel.writeString(modifyDate);
     }
 }

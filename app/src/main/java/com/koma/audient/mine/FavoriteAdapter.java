@@ -16,6 +16,7 @@
 package com.koma.audient.mine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -32,6 +33,7 @@ import com.koma.audient.helper.GlideRequest;
 import com.koma.audient.model.entities.Favorite;
 import com.koma.common.base.BaseAdapter;
 import com.koma.common.base.BaseViewHolder;
+import com.koma.common.util.Constants;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -87,7 +89,7 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
         return mData == null ? 0 : mData.size();
     }
 
-    class FavoriteViewHolder extends BaseViewHolder {
+    class FavoriteViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_favorite_name)
         TextView mFavoriteName;
         @BindView(R.id.iv_album)
@@ -100,6 +102,18 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
 
         public FavoriteViewHolder(View view) {
             super(view);
+
+            this.itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Favorite favorite = mData.get(position);
+
+            Intent intent = new Intent(mContext, FavoriteDetailActivity.class);
+            intent.putExtra(Constants.KEY_FAVORITE, favorite);
+            mContext.startActivity(intent);
         }
     }
 }

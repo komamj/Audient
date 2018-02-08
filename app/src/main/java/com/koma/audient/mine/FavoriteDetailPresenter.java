@@ -17,8 +17,7 @@ package com.koma.audient.mine;
 
 import com.koma.audient.model.AudientRepository;
 import com.koma.audient.model.entities.Audient;
-import com.koma.audient.model.entities.Favorite;
-import com.koma.audient.model.entities.FavoritesResult;
+import com.koma.audient.model.entities.FavoriteListResult;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -32,17 +31,17 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class MinePresenter implements MineContract.Presenter {
-    public static final String TAG = MinePresenter.class.getSimpleName();
+public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter {
+    public static final String TAG = FavoriteDetailPresenter.class.getSimpleName();
 
-    private MineContract.View mView;
+    private FavoriteDetailContract.View mView;
 
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
 
     @Inject
-    public MinePresenter(MineContract.View view, AudientRepository repository) {
+    public FavoriteDetailPresenter(FavoriteDetailContract.View view, AudientRepository repository) {
         mView = view;
 
         mRepository = repository;
@@ -58,10 +57,6 @@ public class MinePresenter implements MineContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
-
-        loadFavorites();
-
-        loadDynamics();
     }
 
     @Override
@@ -72,62 +67,27 @@ public class MinePresenter implements MineContract.Presenter {
     }
 
     @Override
-    public void loadFavorites() {
-        LogUtils.i(TAG, "loadFavorites");
-
-        Disposable disposable = mRepository.getFavoriteResult()
-                .map(new Function<FavoritesResult, List<Favorite>>() {
+    public void loadData(String favoriteId) {
+        Disposable disposable = mRepository.getFavoriteListResult(favoriteId)
+                .map(new Function<FavoriteListResult, List<Audient>>() {
                     @Override
-                    public List<Favorite> apply(FavoritesResult favoriteResult) throws Exception {
-                        return favoriteResult.favorites;
+                    public List<Audient> apply(FavoriteListResult favoriteListResult) throws Exception {
+                        return favoriteListResult.audients;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Favorite>>() {
-                    @Override
-                    public void onNext(List<Favorite> favorites) {
-                        LogUtils.i(TAG, "loadfavorites " + favorites.toString());
-
-                        if (mView.isActive()) {
-                            mView.showFavoriteProgressBar(false);
-
-                            mView.showFavorites(favorites);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadFavorites error " + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-        mDisposables.add(disposable);
-    }
-
-    @Override
-    public void loadDynamics() {
-        Disposable disposable = mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Audient>>() {
                     @Override
                     public void onNext(List<Audient> audients) {
                         if (mView.isActive()) {
-                            mView.showUserProgressBar(false);
-
-                            mView.showDynamics(audients);
+                            mView.showAudients(audients);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadDynamics error " + t.toString());
+                        LogUtils.e(TAG, "loadData error :" + t.toString());
                     }
 
                     @Override

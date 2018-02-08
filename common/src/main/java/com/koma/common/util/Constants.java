@@ -26,6 +26,9 @@ public final class Constants {
     public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
     public static final String GRANT_TYPE = "password";
 
+    // favorite
+    public static final String KEY_FAVORITE = "key_favorite";
+
     public static final String KEY_AUDIENT = "key_auident";
 
     // album format

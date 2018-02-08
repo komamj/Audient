@@ -19,7 +19,8 @@ import com.koma.audient.model.AudientApi;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.CommentResult;
-import com.koma.audient.model.entities.FavoriteResult;
+import com.koma.audient.model.entities.FavoriteListResult;
+import com.koma.audient.model.entities.FavoritesResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -43,7 +44,7 @@ import io.reactivex.Flowable;
 public class RemoteDataSource implements AudientDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
-    private String mAccessToken = "Bearer 94465b96-9c2d-45ad-8014-cd9de4ae521c";
+    private String mAccessToken = "Bearer 259736f9-585f-4152-aba8-4b6441b5d61f";
 
     private final AudientApi mAudientApi;
 
@@ -124,7 +125,12 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<FavoriteResult> getFavoriteResult() {
+    public Flowable<FavoritesResult> getFavoriteResult() {
         return mAudientApi.getFavoriteResult(mAccessToken);
+    }
+
+    @Override
+    public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
+        return mAudientApi.getFavoriteListResult(mAccessToken, favoriteId);
     }
 }

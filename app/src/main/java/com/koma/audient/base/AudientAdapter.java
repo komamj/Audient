@@ -82,7 +82,7 @@ public class AudientAdapter extends BaseAdapter<Audient, AudientAdapter.AudientV
 
     @Override
     public AudientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_audition,
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_audient,
                 parent, false);
 
         return new AudientViewHolder(view);
@@ -98,7 +98,7 @@ public class AudientAdapter extends BaseAdapter<Audient, AudientAdapter.AudientV
         holder.mArtistName.setText(audient.artistName);
     }
 
-    class AudientViewHolder extends BaseViewHolder implements View.OnClickListener {
+    public class AudientViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_name)

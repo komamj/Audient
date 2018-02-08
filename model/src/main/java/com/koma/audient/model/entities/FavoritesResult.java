@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class FavoriteResult {
+public class FavoritesResult {
     @SerializedName("code")
     public int resultCode;
     @SerializedName("data")

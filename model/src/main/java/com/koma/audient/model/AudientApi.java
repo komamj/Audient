@@ -17,7 +17,8 @@ package com.koma.audient.model;
 
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
-import com.koma.audient.model.entities.FavoriteResult;
+import com.koma.audient.model.entities.FavoriteListResult;
+import com.koma.audient.model.entities.FavoritesResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -98,12 +99,16 @@ public interface AudientApi {
                                        @Field("name") String name);
 
     @GET("api/v1/favorites/my")
-    Flowable<FavoriteResult> getFavoriteResult(@Header("Authorization") String access_token);
+    Flowable<FavoritesResult> getFavoriteResult(@Header("Authorization") String access_token);
 
     @POST("api/v1/favorites/{id}/items")
     Flowable<BaseResponse> addToFavorite(@Header("Authorization") String access_token,
                                          @Path("id") String favoriteId,
                                          @Body Audient audient);
+
+    @POST("api/v1/favorites/{id}/items")
+    Flowable<FavoriteListResult> getFavoriteListResult(@Header("Authorization") String access_token,
+                                                       @Path("id") String favoriteId);
 
     @DELETE("api/v1/favorites/items/{id}")
     Flowable<BaseResponse> deleteFavorite(@Header("Authorization") String access_token,

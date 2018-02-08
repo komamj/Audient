@@ -18,7 +18,8 @@ package com.koma.audient.model;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.CommentResult;
-import com.koma.audient.model.entities.FavoriteResult;
+import com.koma.audient.model.entities.FavoriteListResult;
+import com.koma.audient.model.entities.FavoritesResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
 import com.koma.audient.model.entities.NowPlayingResult;
@@ -124,7 +125,12 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
-    public Flowable<FavoriteResult> getFavoriteResult() {
+    public Flowable<FavoritesResult> getFavoriteResult() {
         return mRemoteDataSource.getFavoriteResult();
+    }
+
+    @Override
+    public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
+        return mRemoteDataSource.getFavoriteListResult(favoriteId);
     }
 }
