@@ -28,4 +28,14 @@ public class BaseResponse {
     public static class DataBean {
 
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("response with resultCode ");
+        builder.append(resultCode);
+        builder.append(",message ");
+        builder.append(message);
+        return builder.toString();
+    }
 }

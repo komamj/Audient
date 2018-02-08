@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.koma.audient.AudientApplication;
@@ -26,9 +27,10 @@ import com.koma.audient.R;
 import com.koma.audient.base.AudientAdapter;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Favorite;
-import com.koma.audient.util.MessageEvent;
+import com.koma.audient.model.entities.MessageEvent;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -135,8 +137,10 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(int message) {
-        if (message == MessageEvent.MESSAGE_ADD_FAVORITES_COMPLETED) {
+    public void onMessageEvent(MessageEvent messageEvent) {
+        LogUtils.i(TAG, "onMessageEvent");
+
+        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_ADD_FAVORITE_COMPLETED)) {
             if (mPresenter != null) {
                 mPresenter.loadFavorites();
             }

@@ -75,23 +75,23 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        mGlideRequest.load("").into(holder.mAlbum);
+        Favorite favorite = mData.get(position);
 
-        if (position == 0) {
-            holder.mAlbumName.setText(R.string.default_favorite);
-        }
+        mGlideRequest.load("").into(holder.mFavoriteImage);
+
+        holder.mFavoriteName.setText(favorite.favoriteName);
     }
 
     @Override
     public int getItemCount() {
-        return mData == null ? 1 : mData.size();
+        return mData == null ? 0 : mData.size();
     }
 
     class FavoriteViewHolder extends BaseViewHolder {
-        @BindView(R.id.tv_album_name)
-        TextView mAlbumName;
+        @BindView(R.id.tv_favorite_name)
+        TextView mFavoriteName;
         @BindView(R.id.iv_album)
-        ImageView mAlbum;
+        ImageView mFavoriteImage;
 
         @OnClick(R.id.iv_more)
         void onMoreClick() {

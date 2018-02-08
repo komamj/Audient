@@ -30,7 +30,7 @@
             app:srcCompat="@drawable/ic_favorite" />
 
         <TextView
-            android:id="@+id/tv_album_name"
+            android:id="@+id/tv_favorite_name"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="0dp"
             android:paddingStart="@dimen/nav_header_vertical_spacing"

@@ -13,8 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.koma.audient.util;
+package com.koma.audient.model.entities;
 
 public class MessageEvent {
-    public static final int MESSAGE_ADD_FAVORITES_COMPLETED = 0;
+    private String message;
+
+    public MessageEvent(String message) {
+        this.message = message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
 }
