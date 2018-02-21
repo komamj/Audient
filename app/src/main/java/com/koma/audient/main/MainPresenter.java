@@ -69,6 +69,7 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<Boolean>() {
                     @Override
                     public void onNext(Boolean isLogin) {
+                        LogUtils.i(TAG, "loadLoginStatus isLogin " + isLogin);
                         mView.showLoginView(isLogin);
                     }
 

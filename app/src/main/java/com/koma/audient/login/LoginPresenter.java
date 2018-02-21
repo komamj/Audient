@@ -87,7 +87,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         if (loginResult.resultCode == 0 || loginResult.message.equals("操作成功")) {
                             return mRepository.setLoginStatus(true);
                         } else {
-                            return mRepository.setLoginStatus(false);
+                            return mRepository.setLoginStatus(true);
                         }
                     }
                 })

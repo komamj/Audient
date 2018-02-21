@@ -17,10 +17,12 @@ package com.koma.audient.model;
 
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.BaseResponse;
+import com.koma.audient.model.entities.Comment;
 import com.koma.audient.model.entities.FavoriteListResult;
 import com.koma.audient.model.entities.FavoritesResult;
 import com.koma.audient.model.entities.FileResult;
 import com.koma.audient.model.entities.LyricResult;
+import com.koma.audient.model.entities.Music;
 import com.koma.audient.model.entities.NowPlayingResult;
 import com.koma.audient.model.entities.SearchResult;
 import com.koma.audient.model.entities.SongDetailResult;
@@ -82,9 +84,15 @@ public interface AudientApi {
     @GET("nowplaying")
     Flowable<NowPlayingResult> getNowPlayingResult();
 
+    /**
+     * 登录
+     */
     @POST("account/register/user")
     Flowable<BaseResponse> getLoginResult(@Body User user);
 
+    /**
+     * 获取access_token
+     */
     @FormUrlEncoded
     @POST("oauth/token")
     Flowable<Token> getAccessToken(@Field("username") String userName,
@@ -93,30 +101,85 @@ public interface AudientApi {
                                    @Field("client_id") String clientId,
                                    @Field("client_secret") String clientSecret);
 
+    /**
+     * 添加歌单
+     */
     @FormUrlEncoded
     @POST("api/v1/favorites")
     Flowable<BaseResponse> addFavorite(@Header("Authorization") String access_token,
                                        @Field("name") String name);
 
+    /**
+     * 获取我的所有歌单
+     */
     @GET("api/v1/favorites/my")
-    Flowable<FavoritesResult> getFavoriteResult(@Header("Authorization") String access_token);
+    Flowable<FavoritesResult> getFavoriteResult(@Header("Authorization") String access_token,
+                                                @Query("sort") String sortord);
 
+    /**
+     * 添加歌曲到相应歌单
+     */
     @POST("api/v1/favorites/{id}/items")
     Flowable<BaseResponse> addToFavorite(@Header("Authorization") String access_token,
                                          @Path("id") String favoriteId,
                                          @Body Audient audient);
 
+    /**
+     * 获取歌单下的所有歌曲
+     */
     @POST("api/v1/favorites/{id}/items")
     Flowable<FavoriteListResult> getFavoriteListResult(@Header("Authorization") String access_token,
                                                        @Path("id") String favoriteId);
 
+    /**
+     * 删除歌单
+     */
     @DELETE("api/v1/favorites/items/{id}")
     Flowable<BaseResponse> deleteFavorite(@Header("Authorization") String access_token,
                                           @Path("id") String favoriteId);
 
+    /**
+     * 修改歌单名称
+     */
     @FormUrlEncoded
     @PATCH("api/v1/favorites/")
     Flowable<BaseResponse> modifyFavoriteName(@Header("Authorization") String access_token,
                                               @Field("id") String favoriteId,
                                               @Field("name") String name);
+
+    /**
+     * 点赞评论
+     */
+    @POST("api/v1/musiccomment/upvote")
+    Flowable<Void> commentThumbUp(@Header("Authorization") String access_token,
+                                  @Query("commentId") String commentId);
+
+    /**
+     * 获取评论列表
+     */
+    @GET("api/v1/musiccomment")
+    Flowable getComments(@Header("Authorization") String access_token, @Query("mid") String mid,
+                         @Query("page") int page, @Query("size") int size,
+                         @Query("sort") String sortord);
+
+    /**
+     * 发表评论
+     */
+    @FormUrlEncoded
+    @POST("api/v1/musiccomment")
+    Flowable postComment(@Header("Authorization") String access_token, @Body Comment comment);
+
+    /**
+     * 点播歌曲
+     */
+    @FormUrlEncoded
+    @POST("api/v1/mod")
+    Flowable addToPlaylist(@Header("Authorization") String access_token, @Body Music music);
+
+    /**
+     * 获取店铺的默认播放列表
+     */
+    @GET("api/v1/storeplaylist")
+    Flowable getPlaylist(@Header("Authorization") String access_token,
+                         @Query("sid") String storeId);
 }
