@@ -15,22 +15,14 @@
  */
 package com.koma.audient.favorite;
 
-import com.koma.audient.model.entities.Favorite;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.FragmentScoped;
 
-import java.util.List;
+import dagger.Component;
 
-public interface MyFavoritesContract {
-    interface View extends BaseView<Presenter> {
-        boolean isActive();
-
-        void showProgressBar(boolean forceShow);
-
-        void showFavorites(List<Favorite> favorites);
-    }
-
-    interface Presenter extends BasePresenter {
-        void loadMyFavorites();
-    }
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class,
+        modules = MyFavoritePresenterModule.class)
+public interface MyFavoritePresenterComponent {
+    void inject(MyFavoritesDialog dialog);
 }

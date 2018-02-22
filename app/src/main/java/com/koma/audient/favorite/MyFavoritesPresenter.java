@@ -15,8 +15,44 @@
  */
 package com.koma.audient.favorite;
 
+import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.Favorite;
+import com.koma.audient.model.entities.FavoritesResult;
+import com.koma.common.util.LogUtils;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
+
 public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
     private static final String TAG = MyFavoritesPresenter.class.getSimpleName();
+
+    private final MyFavoritesContract.View mView;
+
+    private final AudientRepository mRepository;
+
+    private final CompositeDisposable mDisposables;
+
+    @Inject
+    public MyFavoritesPresenter(MyFavoritesContract.View view, AudientRepository repository) {
+        mView = view;
+
+        mRepository = repository;
+
+        mDisposables = new CompositeDisposable();
+    }
+
+    @Inject
+    void setUpListeners() {
+        mView.setPresenter(this);
+    }
 
     @Override
     public void subscribe() {
@@ -25,6 +61,41 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
 
     @Override
     public void unSubscribe() {
+        mDisposables.clear();
+    }
 
+    @Override
+    public void loadMyFavorites() {
+        Disposable disposable = mRepository.getFavoriteResult()
+                .map(new Function<FavoritesResult, List<Favorite>>() {
+                    @Override
+                    public List<Favorite> apply(FavoritesResult favoriteResult) throws Exception {
+                        return favoriteResult.favorites;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Favorite>>() {
+                    @Override
+                    public void onNext(List<Favorite> favorites) {
+                        LogUtils.i(TAG, "loadfavorites " + favorites.toString());
+
+                        if (mView.isActive()) {
+                            mView.showFavorites(favorites);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadFavorites error " + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposables.add(disposable);
     }
 }

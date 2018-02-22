@@ -15,22 +15,19 @@
  */
 package com.koma.audient.favorite;
 
-import com.koma.audient.model.entities.Favorite;
-import com.koma.common.base.BasePresenter;
-import com.koma.common.base.BaseView;
+import dagger.Module;
+import dagger.Provides;
 
-import java.util.List;
+@Module
+public class MyFavoritePresenterModule {
+    private final MyFavoritesContract.View mView;
 
-public interface MyFavoritesContract {
-    interface View extends BaseView<Presenter> {
-        boolean isActive();
-
-        void showProgressBar(boolean forceShow);
-
-        void showFavorites(List<Favorite> favorites);
+    public MyFavoritePresenterModule(MyFavoritesContract.View view) {
+        mView = view;
     }
 
-    interface Presenter extends BasePresenter {
-        void loadMyFavorites();
+    @Provides
+    MyFavoritesContract.View provideMyFavoriteContractView() {
+        return this.mView;
     }
 }

@@ -55,4 +55,11 @@
     <!--Audition-->
     <string name="audition_title">"试听30秒"</string>
 
+    <!--MyFavorites-->
+    <string name="add_to_favorites">"收藏到歌单"</string>
+    <plurals name="song_count">
+        <item quantity="one">%d 首</item>
+        <item quantity="other">%d 首</item>
+    </plurals>
+
 </resources>
