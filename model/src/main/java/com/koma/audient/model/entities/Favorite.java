@@ -23,7 +23,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Favorite implements Parcelable {
     @SerializedName("id")
-    public String favoriteId;
+    public String favoritesId;
     @SerializedName("name")
     public String favoriteName;
     @SerializedName("def")
@@ -38,7 +38,7 @@ public class Favorite implements Parcelable {
     public String modifyDate;
 
     protected Favorite(Parcel in) {
-        favoriteId = in.readString();
+        favoritesId = in.readString();
         favoriteName = in.readString();
         isDefault = in.readByte() != 0;
         userId = in.readString();
@@ -62,8 +62,8 @@ public class Favorite implements Parcelable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("favorite with favoriteId ");
-        builder.append(favoriteId);
+        builder.append("favorite with favoritesId ");
+        builder.append(favoritesId);
         builder.append(",favoriteName ");
         builder.append(favoriteName);
         builder.append(",userId ");
@@ -85,7 +85,7 @@ public class Favorite implements Parcelable {
 
         Favorite favorite = (Favorite) o;
 
-        return TextUtils.equals(this.favoriteId, favorite.favoriteId)
+        return TextUtils.equals(this.favoritesId, favorite.favoritesId)
                 && TextUtils.equals(userId, favorite.userId)
                 && TextUtils.equals(this.favoriteName, favorite.favoriteName)
                 && TextUtils.equals(this.createDate, favorite.createDate)
@@ -99,12 +99,35 @@ public class Favorite implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(favoriteId);
+        parcel.writeString(favoritesId);
         parcel.writeString(favoriteName);
         parcel.writeByte((byte) (isDefault ? 1 : 0));
         parcel.writeString(userId);
         parcel.writeInt(itemCount);
         parcel.writeString(createDate);
         parcel.writeString(modifyDate);
+    }
+
+    public static class FavoriteSong {
+
+        /**
+         * favoritesId :
+         * mediaId :
+         * mediaName :
+         * mediaInterval : 0
+         * artistId :
+         * artistName :
+         * albumId :
+         * albumName :
+         */
+
+        public String favoritesId;
+        public String mediaId;
+        public String mediaName;
+        public int mediaInterval;
+        public String artistId;
+        public String artistName;
+        public String albumId;
+        public String albumName;
     }
 }

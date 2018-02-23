@@ -83,7 +83,7 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadData(mFavorite.favoriteId);
+                    mPresenter.loadData(mFavorite.favoritesId);
                 }
             }
         });
@@ -100,7 +100,7 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-            mPresenter.loadData(mFavorite.favoriteId);
+            mPresenter.loadData(mFavorite.favoritesId);
         }
     }
 

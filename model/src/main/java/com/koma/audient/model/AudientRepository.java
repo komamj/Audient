@@ -125,6 +125,11 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
+    public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
+        return mRemoteDataSource.addToFavorite(favoriteId, audient);
+    }
+
+    @Override
     public Flowable<FavoritesResult> getFavoriteResult() {
         return mRemoteDataSource.getFavoriteResult();
     }

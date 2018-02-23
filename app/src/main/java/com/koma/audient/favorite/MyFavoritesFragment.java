@@ -112,6 +112,7 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
             @Override
             public void onItemClick(Favorite favorite) {
                 if (mPresenter != null) {
+                    mPresenter.addToFavorite(favorite.favoritesId, mAudient);
                 }
             }
         });

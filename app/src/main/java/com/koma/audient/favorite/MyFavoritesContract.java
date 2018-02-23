@@ -15,6 +15,7 @@
  */
 package com.koma.audient.favorite;
 
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Favorite;
 import com.koma.common.base.BasePresenter;
 import com.koma.common.base.BaseView;
@@ -32,5 +33,7 @@ public interface MyFavoritesContract {
 
     interface Presenter extends BasePresenter {
         void loadMyFavorites();
+
+        void addToFavorite(String favoritesId, Audient audient);
     }
 }

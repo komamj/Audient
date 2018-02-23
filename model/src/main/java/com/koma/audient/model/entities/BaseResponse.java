@@ -20,14 +20,8 @@ import com.google.gson.annotations.SerializedName;
 public class BaseResponse {
     @SerializedName("code")
     public int resultCode;
-    @SerializedName("data")
-    public DataBean dataBean;
     @SerializedName("message")
     public String message;
-
-    public static class DataBean {
-
-    }
 
     @Override
     public String toString() {

@@ -257,6 +257,11 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
+    public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
+        return null;
+    }
+
+    @Override
     public Flowable<FavoritesResult> getFavoriteResult() {
         return null;
     }

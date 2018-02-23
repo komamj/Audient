@@ -16,6 +16,8 @@
 package com.koma.audient.favorite;
 
 import com.koma.audient.model.AudientRepository;
+import com.koma.audient.model.entities.Audient;
+import com.koma.audient.model.entities.BaseResponse;
 import com.koma.audient.model.entities.Favorite;
 import com.koma.audient.model.entities.FavoritesResult;
 import com.koma.common.util.LogUtils;
@@ -99,5 +101,28 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
                 });
 
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void addToFavorite(String favoritesId, Audient audient) {
+        mRepository.addToFavorite(favoritesId, audient)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        LogUtils.i(TAG, "addToFavorite " + response.message);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addToFavorite error " + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

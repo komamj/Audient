@@ -30,7 +30,7 @@ public class FavoriteListResult {
     public static class DataBean {
         @SerializedName("id")
         public String id;
-        @SerializedName("favoriteId")
+        @SerializedName("favoritesId")
         public String favoriteId;
         @SerializedName("mediaSource")
         public int mediaSource;

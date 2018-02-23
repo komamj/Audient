@@ -125,6 +125,11 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
+    public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
+        return mAudientApi.addToFavorite(mAccessToken, favoriteId, audient);
+    }
+
+    @Override
     public Flowable<FavoritesResult> getFavoriteResult() {
         return mAudientApi.getFavoriteResult(mAccessToken, null);
     }
