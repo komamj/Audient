@@ -28,11 +28,13 @@ import android.widget.TextView;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.favorite.MyFavoritesActivity;
 import com.koma.audient.helper.GlideApp;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.nowplaying.NowPlayingActivity;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -120,6 +122,19 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         });
 
         mAdapter = new PlaylistAdapter(mContext);
+        mAdapter.setEventListener(new PlaylistAdapter.EventListener() {
+            @Override
+            public void onFavoriteMenuClick(Audient audient) {
+                Intent intent = new Intent(mContext, MyFavoritesActivity.class);
+                intent.putExtra(Constants.KEY_AUDIENT, audient);
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onThumbUpClick(Audient audient) {
+                mPresenter.thumbUp(audient);
+            }
+        });
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

@@ -15,19 +15,14 @@
  */
 package com.koma.audient.favorite;
 
-import dagger.Module;
-import dagger.Provides;
+import com.koma.audient.model.AudientRepositoryComponent;
+import com.koma.common.util.ActivityScoped;
 
-@Module
-public class MyFavoritePresenterModule {
-    private final MyFavoritesContract.View mView;
+import dagger.Component;
 
-    public MyFavoritePresenterModule(MyFavoritesContract.View view) {
-        mView = view;
-    }
-
-    @Provides
-    MyFavoritesContract.View provideMyFavoriteContractView() {
-        return this.mView;
-    }
+@ActivityScoped
+@Component(dependencies = AudientRepositoryComponent.class,
+        modules = MyFavoritesPresenterModule.class)
+public interface MyFavoritesPresenterComponent {
+    void inject(MyFavoritesActivity activity);
 }

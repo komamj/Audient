@@ -15,14 +15,19 @@
  */
 package com.koma.audient.favorite;
 
-import com.koma.audient.model.AudientRepositoryComponent;
-import com.koma.common.util.FragmentScoped;
+import dagger.Module;
+import dagger.Provides;
 
-import dagger.Component;
+@Module
+public class MyFavoritesPresenterModule {
+    private final MyFavoritesContract.View mView;
 
-@FragmentScoped
-@Component(dependencies = AudientRepositoryComponent.class,
-        modules = MyFavoritePresenterModule.class)
-public interface MyFavoritePresenterComponent {
-    void inject(MyFavoritesDialog dialog);
+    public MyFavoritesPresenterModule(MyFavoritesContract.View view) {
+        mView = view;
+    }
+
+    @Provides
+    MyFavoritesContract.View provideMyFavoriteContractView() {
+        return this.mView;
+    }
 }

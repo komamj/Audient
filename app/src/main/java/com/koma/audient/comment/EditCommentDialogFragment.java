@@ -59,7 +59,7 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
     }
 
     public static EditCommentDialogFragment newInstance() {
-        EditCommentDialogFragment fragment = new EditCommentDialogFragment();
+        final EditCommentDialogFragment fragment = new EditCommentDialogFragment();
 
         return fragment;
     }

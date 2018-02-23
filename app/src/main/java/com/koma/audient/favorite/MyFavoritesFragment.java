@@ -17,42 +17,53 @@ package com.koma.audient.favorite;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
+import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Favorite;
 import com.koma.audient.widget.AudientItemDecoration;
+import com.koma.common.base.BaseFragment;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MyFavoritesDialog extends BottomSheetDialogFragment
-        implements MyFavoritesContract.View {
-    private static final String TAG = MyFavoritesDialog.class.getSimpleName();
+public class MyFavoritesFragment extends BaseFragment implements MyFavoritesContract.View {
+    private static final String TAG = MyFavoritesFragment.class.getSimpleName();
+
+    private static final String TAG_MY_FAVORITES = "my_favorites";
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
-    ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Context mContext;
 
+    private Audient mAudient;
+
     private MyFavoritesAdapter mAdapter;
 
-    @Inject
-    MyFavoritesPresenter mPresenter;
+    private MyFavoritesContract.Presenter mPresenter;
+
+    public MyFavoritesFragment() {
+    }
+
+    public static MyFavoritesFragment newInstance(Audient audient) {
+        final MyFavoritesFragment dialogFragment = new MyFavoritesFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.KEY_AUDIENT, audient);
+        dialogFragment.setArguments(bundle);
+
+        return dialogFragment;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -69,26 +80,14 @@ public class MyFavoritesDialog extends BottomSheetDialogFragment
 
         LogUtils.i(TAG, "onCreate");
 
-        // inject presenter
-        DaggerMyFavoritePresenterComponent.builder()
-                .audientRepositoryComponent(((AudientApplication) getActivity().getApplication()).getRepositoryComponent())
-                .myFavoritePresenterModule(new MyFavoritePresenterModule(this))
-                .build()
-                .inject(this);
+        if (getArguments() != null) {
+            mAudient = getArguments().getParcelable(Constants.KEY_AUDIENT);
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        LogUtils.i(TAG, "onCreateView");
-
-        View view = inflater.inflate(R.layout.dialog_my_favorites, container, false);
-
-        ButterKnife.bind(this, view);
-
-        mProgressBar.show();
-
-        return view;
+    public int getLayoutId() {
+        return R.layout.fragment_base;
     }
 
     @Override
@@ -97,7 +96,26 @@ public class MyFavoritesDialog extends BottomSheetDialogFragment
 
         LogUtils.i(TAG, "onViewCreated");
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadMyFavorites();
+                }
+            }
+        });
+
+        setLoadingIndicator(true);
+
         mAdapter = new MyFavoritesAdapter(mContext);
+        mAdapter.setListener(new MyFavoritesAdapter.EventListener() {
+            @Override
+            public void onItemClick(Favorite favorite) {
+                if (mPresenter != null) {
+                }
+            }
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -123,6 +141,7 @@ public class MyFavoritesDialog extends BottomSheetDialogFragment
 
     @Override
     public void setPresenter(MyFavoritesContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override
@@ -131,12 +150,8 @@ public class MyFavoritesDialog extends BottomSheetDialogFragment
     }
 
     @Override
-    public void showProgressBar(boolean forceShow) {
-        if (forceShow) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+    public void setLoadingIndicator(boolean active) {
+        mSwipeRefreshLayout.setRefreshing(active);
     }
 
     @Override

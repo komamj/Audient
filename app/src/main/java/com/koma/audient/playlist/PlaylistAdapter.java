@@ -43,6 +43,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.PlaylistViewHolder> {
+    private static final String TAG = PlaylistAdapter.class.getSimpleName();
+
+    private EventListener mListener;
 
     private final GlideRequest<Bitmap> mGlideRequest;
 
@@ -54,6 +57,10 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
                 .thumbnail(0.1f)
                 .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
+    }
+
+    public void setEventListener(EventListener listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -96,6 +103,15 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
         @BindView(R.id.tv_artist_name)
         TextView mArtistName;
 
+        @OnClick(R.id.iv_thumb_up)
+        void thumbUp() {
+            if (mListener != null) {
+                Audient audient = mData.get(getAdapterPosition());
+
+                mListener.onThumbUpClick(audient);
+            }
+        }
+
         @OnClick(R.id.iv_more)
         void showPopupMenu(View view) {
             PopupMenu popupMenu = new PopupMenu(mContext, view);
@@ -107,6 +123,9 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
 
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
+                            if (mListener != null) {
+                                mListener.onFavoriteMenuClick(audient);
+                            }
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
@@ -123,5 +142,11 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
         PlaylistViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface EventListener {
+        void onFavoriteMenuClick(Audient audient);
+
+        void onThumbUpClick(Audient audient);
     }
 }

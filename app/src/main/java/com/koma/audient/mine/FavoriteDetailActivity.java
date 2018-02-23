@@ -91,7 +91,9 @@ public class FavoriteDetailActivity extends BaseActivity {
         if (fragment == null) {
             fragment = FavoriteDetailFragment.newInstance(favorite);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.content_main, fragment)
+                    .commit();
         }
 
         DaggerFavoriteDetailComponent.builder()

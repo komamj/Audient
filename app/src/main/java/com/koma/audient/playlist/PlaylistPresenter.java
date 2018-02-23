@@ -130,4 +130,9 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
 
         mDisposables.add(disposable);
     }
+
+    @Override
+    public void thumbUp(Audient audient) {
+        LogUtils.i(TAG, "thumbUp");
+    }
 }

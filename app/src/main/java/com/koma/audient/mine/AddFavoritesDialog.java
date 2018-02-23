@@ -48,6 +48,11 @@ public class AddFavoritesDialog extends DialogFragment implements AddFavoriteCon
     @Inject
     AddFavoritePresenter mPresenter;
 
+    public static void show(FragmentManager fm) {
+        final AddFavoritesDialog dialog = new AddFavoritesDialog();
+        dialog.show(fm, TAG_ADD_PLAYLIST);
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -68,11 +73,6 @@ public class AddFavoritesDialog extends DialogFragment implements AddFavoriteCon
                 .addFavoritePresenterModule(new AddFavoritePresenterModule(this))
                 .build()
                 .inject(this);
-    }
-
-    public static void show(FragmentManager fm) {
-        final AddFavoritesDialog dialog = new AddFavoritesDialog();
-        dialog.show(fm, TAG_ADD_PLAYLIST);
     }
 
     @Override

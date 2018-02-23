@@ -38,6 +38,8 @@ import butterknife.BindView;
 public class MyFavoritesAdapter extends BaseAdapter<Favorite, MyFavoritesAdapter.MyFavoritesVH> {
     private final GlideRequest<Bitmap> mGlideRequest;
 
+    private EventListener mListener;
+
     public MyFavoritesAdapter(Context context) {
         super(context);
 
@@ -46,6 +48,10 @@ public class MyFavoritesAdapter extends BaseAdapter<Favorite, MyFavoritesAdapter
                 .thumbnail(0.1f)
                 .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
+    }
+
+    public void setListener(EventListener listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -80,7 +86,7 @@ public class MyFavoritesAdapter extends BaseAdapter<Favorite, MyFavoritesAdapter
                 favorite.itemCount, favorite.itemCount));
     }
 
-    public class MyFavoritesVH extends BaseViewHolder {
+    public class MyFavoritesVH extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_name)
         TextView mName;
         @BindView(R.id.iv_album)
@@ -90,6 +96,20 @@ public class MyFavoritesAdapter extends BaseAdapter<Favorite, MyFavoritesAdapter
 
         public MyFavoritesVH(View view) {
             super(view);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            if (mListener != null) {
+                Favorite favorite = mData.get(getAdapterPosition());
+                mListener.onItemClick(favorite);
+            }
+        }
+    }
+
+    public interface EventListener {
+        void onItemClick(Favorite favorite);
     }
 }

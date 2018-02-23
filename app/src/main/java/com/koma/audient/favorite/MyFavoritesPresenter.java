@@ -81,6 +81,8 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
                         LogUtils.i(TAG, "loadfavorites " + favorites.toString());
 
                         if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+
                             mView.showFavorites(favorites);
                         }
                     }

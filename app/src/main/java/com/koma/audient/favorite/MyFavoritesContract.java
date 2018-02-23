@@ -25,7 +25,7 @@ public interface MyFavoritesContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIndicator(boolean active);
 
         void showFavorites(List<Favorite> favorites);
     }
