@@ -69,6 +69,9 @@ public class FavoriteDetailActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
+        Favorite favorite = getIntent().getParcelableExtra(Constants.KEY_FAVORITE);
+
+        mToolbar.setTitle(favorite.favoriteName);
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
@@ -76,13 +79,12 @@ public class FavoriteDetailActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        Favorite favorite = getIntent().getParcelableExtra(Constants.KEY_FAVORITE);
 
         GlideApp.with(this)
                 .asBitmap()
                 .transition(new BitmapTransitionOptions())
                 .placeholder(R.drawable.ic_album)
-                .load(favorite).into(mAlbum);
+                .load(favorite.coverImageUrl).into(mAlbum);
 
         mFab.setImageResource(R.drawable.ic_unfavorite);
 

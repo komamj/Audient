@@ -87,6 +87,9 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+
         mAdapter = new CommentAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);

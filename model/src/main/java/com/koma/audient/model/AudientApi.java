@@ -127,7 +127,7 @@ public interface AudientApi {
     /**
      * 获取歌单下的所有歌曲
      */
-    @POST("api/v1/favorites/{id}/items")
+    @GET("api/v1/favorites/{id}/items")
     Flowable<FavoriteListResult> getFavoriteListResult(@Header("Authorization") String access_token,
                                                        @Path("id") String favoriteId);
 

@@ -107,6 +107,9 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+
         mAdapter = new TopListAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);

@@ -15,6 +15,7 @@
  */
 package com.koma.audient.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import android.view.View;
 import com.koma.audient.AudientApplication;
 import com.koma.audient.R;
 import com.koma.audient.base.AudientAdapter;
+import com.koma.audient.favorite.MyFavoritesActivity;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Favorite;
 import com.koma.audient.model.entities.MessageEvent;
@@ -110,6 +112,19 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         LogUtils.i(TAG, "onViewCreated");
 
         mDynamicAdapter = new AudientAdapter(mContext);
+        mDynamicAdapter.setEventListener(new AudientAdapter.EventListener() {
+            @Override
+            public void onFavoriteMenuClick(Audient audient) {
+                Intent intent = new Intent(mContext, MyFavoritesActivity.class);
+                intent.putExtra(Constants.KEY_AUDIENT, audient);
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onPlaylistChanged(Audient audient) {
+
+            }
+        });
 
         mFavoriteAdapter = new FavoriteAdapter(mContext);
 

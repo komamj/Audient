@@ -61,4 +61,8 @@
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
+    <string name="add_to_favorites_completed">Add to favorites completed</string>
+
+    <!--Transition name-->
+    <string name="transition_album" translatable="false">transition_album</string>
 </resources>

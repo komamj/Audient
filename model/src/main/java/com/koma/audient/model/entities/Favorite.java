@@ -32,6 +32,8 @@ public class Favorite implements Parcelable {
     public String userId;
     @SerializedName("itemCount")
     public int itemCount;
+    @SerializedName("coverImage")
+    public String coverImageUrl;
     @SerializedName("createDate")
     public String createDate;
     @SerializedName("modifyDate")
@@ -43,6 +45,7 @@ public class Favorite implements Parcelable {
         isDefault = in.readByte() != 0;
         userId = in.readString();
         itemCount = in.readInt();
+        coverImageUrl = in.readString();
         createDate = in.readString();
         modifyDate = in.readString();
     }
@@ -68,6 +71,8 @@ public class Favorite implements Parcelable {
         builder.append(favoriteName);
         builder.append(",userId ");
         builder.append(userId);
+        builder.append(",coverImageUrl ");
+        builder.append(coverImageUrl);
         builder.append(",createDate ");
         builder.append(createDate);
         return builder.toString();
@@ -104,6 +109,7 @@ public class Favorite implements Parcelable {
         parcel.writeByte((byte) (isDefault ? 1 : 0));
         parcel.writeString(userId);
         parcel.writeInt(itemCount);
+        parcel.writeString(coverImageUrl);
         parcel.writeString(createDate);
         parcel.writeString(modifyDate);
     }

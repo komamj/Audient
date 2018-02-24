@@ -29,6 +29,8 @@ public interface MyFavoritesContract {
         void setLoadingIndicator(boolean active);
 
         void showFavorites(List<Favorite> favorites);
+
+        void showSuccessfullyAddedMessage();
     }
 
     interface Presenter extends BasePresenter {

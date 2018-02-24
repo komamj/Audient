@@ -121,6 +121,9 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+
         mAdapter = new PlaylistAdapter(mContext);
         mAdapter.setEventListener(new PlaylistAdapter.EventListener() {
             @Override

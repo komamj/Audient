@@ -88,7 +88,10 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
             }
         });
 
-        mSwipeRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary,
+                R.color.colorAccent);
+
+        setLoadingIndicator(true);
 
         mAdapter = new AudientAdapter(mContext);
 
@@ -123,6 +126,11 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
     @Override
     public void setPresenter(FavoriteDetailContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        mSwipeRefreshLayout.setRefreshing(active);
     }
 
     @Override

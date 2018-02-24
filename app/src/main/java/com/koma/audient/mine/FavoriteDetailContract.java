@@ -23,6 +23,8 @@ import java.util.List;
 
 public interface FavoriteDetailContract {
     interface View extends BaseView<Presenter> {
+        void setLoadingIndicator(boolean active);
+
         boolean isActive();
 
         void showAudients(List<Audient> audients);

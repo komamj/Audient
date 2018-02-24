@@ -16,6 +16,7 @@
 package com.koma.audient.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +26,11 @@ import android.widget.TextView;
 
 import com.koma.audient.R;
 import com.koma.audient.base.AudientAdapter;
+import com.koma.audient.favorite.MyFavoritesActivity;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
+import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
 import java.util.List;
@@ -79,6 +82,19 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         showProgressBar(false);
 
         mAdapter = new AudientAdapter(mContext);
+        mAdapter.setEventListener(new AudientAdapter.EventListener() {
+            @Override
+            public void onFavoriteMenuClick(Audient audient) {
+                Intent intent = new Intent(mContext, MyFavoritesActivity.class);
+                intent.putExtra(Constants.KEY_AUDIENT, audient);
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onPlaylistChanged(Audient audient) {
+
+            }
+        });
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

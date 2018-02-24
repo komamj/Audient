@@ -79,7 +79,7 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
         Favorite favorite = mData.get(position);
 
-        mGlideRequest.load("").into(holder.mFavoriteImage);
+        mGlideRequest.load(favorite.coverImageUrl).into(holder.mFavoriteImage);
 
         holder.mFavoriteName.setText(favorite.favoriteName);
     }

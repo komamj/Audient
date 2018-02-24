@@ -17,22 +17,33 @@ package com.koma.audient.favorite;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.koma.audient.R;
+import com.koma.audient.mine.AddFavoritesDialog;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.model.entities.Favorite;
+import com.koma.audient.model.entities.MessageEvent;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
 import com.koma.common.util.Constants;
 import com.koma.common.util.LogUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MyFavoritesFragment extends BaseFragment implements MyFavoritesContract.View {
     private static final String TAG = MyFavoritesFragment.class.getSimpleName();
@@ -43,6 +54,13 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
+
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        AddFavoritesDialog.show(getChildFragmentManager());
+    }
 
     private Context mContext;
 
@@ -87,7 +105,7 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_base;
+        return R.layout.fragment_my_favorites;
     }
 
     @Override
@@ -104,6 +122,9 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
                 }
             }
         });
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
 
         setLoadingIndicator(true);
 
@@ -127,6 +148,35 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
         if (mPresenter != null) {
             mPresenter.loadMyFavorites();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        LogUtils.i(TAG, "onStart");
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent) {
+        LogUtils.i(TAG, "onMessageEvent");
+
+        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_ADD_FAVORITE_COMPLETED)) {
+            if (mPresenter != null) {
+                mPresenter.loadMyFavorites();
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        LogUtils.i(TAG, "onStop");
+
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -158,5 +208,20 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
     @Override
     public void showFavorites(List<Favorite> favorites) {
         mAdapter.update(favorites);
+    }
+
+    @Override
+    public void showSuccessfullyAddedMessage() {
+        Snackbar.make(mFab, R.string.add_to_favorites_completed, Snackbar.LENGTH_SHORT)
+                .show();
+
+        if (getView() != null) {
+            getView().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((AppCompatActivity) mContext).finish();
+                }
+            }, 1500);
+        }
     }
 }

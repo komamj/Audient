@@ -81,6 +81,8 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
                     @Override
                     public void onNext(List<Audient> audients) {
                         if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+
                             mView.showAudients(audients);
                         }
                     }
@@ -88,6 +90,8 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "loadData error :" + t.toString());
+
+                        mView.setLoadingIndicator(false);
                     }
 
                     @Override

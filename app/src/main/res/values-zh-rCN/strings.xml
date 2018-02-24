@@ -60,5 +60,6 @@
     <plurals name="song_count">
         <item quantity="other">%d 首</item>
     </plurals>
+    <string name="add_to_favorites_completed">"成功添加到该歌单。"</string>
 
 </resources>

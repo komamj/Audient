@@ -15,6 +15,7 @@
  */
 package com.koma.audient.toplist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import android.view.View;
 
 import com.koma.audient.R;
 import com.koma.audient.base.AudientAdapter;
+import com.koma.audient.favorite.MyFavoritesActivity;
 import com.koma.audient.model.entities.Audient;
 import com.koma.audient.widget.AudientItemDecoration;
 import com.koma.common.base.BaseFragment;
@@ -89,9 +91,25 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+
         mSwipeRefreshLayout.setRefreshing(true);
 
         mAdapter = new AudientAdapter(mContext);
+        mAdapter.setEventListener(new AudientAdapter.EventListener() {
+            @Override
+            public void onFavoriteMenuClick(Audient audient) {
+                Intent intent = new Intent(mContext, MyFavoritesActivity.class);
+                intent.putExtra(Constants.KEY_AUDIENT, audient);
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onPlaylistChanged(Audient audient) {
+
+            }
+        });
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
