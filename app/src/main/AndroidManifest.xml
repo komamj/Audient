@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.koma.audient">
+    package="com.xinshang.audient">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".AudientApplication"
+        android:name="com.xinshang.audient.AudientApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".splash.SplashActivity"
+            android:name="com.xinshang.audient.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -30,33 +30,33 @@
         </activity>
 
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.xinshang.audient.login.LoginActivity"
             android:exported="false"
             android:label="@string/login_label"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme" />
 
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.xinshang.audient.main.MainActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".search.SearchActivity"
+            android:name="com.xinshang.audient.search.SearchActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".nowplaying.NowPlayingActivity"
+            android:name="com.xinshang.audient.nowplaying.NowPlayingActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".comment.CommentActivity"
+            android:name="com.xinshang.audient.comment.CommentActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="@string/comment_label"
@@ -65,32 +65,32 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".account.AccountActivity"
+            android:name="com.xinshang.audient.account.AccountActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".toplist.TopListDetailActivity"
+            android:name="com.xinshang.audient.toplist.TopListDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".mine.FavoriteDetailActivity"
+            android:name="com.xinshang.audient.mine.FavoriteDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".favorite.MyFavoritesActivity"
+            android:name="com.xinshang.audient.favorite.MyFavoritesActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--audition-->
         <service
-            android:name=".service.AuditionService"
+            android:name="com.xinshang.audient.service.AuditionService"
             android:exported="false" />
 
     </application>
