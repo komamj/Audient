@@ -68,4 +68,10 @@ public interface AudientDataSource {
     Flowable<FavoritesResult> getFavoriteResult();
 
     Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId);
+
+    Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name);
+
+    Flowable<BaseResponse> deleteFavorite(String id);
+
+    Flowable<BaseResponse> deleteFavoritesSong(String favoritesId);
 }

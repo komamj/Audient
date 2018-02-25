@@ -20,7 +20,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,6 +44,8 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
 
     private final GlideRequest<Bitmap> mGlideRequest;
 
+    private EventListner mListener;
+
     public FavoriteAdapter(Context context) {
         super(context);
 
@@ -50,6 +54,10 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
                 .thumbnail(0.1f)
                 .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(new ColorDrawable(Color.GRAY));
+    }
+
+    public void setListener(EventListner listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -96,8 +104,30 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
         ImageView mFavoriteImage;
 
         @OnClick(R.id.iv_more)
-        void onMoreClick() {
+        void onMoreClick(View view) {
+            PopupMenu popupMenu = new PopupMenu(mContext, view);
+            popupMenu.getMenuInflater().inflate(R.menu.my_favorites_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Favorite favorite = mData.get(getAdapterPosition());
 
+                    switch (item.getItemId()) {
+                        case R.id.action_modify:
+                            if (mListener != null) {
+                                mListener.onModifyEventChange(favorite);
+                            }
+                            break;
+                        case R.id.action_delete:
+                            if (mListener != null) {
+                                mListener.onDeleteEventChange(favorite);
+                            }
+                            break;
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
         }
 
         public FavoriteViewHolder(View view) {
@@ -115,5 +145,11 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
             intent.putExtra(Constants.KEY_FAVORITE, favorite);
             mContext.startActivity(intent);
         }
+    }
+
+    public interface EventListner {
+        void onModifyEventChange(Favorite favorite);
+
+        void onDeleteEventChange(Favorite favorite);
     }
 }

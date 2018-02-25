@@ -138,4 +138,19 @@ public class AudientRepository implements AudientDataSource {
     public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
         return mRemoteDataSource.getFavoriteListResult(favoriteId);
     }
+
+    @Override
+    public Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name) {
+        return mRemoteDataSource.modifyFavoritesName(favoritesId, name);
+    }
+
+    @Override
+    public Flowable<BaseResponse> deleteFavorite(String id) {
+        return mRemoteDataSource.deleteFavorite(id);
+    }
+
+    @Override
+    public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
+        return mRemoteDataSource.deleteFavoritesSong(favoritesId);
+    }
 }

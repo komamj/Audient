@@ -270,4 +270,19 @@ public class LocalDataSource implements AudientDataSource {
     public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
         return null;
     }
+
+    @Override
+    public Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name) {
+        return null;
+    }
+
+    @Override
+    public Flowable<BaseResponse> deleteFavorite(String id) {
+        return null;
+    }
+
+    @Override
+    public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
+        return null;
+    }
 }

@@ -127,6 +127,17 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         });
 
         mFavoriteAdapter = new FavoriteAdapter(mContext);
+        mFavoriteAdapter.setListener(new FavoriteAdapter.EventListner() {
+            @Override
+            public void onModifyEventChange(Favorite favorite) {
+                EditNameDialogFragment.show(getChildFragmentManager(), favorite);
+            }
+
+            @Override
+            public void onDeleteEventChange(Favorite favorite) {
+
+            }
+        });
 
         LinearLayoutManager layoutManagerFavorite = new LinearLayoutManager(mContext);
         layoutManagerFavorite.setOrientation(LinearLayoutManager.HORIZONTAL);

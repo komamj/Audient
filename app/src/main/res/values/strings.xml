@@ -34,6 +34,7 @@
     <string name="my_dynamic">My dynamic:</string>
     <string name="default_favorite">My love</string>
     <string name="add_playlist">Add playlist</string>
+    <string name="new_playlist_title">"Please inuput playlist name..."</string>
 
     <!--Search-->
     <string name="action_playlist">Add to playlist</string>
@@ -62,6 +63,9 @@
         <item quantity="other">%d songs</item>
     </plurals>
     <string name="add_to_favorites_completed">Add to favorites completed</string>
+    <string name="action_modify_favorites">"Modify favorites name"</string>
+    <string name="action_delete">Delete</string>
+    <string name="modify_name">Modify name</string>
 
     <!--Transition name-->
     <string name="transition_album" translatable="false">transition_album</string>

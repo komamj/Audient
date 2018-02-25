@@ -132,11 +132,18 @@ public interface AudientApi {
                                                        @Path("id") String favoriteId);
 
     /**
-     * 删除歌单
+     * 删除歌单里的歌曲
+     */
+    @DELETE("api/v1/favorites/{id}")
+    Flowable<BaseResponse> deleteFavorite(@Header("Authorization") String access_token,
+                                          @Path("id") String id);
+
+    /**
+     * 删除歌单里的歌曲
      */
     @DELETE("api/v1/favorites/items/{id}")
-    Flowable<BaseResponse> deleteFavorite(@Header("Authorization") String access_token,
-                                          @Path("id") String favoriteId);
+    Flowable<BaseResponse> deleteFavoritesSong(@Header("Authorization") String access_token,
+                                               @Path("id") String favoritesId);
 
     /**
      * 修改歌单名称

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"音悦"</string>
+    <string name="app_name">"极乐"</string>
 
     <!--Drawer-->
     <string name="nav_track">"我的足迹"</string>
@@ -34,6 +34,7 @@
     <string name="my_dynamic">"我的动态:"</string>
     <string name="default_favorite">"我喜欢"</string>
     <string name="add_playlist">"新建歌单"</string>
+    <string name="new_playlist_title">"请输入歌单名称..."</string>
 
     <!--Search-->
     <string name="action_playlist">"加入播放列表"</string>
@@ -61,5 +62,8 @@
         <item quantity="other">%d 首</item>
     </plurals>
     <string name="add_to_favorites_completed">"成功添加到该歌单。"</string>
+    <string name="action_modify_favorites">"修改歌单名称"</string>
+    <string name="action_delete">"删除"</string>
+    <string name="modify_name">"重命名"</string>
 
 </resources>

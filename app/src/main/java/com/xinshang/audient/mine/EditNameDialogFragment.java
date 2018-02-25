@@ -17,10 +17,8 @@ package com.xinshang.audient.mine;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +26,9 @@ import android.widget.EditText;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
+import com.xinshang.audient.base.BaseDialogFragment;
+import com.xinshang.audient.model.entities.Favorite;
+import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
@@ -35,29 +36,28 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddFavoritesDialog extends DialogFragment implements AddFavoriteContract.View {
-    private static final String TAG = AddFavoritesDialog.class.getSimpleName();
+public class EditNameDialogFragment extends BaseDialogFragment implements EditNameContract.View {
+    private static final String TAG = EditNameDialogFragment.class.getSimpleName();
 
-    private static final String TAG_ADD_PLAYLIST = "tag_add_playlist";
+    private static final String DIALOG_TAG = "edit_name_dialog";
 
     @BindView(R.id.edit_text)
     EditText mEditText;
 
-    private Context mContext;
+    private Favorite mFavorite;
 
     @Inject
-    AddFavoritePresenter mPresenter;
+    EditNamePresenter mPresenter;
 
-    public static void show(FragmentManager fm) {
-        final AddFavoritesDialog dialog = new AddFavoritesDialog();
-        dialog.show(fm, TAG_ADD_PLAYLIST);
-    }
+    public static void show(FragmentManager fragmentManager, Favorite favorite) {
+        EditNameDialogFragment dialogFragment = new EditNameDialogFragment();
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.KEY_FAVORITE, favorite);
 
-        mContext = context;
+        dialogFragment.setArguments(bundle);
+
+        dialogFragment.show(fragmentManager, DIALOG_TAG);
     }
 
     @Override
@@ -67,10 +67,10 @@ public class AddFavoritesDialog extends DialogFragment implements AddFavoriteCon
         LogUtils.i(TAG, "onCreate");
 
         // inject presenter
-        DaggerAddFavoriteComponent.builder()
+        DaggerEditNameComponent.builder()
                 .audientRepositoryComponent(((AudientApplication) getActivity()
                         .getApplication()).getRepositoryComponent())
-                .addFavoritePresenterModule(new AddFavoritePresenterModule(this))
+                .editNamePresenterModule(new EditNamePresenterModule(this))
                 .build()
                 .inject(this);
     }
@@ -83,16 +83,18 @@ public class AddFavoritesDialog extends DialogFragment implements AddFavoriteCon
                 null, false);
         ButterKnife.bind(this, view);
 
-        mEditText.setHint(R.string.new_playlist_title);
+        mEditText.setText(mFavorite.favoriteName);
+        mEditText.setSelected(true);
 
-        builder.setTitle(R.string.add_playlist);
+        builder.setTitle(R.string.modify_name);
         builder.setView(view);
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (mPresenter != null) {
-                    mPresenter.addFavorite(mEditText.getText().toString());
+                    mPresenter.modifyFavoritesName(mFavorite.favoritesId,
+                            mEditText.getText().toString());
                 }
             }
         });
@@ -103,7 +105,7 @@ public class AddFavoritesDialog extends DialogFragment implements AddFavoriteCon
     }
 
     @Override
-    public void setPresenter(AddFavoriteContract.Presenter presenter) {
+    public void setPresenter(EditNameContract.Presenter presenter) {
 
     }
 }
