@@ -43,5 +43,7 @@ public interface MineContract {
         void loadFavorites();
 
         void loadDynamics();
+
+        void deleteMyFavorite(Favorite favorite);
     }
 }

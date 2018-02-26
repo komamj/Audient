@@ -76,7 +76,7 @@ public class AddFavoritePresenter implements AddFavoriteContract.Presenter {
                         LogUtils.i(TAG, "addFavorite " + response.toString());
 
                         EventBus.getDefault().post(new MessageEvent(
-                                Constants.MESSAGE_ADD_FAVORITE_COMPLETED));
+                                Constants.MESSAGE_MY_FAVORITES_CHANGED));
                     }
 
                     @Override

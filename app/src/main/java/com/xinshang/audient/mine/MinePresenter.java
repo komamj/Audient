@@ -17,9 +17,14 @@ package com.xinshang.audient.mine;
 
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.FavoritesResult;
+import com.xinshang.audient.model.entities.MessageEvent;
+import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -137,5 +142,33 @@ public class MinePresenter implements MineContract.Presenter {
                 });
 
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void deleteMyFavorite(Favorite favorite) {
+        mRepository.deleteFavorite(favorite.favoritesId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        if (response.resultCode == 0) {
+                            LogUtils.i(TAG, "deleteMyFavorite :" + response.message);
+
+                            EventBus.getDefault().post(new MessageEvent(
+                                    Constants.MESSAGE_MY_FAVORITES_CHANGED));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "deleteMyFavorite error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

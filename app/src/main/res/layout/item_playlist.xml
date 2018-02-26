@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_album"
-        app:layout_constraintEnd_toStartOf="@+id/iv_thumb_up"
+        app:layout_constraintEnd_toStartOf="@+id/iv_more"
         app:layout_constraintStart_toEndOf="@+id/iv_album"
         app:layout_constraintTop_toTopOf="@+id/iv_album">
 
@@ -54,19 +54,6 @@
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/iv_thumb_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="4dp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_album"
-        app:layout_constraintEnd_toStartOf="@id/iv_more"
-        app:layout_constraintStart_toEndOf="@id/info_layout"
-        app:layout_constraintTop_toTopOf="@id/iv_album"
-        app:srcCompat="@drawable/ic_thumb_up" />
-
-    <ImageView
         android:id="@+id/iv_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +61,7 @@
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@id/iv_album"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_thumb_up"
+        app:layout_constraintStart_toEndOf="@id/info_layout"
         app:layout_constraintTop_toTopOf="@id/iv_album"
         app:srcCompat="@drawable/ic_more" />
 

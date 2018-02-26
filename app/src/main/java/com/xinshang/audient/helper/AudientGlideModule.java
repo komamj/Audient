@@ -26,6 +26,7 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.Favorite;
 
 import java.io.InputStream;
 
@@ -49,6 +50,8 @@ public class AudientGlideModule extends AppGlideModule {
                                    @NonNull Registry registry) {
         registry.prepend(Audient.class, InputStream.class, new AudientFactory());
         registry.prepend(Audient.class, InputStream.class, new AudientUrlLoader.Factory());
+        registry.append(Favorite.FavoritesSong.class, InputStream.class,
+                new FavoritesSongUrlLoader.Factory());
     }
 
     // Disable manifest parsing to avoid adding similar modules twice.

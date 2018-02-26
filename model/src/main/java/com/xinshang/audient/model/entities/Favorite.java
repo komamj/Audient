@@ -114,7 +114,7 @@ public class Favorite implements Parcelable {
         parcel.writeString(modifyDate);
     }
 
-    public static class FavoriteSong {
+    public static class FavoritesSong {
 
         /**
          * favoritesId :

@@ -11,7 +11,7 @@
     <string name="nav_send">Send</string>
 
     <!--Splash-->
-    <string name="splash_description">"CopyRight@2017"</string>
+    <string name="splash_description">"CopyRight"</string>
 
     <!--Login-->
     <string name="login_label">Login</string>

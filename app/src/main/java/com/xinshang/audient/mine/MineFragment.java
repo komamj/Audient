@@ -135,7 +135,9 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
             @Override
             public void onDeleteEventChange(Favorite favorite) {
-
+                if (mPresenter != null) {
+                    mPresenter.deleteMyFavorite(favorite);
+                }
             }
         });
 
@@ -166,7 +168,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     public void onMessageEvent(MessageEvent messageEvent) {
         LogUtils.i(TAG, "onMessageEvent");
 
-        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_ADD_FAVORITE_COMPLETED)) {
+        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_MY_FAVORITES_CHANGED)) {
             if (mPresenter != null) {
                 mPresenter.loadFavorites();
             }

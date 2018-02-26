@@ -160,7 +160,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     @Override
     public void showAudients(List<Audient> audients) {
-        LogUtils.i(TAG, "showAudients count:" + audients.size());
+        LogUtils.i(TAG, "showFavoritesSong count:" + audients.size());
 
         mRecyclerView.setVisibility(View.VISIBLE);
 

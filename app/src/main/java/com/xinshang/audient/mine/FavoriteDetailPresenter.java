@@ -16,7 +16,8 @@
 package com.xinshang.audient.mine;
 
 import com.xinshang.audient.model.AudientRepository;
-import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.common.util.LogUtils;
 
@@ -69,21 +70,21 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
     @Override
     public void loadData(String favoriteId) {
         Disposable disposable = mRepository.getFavoriteListResult(favoriteId)
-                .map(new Function<FavoriteListResult, List<Audient>>() {
+                .map(new Function<FavoriteListResult, List<Favorite.FavoritesSong>>() {
                     @Override
-                    public List<Audient> apply(FavoriteListResult favoriteListResult) throws Exception {
-                        return favoriteListResult.audients;
+                    public List<Favorite.FavoritesSong> apply(FavoriteListResult favoriteListResult) throws Exception {
+                        return favoriteListResult.favoritesSongs;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
+                .subscribeWith(new DisposableSubscriber<List<Favorite.FavoritesSong>>() {
                     @Override
-                    public void onNext(List<Audient> audients) {
+                    public void onNext(List<Favorite.FavoritesSong> favoritesSongs) {
                         if (mView.isActive()) {
                             mView.setLoadingIndicator(false);
 
-                            mView.showAudients(audients);
+                            mView.showFavoritesSong(favoritesSongs);
                         }
                     }
 
@@ -101,5 +102,34 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
                 });
 
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void deleteFavoriteSong(Favorite.FavoritesSong favoritesSong) {
+        mRepository.deleteFavoritesSong(favoritesSong.favoritesId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        if (mView.isActive()) {
+                            if (response.resultCode == 0) {
+                                LogUtils.i(TAG, "deleteFavoriteSong " + response.message);
+
+                                loadData(mView.getFavoritesId());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "deleteFavoriteSong error " + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

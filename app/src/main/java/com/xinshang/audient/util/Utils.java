@@ -15,7 +15,6 @@
  */
 package com.xinshang.audient.util;
 
-import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.util.Constants;
 
 import java.text.SimpleDateFormat;
@@ -25,10 +24,10 @@ public class Utils {
     private Utils() {
     }
 
-    public static String buildUrl(Audient audient) {
+    public static String buildUrl(String albumId) {
         StringBuilder builder = new StringBuilder(Constants.AUDIENT_HOST);
         builder.append("api/v1/openmusic/album/");
-        builder.append(audient.albumId);
+        builder.append(albumId);
         builder.append("/pic");
 
         return builder.toString();

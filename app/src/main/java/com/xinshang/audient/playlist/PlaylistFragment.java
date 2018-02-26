@@ -132,11 +132,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 intent.putExtra(Constants.KEY_AUDIENT, audient);
                 mContext.startActivity(intent);
             }
-
-            @Override
-            public void onThumbUpClick(Audient audient) {
-                mPresenter.thumbUp(audient);
-            }
         });
 
         mRecyclerView.setHasFixedSize(true);

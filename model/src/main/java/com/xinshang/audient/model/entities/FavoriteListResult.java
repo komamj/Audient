@@ -23,7 +23,7 @@ public class FavoriteListResult {
     @SerializedName("code")
     public int resultCode;
     @SerializedName("data")
-    public List<Audient> audients;
+    public List<Favorite.FavoritesSong> favoritesSongs;
     @SerializedName("message")
     public String message;
 
@@ -59,8 +59,6 @@ public class FavoriteListResult {
         StringBuilder builder = new StringBuilder();
         builder.append("response with resultCode ");
         builder.append(resultCode);
-        builder.append(",data ");
-        builder.append(audients.toString());
         builder.append(",message ");
         builder.append(message);
         return builder.toString();

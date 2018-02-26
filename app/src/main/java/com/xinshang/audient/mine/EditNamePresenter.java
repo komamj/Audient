@@ -16,10 +16,19 @@
 package com.xinshang.audient.mine;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.MessageEvent;
+import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class EditNamePresenter implements EditNameContract.Presenter {
     private static final String TAG = EditNamePresenter.class.getSimpleName();
@@ -56,5 +65,29 @@ public class EditNamePresenter implements EditNameContract.Presenter {
 
     @Override
     public void modifyFavoritesName(String favoritesId, String name) {
+        mRepository.modifyFavoritesName(favoritesId, name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        if (response.resultCode == 0) {
+                            LogUtils.i(TAG, "modifyFavoritesName :" + response.message);
+
+                            EventBus.getDefault().post(new MessageEvent(
+                                    Constants.MESSAGE_MY_FAVORITES_CHANGED));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "modifyFavoritesName error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

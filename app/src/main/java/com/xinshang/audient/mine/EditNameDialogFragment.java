@@ -66,6 +66,10 @@ public class EditNameDialogFragment extends BaseDialogFragment implements EditNa
 
         LogUtils.i(TAG, "onCreate");
 
+        if (getArguments() != null) {
+            mFavorite = getArguments().getParcelable(Constants.KEY_FAVORITE);
+        }
+
         // inject presenter
         DaggerEditNameComponent.builder()
                 .audientRepositoryComponent(((AudientApplication) getActivity()
@@ -84,7 +88,7 @@ public class EditNameDialogFragment extends BaseDialogFragment implements EditNa
         ButterKnife.bind(this, view);
 
         mEditText.setText(mFavorite.favoriteName);
-        mEditText.setSelected(true);
+        mEditText.setSelection(0, mFavorite.favoriteName.length());
 
         builder.setTitle(R.string.modify_name);
         builder.setView(view);

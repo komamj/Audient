@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"极乐"</string>
+    <string name="app_name">"即乐"</string>
 
     <!--Drawer-->
     <string name="nav_track">"我的足迹"</string>
@@ -11,7 +11,7 @@
     <string name="nav_send">"反馈"</string>
 
     <!--Splash-->
-    <string name="splash_description">"心传科技版权所有@2017"</string>
+    <string name="splash_description">"心尚科技版权所有"</string>
 
     <!--Login-->
     <string name="login_label">"登录"</string>

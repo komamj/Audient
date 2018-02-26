@@ -22,7 +22,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xinshang.audient.R;
-import com.xinshang.audient.base.AudientAdapter;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.widget.AudientItemDecoration;
@@ -42,7 +41,7 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private AudientAdapter mAdapter;
+    private FavoritesSongAdapter mAdapter;
 
     private Favorite mFavorite;
 
@@ -93,7 +92,22 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
 
         setLoadingIndicator(true);
 
-        mAdapter = new AudientAdapter(mContext);
+        mAdapter = new FavoritesSongAdapter(mContext);
+        mAdapter.setEventListener(new FavoritesSongAdapter.EventListener() {
+            @Override
+            public void onDeleteEventChanged(Favorite.FavoritesSong favoritesSong) {
+                if (mPresenter != null) {
+                    mPresenter.deleteFavoriteSong(favoritesSong);
+                }
+            }
+
+            @Override
+            public void onPlaylistChanged(Audient audient) {
+                if (mPresenter != null) {
+
+                }
+            }
+        });
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -139,7 +153,12 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
     }
 
     @Override
-    public void showAudients(List<Audient> audients) {
-        mAdapter.replace(audients);
+    public String getFavoritesId() {
+        return this.mFavorite.favoritesId;
+    }
+
+    @Override
+    public void showFavoritesSong(List<Favorite.FavoritesSong> favoritesSongs) {
+        mAdapter.replace(favoritesSongs);
     }
 }

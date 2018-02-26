@@ -163,7 +163,7 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
     public void onMessageEvent(MessageEvent messageEvent) {
         LogUtils.i(TAG, "onMessageEvent");
 
-        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_ADD_FAVORITE_COMPLETED)) {
+        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_MY_FAVORITES_CHANGED)) {
             if (mPresenter != null) {
                 mPresenter.loadMyFavorites();
             }

@@ -103,15 +103,6 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
         @BindView(R.id.tv_artist_name)
         TextView mArtistName;
 
-        @OnClick(R.id.iv_thumb_up)
-        void thumbUp() {
-            if (mListener != null) {
-                Audient audient = mData.get(getAdapterPosition());
-
-                mListener.onThumbUpClick(audient);
-            }
-        }
-
         @OnClick(R.id.iv_more)
         void showPopupMenu(View view) {
             PopupMenu popupMenu = new PopupMenu(mContext, view);
@@ -146,7 +137,5 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
 
     public interface EventListener {
         void onFavoriteMenuClick(Audient audient);
-
-        void onThumbUpClick(Audient audient);
     }
 }

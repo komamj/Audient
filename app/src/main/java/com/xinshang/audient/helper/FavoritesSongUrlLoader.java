@@ -1,3 +1,4 @@
+package com.xinshang.audient.helper;
 /*
  * Copyright 2017 Koma
  *
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.helper;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,36 +25,34 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
-import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.util.Utils;
 
 import java.io.InputStream;
 
-public class AudientUrlLoader extends BaseGlideUrlLoader<Audient> {
-
-    private AudientUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader,
-                             @Nullable ModelCache<Audient, GlideUrl> modelCache) {
+public class FavoritesSongUrlLoader extends BaseGlideUrlLoader<Favorite.FavoritesSong> {
+    protected FavoritesSongUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader,
+                                     @Nullable ModelCache<Favorite.FavoritesSong, GlideUrl> modelCache) {
         super(concreteLoader, modelCache);
     }
 
     @Override
-    protected String getUrl(Audient audient, int width, int height, Options options) {
-        return Utils.buildUrl(audient.albumId);
+    protected String getUrl(Favorite.FavoritesSong favoritesSong, int width, int height, Options options) {
+        return Utils.buildUrl(favoritesSong.albumId);
     }
 
-
     @Override
-    public boolean handles(@NonNull Audient audient) {
+    public boolean handles(@NonNull Favorite.FavoritesSong favoritesSong) {
         return true;
     }
 
-    public static class Factory implements ModelLoaderFactory<Audient, InputStream> {
-        private final ModelCache<Audient, GlideUrl> modelCache = new ModelCache<>(500);
+    public static class Factory implements ModelLoaderFactory<Favorite.FavoritesSong, InputStream> {
+        private final ModelCache<Favorite.FavoritesSong, GlideUrl> modelCache = new ModelCache<>(500);
 
         @NonNull
         @Override
-        public ModelLoader<Audient, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
-            return new AudientUrlLoader(multiFactory.build(GlideUrl.class, InputStream.class),
+        public ModelLoader<Favorite.FavoritesSong, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
+            return new FavoritesSongUrlLoader(multiFactory.build(GlideUrl.class, InputStream.class),
                     modelCache);
         }
 

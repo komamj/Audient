@@ -61,8 +61,7 @@ public final class Constants {
     public static final String KEY_NAME = "name";
 
     // message
-    public static final String MESSAGE_ADD_FAVORITE_COMPLETED = "messge_add_favorite_completed";
-    public static final String MESSAGE_ADD_TO_FAVORITE_COMPLETED = "messge_add_to_favorite_completed";
+    public static final String MESSAGE_MY_FAVORITES_CHANGED = "messge_my_favorites_changed";
 
     private Constants() {
     }
