@@ -19,7 +19,7 @@
         android:id="@+id/info_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -31,20 +31,20 @@
             android:gravity="center"
             android:text="@string/splash_description"
             android:textColor="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_time" />
 
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_copyright"
-            android:text="2018"
             android:gravity="center"
+            android:text="2018"
             android:textColor="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="@id/tv_copyright"
-            app:layout_constraintStart_toEndOf="@id/tv_copyright"
-            app:layout_constraintTop_toTopOf="@id/tv_copyright" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_copyright" />
 
     </android.support.constraint.ConstraintLayout>
 
