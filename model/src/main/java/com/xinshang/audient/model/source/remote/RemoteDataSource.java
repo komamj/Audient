@@ -44,7 +44,7 @@ import io.reactivex.Flowable;
 public class RemoteDataSource implements AudientDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
-    private String mAccessToken = "Bearer 8b193832-9a14-402b-817e-699e1e2fbe9e";
+    private String mAccessToken = "Bearer f00c3aca-09c1-47f3-b434-403cd87bc1bd";
 
     private final AudientApi mAudientApi;
 
