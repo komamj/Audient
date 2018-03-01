@@ -24,6 +24,7 @@ import android.view.View;
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
+import com.xinshang.audient.payment.PaymentDialogFragment;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.Constants;
@@ -103,9 +104,7 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
 
             @Override
             public void onPlaylistChanged(Audient audient) {
-                if (mPresenter != null) {
-
-                }
+                PaymentDialogFragment.show(getChildFragmentManager(), audient);
             }
         });
 

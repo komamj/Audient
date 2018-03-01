@@ -26,6 +26,7 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.base.AudientAdapter;
 import com.xinshang.audient.favorite.MyFavoritesActivity;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.payment.PaymentDialogFragment;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.Constants;
@@ -107,7 +108,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
             @Override
             public void onPlaylistChanged(Audient audient) {
-
+                PaymentDialogFragment.show(getChildFragmentManager(), audient);
             }
         });
 

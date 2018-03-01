@@ -25,16 +25,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.Comment;
 import com.xinshang.audient.util.Utils;
 import com.xinshang.common.util.LogUtils;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditCommentDialogFragment extends BottomSheetDialogFragment {
+public class EditCommentDialogFragment extends BottomSheetDialogFragment
+        implements EditCommentContract.View {
     private static final String TAG = EditCommentDialogFragment.class.getSimpleName();
 
     @BindView(R.id.edit_text)
@@ -58,6 +62,9 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
         dismiss();
     }
 
+    @Inject
+    EditCommentPresenter mPresenter;
+
     public static EditCommentDialogFragment newInstance() {
         final EditCommentDialogFragment fragment = new EditCommentDialogFragment();
 
@@ -76,6 +83,12 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DaggerEditCommentComponent.builder()
+                .audientRepositoryComponent(((AudientApplication) getActivity().getApplication()).getRepositoryComponent())
+                .editCommentPresenterModule(new EditCommentPresenterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -86,5 +99,10 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment {
         ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    @Override
+    public void setPresenter(EditCommentContract.Presenter presenter) {
+
     }
 }

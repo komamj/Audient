@@ -1,4 +1,3 @@
-package com.xinshang.audient.helper;
 /*
  * Copyright 2017 Koma
  *
@@ -14,6 +13,7 @@ package com.xinshang.audient.helper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.xinshang.audient.helper;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
