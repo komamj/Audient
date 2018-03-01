@@ -19,18 +19,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class Comment {
     @SerializedName("storeId")
-    public String storeId;
+    public String storeId;//false
     @SerializedName("mediaId")
     public String mediaId;
     @SerializedName("comment")
     public String comment;
 
-    public String time;
-    public String userName;
-    public String message;
+    public String time;//unuse
+    public String userName;//unuse
+    public String message;//unuse
 
     @SerializedName("location")
-    public Location location;
+    public Location location;//false
 
     public static class Location {
         @SerializedName("latitude")

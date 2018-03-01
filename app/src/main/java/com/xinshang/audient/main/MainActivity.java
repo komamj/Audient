@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
+import com.xinshang.audient.about.AboutActivity;
 import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
 import com.xinshang.audient.playlist.PlaylistFragment;
@@ -199,6 +200,10 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);

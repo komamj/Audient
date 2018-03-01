@@ -157,9 +157,10 @@ public interface AudientApi {
     /**
      * 点赞评论
      */
+    @FormUrlEncoded
     @POST("api/v1/musiccomment/upvote")
     Flowable<Void> commentThumbUp(@Header("Authorization") String access_token,
-                                  @Query("commentId") String commentId);
+                                  @Field("commentId") String commentId);
 
     /**
      * 获取评论列表

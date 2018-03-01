@@ -13,59 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.login;
+package com.xinshang.audient.about;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
-import com.xinshang.audient.model.entities.User;
-import com.xinshang.common.base.BaseActivity;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.ButterKnife;
 
-public class LoginActivity extends BaseActivity implements LoginContract.View {
+/**
+ * Created by koma_20 on 2018/3/1.
+ */
+
+public class AboutActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick(R.id.btn_login)
-    void loginWeChat() {
-        User user = new User();
-        user.userName = "koma_mj";
-        user.confirmPassword = "201124koma";
-        user.isDefaultName = false;
-        user.password = "201124koma";
-
-        mPresenter.login(user);
-    }
-
-    @Inject
-    LoginPresenter mPresenter;
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onPermissonGranted() {
-        mToolbar.setTitle("");
+        setContentView(R.layout.activity_base);
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        // inject presenter layer
-        DaggerLoginComponent.builder().audientRepositoryComponent(
+        AboutFragment fragment = (AboutFragment) getSupportFragmentManager().findFragmentById(R.id.content_main);
+        if (fragment == null) {
+            fragment = AboutFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.content_main, fragment)
+                    .commit();
+        }
+        DaggerAboutComponent.builder().audientRepositoryComponent(
                 ((AudientApplication) getApplication()).getRepositoryComponent())
-                .loginPresenterModule(new LoginPresenterModule(this))
+                .aboutPresenterModule(new AboutPresenterModule(fragment))
                 .build()
                 .inject(this);
     }
@@ -83,21 +71,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_login;
-    }
-
-    @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
-
-    }
-
-    @Override
-    public void onLoginFinished() {
-        this.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
