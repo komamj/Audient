@@ -39,6 +39,8 @@ import butterknife.OnClick;
 public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentViewHolder> {
     private final GlideRequest<Bitmap> mGlideRequest;
 
+    private EventListener mListener;
+
     public CommentAdapter(Context context) {
         super(context);
 
@@ -47,6 +49,10 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
                 .thumbnail(0.1f)
                 .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(R.drawable.ic_user);
+    }
+
+    public void setListener(EventListener listener) {
+        this.mListener = listener;
     }
 
     public void addComment(Comment comment) {
@@ -95,7 +101,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         holder.mTime.setText(comment.time);
     }
 
-    static class CommentViewHolder extends BaseViewHolder {
+    class CommentViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_user)
         ImageView mUserImage;
         @BindView(R.id.tv_dynamic)
@@ -107,10 +113,17 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
 
         @OnClick(R.id.iv_thumb_up)
         void thumbUp() {
+            if (mListener != null) {
+                mListener.onThumbUpClick();
+            }
         }
 
         CommentViewHolder(View view) {
             super(view);
         }
+    }
+
+    public interface EventListener {
+        void onThumbUpClick();
     }
 }

@@ -26,6 +26,11 @@ public final class Constants {
     public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
     public static final String GRANT_TYPE = "password";
 
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String USER_NAME = "user_name";
+    public static final String USER_PASSWORD = "user_password";
+
     // favorite
     public static final String KEY_FAVORITE = "key_favorite";
 

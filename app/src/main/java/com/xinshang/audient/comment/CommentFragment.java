@@ -82,7 +82,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadComments(mAudient.mediaId);
+                    mPresenter.loadComments(mAudient);
                 }
             }
         });
@@ -101,7 +101,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
 
         // load data
         if (mPresenter != null) {
-            mPresenter.loadComments(mAudient.mediaId);
+            mPresenter.loadComments(mAudient);
         }
     }
 

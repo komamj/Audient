@@ -19,6 +19,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,15 +28,21 @@ import com.xinshang.audient.model.source.local.AudientDao;
 import com.xinshang.audient.model.source.local.AudientDatabase;
 import com.xinshang.audient.model.source.local.LocalDataSource;
 import com.xinshang.audient.model.source.remote.RemoteDataSource;
+import com.xinshang.common.util.Constants;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -101,7 +108,7 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(Cache cache) {
+    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences) {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -110,6 +117,14 @@ public class AudientRepositoryModule {
         }
 
         return new OkHttpClient.Builder()
+                .authenticator(new Authenticator() {
+                    @Nullable
+                    @Override
+                    public Request authenticate(Route route, Response response) throws IOException {
+                        String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                        return null;
+                    }
+                })
                 .addInterceptor(logInterceptor)
                 .cache(cache)
                 .connectTimeout(15, TimeUnit.SECONDS)

@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.comment;
 
+import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
@@ -35,6 +36,6 @@ public interface CommentContract {
     }
 
     interface Presenter extends BasePresenter {
-        void loadComments(String id);
+        void loadComments(Audient audient);
     }
 }

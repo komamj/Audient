@@ -16,6 +16,7 @@
 package com.xinshang.audient.comment;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.common.util.LogUtils;
@@ -65,8 +66,8 @@ public class CommentPresenter implements CommentContract.Presenter {
     }
 
     @Override
-    public void loadComments(String id) {
-        Disposable disposable = mRepository.getCommentResult(id)
+    public void loadComments(Audient audient) {
+        Disposable disposable = mRepository.getCommentResult(audient.mediaId)
                 .map(new Function<CommentResult, List<Comment>>() {
                     @Override
                     public List<Comment> apply(CommentResult commentResult) throws Exception {
