@@ -30,6 +30,7 @@ import com.xinshang.audient.favorite.MyFavoritesActivity;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.MessageEvent;
+import com.xinshang.audient.payment.PaymentDialogFragment;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.Constants;
@@ -122,7 +123,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
             @Override
             public void onPlaylistChanged(Audient audient) {
-
+                PaymentDialogFragment.show(getChildFragmentManager(), audient);
             }
         });
 

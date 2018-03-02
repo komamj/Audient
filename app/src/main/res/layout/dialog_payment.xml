@@ -37,7 +37,7 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$ 0.5"
+            android:text="0.5元"
             app:layout_constraintBottom_toBottomOf="@id/iv_album"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_album" />

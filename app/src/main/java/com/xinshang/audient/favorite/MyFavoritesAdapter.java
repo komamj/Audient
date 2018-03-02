@@ -81,6 +81,7 @@ public class MyFavoritesAdapter extends BaseAdapter<Favorite, MyFavoritesAdapter
     public void onBindViewHolder(MyFavoritesVH holder, int position) {
         Favorite favorite = mData.get(position);
 
+        mGlideRequest.load(favorite.coverImageUrl).into(holder.mImage);
         holder.mName.setText(favorite.favoriteName);
         holder.mCount.setText(mContext.getResources().getQuantityString(R.plurals.song_count,
                 favorite.itemCount, favorite.itemCount));
