@@ -71,6 +71,7 @@ public final class Constants {
 
     // message
     public static final String MESSAGE_MY_FAVORITES_CHANGED = "messge_my_favorites_changed";
+    public static final String MESSAGE_COMMENT_CHANGED = "message_comment_changed";
 
     private Constants() {
     }

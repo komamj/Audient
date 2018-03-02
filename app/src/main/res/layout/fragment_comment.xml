@@ -27,11 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:singleLine="true"
         android:text="还没有评论，抢沙发。"
         android:textSize="26sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
         app:layout_constraintEnd_toEndOf="@id/swipe_refresh_layout"
         app:layout_constraintStart_toStartOf="@id/swipe_refresh_layout"
         app:layout_constraintTop_toTopOf="@id/swipe_refresh_layout" />

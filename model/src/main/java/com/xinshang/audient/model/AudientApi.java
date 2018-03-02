@@ -18,6 +18,7 @@ package com.xinshang.audient.model;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
@@ -166,28 +167,26 @@ public interface AudientApi {
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
-    Flowable getComments(@Header("Authorization") String access_token, @Query("mid") String mid,
-                         @Query("page") int page, @Query("size") int size,
-                         @Query("sort") String sortord);
+    Flowable<CommentResult> getComments(@Header("Authorization") String access_token, @Query("mid") String mid,
+                                        @Query("page") int page, @Query("size") int size,
+                                        @Query("sort") String sortord);
 
     /**
      * 发表评论
      */
-    @FormUrlEncoded
     @POST("api/v1/musiccomment")
-    Flowable postComment(@Header("Authorization") String access_token, @Body Comment comment);
+    Flowable<BaseResponse> postComment(@Header("Authorization") String access_token, @Body Comment comment);
 
     /**
      * 点播歌曲
      */
-    @FormUrlEncoded
     @POST("api/v1/mod")
-    Flowable addToPlaylist(@Header("Authorization") String access_token, @Body Music music);
+    Flowable<BaseResponse> addToPlaylist(@Header("Authorization") String access_token, @Body Music music);
 
     /**
      * 获取店铺的默认播放列表
      */
     @GET("api/v1/storeplaylist")
-    Flowable getPlaylist(@Header("Authorization") String access_token,
-                         @Query("sid") String storeId);
+    Flowable<BaseResponse> getPlaylist(@Header("Authorization") String access_token,
+                                       @Query("sid") String storeId);
 }

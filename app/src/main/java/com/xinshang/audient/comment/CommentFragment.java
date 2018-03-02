@@ -19,16 +19,22 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.MessageEvent;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -103,6 +109,31 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
         if (mPresenter != null) {
             mPresenter.loadComments(mAudient);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtils.i(TAG, "onStart");
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent) {
+        LogUtils.i(TAG, "onMessageEvent");
+
+        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_COMMENT_CHANGED)) {
+            if (mPresenter != null) {
+                mPresenter.loadComments(mAudient);
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LogUtils.i(TAG, "onStop");
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

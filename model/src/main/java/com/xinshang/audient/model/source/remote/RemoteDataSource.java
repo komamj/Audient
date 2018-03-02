@@ -18,6 +18,7 @@ package com.xinshang.audient.model.source.remote;
 import com.xinshang.audient.model.AudientApi;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Comment;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
@@ -44,7 +45,7 @@ import io.reactivex.Flowable;
 public class RemoteDataSource implements AudientDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
-    private String mAccessToken = "Bearer ab613655-375e-4201-9e26-7da4d0fd3f5c";
+    private String mAccessToken = "Bearer 96333128-4d62-4f23-8384-a4b9c4ed1ade";
 
     private final AudientApi mAudientApi;
 
@@ -152,5 +153,10 @@ public class RemoteDataSource implements AudientDataSource {
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
         return mAudientApi.deleteFavoritesSong(mAccessToken, favoritesId);
+    }
+
+    @Override
+    public Flowable<BaseResponse> addComment(Comment comment) {
+        return mAudientApi.postComment(mAccessToken, comment);
     }
 }

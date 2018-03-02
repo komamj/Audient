@@ -81,6 +81,7 @@ public class CommentPresenter implements CommentContract.Presenter {
                     public void onNext(List<Comment> comments) {
                         if (mView.isActive()) {
                             mView.showComments(comments);
+                            mView.showEmpty(comments.isEmpty());
                         }
                     }
 
@@ -89,7 +90,8 @@ public class CommentPresenter implements CommentContract.Presenter {
                         LogUtils.e(TAG, "loadComments error :" + t.toString());
 
                         if (mView.isActive()) {
-                            mView.showLoadingError();
+                            mView.showProgressBar(false);
+                            mView.showEmpty(true);
                         }
                     }
 

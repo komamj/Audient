@@ -53,7 +53,7 @@ public class CommentActivity extends BaseActivity {
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        EditCommentDialogFragment.newInstance().show(getSupportFragmentManager(), null);
+        EditCommentDialogFragment.show(getSupportFragmentManager(), mAudient);
     }
 
     private Audient mAudient;

@@ -17,6 +17,7 @@ package com.xinshang.audient.model;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Comment;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
@@ -152,5 +153,10 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
         return mRemoteDataSource.deleteFavoritesSong(favoritesId);
+    }
+
+    @Override
+    public Flowable<BaseResponse> addComment(Comment comment) {
+        return mRemoteDataSource.addComment(comment);
     }
 }

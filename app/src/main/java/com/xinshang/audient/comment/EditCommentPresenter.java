@@ -16,10 +16,21 @@
 package com.xinshang.audient.comment;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.MessageEvent;
+import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Created by koma on 3/1/18.
@@ -52,5 +63,34 @@ public class EditCommentPresenter implements EditCommentContract.Presenter {
     @Override
     public void unSubscribe() {
         mDisposables.clear();
+    }
+
+    @Override
+    public void addComment(Audient audient, String content) {
+        Comment comment = new Comment();
+        comment.message = content;
+        comment.mediaId = audient.mediaId;
+        mRepository.addComment(comment)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        LogUtils.i(TAG, "addComment response :" + response.message);
+                        if (response.resultCode == 0) {
+                            EventBus.getDefault().post(new MessageEvent(Constants.MESSAGE_COMMENT_CHANGED));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addComment error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

@@ -97,8 +97,8 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
 
         mGlideRequest.load(comment).into(holder.mUserImage);
         holder.mMessage.setText(comment.message);
-        holder.mUserName.setText(comment.userName);
-        holder.mTime.setText(comment.time);
+        /*holder.mUserName.setText(comment.userName);
+        holder.mTime.setText(comment.time);*/
     }
 
     class CommentViewHolder extends BaseViewHolder {

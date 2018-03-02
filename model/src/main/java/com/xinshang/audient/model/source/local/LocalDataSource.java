@@ -172,7 +172,7 @@ public class LocalDataSource implements AudientDataSource {
             public void subscribe(FlowableEmitter<CommentResult> emitter) throws Exception {
                 CommentResult commentResult = new CommentResult();
                 List<Comment> comments = new ArrayList<>();
-                Comment comment1 = new Comment();
+                /*Comment comment1 = new Comment();
                 comment1.time = "2018-01-30 20:10";
                 comment1.userName = "流氓";
                 comment1.message = "真几把难听.";
@@ -182,7 +182,7 @@ public class LocalDataSource implements AudientDataSource {
                 comment2.time = "2018-01-31 00:10";
                 comment2.userName = "Koma";
                 comment2.message = "这首歌旋律感觉还可以.";
-                comments.add(comment2);
+                comments.add(comment2);*/
 
                 commentResult.comments = comments;
                 emitter.onNext(commentResult);
@@ -283,6 +283,11 @@ public class LocalDataSource implements AudientDataSource {
 
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
+        return null;
+    }
+
+    @Override
+    public Flowable<BaseResponse> addComment(Comment comment) {
         return null;
     }
 }

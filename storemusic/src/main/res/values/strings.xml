@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">Audient</string>
+
+    <string name="permission_rationale">Permissions are needed to demonstrate access.</string>
+    <string name="permissions_not_granted">Permissions were not granted,please go to settings.</string>
+
+    <!--Drawer-->
+    <string name="nav_track">My track</string>
+    <string name="nav_recommend">Recommend</string>
+    <string name="nav_store_info">Store info</string>
+    <string name="more">More</string>
+    <string name="nav_setting">Settings</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_send">Send</string>
+
+    <!--Splash-->
+    <string name="splash_description" translatable="false">"CopyRight"</string>
+
+    <!--Login-->
+    <string name="login_label">Login</string>
+    <string name="login_title">Login with phone number</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="skip">Skip</string>
+    <string name="hint_user_name">Please input phone number</string>
+    <string name="hint_password">Please input password</string>
+    <string name="submit">Enter</string>
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+
+    <!--Mine-->
+    <string name="my_favorite">My favorite:</string>
+    <string name="my_dynamic">My dynamic:</string>
+    <string name="default_favorite">My love</string>
+    <string name="add_playlist">Add playlist</string>
+    <string name="new_playlist_title">"Please inuput playlist name..."</string>
+
+    <!--Search-->
+    <string name="action_playlist">Add to playlist</string>
+    <string name="action_favorite">Add to my favorite</string>
+    <string name="action_comment">View comments</string>
+    <string name="search_no_result">"There's no music for the keyword."</string>
+
+    <!--TabLayout-->
+    <string-array name="page_title">
+        <item>Me</item>
+        <item>Playlist</item>
+        <item>Find</item>
+    </string-array>
+
+    <!--Comment-->
+    <string name="comment_label">Comment</string>
+    <string name="no_comment">No comment</string>
+
+    <!--Audition-->
+    <string name="audition_title">Audition for 30 seconds</string>
+
+    <!--MyFavorites-->
+    <string name="add_to_favorites">Add to favorites</string>
+    <plurals name="song_count">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+    <string name="add_to_favorites_completed">Add to favorites completed</string>
+    <string name="action_modify_favorites">"Modify favorites name"</string>
+    <string name="action_delete">Delete</string>
+    <string name="modify_name">Modify name</string>
+
+    <!--About-->
+    <string name="about_label">About us</string>
+    <string name="action_about">About</string>
+
+    <!--Transition name-->
+    <string name="transition_album" translatable="false">transition_album</string>
+</resources>

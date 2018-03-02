@@ -17,6 +17,7 @@ package com.xinshang.audient.model.source;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Comment;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
@@ -74,4 +75,6 @@ public interface AudientDataSource {
     Flowable<BaseResponse> deleteFavorite(String id);
 
     Flowable<BaseResponse> deleteFavoritesSong(String favoritesId);
+
+    Flowable<BaseResponse> addComment(Comment comment);
 }

@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +28,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
-import com.xinshang.audient.model.entities.Comment;
-import com.xinshang.audient.util.Utils;
+import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
@@ -40,18 +41,21 @@ import butterknife.OnClick;
 public class EditCommentDialogFragment extends BottomSheetDialogFragment
         implements EditCommentContract.View {
     private static final String TAG = EditCommentDialogFragment.class.getSimpleName();
+    private static final String DIALOG_TAG = "edit_comment_dialog";
 
     @BindView(R.id.edit_text)
     AppCompatEditText mEditText;
 
     private Context mContext;
+    private Audient mAudient;
+    @Inject
+    EditCommentPresenter mPresenter;
 
     @OnClick(R.id.iv_send)
     void onSendClick() {
-        Comment comment = new Comment();
-        comment.message = mEditText.getText().toString();
-        comment.time = Utils.getTimeStamp();
-        comment.userName = "Koma";
+        if (mPresenter != null) {
+            mPresenter.addComment(mAudient, mEditText.getText().toString());
+        }
 
         mEditText.setText("");
         mEditText.clearFocus();
@@ -62,28 +66,27 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment
         dismiss();
     }
 
-    @Inject
-    EditCommentPresenter mPresenter;
-
-    public static EditCommentDialogFragment newInstance() {
+    public static void show(FragmentManager fragmentManager, Audient audient) {
         final EditCommentDialogFragment fragment = new EditCommentDialogFragment();
-
-        return fragment;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.KEY_AUDIENT, audient);
+        fragment.setArguments(bundle);
+        fragment.show(fragmentManager, DIALOG_TAG);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         LogUtils.i(TAG, "onAttach");
-
         mContext = context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            mAudient = getArguments().getParcelable(Constants.KEY_AUDIENT);
+        }
         DaggerEditCommentComponent.builder()
                 .audientRepositoryComponent(((AudientApplication) getActivity().getApplication()).getRepositoryComponent())
                 .editCommentPresenterModule(new EditCommentPresenterModule(this))
@@ -95,9 +98,7 @@ public class EditCommentDialogFragment extends BottomSheetDialogFragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_edit_comment, container, false);
-
         ButterKnife.bind(this, view);
-
         return view;
     }
 

@@ -173,18 +173,14 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
     @Override
     public void onStop() {
         super.onStop();
-
         LogUtils.i(TAG, "onStop");
-
         EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         LogUtils.i(TAG, "onDestroyView");
-
         if (mPresenter != null) {
             mPresenter.unSubscribe();
         }
