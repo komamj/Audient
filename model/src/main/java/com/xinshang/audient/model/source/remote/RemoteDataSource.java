@@ -90,7 +90,7 @@ public class RemoteDataSource implements AudientDataSource {
 
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
-        return null;
+        return mAudientApi.getComments(mAccessToken, id, 0, 40, null);
     }
 
     @Override

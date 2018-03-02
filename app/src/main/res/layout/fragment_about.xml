@@ -12,6 +12,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:drawablePadding="@dimen/activity_vertical_margin"
         android:drawableTop="@mipmap/ic_launcher"
         android:gravity="center"

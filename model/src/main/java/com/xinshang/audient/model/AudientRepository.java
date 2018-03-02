@@ -91,7 +91,7 @@ public class AudientRepository implements AudientDataSource {
 
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
-        return mLocalDataSource.getCommentResult(id);
+        return mRemoteDataSource.getCommentResult(id);
     }
 
     @Override
