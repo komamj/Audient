@@ -43,7 +43,7 @@ android {
 
         release {
             // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             // 去除无用代码
             minifyEnabled true
             // 进行对齐
