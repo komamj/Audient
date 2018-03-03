@@ -34,6 +34,8 @@ import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
+import com.xinshang.audient.model.source.ILoginDataSource;
+import com.xinshang.common.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 
 @Singleton
-public class LocalDataSource implements AudientDataSource {
+public class LocalDataSource implements AudientDataSource, ILoginDataSource {
     private static final String TAG = LocalDataSource.class.getSimpleName();
 
     private static final String LOGIN_TAG = "is_login";
@@ -257,6 +259,11 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
+    public Flowable<Token> getAccessToken(String code) {
+        return null;
+    }
+
+    @Override
     public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
         return null;
     }
@@ -289,5 +296,25 @@ public class LocalDataSource implements AudientDataSource {
     @Override
     public Flowable<BaseResponse> addComment(Comment comment) {
         return null;
+    }
+
+    @Override
+    public void persistenceLoginInfo(String code, final String token, final String refreshToken) {
+        Flowable.create(new FlowableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
+                mSharedPreferences.edit()
+                        .putBoolean(LOGIN_TAG, true)
+                        .apply();
+                mSharedPreferences.edit()
+                        .putString(Constants.ACCESS_TOKEN, token)
+                        .apply();
+                mSharedPreferences.edit()
+                        .putString(Constants.REFRESH_TOKEN, refreshToken)
+                        .apply();
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST)
+                .subscribe();
     }
 }

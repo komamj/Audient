@@ -103,6 +103,16 @@ public interface AudientApi {
                                    @Field("client_secret") String clientSecret);
 
     /**
+     * 获取access_token
+     */
+    @FormUrlEncoded
+    @POST("oauth/token")
+    Flowable<Token> getAccessToken(@Field("code") String code,
+                                   @Field("grant_type") String grantType,
+                                   @Field("client_id") String clientId,
+                                   @Field("client_secret") String clientSecret);
+
+    /**
      * 添加歌单
      */
     @FormUrlEncoded
@@ -144,7 +154,7 @@ public interface AudientApi {
      */
     @DELETE("api/v1/favorites/items/{id}")
     Flowable<BaseResponse> deleteFavoritesSong(@Header("Authorization") String access_token,
-                                               @Path("id") String favoritesId);
+                                               @Path("id") String id);
 
     /**
      * 修改歌单名称

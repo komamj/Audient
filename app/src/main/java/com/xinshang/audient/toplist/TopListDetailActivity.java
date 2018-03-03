@@ -73,7 +73,6 @@ public class TopListDetailActivity extends BaseActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
         mFab.setImageResource(R.drawable.ic_unfavorite);

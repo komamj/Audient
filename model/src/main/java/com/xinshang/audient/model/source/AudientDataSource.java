@@ -64,6 +64,8 @@ public interface AudientDataSource {
 
     Flowable<Token> getToken(String userName, String password);
 
+    Flowable<Token> getAccessToken(String code);
+
     Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient);
 
     Flowable<FavoritesResult> getFavoriteResult();

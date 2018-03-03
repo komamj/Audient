@@ -31,6 +31,8 @@ import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
+import com.xinshang.audient.model.source.ILoginDataSource;
+import com.xinshang.audient.model.source.IWXDataSource;
 import com.xinshang.audient.model.source.local.LocalDataSource;
 import com.xinshang.audient.model.source.remote.RemoteDataSource;
 
@@ -42,7 +44,7 @@ import javax.inject.Singleton;
 import io.reactivex.Flowable;
 
 @Singleton
-public class AudientRepository implements AudientDataSource {
+public class AudientRepository implements AudientDataSource, IWXDataSource, ILoginDataSource {
     private final LocalDataSource mLocalDataSource;
 
     private final RemoteDataSource mRemoteDataSource;
@@ -126,6 +128,11 @@ public class AudientRepository implements AudientDataSource {
     }
 
     @Override
+    public Flowable<Token> getAccessToken(String code) {
+        return mRemoteDataSource.getAccessToken(code);
+    }
+
+    @Override
     public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
         return mRemoteDataSource.addToFavorite(favoriteId, audient);
     }
@@ -158,5 +165,15 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<BaseResponse> addComment(Comment comment) {
         return mRemoteDataSource.addComment(comment);
+    }
+
+    @Override
+    public void sendLoginRequest() {
+        mRemoteDataSource.sendLoginRequest();
+    }
+
+    @Override
+    public void persistenceLoginInfo(String code, String token, String refreshToken) {
+        mLocalDataSource.persistenceLoginInfo(code, token, refreshToken);
     }
 }

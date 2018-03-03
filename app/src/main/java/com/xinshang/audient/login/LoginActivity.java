@@ -18,37 +18,43 @@ package com.xinshang.audient.login;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.User;
+import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.base.BaseActivity;
+import com.xinshang.common.util.ActivityUtils;
+import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements LoginContract.View {
+public class LoginActivity extends BaseActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
-    @OnClick(R.id.btn_login)
-    void loginWeChat() {
-        User user = new User();
-        user.userName = "koma_mj";
-        user.confirmPassword = "201124koma";
-        user.isDefaultName = false;
-        user.password = "201124koma";
-
-        mPresenter.login(user);
-    }
 
     @Inject
     LoginPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
         super.onCreate(savedInstanceState);
     }
 
@@ -59,13 +65,18 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        }
+
+        LoginFragment fragment = (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.content_main);
+        if (fragment == null) {
+            fragment = LoginFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.content_main);
         }
 
         // inject presenter layer
         DaggerLoginComponent.builder().audientRepositoryComponent(
                 ((AudientApplication) getApplication()).getRepositoryComponent())
-                .loginPresenterModule(new LoginPresenterModule(this))
+                .loginPresenterModule(new LoginPresenterModule(fragment))
                 .build()
                 .inject(this);
     }
@@ -88,16 +99,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
-    }
-
-    @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
-
-    }
-
-    @Override
-    public void onLoginFinished() {
-        this.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

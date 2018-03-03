@@ -84,7 +84,8 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.7.0'
-
+//WeChat
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation project(':common')
 
     testImplementation 'junit:junit:4.12'

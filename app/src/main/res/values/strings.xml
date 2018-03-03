@@ -71,6 +71,8 @@
     <string name="about_label">About us</string>
     <string name="action_about">About</string>
 
+    <string name="company_name" translatable="false">"成都心尚信息技术有限公司"</string>
+    <string name="company_description" translatable="false">"    即乐由成都心尚信息技术有限公司于2018年创建。心尚公司获取正规授权歌曲，与各类线下商家紧密合作，为用户提供店铺内即时音乐点播服务。\n    心尚公司以“用心”作为公司和每位员工的行为准则，以“创造更美好的生活”为目标，致力于为用户提供更多元化的线下消费体验。"</string>
     <!--Transition name-->
     <string name="transition_album" translatable="false">transition_album</string>
 </resources>

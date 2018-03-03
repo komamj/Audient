@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.login;
+package com.xinshang.audient.util;
 
-import com.xinshang.audient.util.WeChatMessageEvent;
-import com.xinshang.common.base.BasePresenter;
-import com.xinshang.common.base.BaseView;
+/**
+ * Created by koma_20 on 2018/3/3.
+ */
 
-public class LoginContract {
-    interface View extends BaseView<Presenter> {
-        boolean isActive();
+public class WeChatMessageEvent {
+    private String mCode;
 
-        void setLoadingIndicator(boolean active);
-
-        void onLoginFinished();
+    public WeChatMessageEvent(String code) {
+        this.mCode = code;
     }
 
-    interface Presenter extends BasePresenter {
-        void login();
+    public void setCode(String code) {
+        this.mCode = code;
+    }
 
-        void getAccessToken(WeChatMessageEvent messageEvent);
+    public String getCode() {
+        return this.mCode;
     }
 }

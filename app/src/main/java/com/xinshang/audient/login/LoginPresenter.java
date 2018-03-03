@@ -16,20 +16,15 @@
 package com.xinshang.audient.login;
 
 import com.xinshang.audient.model.AudientRepository;
-import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Token;
-import com.xinshang.audient.model.entities.User;
+import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.util.LogUtils;
-
-import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -69,47 +64,39 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void login(User user) {
-        mRepository.getToken("koma_mj", "201124koma")
+    public void login() {
+        mRepository.sendLoginRequest();
+    }
+
+    @Override
+    public void getAccessToken(WeChatMessageEvent messageEvent) {
+        final String code = messageEvent.getCode();
+        mRepository.getAccessToken(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Token>() {
+                .doOnNext(new Consumer<Token>() {
                     @Override
                     public void accept(Token token) throws Exception {
-                        LogUtils.i(TAG, "token :" + token.toString());
-                    }
-                });
-
-        Disposable disposable = mRepository.getLoginResult(user)
-                .flatMap(new Function<BaseResponse, Publisher<Boolean>>() {
-                    @Override
-                    public Publisher<Boolean> apply(BaseResponse loginResult) throws Exception {
-                        if (loginResult.resultCode == 0 || loginResult.message.equals("操作成功")) {
-                            return mRepository.setLoginStatus(true);
-                        } else {
-                            return mRepository.setLoginStatus(true);
-                        }
+                        mRepository.persistenceLoginInfo(code, token.accessToken, token.refreshToken);
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Boolean>() {
+                .subscribeWith(new DisposableSubscriber<Token>() {
                     @Override
-                    public void onNext(Boolean status) {
-                        mView.onLoginFinished();
+                    public void onNext(Token token) {
+
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "login error :" + t.toString());
+                        LogUtils.e(TAG, "getAcceesToken error :" + t.toString());
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.onLoginFinished();
+                        }
                     }
                 });
-
-        mDisposables.add(disposable);
     }
 }

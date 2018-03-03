@@ -23,6 +23,8 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.local.AudientDao;
 import com.xinshang.audient.model.source.local.AudientDatabase;
@@ -67,8 +69,8 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    AudientDataSource provideRemoteDataSource(AudientApi audientApi) {
-        return new RemoteDataSource(audientApi);
+    AudientDataSource provideRemoteDataSource(AudientApi audientApi, IWXAPI iwxapi) {
+        return new RemoteDataSource(audientApi, iwxapi);
     }
 
     @Singleton
@@ -113,7 +115,7 @@ public class AudientRepositoryModule {
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
 
         return new OkHttpClient.Builder()
@@ -149,5 +151,13 @@ public class AudientRepositoryModule {
     @Provides
     AudientApi provideAudientApi(Retrofit retrofit) {
         return retrofit.create(AudientApi.class);
+    }
+
+    @Singleton
+    @Provides
+    IWXAPI provideWeChatApi(Context context) {
+        IWXAPI api = WXAPIFactory.createWXAPI(context, Constants.WECHAT_APP_ID, true);
+        api.registerApp(Constants.WECHAT_APP_ID);
+        return api;
     }
 }

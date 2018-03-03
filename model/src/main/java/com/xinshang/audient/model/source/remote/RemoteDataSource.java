@@ -15,6 +15,8 @@
  */
 package com.xinshang.audient.model.source.remote;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.xinshang.audient.model.AudientApi;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
@@ -32,6 +34,7 @@ import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
+import com.xinshang.audient.model.source.IWXDataSource;
 import com.xinshang.common.util.Constants;
 
 import java.util.List;
@@ -40,18 +43,22 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
+import io.reactivex.functions.Consumer;
 
 @Singleton
-public class RemoteDataSource implements AudientDataSource {
+public class RemoteDataSource implements AudientDataSource, IWXDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
-    private String mAccessToken = "Bearer 96333128-4d62-4f23-8384-a4b9c4ed1ade";
+    private String mAccessToken = "Bearer 1db2b4e8-f554-4644-beb3-12f61bd723c1";
 
     private final AudientApi mAudientApi;
 
+    private final IWXAPI mWeChatApi;
+
     @Inject
-    public RemoteDataSource(AudientApi audientApi) {
+    public RemoteDataSource(AudientApi audientApi, IWXAPI weChatApi) {
         mAudientApi = audientApi;
+        mWeChatApi = weChatApi;
     }
 
     @Override
@@ -126,6 +133,12 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
+    public Flowable<Token> getAccessToken(String code) {
+        return mAudientApi.getAccessToken(code, Constants.GRANT_TYPE,
+                Constants.CLIENT_ID, Constants.CLIENT_SECRET);
+    }
+
+    @Override
     public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
         return mAudientApi.addToFavorite(mAccessToken, favoriteId, audient);
     }
@@ -158,5 +171,13 @@ public class RemoteDataSource implements AudientDataSource {
     @Override
     public Flowable<BaseResponse> addComment(Comment comment) {
         return mAudientApi.postComment(mAccessToken, comment);
+    }
+
+    @Override
+    public void sendLoginRequest() {
+        final SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = TAG;
+        mWeChatApi.sendReq(req);
     }
 }

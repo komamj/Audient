@@ -19,13 +19,15 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.bumptech.glide.Glide;
+import com.squareup.leakcanary.LeakCanary;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.model.ApplicationModule;
 import com.xinshang.audient.model.AudientRepositoryComponent;
 import com.xinshang.audient.model.AudientRepositoryModule;
 import com.xinshang.audient.model.DaggerAudientRepositoryComponent;
 import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
-import com.squareup.leakcanary.LeakCanary;
 
 public class AudientApplication extends Application {
     private static final String TAG = AudientApplication.class.getSimpleName();
