@@ -66,6 +66,25 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login() {
         mRepository.sendLoginRequest();
+        mRepository.getToken("koma_mj", "201124jun")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Token>() {
+                    @Override
+                    public void onNext(Token token) {
+                        LogUtils.i(TAG, "token :" + token.accessToken);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

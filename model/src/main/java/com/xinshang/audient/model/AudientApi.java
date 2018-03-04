@@ -193,6 +193,9 @@ public interface AudientApi {
     @POST("api/v1/mod")
     Flowable<BaseResponse> addToPlaylist(@Header("Authorization") String access_token, @Body Music music);
 
+    @GET("api/v1/mod/mywaitingcout")
+    Flowable<BaseResponse> getCount(@Header("Authorization") String token, String storeId);
+
     /**
      * 获取店铺的默认播放列表
      */

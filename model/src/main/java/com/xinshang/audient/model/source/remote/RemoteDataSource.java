@@ -49,7 +49,7 @@ import io.reactivex.functions.Consumer;
 public class RemoteDataSource implements AudientDataSource, IWXDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
-    private String mAccessToken = "Bearer 1db2b4e8-f554-4644-beb3-12f61bd723c1";
+    private String mAccessToken = "Bearer fcde7dec-a70e-444d-b4b9-fcee6bc2eff7";
 
     private final AudientApi mAudientApi;
 
