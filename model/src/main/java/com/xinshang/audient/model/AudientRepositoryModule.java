@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xinshang.audient.model.helper.TokenInterceptor;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.local.AudientDao;
 import com.xinshang.audient.model.source.local.AudientDatabase;
@@ -127,6 +128,7 @@ public class AudientRepositoryModule {
                         return null;
                     }
                 })
+                .addInterceptor(new TokenInterceptor())
                 .addInterceptor(logInterceptor)
                 .cache(cache)
                 .connectTimeout(15, TimeUnit.SECONDS)
