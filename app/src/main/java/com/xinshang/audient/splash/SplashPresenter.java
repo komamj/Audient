@@ -13,38 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.comment;
+package com.xinshang.audient.splash;
 
 import com.xinshang.audient.model.AudientRepository;
-import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.MessageEvent;
-import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * Created by koma on 3/1/18.
+ * Created by koma on 3/5/18.
  */
 
-public class EditCommentPresenter implements EditCommentContract.Presenter {
-    private static final String TAG = EditCommentPresenter.class.getSimpleName();
+public class SplashPresenter implements SplashContract.Presenter {
+    private static final String TAG = SplashPresenter.class.getSimpleName();
 
-    private final EditCommentContract.View mView;
+    private final SplashContract.View mView;
     private final AudientRepository mRepository;
     private final CompositeDisposable mDisposables;
 
     @Inject
-    public EditCommentPresenter(EditCommentContract.View view, AudientRepository repository) {
+    public SplashPresenter(SplashContract.View view, AudientRepository repository) {
         mView = view;
         mRepository = repository;
         mDisposables = new CompositeDisposable();
@@ -66,26 +62,22 @@ public class EditCommentPresenter implements EditCommentContract.Presenter {
     }
 
     @Override
-    public void addComment(Audient audient, String content) {
-        CommentRequest comment = new CommentRequest();
-        comment.storeId = "垃圾店";
-        comment.message = content;
-        comment.mediaId = audient.mediaId;
-        mRepository.addComment(comment)
+    public void loadLoginStatus() {
+        Disposable disposable = mRepository.getLoginStatus()
+                .delay(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                .subscribeWith(new DisposableSubscriber<Boolean>() {
                     @Override
-                    public void onNext(BaseResponse response) {
-                        LogUtils.i(TAG, "addComment response :" + response.message);
-                        if (response.resultCode == 0) {
-                            EventBus.getDefault().post(new MessageEvent(Constants.MESSAGE_COMMENT_CHANGED));
+                    public void onNext(Boolean aBoolean) {
+                        if (mView.isActive()) {
+                            mView.showNextView(aBoolean);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "addComment error :" + t.toString());
+                        LogUtils.e(TAG, "loadLoginStatus error :" + t.toString());
                     }
 
                     @Override
@@ -93,5 +85,7 @@ public class EditCommentPresenter implements EditCommentContract.Presenter {
 
                     }
                 });
+
+        mDisposables.add(disposable);
     }
 }

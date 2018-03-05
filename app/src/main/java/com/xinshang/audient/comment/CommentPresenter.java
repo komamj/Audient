@@ -17,11 +17,11 @@ package com.xinshang.audient.comment;
 
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentResponse;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.common.util.LogUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -68,20 +68,26 @@ public class CommentPresenter implements CommentContract.Presenter {
     @Override
     public void loadComments(Audient audient) {
         Disposable disposable = mRepository.getCommentResult(audient.mediaId)
-                .map(new Function<CommentResult, List<Comment>>() {
+                .map(new Function<CommentResult, CommentResponse>() {
                     @Override
-                    public List<Comment> apply(CommentResult commentResult) throws Exception {
-                        return commentResult.comments;
+                    public CommentResponse apply(CommentResult commentResult) throws Exception {
+                        return commentResult.commentResponse;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Comment>>() {
+                .subscribeWith(new DisposableSubscriber<CommentResponse>() {
                     @Override
-                    public void onNext(List<Comment> comments) {
+                    public void onNext(CommentResponse commentResponse) {
                         if (mView.isActive()) {
-                            mView.showComments(comments);
-                            mView.showEmpty(comments.isEmpty());
+                            mView.showComments(commentResponse);
+                            if (commentResponse.inStoreComment == null &&
+                                    (commentResponse.othersComment == null
+                                            || commentResponse.othersComment.comments.isEmpty())) {
+                                mView.showEmpty(true);
+                            } else {
+                                mView.showEmpty(false);
+                            }
                         }
                     }
 
@@ -104,5 +110,28 @@ public class CommentPresenter implements CommentContract.Presenter {
                 });
 
         mDisposable.add(disposable);
+    }
+
+    @Override
+    public void thumbUpComment(Comment comment) {
+        mRepository.thumbUpComment(comment.id)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "thumbUpComment error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

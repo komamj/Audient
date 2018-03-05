@@ -20,26 +20,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
-import com.xinshang.audient.model.entities.User;
-import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.ActivityUtils;
-import com.xinshang.common.util.Constants;
-import com.xinshang.common.util.LogUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();

@@ -13,30 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.comment;
+package com.xinshang.audient.splash;
 
-import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.audient.model.entities.Comment;
-import com.xinshang.audient.model.entities.CommentResponse;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
-public interface CommentContract {
-    interface View extends BaseView<Presenter> {
-        void showComments(CommentResponse commentResponse);
+/**
+ * Created by koma on 3/5/18.
+ */
 
+public interface SplashContract {
+    interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        void showLoadingError();
-
-        void showEmpty(boolean forceShow);
-
-        void showProgressBar(boolean forceShow);
+        void showNextView(boolean forceLogined);
     }
 
     interface Presenter extends BasePresenter {
-        void loadComments(Audient audient);
-
-        void thumbUpComment(Comment comment);
+        void loadLoginStatus();
     }
 }

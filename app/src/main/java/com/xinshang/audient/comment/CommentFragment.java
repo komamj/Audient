@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentResponse;
 import com.xinshang.audient.model.entities.MessageEvent;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
@@ -35,8 +36,6 @@ import com.xinshang.common.util.LogUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -97,6 +96,14 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
                 R.color.colorPrimary);
 
         mAdapter = new CommentAdapter(mContext);
+        mAdapter.setListener(new CommentAdapter.EventListener() {
+            @Override
+            public void onThumbUpClick(Comment comment) {
+                if (mPresenter != null) {
+                    mPresenter.thumbUpComment(comment);
+                }
+            }
+        });
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -158,8 +165,8 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     }
 
     @Override
-    public void showComments(List<Comment> comments) {
-        mAdapter.replace(comments);
+    public void showComments(CommentResponse commentResponse) {
+        mAdapter.replace(commentResponse.othersComment.comments);
     }
 
     @Override

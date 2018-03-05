@@ -20,8 +20,6 @@ import android.os.StrictMode;
 
 import com.bumptech.glide.Glide;
 import com.squareup.leakcanary.LeakCanary;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.model.ApplicationModule;
 import com.xinshang.audient.model.AudientRepositoryComponent;
 import com.xinshang.audient.model.AudientRepositoryModule;

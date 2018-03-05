@@ -129,6 +129,13 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     }
 
     @Override
+    public void onNewIntent(Intent newIntent) {
+        super.onNewIntent(newIntent);
+        LogUtils.i(TAG, "onNewIntent");
+        setIntent(newIntent);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

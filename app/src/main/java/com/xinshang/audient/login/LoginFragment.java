@@ -15,10 +15,12 @@
  */
 package com.xinshang.audient.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.xinshang.audient.R;
+import com.xinshang.audient.main.MainActivity;
 import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
@@ -112,7 +114,8 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     @Override
     public void onLoginFinished() {
         LoginActivity loginActivity = ((LoginActivity) mContext);
-        loginActivity.finish();
+        loginActivity.startActivity(new Intent(mContext, MainActivity.class));
         loginActivity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        loginActivity.finish();
     }
 }

@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.model.entities;
+package com.xinshang.audient.model.source;
 
-import com.google.gson.annotations.SerializedName;
+import com.xinshang.audient.model.entities.BaseResponse;
 
-public class CommentResult {
-    @SerializedName("data")
-    public CommentResponse commentResponse;
+import io.reactivex.Flowable;
+
+/**
+ * Created by koma on 3/5/18.
+ */
+
+public interface XinShangDataSource {
+    Flowable<BaseResponse> thumbUpComment(String commentId);
 }

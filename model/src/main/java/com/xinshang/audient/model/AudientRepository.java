@@ -17,7 +17,7 @@ package com.xinshang.audient.model;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentRequest;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
@@ -33,6 +33,7 @@ import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.ILoginDataSource;
 import com.xinshang.audient.model.source.IWXDataSource;
+import com.xinshang.audient.model.source.XinShangDataSource;
 import com.xinshang.audient.model.source.local.LocalDataSource;
 import com.xinshang.audient.model.source.remote.RemoteDataSource;
 
@@ -44,7 +45,7 @@ import javax.inject.Singleton;
 import io.reactivex.Flowable;
 
 @Singleton
-public class AudientRepository implements AudientDataSource, IWXDataSource, ILoginDataSource {
+public class AudientRepository implements AudientDataSource, IWXDataSource, ILoginDataSource, XinShangDataSource {
     private final LocalDataSource mLocalDataSource;
 
     private final RemoteDataSource mRemoteDataSource;
@@ -163,7 +164,7 @@ public class AudientRepository implements AudientDataSource, IWXDataSource, ILog
     }
 
     @Override
-    public Flowable<BaseResponse> addComment(Comment comment) {
+    public Flowable<BaseResponse> addComment(CommentRequest comment) {
         return mRemoteDataSource.addComment(comment);
     }
 
@@ -175,5 +176,10 @@ public class AudientRepository implements AudientDataSource, IWXDataSource, ILog
     @Override
     public void persistenceLoginInfo(String code, String token, String refreshToken) {
         mLocalDataSource.persistenceLoginInfo(code, token, refreshToken);
+    }
+
+    @Override
+    public Flowable<BaseResponse> thumbUpComment(String commentId) {
+        return mRemoteDataSource.thumbUpComment(commentId);
     }
 }

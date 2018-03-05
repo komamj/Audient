@@ -23,8 +23,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.helper.TokenInterceptor;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.local.AudientDao;
@@ -32,6 +31,7 @@ import com.xinshang.audient.model.source.local.AudientDatabase;
 import com.xinshang.audient.model.source.local.LocalDataSource;
 import com.xinshang.audient.model.source.remote.RemoteDataSource;
 import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -47,12 +47,18 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 @Module
 public class AudientRepositoryModule {
+    private static final String TAG = AudientRepositoryModule.class.getSimpleName();
+
     private static final String DB_NAME = "audient-db";
 
     private final String mBaseUrl;
@@ -111,7 +117,7 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences) {
+    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences, final Gson gson) {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -124,11 +130,27 @@ public class AudientRepositoryModule {
                     @Nullable
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
-                        String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                        return null;
+                        LogUtils.i(TAG, "authenticate " + Thread.currentThread().getName());
+                        Call<Token> tokenCall = new Retrofit.Builder()
+                                .baseUrl(Constants.AUDIENT_HOST)
+                                .addConverterFactory(GsonConverterFactory.create(gson))
+                                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                                .build()
+                                .create(AudientApi.class)
+                                .getToken("koma_mj", "201124jun", Constants.GRANT_TYPE,
+                                        Constants.CLIENT_ID, Constants.CLIENT_SECRET);
+                        String token = tokenCall.execute().body().accessToken;
+                        LogUtils.i(TAG, "token :" + token);
+                        String accessToken = "Bearer " + token;
+                        sharedPreferences.edit()
+                                .putString(Constants.ACCESS_TOKEN, accessToken)
+                                .apply();
+                        return response.request().newBuilder()
+                                .header("Authorization", accessToken)
+                                .build();
                     }
                 })
-                .addInterceptor(new TokenInterceptor())
+                .addInterceptor(new TokenInterceptor(sharedPreferences))
                 .addInterceptor(logInterceptor)
                 .cache(cache)
                 .connectTimeout(15, TimeUnit.SECONDS)

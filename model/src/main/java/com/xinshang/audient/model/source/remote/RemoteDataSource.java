@@ -15,12 +15,10 @@
  */
 package com.xinshang.audient.model.source.remote;
 
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.xinshang.audient.model.AudientApi;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentRequest;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
@@ -35,7 +33,10 @@ import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.IWXDataSource;
+import com.xinshang.audient.model.source.XinShangDataSource;
 import com.xinshang.common.util.Constants;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import java.util.List;
 
@@ -43,13 +44,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
 
 @Singleton
-public class RemoteDataSource implements AudientDataSource, IWXDataSource {
+public class RemoteDataSource implements AudientDataSource, IWXDataSource, XinShangDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
-
-    private String mAccessToken = "Bearer fcde7dec-a70e-444d-b4b9-fcee6bc2eff7";
 
     private final AudientApi mAudientApi;
 
@@ -98,7 +96,7 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource {
 
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
-        return mAudientApi.getComments(mAccessToken, id, 0, 40, null);
+        return mAudientApi.getComments(id, 0, 40, null);
     }
 
     @Override
@@ -123,7 +121,7 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource {
 
     @Override
     public Flowable<BaseResponse> addFavorite(String name) {
-        return mAudientApi.addFavorite(mAccessToken, name);
+        return mAudientApi.addFavorite(name);
     }
 
     @Override
@@ -140,37 +138,37 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource {
 
     @Override
     public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
-        return mAudientApi.addToFavorite(mAccessToken, favoriteId, audient);
+        return mAudientApi.addToFavorite(favoriteId, audient);
     }
 
     @Override
     public Flowable<FavoritesResult> getFavoriteResult() {
-        return mAudientApi.getFavoriteResult(mAccessToken, null);
+        return mAudientApi.getFavoriteResult(null);
     }
 
     @Override
     public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
-        return mAudientApi.getFavoriteListResult(mAccessToken, favoriteId);
+        return mAudientApi.getFavoriteListResult(favoriteId);
     }
 
     @Override
     public Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name) {
-        return mAudientApi.modifyFavoriteName(mAccessToken, favoritesId, name);
+        return mAudientApi.modifyFavoriteName(favoritesId, name);
     }
 
     @Override
     public Flowable<BaseResponse> deleteFavorite(String id) {
-        return mAudientApi.deleteFavorite(mAccessToken, id);
+        return mAudientApi.deleteFavorite(id);
     }
 
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
-        return mAudientApi.deleteFavoritesSong(mAccessToken, favoritesId);
+        return mAudientApi.deleteFavoritesSong(favoritesId);
     }
 
     @Override
-    public Flowable<BaseResponse> addComment(Comment comment) {
-        return mAudientApi.postComment(mAccessToken, comment);
+    public Flowable<BaseResponse> addComment(CommentRequest comment) {
+        return mAudientApi.postCommentRequest(comment);
     }
 
     @Override
@@ -179,5 +177,10 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource {
         req.scope = "snsapi_userinfo";
         req.state = TAG;
         mWeChatApi.sendReq(req);
+    }
+
+    @Override
+    public Flowable<BaseResponse> thumbUpComment(String commentId) {
+        return mAudientApi.thumbUpComment(commentId);
     }
 }

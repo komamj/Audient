@@ -13,11 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.model.entities;
+package com.xinshang.audient.splash;
 
-import com.google.gson.annotations.SerializedName;
+import dagger.Module;
+import dagger.Provides;
 
-public class CommentResult {
-    @SerializedName("data")
-    public CommentResponse commentResponse;
+/**
+ * Created by koma on 3/5/18.
+ */
+@Module
+public class SplashPresenterModule {
+    private final SplashContract.View mView;
+
+    public SplashPresenterModule(SplashContract.View view) {
+        mView = view;
+    }
+
+    @Provides
+    SplashContract.View provideSplashContractView() {
+        return this.mView;
+    }
 }

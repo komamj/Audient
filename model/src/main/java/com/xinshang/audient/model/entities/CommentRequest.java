@@ -17,7 +17,21 @@ package com.xinshang.audient.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CommentResult {
-    @SerializedName("data")
-    public CommentResponse commentResponse;
+public class CommentRequest {
+    @SerializedName("mediaId")
+    public String mediaId;
+    @SerializedName("comment")
+    public String message;
+
+    @SerializedName("storeId")
+    public String storeId;
+    @SerializedName("location")
+    public Location location;
+
+    public static class Location {
+        @SerializedName("latitude")
+        public String latitude;
+        @SerializedName("longitude")
+        public String longitude;
+    }
 }

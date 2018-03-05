@@ -96,9 +96,9 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         Comment comment = mData.get(position);
 
         mGlideRequest.load(comment).into(holder.mUserImage);
-        holder.mMessage.setText(comment.message);
-        /*holder.mUserName.setText(comment.userName);
-        holder.mTime.setText(comment.time);*/
+        holder.mMessage.setText(comment.comment);
+        holder.mUserName.setText(comment.userNickname);
+        holder.mTime.setText(comment.commentDate);
     }
 
     class CommentViewHolder extends BaseViewHolder {
@@ -112,9 +112,10 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         TextView mTime;
 
         @OnClick(R.id.iv_thumb_up)
-        void thumbUp() {
+        void thumbUp(ImageView thumbUpView) {
+            thumbUpView.setImageResource(R.drawable.ic_thumb_uped);
             if (mListener != null) {
-                mListener.onThumbUpClick();
+                mListener.onThumbUpClick(mData.get(getAdapterPosition()));
             }
         }
 
@@ -124,6 +125,6 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
     }
 
     public interface EventListener {
-        void onThumbUpClick();
+        void onThumbUpClick(Comment comment);
     }
 }

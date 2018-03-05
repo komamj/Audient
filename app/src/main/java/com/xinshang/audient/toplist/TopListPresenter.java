@@ -19,16 +19,20 @@ import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.common.util.LogUtils;
 
+import org.reactivestreams.Publisher;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class TopListPresenter implements TopListContract.Presenter {
     public static final String TAG = TopListPresenter.class.getSimpleName();
@@ -76,24 +80,33 @@ public class TopListPresenter implements TopListContract.Presenter {
                         return topListResults.get(0).topLists;
                     }
                 })
+                .flatMap(new Function<List<ToplistResult.TopList>, Publisher<ToplistResult.TopList>>() {
+                    @Override
+                    public Publisher<ToplistResult.TopList> apply(List<ToplistResult.TopList> topLists) throws Exception {
+                        return Flowable.fromIterable(topLists);
+                    }
+                })
+                .filter(new Predicate<ToplistResult.TopList>() {
+                    @Override
+                    public boolean test(ToplistResult.TopList topList) throws Exception {
+                        return true;
+                    }
+                })
+                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<ToplistResult.TopList>>() {
+                .doOnError(new Consumer<Throwable>() {
                     @Override
-                    public void onNext(List<ToplistResult.TopList> topLists) {
+                    public void accept(Throwable throwable) throws Exception {
+                        LogUtils.e(TAG, "loadTopList error :" + throwable.toString());
+                    }
+                })
+                .subscribe(new Consumer<List<ToplistResult.TopList>>() {
+                    @Override
+                    public void accept(List<ToplistResult.TopList> topLists) throws Exception {
                         if (mView != null) {
                             mView.showTopLists(topLists);
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.i(TAG, "loadTopList error :" + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
 
