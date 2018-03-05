@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.model.source;
+package com.xinshang.audient.model.entities;
 
-import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.StoreResponse;
-
-import io.reactivex.Flowable;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by koma on 3/5/18.
+ * Created by koma_20 on 2018/3/5.
  */
 
-public interface XinShangDataSource {
-    Flowable<BaseResponse> thumbUpComment(String commentId);
-
-    Flowable<StoreResponse> getStores(String ol, int page, int size, String sort);
+public class Store {
+    @SerializedName("id")
+    public String id;
+    @SerializedName("name")
+    public String name;
+    @SerializedName("address")
+    public String address;
+    @SerializedName("location")
+    public Location location;
+    @SerializedName("registedDate")
+    public String registedDate;
 }

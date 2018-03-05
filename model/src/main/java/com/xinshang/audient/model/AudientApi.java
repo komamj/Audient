@@ -27,6 +27,7 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResult;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
+import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -179,7 +180,8 @@ public interface AudientApi {
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
-    Flowable<CommentResult> getComments(@Query("mid") String mid, @Query("page") int page, @Query("size") int size,
+    Flowable<CommentResult> getComments(@Query("mid") String mid, @Query("page") int page,
+                                        @Query("size") int size,
                                         @Query("sort") String sortord);
 
     /**
@@ -196,6 +198,13 @@ public interface AudientApi {
 
     @GET("api/v1/mod/mywaitingcout")
     Flowable<BaseResponse> getCount(@Query("storeId") String storeId);
+
+    /**
+     * 获取所有店铺
+     */
+    @GET("store")
+    Flowable<StoreResponse> getStores(@Query("ol") String ol, @Query("page") int page,
+                                      @Query("size") int size, @Query("sort") String sort);
 
     /**
      * 获取店铺的默认播放列表

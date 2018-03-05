@@ -15,6 +15,8 @@
  */
 package com.xinshang.audient.model.source.remote;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.xinshang.audient.model.AudientApi;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
@@ -27,6 +29,7 @@ import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.NowPlayingResult;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
+import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -35,8 +38,6 @@ import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.IWXDataSource;
 import com.xinshang.audient.model.source.XinShangDataSource;
 import com.xinshang.common.util.Constants;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import java.util.List;
 
@@ -182,5 +183,10 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource, XinSh
     @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mAudientApi.thumbUpComment(commentId);
+    }
+
+    @Override
+    public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
+        return mAudientApi.getStores(ol, page, size, sort);
     }
 }

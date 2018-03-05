@@ -27,11 +27,4 @@ public class CommentRequest {
     public String storeId;
     @SerializedName("location")
     public Location location;
-
-    public static class Location {
-        @SerializedName("latitude")
-        public String latitude;
-        @SerializedName("longitude")
-        public String longitude;
-    }
 }
