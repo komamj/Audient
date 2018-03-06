@@ -37,7 +37,6 @@ import com.xinshang.store.utils.LogUtils;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class CommentActivity extends BaseActivity {
     private static final String TAG = CommentActivity.class.getSimpleName();
@@ -53,11 +52,6 @@ public class CommentActivity extends BaseActivity {
     @Inject
     CommentPresenter mPresenter;
     private TencentMusic mAudient;
-
-    @OnClick(R.id.fab)
-    void onFabClick() {
-        EditCommentDialogFragment.show(getSupportFragmentManager(), mAudient);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

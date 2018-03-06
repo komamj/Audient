@@ -30,6 +30,7 @@ import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
+import com.xinshang.audient.model.entities.UserResponse;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ import io.reactivex.Flowable;
  */
 
 public interface IRemoteDataSource {
+    Flowable<UserResponse> getUserInfo();
+
     Flowable<List<ToplistResult>> getTopList();
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime);

@@ -54,7 +54,6 @@ public class SearchActivity extends BaseActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
         SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()

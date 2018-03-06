@@ -31,6 +31,7 @@ import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
+import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.local.ILocalDataSource;
 import com.xinshang.audient.model.source.local.LocalDataSource;
@@ -61,6 +62,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<List<Audient>> getAudientTests() {
         return mLocalDataSource.getAudientTests();
+    }
+
+    @Override
+    public Flowable<UserResponse> getUserInfo() {
+        return mRemoteDataSource.getUserInfo();
     }
 
     @Override

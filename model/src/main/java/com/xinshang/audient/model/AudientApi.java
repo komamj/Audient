@@ -32,6 +32,7 @@ import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
+import com.xinshang.audient.model.entities.UserResponse;
 
 import java.util.List;
 
@@ -91,6 +92,12 @@ public interface AudientApi {
      */
     @POST("account/register/user")
     Flowable<BaseResponse> getLoginResult(@Body User user);
+
+    /**
+     * 获取用户详情
+     */
+    @GET("api/v1/me")
+    Flowable<UserResponse> getUserInfo();
 
     /**
      * 获取access_token

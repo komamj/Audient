@@ -18,12 +18,18 @@ package com.xinshang.audient.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
+    @SerializedName("id")
+    public String id;
     @SerializedName("username")
     public String userName;
     @SerializedName("customUsername")
     public boolean isDefaultName;
-    @SerializedName("password")
-    public String password;
-    @SerializedName("confirmPassword")
-    public String confirmPassword;
+    @SerializedName("nickname")
+    public String nickName;
+    @SerializedName("realName")
+    public String realName;
+    @SerializedName("email")
+    public String email;
+    @SerializedName("phoneNumber")
+    public String phoneNumber;
 }

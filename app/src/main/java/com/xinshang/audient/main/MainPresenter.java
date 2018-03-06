@@ -16,6 +16,8 @@
 package com.xinshang.audient.main;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.User;
+import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
@@ -23,6 +25,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -84,6 +87,38 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 });
 
+        mDisposables.add(disposable);
+    }
+
+    @Override
+    public void loadUserInfo() {
+        Disposable disposable = mRepository.getUserInfo()
+                .map(new Function<UserResponse, User>() {
+                    @Override
+                    public User apply(UserResponse userResponse) throws Exception {
+                        return userResponse.user;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<User>() {
+                    @Override
+                    public void onNext(User user) {
+                        if (mView != null) {
+                            mView.showUser(user);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadUserInfo error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
         mDisposables.add(disposable);
     }
 }

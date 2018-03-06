@@ -34,6 +34,7 @@ import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
+import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
 
@@ -64,6 +65,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<List<Audient>> getAudientTests() {
         return null;
+    }
+
+    @Override
+    public Flowable<UserResponse> getUserInfo() {
+        return mAudientApi.getUserInfo();
     }
 
     @Override

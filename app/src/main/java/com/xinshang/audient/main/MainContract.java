@@ -15,15 +15,20 @@
  */
 package com.xinshang.audient.main;
 
+import com.xinshang.audient.model.entities.User;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
 public interface MainContract {
     interface View extends BaseView<Presenter> {
         void showLoginView(boolean isLogin);
+
+        void showUser(User user);
     }
 
     interface Presenter extends BasePresenter {
         void loadLoginStatus();
+
+        void loadUserInfo();
     }
 }

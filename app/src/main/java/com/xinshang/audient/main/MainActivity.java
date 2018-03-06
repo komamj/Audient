@@ -40,6 +40,7 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.about.AboutActivity;
 import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
+import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.playlist.PlaylistFragment;
 import com.xinshang.audient.search.SearchActivity;
 import com.xinshang.audient.toplist.TopListFragment;
@@ -143,6 +144,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
         if (mPresenter != null) {
             mPresenter.loadLoginStatus();
+            mPresenter.loadUserInfo();
         }
     }
 
@@ -233,6 +235,11 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             mName.setVisibility(View.GONE);
             mUserImage.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showUser(User user) {
+        mName.setText(user.nickName);
     }
 
     static class AudientAdapter extends FragmentPagerAdapter {
