@@ -80,12 +80,12 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
 
     //retrofit
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.7.0'
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.interceptor_version"
     //WeChat
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:$rootProject.ext.wechat_sdk_version"
     implementation project(':common')
 
     testImplementation 'junit:junit:4.12'

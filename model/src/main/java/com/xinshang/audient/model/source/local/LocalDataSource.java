@@ -20,21 +20,8 @@ import android.content.SharedPreferences;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.CommentResult;
-import com.xinshang.audient.model.entities.FavoriteListResult;
-import com.xinshang.audient.model.entities.FavoritesResult;
-import com.xinshang.audient.model.entities.FileResult;
-import com.xinshang.audient.model.entities.LyricResult;
-import com.xinshang.audient.model.entities.NowPlayingResult;
-import com.xinshang.audient.model.entities.SearchResult;
-import com.xinshang.audient.model.entities.SongDetailResult;
-import com.xinshang.audient.model.entities.Token;
-import com.xinshang.audient.model.entities.ToplistDetailResult;
-import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
-import com.xinshang.audient.model.source.ILoginDataSource;
 import com.xinshang.common.util.Constants;
 
 import java.util.ArrayList;
@@ -49,7 +36,7 @@ import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 
 @Singleton
-public class LocalDataSource implements AudientDataSource, ILoginDataSource {
+public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     private static final String TAG = LocalDataSource.class.getSimpleName();
 
     private static final String LOGIN_TAG = "is_login";
@@ -138,70 +125,6 @@ public class LocalDataSource implements AudientDataSource, ILoginDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopList() {
-        return null;
-    }
-
-    @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
-        return null;
-    }
-
-    @Override
-    public Flowable<SearchResult> getSearchReult(String keyword) {
-        return null;
-    }
-
-    @Override
-    public Flowable<LyricResult> getLyricResult(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<SongDetailResult> getSongDetailResult(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<FileResult> getFileResult(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<CommentResult> getCommentResult(String id) {
-        return Flowable.create(new FlowableOnSubscribe<CommentResult>() {
-            @Override
-            public void subscribe(FlowableEmitter<CommentResult> emitter) throws Exception {
-                CommentResult commentResult = new CommentResult();
-                emitter.onNext(commentResult);
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
-    public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
-            @Override
-            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
-                NowPlayingResult nowPlayingResult = new NowPlayingResult();
-                Audient audient = new Audient();
-                audient.mediaId = "003evjhg3qIe9S";
-                audient.duration = 260;
-                audient.artistId = "0040D7gK4aI54k";
-                audient.artistName = "谭咏麟";
-                audient.mediaName = "一生中最爱";
-                audient.albumId = "0018tEZm032RCk";
-                audient.albumName = "神话1991";
-                nowPlayingResult.audient = audient;
-
-                emitter.onNext(nowPlayingResult);
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
     public Flowable<Boolean> getLoginStatus() {
         return Flowable.create(new FlowableOnSubscribe<Boolean>() {
             @Override
@@ -235,56 +158,6 @@ public class LocalDataSource implements AudientDataSource, ILoginDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> addFavorite(String name) {
-        return null;
-    }
-
-    @Override
-    public Flowable<Token> getToken(String userName, String password) {
-        return null;
-    }
-
-    @Override
-    public Flowable<Token> getAccessToken(String code) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient) {
-        return null;
-    }
-
-    @Override
-    public Flowable<FavoritesResult> getFavoriteResult() {
-        return null;
-    }
-
-    @Override
-    public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> deleteFavorite(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> addComment(CommentRequest comment) {
-        return null;
-    }
-
-    @Override
     public void persistenceLoginInfo(String code, final String token, final String refreshToken) {
         Flowable.create(new FlowableOnSubscribe<Boolean>() {
             @Override
@@ -293,7 +166,7 @@ public class LocalDataSource implements AudientDataSource, ILoginDataSource {
                         .putBoolean(LOGIN_TAG, true)
                         .apply();
                 mSharedPreferences.edit()
-                        .putString(Constants.ACCESS_TOKEN, token)
+                        .putString(Constants.ACCESS_TOKEN, "Bearer " + token)
                         .apply();
                 mSharedPreferences.edit()
                         .putString(Constants.REFRESH_TOKEN, refreshToken)

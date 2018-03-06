@@ -17,18 +17,6 @@ package com.xinshang.audient.model.source;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.CommentResult;
-import com.xinshang.audient.model.entities.FavoriteListResult;
-import com.xinshang.audient.model.entities.FavoritesResult;
-import com.xinshang.audient.model.entities.FileResult;
-import com.xinshang.audient.model.entities.LyricResult;
-import com.xinshang.audient.model.entities.NowPlayingResult;
-import com.xinshang.audient.model.entities.SearchResult;
-import com.xinshang.audient.model.entities.SongDetailResult;
-import com.xinshang.audient.model.entities.Token;
-import com.xinshang.audient.model.entities.ToplistDetailResult;
-import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 
 import java.util.List;
@@ -38,45 +26,9 @@ import io.reactivex.Flowable;
 public interface AudientDataSource {
     Flowable<List<Audient>> getAudientTests();
 
-    Flowable<List<ToplistResult>> getTopList();
-
-    Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime);
-
-    Flowable<SearchResult> getSearchReult(String keyword);
-
-    Flowable<LyricResult> getLyricResult(String id);
-
-    Flowable<SongDetailResult> getSongDetailResult(String id);
-
-    Flowable<FileResult> getFileResult(String id);
-
-    Flowable<CommentResult> getCommentResult(String id);
-
-    Flowable<NowPlayingResult> getNowPlayingResult();
-
     Flowable<Boolean> getLoginStatus();
 
     Flowable<BaseResponse> getLoginResult(User user);
 
     Flowable<Boolean> setLoginStatus(boolean loginStatus);
-
-    Flowable<BaseResponse> addFavorite(String name);
-
-    Flowable<Token> getToken(String userName, String password);
-
-    Flowable<Token> getAccessToken(String code);
-
-    Flowable<BaseResponse> addToFavorite(String favoriteId, Audient audient);
-
-    Flowable<FavoritesResult> getFavoriteResult();
-
-    Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId);
-
-    Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name);
-
-    Flowable<BaseResponse> deleteFavorite(String id);
-
-    Flowable<BaseResponse> deleteFavoritesSong(String favoritesId);
-
-    Flowable<BaseResponse> addComment(CommentRequest comment);
 }

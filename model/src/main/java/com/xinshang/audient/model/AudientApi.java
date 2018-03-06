@@ -108,8 +108,7 @@ public interface AudientApi {
      */
     @FormUrlEncoded
     @POST("oauth/token")
-    Call<Token> getToken(@Field("username") String userName,
-                         @Field("password") String password,
+    Call<Token> getToken(@Field("code") String code,
                          @Field("grant_type") String grantType,
                          @Field("client_id") String clientId,
                          @Field("client_secret") String clientSecret);

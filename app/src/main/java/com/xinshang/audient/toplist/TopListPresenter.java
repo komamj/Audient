@@ -112,4 +112,8 @@ public class TopListPresenter implements TopListContract.Presenter {
 
         mDisposables.add(disposable);
     }
+
+    private static final boolean isLegal(ToplistResult.TopList topList) {
+        return true;
+    }
 }

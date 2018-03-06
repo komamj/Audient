@@ -26,15 +26,15 @@ import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.NowPlayingResult;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
+import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
-import com.xinshang.audient.model.source.ILoginDataSource;
-import com.xinshang.audient.model.source.IWXDataSource;
-import com.xinshang.audient.model.source.XinShangDataSource;
+import com.xinshang.audient.model.source.local.ILocalDataSource;
 import com.xinshang.audient.model.source.local.LocalDataSource;
+import com.xinshang.audient.model.source.remote.IRemoteDataSource;
 import com.xinshang.audient.model.source.remote.RemoteDataSource;
 
 import java.util.List;
@@ -45,7 +45,7 @@ import javax.inject.Singleton;
 import io.reactivex.Flowable;
 
 @Singleton
-public class AudientRepository implements AudientDataSource, IWXDataSource, ILoginDataSource, XinShangDataSource {
+public class AudientRepository implements AudientDataSource, IRemoteDataSource, ILocalDataSource {
     private final LocalDataSource mLocalDataSource;
 
     private final RemoteDataSource mRemoteDataSource;
@@ -100,7 +100,7 @@ public class AudientRepository implements AudientDataSource, IWXDataSource, ILog
 
     @Override
     public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return mLocalDataSource.getNowPlayingResult();
+        return mRemoteDataSource.getNowPlayingResult();
     }
 
     @Override
@@ -121,11 +121,6 @@ public class AudientRepository implements AudientDataSource, IWXDataSource, ILog
     @Override
     public Flowable<BaseResponse> addFavorite(String name) {
         return mRemoteDataSource.addFavorite(name);
-    }
-
-    @Override
-    public Flowable<Token> getToken(String userName, String password) {
-        return mRemoteDataSource.getToken(userName, password);
     }
 
     @Override
@@ -181,5 +176,10 @@ public class AudientRepository implements AudientDataSource, IWXDataSource, ILog
     @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mRemoteDataSource.thumbUpComment(commentId);
+    }
+
+    @Override
+    public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
+        return mRemoteDataSource.getStores(ol, page, size, sort);
     }
 }

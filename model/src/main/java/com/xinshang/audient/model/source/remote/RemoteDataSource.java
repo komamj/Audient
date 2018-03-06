@@ -35,8 +35,6 @@ import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
-import com.xinshang.audient.model.source.IWXDataSource;
-import com.xinshang.audient.model.source.XinShangDataSource;
 import com.xinshang.common.util.Constants;
 
 import java.util.List;
@@ -44,10 +42,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 
 @Singleton
-public class RemoteDataSource implements AudientDataSource, IWXDataSource, XinShangDataSource {
+public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
 
     private final AudientApi mAudientApi;
@@ -102,7 +103,24 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource, XinSh
 
     @Override
     public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return null;
+        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
+            @Override
+            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
+                NowPlayingResult nowPlayingResult = new NowPlayingResult();
+                Audient audient = new Audient();
+                audient.mediaId = "003evjhg3qIe9S";
+                audient.duration = 260;
+                audient.artistId = "0040D7gK4aI54k";
+                audient.artistName = "谭咏麟";
+                audient.mediaName = "一生中最爱";
+                audient.albumId = "0018tEZm032RCk";
+                audient.albumName = "神话1991";
+                nowPlayingResult.audient = audient;
+
+                emitter.onNext(nowPlayingResult);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
     }
 
     @Override
@@ -123,12 +141,6 @@ public class RemoteDataSource implements AudientDataSource, IWXDataSource, XinSh
     @Override
     public Flowable<BaseResponse> addFavorite(String name) {
         return mAudientApi.addFavorite(name);
-    }
-
-    @Override
-    public Flowable<Token> getToken(String userName, String password) {
-        return mAudientApi.getAccessToken(userName, password, Constants.GRANT_TYPE,
-                Constants.CLIENT_ID, Constants.CLIENT_SECRET);
     }
 
     @Override

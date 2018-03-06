@@ -67,7 +67,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login() {
         mRepository.sendLoginRequest();
 
-        mRepository.getToken("koma_mj", "201124jun")
+        /*mRepository.getToken("koma_mj", "201124jun")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Consumer<Token>() {
@@ -96,7 +96,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     public void onComplete() {
 
                     }
-                });
+                });*/
     }
 
     @Override
@@ -114,7 +114,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<Token>() {
                     @Override
                     public void onNext(Token token) {
-
+                        LogUtils.i(TAG, "getAccessToken success :" + token.accessToken + ",refreshToken :" + token.refreshToken);
                     }
 
                     @Override

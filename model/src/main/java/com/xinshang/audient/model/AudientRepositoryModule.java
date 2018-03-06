@@ -23,6 +23,8 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.helper.TokenInterceptor;
 import com.xinshang.audient.model.source.AudientDataSource;
@@ -51,9 +53,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 @Module
 public class AudientRepositoryModule {
@@ -130,18 +129,18 @@ public class AudientRepositoryModule {
                     @Nullable
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
-                        LogUtils.i(TAG, "authenticate " + Thread.currentThread().getName());
+                        String code = sharedPreferences.getString(Constants.CODE, "");
                         Call<Token> tokenCall = new Retrofit.Builder()
                                 .baseUrl(Constants.AUDIENT_HOST)
                                 .addConverterFactory(GsonConverterFactory.create(gson))
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .build()
                                 .create(AudientApi.class)
-                                .getToken("koma_mj", "201124jun", Constants.GRANT_TYPE,
-                                        Constants.CLIENT_ID, Constants.CLIENT_SECRET);
+                                .getToken(code, Constants.GRANT_TYPE, Constants.CLIENT_ID,
+                                        Constants.CLIENT_SECRET);
                         String token = tokenCall.execute().body().accessToken;
-                        LogUtils.i(TAG, "token :" + token);
                         String accessToken = "Bearer " + token;
+                        LogUtils.i(TAG, "token :" + accessToken);
                         sharedPreferences.edit()
                                 .putString(Constants.ACCESS_TOKEN, accessToken)
                                 .apply();
