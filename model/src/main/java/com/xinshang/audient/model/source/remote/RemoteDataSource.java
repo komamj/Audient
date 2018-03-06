@@ -30,6 +30,7 @@ import com.xinshang.audient.model.entities.NowPlayingResult;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -196,6 +197,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
         req.scope = "snsapi_userinfo";
         req.state = TAG;
         mWeChatApi.sendReq(req);
+    }
+
+    @Override
+    public Flowable<StoreVoteResponse> getVoteInfo(String storeId) {
+        return mAudientApi.getVoteInfo(storeId);
     }
 
     @Override

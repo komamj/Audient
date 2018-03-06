@@ -27,6 +27,7 @@ import com.xinshang.audient.model.entities.NowPlayingResult;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -172,6 +173,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public void sendLoginRequest() {
         mRemoteDataSource.sendLoginRequest();
+    }
+
+    @Override
+    public Flowable<StoreVoteResponse> getVoteInfo(String storeId) {
+        return mRemoteDataSource.getVoteInfo(storeId);
     }
 
     @Override

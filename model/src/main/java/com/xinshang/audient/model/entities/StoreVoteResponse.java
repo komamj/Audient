@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.store.data.source;
+package com.xinshang.audient.model.entities;
 
-import com.xinshang.store.data.entities.TencentMusic;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+/**
+ * Created by koma_20 on 2018/3/6.
+ */
 
-import io.reactivex.Flowable;
-
-public interface AudientDataSource {
-    Flowable<List<TencentMusic>> getAudientTests();
+public class StoreVoteResponse {
+    @SerializedName("data")
+    public VoteInfo voteInfo;
 }

@@ -122,9 +122,4 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
             }
         }, BackpressureStrategy.LATEST);
     }
-
-    @Override
-    public Flowable<BaseResponse> getLoginResult(StoreKeeper user) {
-        return null;
-    }
 }

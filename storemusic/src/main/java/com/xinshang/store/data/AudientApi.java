@@ -16,7 +16,6 @@
 package com.xinshang.store.data;
 
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.Comment;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
@@ -89,12 +88,6 @@ public interface AudientApi {
     Flowable<StoreKeeper> getStoreKeeperInfo();
 
     /**
-     * 登录
-     */
-    @POST("account/register/user")
-    Flowable<BaseResponse> getLoginResult(@Body StoreKeeper user);
-
-    /**
      * 获取access_token
      */
     @FormUrlEncoded
@@ -115,6 +108,7 @@ public interface AudientApi {
                                    @Field("grant_type") String grantType,
                                    @Field("client_id") String clientId,
                                    @Field("client_secret") String clientSecret);
+
     /**
      * 添加歌单
      */
@@ -175,12 +169,6 @@ public interface AudientApi {
     Flowable<CommentResult> getComments(@Query("mid") String mid,
                                         @Query("page") int page, @Query("size") int size,
                                         @Query("sort") String sortord);
-
-    /**
-     * 发表评论
-     */
-    @POST("api/v1/musiccomment")
-    Flowable<BaseResponse> postComment(@Body Comment comment);
 
     /**
      * 点播歌曲

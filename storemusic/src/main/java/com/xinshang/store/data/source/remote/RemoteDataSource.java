@@ -121,11 +121,6 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> getLoginResult(StoreKeeper user) {
-        return mAudientApi.getLoginResult(user);
-    }
-
-    @Override
     public Flowable<BaseResponse> addFavorite(String name) {
         return mAudientApi.addFavorite(name);
     }

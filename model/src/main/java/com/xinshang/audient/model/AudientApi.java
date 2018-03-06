@@ -28,6 +28,7 @@ import com.xinshang.audient.model.entities.NowPlayingResult;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -217,4 +218,24 @@ public interface AudientApi {
      */
     @GET("api/v1/storeplaylist")
     Flowable<BaseResponse> getPlaylist(@Query("sid") String storeId);
+
+    /**
+     * 获取点赞信息
+     */
+    @GET("api/v1/storemusic/{id}/stat")
+    Flowable<StoreVoteResponse> getVoteInfo(@Path("sid") String storeId);
+
+    /**
+     * 歌曲点赞
+     */
+    @POST("api/v1/storemusic/upvote")
+    Flowable<BaseResponse> thumbupSong();
+
+    /**
+     * 取消歌曲点赞
+     */
+    @FormUrlEncoded
+    @PATCH("api/v1/storemusic/cancelVote")
+    Flowable<BaseResponse> cancelThumbUpSong(@Field("storeId") String storeId,
+                                             @Field("mediaId") String mediaId);
 }
