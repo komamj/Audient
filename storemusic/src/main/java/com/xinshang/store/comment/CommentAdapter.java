@@ -96,9 +96,10 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         Comment comment = mData.get(position);
 
         mGlideRequest.load(comment).into(holder.mUserImage);
-        holder.mMessage.setText(comment.message);
-        /*holder.mUserName.setText(comment.userName);
-        holder.mTime.setText(comment.time);*/
+        holder.mComment.setText(comment.comment);
+        holder.mUserName.setText(comment.userNickname);
+        holder.mTime.setText(comment.commentDate);
+        holder.mVoteCount.setText(comment.voteCount);
     }
 
     public interface EventListener {
@@ -108,12 +109,14 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
     class CommentViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_user)
         ImageView mUserImage;
-        @BindView(R.id.tv_dynamic)
+        @BindView(R.id.tv_user_name)
         TextView mUserName;
         @BindView(R.id.tv_comment)
-        TextView mMessage;
+        TextView mComment;
         @BindView(R.id.tv_time)
         TextView mTime;
+        @BindView(R.id.tv_vote_count)
+        TextView mVoteCount;
 
         CommentViewHolder(View view) {
             super(view);

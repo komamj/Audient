@@ -72,7 +72,7 @@ public class CommentPresenter implements CommentContract.Presenter {
                 .map(new Function<CommentResult, List<Comment>>() {
                     @Override
                     public List<Comment> apply(CommentResult commentResult) throws Exception {
-                        return commentResult.comments;
+                        return commentResult.commentResponse.othersComment.comments;
                     }
                 })
                 .subscribeOn(Schedulers.io())

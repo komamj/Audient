@@ -17,21 +17,29 @@ package com.xinshang.store.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Created by koma on 3/5/18.
+ */
+
 public class Comment {
+    @SerializedName("id")
+    public String id;
+    @SerializedName("userId")
+    public String userId;
+    @SerializedName("userNickname")
+    public String userNickname;
+    @SerializedName("storeId")
+    public String storeId;
+    @SerializedName("mediaSource")
+    public int mediaSource;
     @SerializedName("mediaId")
     public String mediaId;
     @SerializedName("comment")
-    public String message;
-
-    @SerializedName("storeId")
-    public String storeId;
-    @SerializedName("location")
-    public Location location;
-
-    public static class Location {
-        @SerializedName("latitude")
-        public String latitude;
-        @SerializedName("longitude")
-        public String longitude;
-    }
+    public String comment;
+    @SerializedName("parentId")
+    public String parentId;
+    @SerializedName("voteCount")
+    public int voteCount;
+    @SerializedName("commentDate")
+    public String commentDate;
 }
