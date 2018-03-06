@@ -23,6 +23,8 @@ import java.util.List;
 
 public interface TopListContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
         void showLoadingError();
 
         void showEmpty(boolean forceShow);

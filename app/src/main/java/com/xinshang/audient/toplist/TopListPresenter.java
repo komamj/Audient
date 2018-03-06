@@ -19,20 +19,17 @@ import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.common.util.LogUtils;
 
-import org.reactivestreams.Publisher;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class TopListPresenter implements TopListContract.Presenter {
     public static final String TAG = TopListPresenter.class.getSimpleName();
@@ -77,43 +74,45 @@ public class TopListPresenter implements TopListContract.Presenter {
                 .map(new Function<List<ToplistResult>, List<ToplistResult.TopList>>() {
                     @Override
                     public List<ToplistResult.TopList> apply(List<ToplistResult> topListResults) throws Exception {
-                        return topListResults.get(0).topLists;
+                        List<ToplistResult.TopList> topLists = new ArrayList<>();
+                        for (ToplistResult.TopList topList : topListResults.get(0).topLists) {
+                            if (isLegal(topList)) {
+                                topLists.add(topList);
+                            }
+                        }
+                        return topLists;
                     }
                 })
-                .flatMap(new Function<List<ToplistResult.TopList>, Publisher<ToplistResult.TopList>>() {
-                    @Override
-                    public Publisher<ToplistResult.TopList> apply(List<ToplistResult.TopList> topLists) throws Exception {
-                        return Flowable.fromIterable(topLists);
-                    }
-                })
-                .filter(new Predicate<ToplistResult.TopList>() {
-                    @Override
-                    public boolean test(ToplistResult.TopList topList) throws Exception {
-                        return true;
-                    }
-                })
-                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
+                .subscribeWith(new DisposableSubscriber<List<ToplistResult.TopList>>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        LogUtils.e(TAG, "loadTopList error :" + throwable.toString());
-                    }
-                })
-                .subscribe(new Consumer<List<ToplistResult.TopList>>() {
-                    @Override
-                    public void accept(List<ToplistResult.TopList> topLists) throws Exception {
-                        if (mView != null) {
+                    public void onNext(List<ToplistResult.TopList> topLists) {
+                        if (mView.isActive()) {
                             mView.showTopLists(topLists);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadTopList error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
 
         mDisposables.add(disposable);
     }
 
-    private static final boolean isLegal(ToplistResult.TopList topList) {
+    private static boolean isLegal(ToplistResult.TopList topList) {
+        String name = topList.listName;
+        if (name.contains("巅峰榜·歌手") || name.contains("·网络歌曲")
+                || name.contains("·MV") || name.contains("·腾讯音乐人原创榜")) {
+            return false;
+        }
         return true;
     }
 }

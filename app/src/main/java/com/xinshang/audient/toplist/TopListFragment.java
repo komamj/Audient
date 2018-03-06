@@ -139,6 +139,11 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     }
 
     @Override
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
     public void showLoadingError() {
         LogUtils.i(TAG, "showLoadingError");
     }
