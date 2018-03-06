@@ -24,12 +24,15 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.xinshang.store.BuildConfig;
+import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.data.source.local.AudientDao;
 import com.xinshang.store.data.source.local.AudientDatabase;
 import com.xinshang.store.data.source.local.LocalDataSource;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
+import com.xinshang.store.helper.TokenInterceptor;
 import com.xinshang.store.utils.Constants;
+import com.xinshang.store.utils.LogUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -45,13 +48,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AudientRepositoryModule {
-    private static final String DB_NAME = "audient-db";
+    private static final String TAG = AudientRepositoryModule.class.getSimpleName();
+
+    private static final String DB_NAME = "store-db";
 
     private final String mBaseUrl;
 
@@ -109,7 +115,8 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences) {
+    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences,
+                                     final Gson gson) {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -122,10 +129,27 @@ public class AudientRepositoryModule {
                     @Nullable
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
-                        String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                        return null;
+                        Call<Token> tokenCall = new Retrofit.Builder()
+                                .baseUrl(Constants.STORE_MUSIC_HOST)
+                                .addConverterFactory(GsonConverterFactory.create(gson))
+                                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                                .build()
+                                .create(AudientApi.class)
+                                .getToken(Constants.USER_NAME, Constants.USER_PASSWORD,
+                                        Constants.GRANT_TYPE, Constants.CLIENT_ID,
+                                        Constants.CLIENT_SECRET);
+                        String token = tokenCall.execute().body().accessToken;
+                        String accessToken = "Bearer " + token;
+                        LogUtils.i(TAG, "token :" + accessToken);
+                        sharedPreferences.edit()
+                                .putString(Constants.ACCESS_TOKEN, accessToken)
+                                .apply();
+                        return response.request().newBuilder()
+                                .header("Authorization", accessToken)
+                                .build();
                     }
                 })
+                .addInterceptor(new TokenInterceptor(sharedPreferences))
                 .addInterceptor(logInterceptor)
                 .cache(cache)
                 .connectTimeout(15, TimeUnit.SECONDS)

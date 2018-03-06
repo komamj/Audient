@@ -16,6 +16,7 @@
 package com.xinshang.store.main;
 
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -62,20 +63,21 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void loadLoginStatus() {
-        Disposable disposable = mRepository.getLoginStatus()
+    public void loadStoreKeeperInfo() {
+        Disposable disposable = mRepository.getStoreKeeperInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Boolean>() {
+                .subscribeWith(new DisposableSubscriber<StoreKeeper>() {
                     @Override
-                    public void onNext(Boolean isLogin) {
-                        LogUtils.i(TAG, "loadLoginStatus isLogin " + isLogin);
-                        mView.showLoginView(isLogin);
+                    public void onNext(StoreKeeper storeKeeper) {
+                        if (mView != null) {
+                            mView.showStoreKeeper(storeKeeper);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadLoginStatus error :" + t.toString());
+                        LogUtils.e(TAG, "loadStoreKeeperInfo error :" + t.toString());
                     }
 
                     @Override
@@ -83,7 +85,6 @@ public class MainPresenter implements MainContract.Presenter {
 
                     }
                 });
-
         mDisposables.add(disposable);
     }
 }

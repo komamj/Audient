@@ -28,8 +28,8 @@ public final class Constants {
 
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
-    public static final String USER_NAME = "user_name";
-    public static final String USER_PASSWORD = "user_password";
+    public static final String USER_NAME = "store1";
+    public static final String USER_PASSWORD = "123456";
 
     // favorite
     public static final String KEY_FAVORITE = "key_favorite";

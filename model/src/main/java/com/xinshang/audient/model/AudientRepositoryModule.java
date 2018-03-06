@@ -116,7 +116,8 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences, final Gson gson) {
+    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences,
+                                     final Gson gson) {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

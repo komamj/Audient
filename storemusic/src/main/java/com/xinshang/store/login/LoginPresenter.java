@@ -16,22 +16,12 @@
 package com.xinshang.store.login;
 
 import com.xinshang.store.data.AudientRepository;
-import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.StoreKeeper;
-import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.utils.LogUtils;
-
-import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class LoginPresenter implements LoginContract.Presenter {
     public static final String TAG = LoginPresenter.class.getSimpleName();
@@ -70,46 +60,5 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(StoreKeeper user) {
-        mRepository.getToken("koma_mj", "201124koma")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Token>() {
-                    @Override
-                    public void accept(Token token) throws Exception {
-                        LogUtils.i(TAG, "token :" + token.toString());
-                    }
-                });
-
-        Disposable disposable = mRepository.getLoginResult(user)
-                .flatMap(new Function<BaseResponse, Publisher<Boolean>>() {
-                    @Override
-                    public Publisher<Boolean> apply(BaseResponse loginResult) throws Exception {
-                        if (loginResult.resultCode == 0 || loginResult.message.equals("操作成功")) {
-                            return mRepository.setLoginStatus(true);
-                        } else {
-                            return mRepository.setLoginStatus(true);
-                        }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Boolean>() {
-                    @Override
-                    public void onNext(Boolean status) {
-                        mView.onLoginFinished();
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "login error :" + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-        mDisposables.add(disposable);
     }
 }

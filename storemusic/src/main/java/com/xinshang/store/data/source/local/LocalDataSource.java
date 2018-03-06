@@ -19,20 +19,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.Comment;
-import com.xinshang.store.data.entities.CommentResult;
-import com.xinshang.store.data.entities.FavoriteListResult;
-import com.xinshang.store.data.entities.FavoritesResult;
-import com.xinshang.store.data.entities.FileResult;
-import com.xinshang.store.data.entities.LyricResult;
-import com.xinshang.store.data.entities.NowPlayingResult;
-import com.xinshang.store.data.entities.SearchResult;
-import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.data.entities.TencentMusic;
-import com.xinshang.store.data.entities.Token;
-import com.xinshang.store.data.entities.ToplistDetailResult;
-import com.xinshang.store.data.entities.ToplistResult;
 import com.xinshang.store.data.source.AudientDataSource;
 
 import java.util.ArrayList;
@@ -47,7 +35,7 @@ import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 
 @Singleton
-public class LocalDataSource implements AudientDataSource {
+public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     private static final String TAG = LocalDataSource.class.getSimpleName();
 
     private static final String LOGIN_TAG = "is_login";
@@ -136,158 +124,7 @@ public class LocalDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopList() {
-        return null;
-    }
-
-    @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
-        return null;
-    }
-
-    @Override
-    public Flowable<SearchResult> getSearchReult(String keyword) {
-        return null;
-    }
-
-    @Override
-    public Flowable<LyricResult> getLyricResult(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<SongDetailResult> getSongDetailResult(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<FileResult> getFileResult(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<CommentResult> getCommentResult(String id) {
-        return Flowable.create(new FlowableOnSubscribe<CommentResult>() {
-            @Override
-            public void subscribe(FlowableEmitter<CommentResult> emitter) throws Exception {
-                CommentResult commentResult = new CommentResult();
-                List<Comment> comments = new ArrayList<>();
-                /*Comment comment1 = new Comment();
-                comment1.time = "2018-01-30 20:10";
-                comment1.userName = "流氓";
-                comment1.message = "真几把难听.";
-                comments.add(comment1);
-
-                Comment comment2 = new Comment();
-                comment2.time = "2018-01-31 00:10";
-                comment2.userName = "Koma";
-                comment2.message = "这首歌旋律感觉还可以.";
-                comments.add(comment2);*/
-
-                commentResult.comments = comments;
-                emitter.onNext(commentResult);
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
-    public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
-            @Override
-            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
-                NowPlayingResult nowPlayingResult = new NowPlayingResult();
-                TencentMusic audient = new TencentMusic();
-                audient.mediaId = "003evjhg3qIe9S";
-                audient.duration = 260;
-                audient.artistId = "0040D7gK4aI54k";
-                audient.artistName = "谭咏麟";
-                audient.mediaName = "一生中最爱";
-                audient.albumId = "0018tEZm032RCk";
-                audient.albumName = "神话1991";
-                nowPlayingResult.audient = audient;
-
-                emitter.onNext(nowPlayingResult);
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
-    public Flowable<Boolean> getLoginStatus() {
-        return Flowable.create(new FlowableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
-                emitter.onNext(mSharedPreferences.getBoolean(LOGIN_TAG, false));
-
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
-    public Flowable<BaseResponse> getLoginResult(StoreKeeper storeKeeper) {
-        return null;
-    }
-
-    @Override
-    public Flowable<Boolean> setLoginStatus(final boolean loginStatus) {
-        return Flowable.create(new FlowableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
-                mSharedPreferences.edit()
-                        .putBoolean(LOGIN_TAG, loginStatus)
-                        .apply();
-
-                emitter.onNext(loginStatus);
-
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
-    public Flowable<BaseResponse> addFavorite(String name) {
-        return null;
-    }
-
-    @Override
-    public Flowable<Token> getToken(String userName, String password) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> addToFavorite(String favoriteId, TencentMusic audient) {
-        return null;
-    }
-
-    @Override
-    public Flowable<FavoritesResult> getFavoriteResult() {
-        return null;
-    }
-
-    @Override
-    public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> deleteFavorite(String id) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> addComment(Comment comment) {
+    public Flowable<BaseResponse> getLoginResult(StoreKeeper user) {
         return null;
     }
 }

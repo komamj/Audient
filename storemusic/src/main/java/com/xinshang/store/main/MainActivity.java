@@ -31,14 +31,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
-import com.xinshang.store.login.LoginActivity;
+import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.mine.MineFragment;
 import com.xinshang.store.playlist.PlaylistFragment;
 import com.xinshang.store.search.SearchActivity;
@@ -69,7 +68,6 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    Button mLoginButton;
     TextView mName;
     ImageView mUserImage;
 
@@ -97,15 +95,6 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         View headerView = mNavigationView.getHeaderView(0);
         mName = headerView.findViewById(R.id.tv_user_name);
         mUserImage = headerView.findViewById(R.id.iv_user);
-        mLoginButton = headerView.findViewById(R.id.btn_login);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
 
         // inject presenter layer
         DaggerMainComponent.builder().audientRepositoryComponent(
@@ -134,7 +123,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         LogUtils.i(TAG, "onResume");
 
         if (mPresenter != null) {
-            mPresenter.loadLoginStatus();
+            mPresenter.loadStoreKeeperInfo();
         }
     }
 
@@ -210,16 +199,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     }
 
     @Override
-    public void showLoginView(boolean isLogin) {
-        if (isLogin) {
-            mLoginButton.setVisibility(View.GONE);
-            mName.setVisibility(View.VISIBLE);
-            mUserImage.setVisibility(View.VISIBLE);
-        } else {
-            mLoginButton.setVisibility(View.VISIBLE);
-            mName.setVisibility(View.GONE);
-            mUserImage.setVisibility(View.GONE);
-        }
+    public void showStoreKeeper(StoreKeeper storeKeeper) {
+        mName.setText(storeKeeper.userName);
     }
 
     static class AudientAdapter extends FragmentPagerAdapter {

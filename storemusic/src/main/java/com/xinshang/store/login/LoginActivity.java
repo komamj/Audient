@@ -38,10 +38,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @OnClick(R.id.btn_login)
     void loginWeChat() {
         StoreKeeper storeKeeper = new StoreKeeper();
-        storeKeeper.userName = "koma_mj";
-        storeKeeper.confirmPassword = "201124koma";
+        storeKeeper.nickName = "koma_mj_boss";
         storeKeeper.isDefaultName = false;
-        storeKeeper.password = "201124koma";
 
         mPresenter.login(storeKeeper);
     }

@@ -16,7 +16,6 @@
 package com.xinshang.store.data;
 
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.Comment;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
@@ -32,6 +31,7 @@ import com.xinshang.store.data.entities.ToplistDetailResult;
 import com.xinshang.store.data.entities.ToplistResult;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.data.source.local.LocalDataSource;
+import com.xinshang.store.data.source.remote.IRemoteDataSource;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
 
 import java.util.List;
@@ -42,7 +42,7 @@ import javax.inject.Singleton;
 import io.reactivex.Flowable;
 
 @Singleton
-public class AudientRepository implements AudientDataSource {
+public class AudientRepository implements AudientDataSource, IRemoteDataSource {
     private final LocalDataSource mLocalDataSource;
 
     private final RemoteDataSource mRemoteDataSource;
@@ -58,6 +58,11 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<List<TencentMusic>> getAudientTests() {
         return mLocalDataSource.getAudientTests();
+    }
+
+    @Override
+    public Flowable<StoreKeeper> getStoreKeeperInfo() {
+        return mRemoteDataSource.getStoreKeeperInfo();
     }
 
     @Override
@@ -97,22 +102,12 @@ public class AudientRepository implements AudientDataSource {
 
     @Override
     public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return mLocalDataSource.getNowPlayingResult();
-    }
-
-    @Override
-    public Flowable<Boolean> getLoginStatus() {
-        return mLocalDataSource.getLoginStatus();
+        return mRemoteDataSource.getNowPlayingResult();
     }
 
     @Override
     public Flowable<BaseResponse> getLoginResult(StoreKeeper storeKeeper) {
         return mRemoteDataSource.getLoginResult(storeKeeper);
-    }
-
-    @Override
-    public Flowable<Boolean> setLoginStatus(boolean loginStatus) {
-        return mLocalDataSource.setLoginStatus(loginStatus);
     }
 
     @Override
@@ -153,10 +148,5 @@ public class AudientRepository implements AudientDataSource {
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
         return mRemoteDataSource.deleteFavoritesSong(favoritesId);
-    }
-
-    @Override
-    public Flowable<BaseResponse> addComment(Comment comment) {
-        return mRemoteDataSource.addComment(comment);
     }
 }

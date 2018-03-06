@@ -35,12 +35,12 @@ import com.xinshang.store.data.entities.ToplistResult;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -85,6 +85,9 @@ public interface AudientApi {
     @GET("nowplaying")
     Flowable<NowPlayingResult> getNowPlayingResult();
 
+    @GET("api/v1/me")
+    Flowable<StoreKeeper> getStoreKeeperInfo();
+
     /**
      * 登录
      */
@@ -96,63 +99,66 @@ public interface AudientApi {
      */
     @FormUrlEncoded
     @POST("oauth/token")
+    Call<Token> getToken(@Field("username") String userName,
+                         @Field("password") String password,
+                         @Field("grant_type") String grantType,
+                         @Field("client_id") String clientId,
+                         @Field("client_secret") String clientSecret);
+
+    /**
+     * 获取access_token
+     */
+    @FormUrlEncoded
+    @POST("oauth/token")
     Flowable<Token> getAccessToken(@Field("username") String userName,
                                    @Field("password") String password,
                                    @Field("grant_type") String grantType,
                                    @Field("client_id") String clientId,
                                    @Field("client_secret") String clientSecret);
-
     /**
      * 添加歌单
      */
     @FormUrlEncoded
     @POST("api/v1/favorites")
-    Flowable<BaseResponse> addFavorite(@Header("Authorization") String access_token,
-                                       @Field("name") String name);
+    Flowable<BaseResponse> addFavorite(@Field("name") String name);
 
     /**
      * 获取我的所有歌单
      */
     @GET("api/v1/favorites/my")
-    Flowable<FavoritesResult> getFavoriteResult(@Header("Authorization") String access_token,
-                                                @Query("sort") String sortord);
+    Flowable<FavoritesResult> getFavoriteResult(@Query("sort") String sortord);
 
     /**
      * 添加歌曲到相应歌单
      */
     @POST("api/v1/favorites/{id}/items")
-    Flowable<BaseResponse> addToFavorite(@Header("Authorization") String access_token,
-                                         @Path("id") String favoriteId,
+    Flowable<BaseResponse> addToFavorite(@Path("id") String favoriteId,
                                          @Body TencentMusic audient);
 
     /**
      * 获取歌单下的所有歌曲
      */
     @GET("api/v1/favorites/{id}/items")
-    Flowable<FavoriteListResult> getFavoriteListResult(@Header("Authorization") String access_token,
-                                                       @Path("id") String favoriteId);
+    Flowable<FavoriteListResult> getFavoriteListResult(@Path("id") String favoriteId);
 
     /**
      * 删除歌单里的歌曲
      */
     @DELETE("api/v1/favorites/{id}")
-    Flowable<BaseResponse> deleteFavorite(@Header("Authorization") String access_token,
-                                          @Path("id") String id);
+    Flowable<BaseResponse> deleteFavorite(@Path("id") String id);
 
     /**
      * 删除歌单里的歌曲
      */
     @DELETE("api/v1/favorites/items/{id}")
-    Flowable<BaseResponse> deleteFavoritesSong(@Header("Authorization") String access_token,
-                                               @Path("id") String favoritesId);
+    Flowable<BaseResponse> deleteFavoritesSong(@Path("id") String favoritesId);
 
     /**
      * 修改歌单名称
      */
     @FormUrlEncoded
     @PATCH("api/v1/favorites/")
-    Flowable<BaseResponse> modifyFavoriteName(@Header("Authorization") String access_token,
-                                              @Field("id") String favoriteId,
+    Flowable<BaseResponse> modifyFavoriteName(@Field("id") String favoriteId,
                                               @Field("name") String name);
 
     /**
@@ -160,14 +166,13 @@ public interface AudientApi {
      */
     @FormUrlEncoded
     @POST("api/v1/musiccomment/upvote")
-    Flowable<Void> commentThumbUp(@Header("Authorization") String access_token,
-                                  @Field("commentId") String commentId);
+    Flowable<Void> commentThumbUp(@Field("commentId") String commentId);
 
     /**
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
-    Flowable<CommentResult> getComments(@Header("Authorization") String access_token, @Query("mid") String mid,
+    Flowable<CommentResult> getComments(@Query("mid") String mid,
                                         @Query("page") int page, @Query("size") int size,
                                         @Query("sort") String sortord);
 
@@ -175,18 +180,17 @@ public interface AudientApi {
      * 发表评论
      */
     @POST("api/v1/musiccomment")
-    Flowable<BaseResponse> postComment(@Header("Authorization") String access_token, @Body Comment comment);
+    Flowable<BaseResponse> postComment(@Body Comment comment);
 
     /**
      * 点播歌曲
      */
     @POST("api/v1/mod")
-    Flowable<BaseResponse> addToPlaylist(@Header("Authorization") String access_token, @Body Music music);
+    Flowable<BaseResponse> addToPlaylist(@Body Music music);
 
     /**
      * 获取店铺的默认播放列表
      */
     @GET("api/v1/storeplaylist")
-    Flowable<BaseResponse> getPlaylist(@Header("Authorization") String access_token,
-                                       @Query("sid") String storeId);
+    Flowable<BaseResponse> getPlaylist(@Query("sid") String storeId);
 }

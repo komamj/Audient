@@ -17,7 +17,6 @@ package com.xinshang.store.data.source.remote;
 
 import com.xinshang.store.data.AudientApi;
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.Comment;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
@@ -39,13 +38,15 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 
 @Singleton
-public class RemoteDataSource implements AudientDataSource {
+public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
     private final AudientApi mAudientApi;
-    private String mAccessToken = "Bearer 1db2b4e8-f554-4644-beb3-12f61bd723c1";
 
     @Inject
     public RemoteDataSource(AudientApi audientApi) {
@@ -55,6 +56,11 @@ public class RemoteDataSource implements AudientDataSource {
     @Override
     public Flowable<List<TencentMusic>> getAudientTests() {
         return null;
+    }
+
+    @Override
+    public Flowable<StoreKeeper> getStoreKeeperInfo() {
+        return mAudientApi.getStoreKeeperInfo();
     }
 
     @Override
@@ -89,17 +95,29 @@ public class RemoteDataSource implements AudientDataSource {
 
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
-        return mAudientApi.getComments(mAccessToken, id, 0, 40, null);
+        return mAudientApi.getComments(id, 0, 40, null);
     }
 
     @Override
     public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return null;
-    }
+        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
+            @Override
+            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
+                NowPlayingResult nowPlayingResult = new NowPlayingResult();
+                TencentMusic audient = new TencentMusic();
+                audient.mediaId = "003evjhg3qIe9S";
+                audient.duration = 260;
+                audient.artistId = "0040D7gK4aI54k";
+                audient.artistName = "谭咏麟";
+                audient.mediaName = "一生中最爱";
+                audient.albumId = "0018tEZm032RCk";
+                audient.albumName = "神话1991";
+                nowPlayingResult.audient = audient;
 
-    @Override
-    public Flowable<Boolean> getLoginStatus() {
-        return null;
+                emitter.onNext(nowPlayingResult);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
     }
 
     @Override
@@ -108,13 +126,8 @@ public class RemoteDataSource implements AudientDataSource {
     }
 
     @Override
-    public Flowable<Boolean> setLoginStatus(boolean loginStatus) {
-        return null;
-    }
-
-    @Override
     public Flowable<BaseResponse> addFavorite(String name) {
-        return mAudientApi.addFavorite(mAccessToken, name);
+        return mAudientApi.addFavorite(name);
     }
 
     @Override
@@ -125,36 +138,31 @@ public class RemoteDataSource implements AudientDataSource {
 
     @Override
     public Flowable<BaseResponse> addToFavorite(String favoriteId, TencentMusic audient) {
-        return mAudientApi.addToFavorite(mAccessToken, favoriteId, audient);
+        return mAudientApi.addToFavorite(favoriteId, audient);
     }
 
     @Override
     public Flowable<FavoritesResult> getFavoriteResult() {
-        return mAudientApi.getFavoriteResult(mAccessToken, null);
+        return mAudientApi.getFavoriteResult(null);
     }
 
     @Override
     public Flowable<FavoriteListResult> getFavoriteListResult(String favoriteId) {
-        return mAudientApi.getFavoriteListResult(mAccessToken, favoriteId);
+        return mAudientApi.getFavoriteListResult(favoriteId);
     }
 
     @Override
     public Flowable<BaseResponse> modifyFavoritesName(String favoritesId, String name) {
-        return mAudientApi.modifyFavoriteName(mAccessToken, favoritesId, name);
+        return mAudientApi.modifyFavoriteName(favoritesId, name);
     }
 
     @Override
     public Flowable<BaseResponse> deleteFavorite(String id) {
-        return mAudientApi.deleteFavorite(mAccessToken, id);
+        return mAudientApi.deleteFavorite(id);
     }
 
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
-        return mAudientApi.deleteFavoritesSong(mAccessToken, favoritesId);
-    }
-
-    @Override
-    public Flowable<BaseResponse> addComment(Comment comment) {
-        return mAudientApi.postComment(mAccessToken, comment);
+        return mAudientApi.deleteFavoritesSong(favoritesId);
     }
 }

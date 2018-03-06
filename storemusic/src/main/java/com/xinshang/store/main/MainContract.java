@@ -17,13 +17,14 @@ package com.xinshang.store.main;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
+import com.xinshang.store.data.entities.StoreKeeper;
 
 public interface MainContract {
     interface View extends BaseView<Presenter> {
-        void showLoginView(boolean isLogin);
+        void showStoreKeeper(StoreKeeper storeKeeper);
     }
 
     interface Presenter extends BasePresenter {
-        void loadLoginStatus();
+        void loadStoreKeeperInfo();
     }
 }
