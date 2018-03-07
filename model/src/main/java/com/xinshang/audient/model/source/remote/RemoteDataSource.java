@@ -34,7 +34,6 @@ import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
-import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
@@ -128,21 +127,6 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
-    }
-
-    @Override
-    public Flowable<Boolean> getLoginStatus() {
-        return null;
-    }
-
-    @Override
-    public Flowable<BaseResponse> getLoginResult(User user) {
-        return mAudientApi.getLoginResult(user);
-    }
-
-    @Override
-    public Flowable<Boolean> setLoginStatus(boolean loginStatus) {
-        return null;
     }
 
     @Override

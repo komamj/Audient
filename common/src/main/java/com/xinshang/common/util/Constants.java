@@ -26,6 +26,8 @@ public final class Constants {
     public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
     public static final String GRANT_TYPE = "password";
 
+    public static final String LOGIN_STATUS = "login_status";
+
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
     public static final String USER_NAME = "user_name";
@@ -34,7 +36,6 @@ public final class Constants {
     // wechat
     public static final String WECHAT_APP_ID = "wxc80eb13e9ed3e040";
     public static final String WECHAT_SECRET = "5d2c48e32aa7213f2f26724f3c648b6a";
-    public static final String CODE = "code";
 
     // favorite
     public static final String KEY_FAVORITE = "key_favorite";

@@ -42,6 +42,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -49,7 +50,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -118,7 +118,7 @@ public class AudientRepositoryModule {
     @Provides
     OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences,
                                      final Gson gson) {
-        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+        final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
@@ -130,23 +130,35 @@ public class AudientRepositoryModule {
                     @Nullable
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
-                        String code = sharedPreferences.getString(Constants.CODE, "");
-                        Call<Token> tokenCall = new Retrofit.Builder()
+                        String refershToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                        LogUtils.i(TAG, "authenticate :" + refershToken);
+                        Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(Constants.AUDIENT_HOST)
+                                .client(new OkHttpClient.Builder().addInterceptor(logInterceptor).build())
                                 .addConverterFactory(GsonConverterFactory.create(gson))
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                                .build()
-                                .create(AudientApi.class)
-                                .getToken(code, Constants.GRANT_TYPE, Constants.CLIENT_ID,
-                                        Constants.CLIENT_SECRET);
-                        String token = tokenCall.execute().body().accessToken;
-                        String accessToken = "Bearer " + token;
-                        LogUtils.i(TAG, "token :" + accessToken);
-                        sharedPreferences.edit()
-                                .putString(Constants.ACCESS_TOKEN, accessToken)
-                                .apply();
+                                .build();
+                        AudientApi audientApi = retrofit.create(AudientApi.class);
+                        audientApi.refreshAccessToken("refresh_token", refershToken)
+                                .subscribeWith(new DisposableSubscriber<Token>() {
+                                    @Override
+                                    public void onNext(Token token) {
+                                        LogUtils.i(TAG, "wocao token :" + token.toString());
+                                        sharedPreferences.edit().putString(Constants.ACCESS_TOKEN, token.accessToken);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable t) {
+                                        LogUtils.e(TAG, "wocao token error :" + t.toString());
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
                         return response.request().newBuilder()
-                                .header("Authorization", accessToken)
+                                .header("Authorization", "Bearer " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
                                 .build();
                     }
                 })

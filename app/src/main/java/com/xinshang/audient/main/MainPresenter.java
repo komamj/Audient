@@ -66,28 +66,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void loadLoginStatus() {
-        Disposable disposable = mRepository.getLoginStatus()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Boolean>() {
-                    @Override
-                    public void onNext(Boolean isLogin) {
-                        LogUtils.i(TAG, "loadLoginStatus isLogin " + isLogin);
-                        mView.showLoginView(isLogin);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadLoginStatus error :" + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-        mDisposables.add(disposable);
+        mView.showLoginView(mRepository.getLoginStatus());
     }
 
     @Override

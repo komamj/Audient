@@ -42,11 +42,10 @@ public class TokenInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         String accessToken = mSharedPreference.getString(Constants.ACCESS_TOKEN, "");
-        Request request = chain.request().newBuilder()
-                .header("Authorization", accessToken)
-                .build();
         LogUtils.i(TAG, "intercept : accessToken :" + accessToken);
-
+        Request request = chain.request().newBuilder()
+                .header("Authorization", "Barer " + accessToken)
+                .build();
         return chain.proceed(request);
     }
 }

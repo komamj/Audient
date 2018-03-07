@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -63,7 +64,7 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void loadLoginStatus() {
-        Disposable disposable = mRepository.getLoginStatus()
+        Disposable disposable = Flowable.just(mRepository.getLoginStatus())
                 .delay(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -5,5 +5,15 @@ package com.xinshang.audient.model.source.local;
  */
 
 public interface ILocalDataSource {
-    void persistenceLoginInfo(String code, String token, String refreshToken);
+    void persistenceLoginStatus(boolean loginStatus);
+
+    boolean getLoginStatus();
+
+    void persistenceAccessToken(String accessToken);
+
+    String getAccessToken();
+
+    void persistenceRefreshToken(String refreshToken);
+
+    String getRefreshToken();
 }

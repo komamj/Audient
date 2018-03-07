@@ -16,8 +16,6 @@
 package com.xinshang.audient.model.source;
 
 import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.User;
 
 import java.util.List;
 
@@ -25,10 +23,4 @@ import io.reactivex.Flowable;
 
 public interface AudientDataSource {
     Flowable<List<Audient>> getAudientTests();
-
-    Flowable<Boolean> getLoginStatus();
-
-    Flowable<BaseResponse> getLoginResult(User user);
-
-    Flowable<Boolean> setLoginStatus(boolean loginStatus);
 }

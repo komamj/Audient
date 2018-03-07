@@ -24,7 +24,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_user"
-        app:layout_constraintEnd_toStartOf="@+id/iv_thumb_up"
+        app:layout_constraintEnd_toStartOf="@+id/tv_thumb_up_count"
         app:layout_constraintStart_toEndOf="@+id/iv_user"
         app:layout_constraintTop_toTopOf="@+id/iv_user">
 
@@ -54,6 +54,16 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/tv_thumb_up_count"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/iv_thumb_up"
+        app:layout_constraintEnd_toStartOf="@id/iv_thumb_up"
+        app:layout_constraintStart_toEndOf="@id/info_layout"
+        app:layout_constraintTop_toTopOf="@id/iv_thumb_up" />
+
     <ImageView
         android:id="@+id/iv_thumb_up"
         android:layout_width="wrap_content"
@@ -63,7 +73,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/iv_user"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/info_layout"
+        app:layout_constraintStart_toEndOf="@id/tv_thumb_up_count"
         app:layout_constraintTop_toTopOf="@+id/iv_user"
         app:srcCompat="@drawable/ic_thumb_up" />
 

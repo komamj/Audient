@@ -99,6 +99,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         holder.mMessage.setText(comment.comment);
         holder.mUserName.setText(comment.userNickname);
         holder.mTime.setText(comment.commentDate);
+        holder.mCount.setText(String.valueOf(comment.voteCount));
     }
 
     class CommentViewHolder extends BaseViewHolder {
@@ -110,6 +111,8 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         TextView mMessage;
         @BindView(R.id.tv_time)
         TextView mTime;
+        @BindView(R.id.tv_thumb_up_count)
+        TextView mCount;
 
         @OnClick(R.id.iv_thumb_up)
         void thumbUp(ImageView thumbUpView) {

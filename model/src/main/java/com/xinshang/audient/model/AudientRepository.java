@@ -31,7 +31,6 @@ import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
-import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.local.ILocalDataSource;
@@ -111,21 +110,6 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<Boolean> getLoginStatus() {
-        return mLocalDataSource.getLoginStatus();
-    }
-
-    @Override
-    public Flowable<BaseResponse> getLoginResult(User user) {
-        return mRemoteDataSource.getLoginResult(user);
-    }
-
-    @Override
-    public Flowable<Boolean> setLoginStatus(boolean loginStatus) {
-        return mLocalDataSource.setLoginStatus(loginStatus);
-    }
-
-    @Override
     public Flowable<BaseResponse> addFavorite(String name) {
         return mRemoteDataSource.addFavorite(name);
     }
@@ -181,11 +165,6 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public void persistenceLoginInfo(String code, String token, String refreshToken) {
-        mLocalDataSource.persistenceLoginInfo(code, token, refreshToken);
-    }
-
-    @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mRemoteDataSource.thumbUpComment(commentId);
     }
@@ -193,5 +172,35 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
         return mRemoteDataSource.getStores(ol, page, size, sort);
+    }
+
+    @Override
+    public void persistenceLoginStatus(boolean loginStatus) {
+        mLocalDataSource.persistenceLoginStatus(loginStatus);
+    }
+
+    @Override
+    public boolean getLoginStatus() {
+        return mLocalDataSource.getLoginStatus();
+    }
+
+    @Override
+    public void persistenceAccessToken(String accessToken) {
+        mLocalDataSource.persistenceAccessToken(accessToken);
+    }
+
+    @Override
+    public String getAccessToken() {
+        return mLocalDataSource.getAccessToken();
+    }
+
+    @Override
+    public void persistenceRefreshToken(String refreshToken) {
+        mLocalDataSource.persistenceRefreshToken(refreshToken);
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return mLocalDataSource.getRefreshToken();
     }
 }

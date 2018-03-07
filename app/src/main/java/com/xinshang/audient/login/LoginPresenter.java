@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -105,15 +104,12 @@ public class LoginPresenter implements LoginContract.Presenter {
         mRepository.getAccessToken(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<Token>() {
-                    @Override
-                    public void accept(Token token) throws Exception {
-                        mRepository.persistenceLoginInfo(code, token.accessToken, token.refreshToken);
-                    }
-                })
                 .subscribeWith(new DisposableSubscriber<Token>() {
                     @Override
                     public void onNext(Token token) {
+                        mRepository.persistenceAccessToken(token.accessToken);
+                        mRepository.persistenceRefreshToken(token.refreshToken);
+                        mRepository.persistenceLoginStatus(true);
                         LogUtils.i(TAG, "getAccessToken success :" + token.accessToken + ",refreshToken :" + token.refreshToken);
                     }
 

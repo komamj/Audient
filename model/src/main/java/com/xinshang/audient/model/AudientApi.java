@@ -38,7 +38,6 @@ import com.xinshang.audient.model.entities.UserResponse;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -116,10 +115,8 @@ public interface AudientApi {
      */
     @FormUrlEncoded
     @POST("oauth/token")
-    Call<Token> getToken(@Field("code") String code,
-                         @Field("grant_type") String grantType,
-                         @Field("client_id") String clientId,
-                         @Field("client_secret") String clientSecret);
+    Flowable<Token> refreshAccessToken(@Field("grant_type") String grantType,
+                                       @Field("refresh_token") String refreshToken);
 
     /**
      * 获取access_token

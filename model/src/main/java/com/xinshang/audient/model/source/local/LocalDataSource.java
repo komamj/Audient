@@ -19,8 +19,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.audient.model.entities.BaseResponse;
-import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
 
@@ -38,8 +36,6 @@ import io.reactivex.FlowableOnSubscribe;
 @Singleton
 public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     private static final String TAG = LocalDataSource.class.getSimpleName();
-
-    private static final String LOGIN_TAG = "is_login";
 
     private final Context mContext;
 
@@ -125,55 +121,38 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     }
 
     @Override
-    public Flowable<Boolean> getLoginStatus() {
-        return Flowable.create(new FlowableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
-                emitter.onNext(mSharedPreferences.getBoolean(LOGIN_TAG, false));
-
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
+    public void persistenceLoginStatus(boolean loginStatus) {
+        mSharedPreferences.edit()
+                .putBoolean(Constants.LOGIN_STATUS, loginStatus)
+                .apply();
     }
 
     @Override
-    public Flowable<BaseResponse> getLoginResult(User user) {
-        return null;
+    public boolean getLoginStatus() {
+        return mSharedPreferences.getBoolean(Constants.LOGIN_STATUS, false);
     }
 
     @Override
-    public Flowable<Boolean> setLoginStatus(final boolean loginStatus) {
-        return Flowable.create(new FlowableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
-                mSharedPreferences.edit()
-                        .putBoolean(LOGIN_TAG, loginStatus)
-                        .apply();
-
-                emitter.onNext(loginStatus);
-
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST);
+    public void persistenceAccessToken(String accessToken) {
+        mSharedPreferences.edit()
+                .putString(Constants.ACCESS_TOKEN, accessToken)
+                .apply();
     }
 
     @Override
-    public void persistenceLoginInfo(String code, final String token, final String refreshToken) {
-        Flowable.create(new FlowableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(FlowableEmitter<Boolean> emitter) throws Exception {
-                mSharedPreferences.edit()
-                        .putBoolean(LOGIN_TAG, true)
-                        .apply();
-                mSharedPreferences.edit()
-                        .putString(Constants.ACCESS_TOKEN, "Bearer " + token)
-                        .apply();
-                mSharedPreferences.edit()
-                        .putString(Constants.REFRESH_TOKEN, refreshToken)
-                        .apply();
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.LATEST)
-                .subscribe();
+    public String getAccessToken() {
+        return mSharedPreferences.getString(Constants.ACCESS_TOKEN, "");
+    }
+
+    @Override
+    public void persistenceRefreshToken(String refreshToken) {
+        mSharedPreferences.edit()
+                .putString(Constants.REFRESH_TOKEN, refreshToken)
+                .apply();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return mSharedPreferences.getString(Constants.REFRESH_TOKEN, "");
     }
 }
