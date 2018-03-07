@@ -100,6 +100,11 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         holder.mUserName.setText(comment.userNickname);
         holder.mTime.setText(comment.commentDate);
         holder.mCount.setText(String.valueOf(comment.voteCount));
+        if (comment.voted) {
+            holder.mThumbUp.setImageResource(R.drawable.ic_thumb_uped);
+        } else {
+            holder.mThumbUp.setImageResource(R.drawable.ic_thumb_up);
+        }
     }
 
     class CommentViewHolder extends BaseViewHolder {
@@ -113,12 +118,20 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         TextView mTime;
         @BindView(R.id.tv_thumb_up_count)
         TextView mCount;
+        @BindView(R.id.iv_thumb_up)
+        ImageView mThumbUp;
 
         @OnClick(R.id.iv_thumb_up)
-        void thumbUp(ImageView thumbUpView) {
-            thumbUpView.setImageResource(R.drawable.ic_thumb_uped);
-            if (mListener != null) {
-                mListener.onThumbUpClick(mData.get(getAdapterPosition()));
+        void thumbUp() {
+            Comment comment = mData.get(getAdapterPosition());
+            if (comment.voted) {
+                //   mThumbUp.setImageResource(R.drawable.ic_thumb_up);
+            } else {
+                mCount.setText(String.valueOf(comment.voteCount + 1));
+                mThumbUp.setImageResource(R.drawable.ic_thumb_uped);
+                if (mListener != null) {
+                    mListener.onThumbUpClick(mData.get(getAdapterPosition()));
+                }
             }
         }
 

@@ -42,4 +42,6 @@ public class Comment {
     public int voteCount;
     @SerializedName("commentDate")
     public String commentDate;
+    @SerializedName("voted")
+    public boolean voted;
 }
