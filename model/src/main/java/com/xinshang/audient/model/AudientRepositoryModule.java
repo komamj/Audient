@@ -139,12 +139,15 @@ public class AudientRepositoryModule {
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .build();
                         AudientApi audientApi = retrofit.create(AudientApi.class);
-                        audientApi.refreshAccessToken("refresh_token", refershToken)
+                        audientApi.refreshAccessToken("refresh_token", refershToken,
+                                Constants.CLIENT_ID, Constants.CLIENT_SECRET)
                                 .subscribeWith(new DisposableSubscriber<Token>() {
                                     @Override
                                     public void onNext(Token token) {
                                         LogUtils.i(TAG, "wocao token :" + token.toString());
-                                        sharedPreferences.edit().putString(Constants.ACCESS_TOKEN, token.accessToken);
+                                        sharedPreferences.edit()
+                                                .putString(Constants.ACCESS_TOKEN, token.accessToken)
+                                                .commit();
                                     }
 
                                     @Override
@@ -157,6 +160,8 @@ public class AudientRepositoryModule {
 
                                     }
                                 });
+
+                        LogUtils.i(TAG, "nmb " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""));
                         return response.request().newBuilder()
                                 .header("Authorization", "Bearer " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
                                 .build();

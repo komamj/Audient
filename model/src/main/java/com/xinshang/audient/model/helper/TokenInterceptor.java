@@ -44,7 +44,7 @@ public class TokenInterceptor implements Interceptor {
         String accessToken = mSharedPreference.getString(Constants.ACCESS_TOKEN, "");
         LogUtils.i(TAG, "intercept : accessToken :" + accessToken);
         Request request = chain.request().newBuilder()
-                .header("Authorization", "Barer " + accessToken)
+                .header("Authorization", "Bearer " + accessToken)
                 .build();
         return chain.proceed(request);
     }

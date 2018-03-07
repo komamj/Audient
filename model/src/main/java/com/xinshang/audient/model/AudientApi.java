@@ -116,7 +116,9 @@ public interface AudientApi {
     @FormUrlEncoded
     @POST("oauth/token")
     Flowable<Token> refreshAccessToken(@Field("grant_type") String grantType,
-                                       @Field("refresh_token") String refreshToken);
+                                       @Field("refresh_token") String refreshToken,
+                                       @Field("client_id") String clientId,
+                                       @Field("client_secret") String clientSecret);
 
     /**
      * 获取access_token
