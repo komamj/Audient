@@ -80,6 +80,8 @@ public interface IRemoteDataSource {
 
     Flowable<BaseResponse> thumbUpComment(String commentId);
 
+    Flowable<BaseResponse> cancelThumbUpComment(String commentId);
+
     Flowable<StoreResponse> getStores(String ol, int page, int size, String sort);
 
     void sendLoginRequest();

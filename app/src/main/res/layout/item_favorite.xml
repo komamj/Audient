@@ -20,15 +20,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:color/darker_gray" />
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_album"
-            app:layout_constraintEnd_toEndOf="@id/iv_album"
-            app:layout_constraintStart_toStartOf="@id/iv_album"
-            app:layout_constraintTop_toTopOf="@id/iv_album"
-            app:srcCompat="@drawable/ic_favorite" />
-
         <TextView
             android:id="@+id/tv_favorite_name"
             style="@style/TextAppearance.AppCompat.Body1"

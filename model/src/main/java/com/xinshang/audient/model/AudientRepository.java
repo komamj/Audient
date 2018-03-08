@@ -170,6 +170,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public Flowable<BaseResponse> cancelThumbUpComment(String commentId) {
+        return mRemoteDataSource.cancelThumbUpComment(commentId);
+    }
+
+    @Override
     public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
         return mRemoteDataSource.getStores(ol, page, size, sort);
     }

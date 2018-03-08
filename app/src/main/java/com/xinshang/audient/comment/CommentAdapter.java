@@ -124,14 +124,19 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         @OnClick(R.id.iv_thumb_up)
         void thumbUp() {
             Comment comment = mData.get(getAdapterPosition());
+            if (mListener != null) {
+                mListener.onThumbUpClick(comment);
+            }
             if (comment.voted) {
-                //   mThumbUp.setImageResource(R.drawable.ic_thumb_up);
+                mThumbUp.setImageResource(R.drawable.ic_thumb_up);
+                mCount.setText(String.valueOf(comment.voteCount - 1));
+                comment.voted = false;
+                comment.voteCount -= 1;
             } else {
                 mCount.setText(String.valueOf(comment.voteCount + 1));
                 mThumbUp.setImageResource(R.drawable.ic_thumb_uped);
-                if (mListener != null) {
-                    mListener.onThumbUpClick(mData.get(getAdapterPosition()));
-                }
+                comment.voted = true;
+                comment.voteCount += 1;
             }
         }
 

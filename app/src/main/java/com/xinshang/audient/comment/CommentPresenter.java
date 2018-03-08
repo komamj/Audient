@@ -114,24 +114,46 @@ public class CommentPresenter implements CommentContract.Presenter {
 
     @Override
     public void thumbUpComment(Comment comment) {
-        mRepository.thumbUpComment(comment.id)
-                .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSubscriber<BaseResponse>() {
-                    @Override
-                    public void onNext(BaseResponse response) {
+        if (comment.voted) {
+            mRepository.cancelThumbUpComment(comment.id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                        @Override
+                        public void onNext(BaseResponse response) {
+                            LogUtils.i(TAG, "cancelThumbUpComment message :" + response.message);
+                        }
 
-                    }
+                        @Override
+                        public void onError(Throwable t) {
+                            LogUtils.e(TAG, "cancelThumbUpComment error :" + t.toString());
+                        }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "thumbUpComment error :" + t.toString());
-                    }
+                        @Override
+                        public void onComplete() {
 
-                    @Override
-                    public void onComplete() {
+                        }
+                    });
+        } else {
+            mRepository.thumbUpComment(comment.id)
+                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSubscriber<BaseResponse>() {
+                        @Override
+                        public void onNext(BaseResponse response) {
+                            LogUtils.i(TAG, "thumbUpComment message :" + response.message);
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onError(Throwable t) {
+                            LogUtils.e(TAG, "thumbUpComment error :" + t.toString());
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        }
     }
 }

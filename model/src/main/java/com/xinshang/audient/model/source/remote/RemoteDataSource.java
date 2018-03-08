@@ -194,6 +194,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
+    public Flowable<BaseResponse> cancelThumbUpComment(String commentId) {
+        return mAudientApi.cancelThumbUpComment(commentId);
+    }
+
+    @Override
     public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
         return mAudientApi.getStores(ol, page, size, sort);
     }

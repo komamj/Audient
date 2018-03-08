@@ -183,6 +183,13 @@ public interface AudientApi {
     Flowable<BaseResponse> thumbUpComment(@Field("commentId") String commentId);
 
     /**
+     * 点赞评论
+     */
+    @FormUrlEncoded
+    @POST("api/v1/musiccomment/cancelVote")
+    Flowable<BaseResponse> cancelThumbUpComment(@Field("commentId") String commentId);
+
+    /**
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
