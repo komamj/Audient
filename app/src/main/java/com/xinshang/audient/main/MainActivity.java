@@ -43,6 +43,7 @@ import com.xinshang.audient.mine.MineFragment;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.playlist.PlaylistFragment;
 import com.xinshang.audient.search.SearchActivity;
+import com.xinshang.audient.setting.SettingsActivity;
 import com.xinshang.audient.toplist.TopListFragment;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.LogUtils;
@@ -205,6 +206,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         if (id == R.id.nav_user_info) {
         } else if (id == R.id.nav_track) {
         } else if (id == R.id.nav_setting) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

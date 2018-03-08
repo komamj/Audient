@@ -16,10 +16,10 @@
 package com.xinshang.audient.setting;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v7.preference.Preference;
 
 import com.xinshang.audient.R;
-import com.xinshang.common.util.LogUtils;
 
 public class SettingsFragment extends PreferenceFragment implements SettingsContract.View {
     private static final String TAG = SettingsFragment.class.getSimpleName();
@@ -34,12 +34,13 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        LogUtils.i(TAG, "onCreate");
-
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.settings);
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        return super.onPreferenceTreeClick(preference);
     }
 
     @Override

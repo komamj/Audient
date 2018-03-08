@@ -44,6 +44,11 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         SettingsFragment fragment = (SettingsFragment) getFragmentManager()
                 .findFragmentById(R.id.content_main);
         if (fragment == null) {
