@@ -18,10 +18,10 @@ package com.xinshang.audient.wxapi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
@@ -57,6 +57,10 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     protected void onPermissonGranted() {
         setSupportActionBar(mToolbar);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         ((AudientApplication) getApplication()).getWXAPI()
                 .handleIntent(getIntent(), this);
 
@@ -78,7 +82,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_base;
+        return R.layout.activity_wxentry;
     }
 
     @Override
@@ -91,26 +95,29 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onReq(BaseReq baseReq) {
 
     }
 
     @Override
     public void onResp(BaseResp baseResp) {
-        LogUtils.i(TAG, "onResp " + baseResp.errCode);
-
-        switch (baseResp.errCode) {
-            case BaseResp.ErrCode.ERR_OK:
-                SendAuth.Resp newResp = (SendAuth.Resp) baseResp;
-                String code = newResp.code;
-                mPresenter.loadAccessToken(code);
-                break;
-            case BaseResp.ErrCode.ERR_USER_CANCEL:
-                break;
-            case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                break;
-            default:
-                break;
+        if (mPresenter != null) {
+            mPresenter.processWXResponse(baseResp);
         }
     }
 }

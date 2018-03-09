@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 LoginDialogFragment.show(getSupportFragmentManager());
             }
         });

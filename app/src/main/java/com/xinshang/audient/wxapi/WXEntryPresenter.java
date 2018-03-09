@@ -15,6 +15,8 @@
  */
 package com.xinshang.audient.wxapi;
 
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.common.util.LogUtils;
@@ -104,5 +106,25 @@ public class WXEntryPresenter implements WXEntryContract.Presenter {
                     }
                 });
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void processWXResponse(BaseResp response) {
+        LogUtils.i(TAG, "onResp " + response.errCode);
+        switch (response.errCode) {
+            case BaseResp.ErrCode.ERR_OK:
+                SendAuth.Resp newResp = (SendAuth.Resp) response;
+                String code = newResp.code;
+
+                // load token
+                this.loadAccessToken(code);
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                break;
+            default:
+                break;
+        }
     }
 }

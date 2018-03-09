@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.wxapi;
 
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
@@ -35,5 +36,7 @@ public interface WXEntryContract {
 
     interface Presenter extends BasePresenter {
         void loadAccessToken(String code);
+
+        void processWXResponse(BaseResp response);
     }
 }

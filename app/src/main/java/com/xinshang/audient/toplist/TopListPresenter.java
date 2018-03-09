@@ -19,6 +19,7 @@ import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.common.util.LogUtils;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,9 @@ public class TopListPresenter implements TopListContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
+                        if (t instanceof ConnectException) {
+                            LogUtils.e(TAG, "loadTopList connect error :");
+                        }
                         LogUtils.e(TAG, "loadTopList error :" + t.toString());
                         if (mView.isActive()) {
                             mView.setLoadingIndictor(false);

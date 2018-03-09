@@ -15,11 +15,14 @@
  */
 package com.xinshang.audient.wxapi;
 
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.view.View;
 
 import com.xinshang.audient.R;
 import com.xinshang.common.base.BaseFragment;
+import com.xinshang.common.util.LogUtils;
 
 import butterknife.BindView;
 
@@ -37,6 +40,15 @@ public class WXEntryFragment extends BaseFragment implements WXEntryContract.Vie
 
     public static WXEntryFragment newInstance() {
         return new WXEntryFragment();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        LogUtils.i(TAG, "onViewCreated");
+
+        setLoadIndicator(true);
     }
 
     @Override

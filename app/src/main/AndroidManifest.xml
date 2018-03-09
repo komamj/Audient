@@ -93,7 +93,8 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/login_label"
+            android:theme="@style/WXEntryTheme" />
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"

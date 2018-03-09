@@ -95,8 +95,6 @@ public class MinePresenter implements MineContract.Presenter {
                         LogUtils.i(TAG, "loadfavorites " + favorites.toString());
 
                         if (mView.isActive()) {
-                            mView.showFavoriteProgressBar(false);
-
                             mView.showFavorites(favorites);
                         }
                     }
@@ -104,11 +102,17 @@ public class MinePresenter implements MineContract.Presenter {
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "loadFavorites error " + t.toString());
+
+                        if (mView.isActive()) {
+                            mView.showFavoriteProgressBar(false);
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.showFavoriteProgressBar(false);
+                        }
                     }
                 });
 
