@@ -16,8 +16,9 @@
 package com.xinshang.audient.setting;
 
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
-import android.support.v7.preference.Preference;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 
 import com.xinshang.audient.R;
 
@@ -34,15 +35,15 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
     }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
     }
 
     @Override
-    public boolean onPreferenceTreeClick(Preference preference) {
-        return super.onPreferenceTreeClick(preference);
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
-
     @Override
     public void setPresenter(SettingsContract.Presenter presenter) {
         mPresenter = presenter;

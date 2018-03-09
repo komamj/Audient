@@ -1,28 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Category 1">
+
+    <PreferenceCategory android:title="@string/notification">
 
         <SwitchPreference
             android:defaultValue="true"
-            android:key="key1"
-            android:summary="Switch Summary"
-            android:title="Switch Preference" />
+            android:key="@string/key_notification"
+            android:persistent="true"
+            android:summary="@string/notification_sumary"
+            android:title="@string/notification_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/theme">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_dark_theme"
+            android:summaryOff="@string/off"
+            android:summaryOn="@string/on"
+            android:persistent="true"
+            android:title="@string/dark_theme_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/comment">
+
+        <SwitchPreference
+            android:key="@string/key_comment_tail"
+            android:persistent="true"
+            android:summary="@string/comment_tail_summary"
+            android:title="@string/comment_tail_title" />
 
         <EditTextPreference
-            android:defaultValue="Default value"
-            android:dialogMessage="Dialog Message"
-            android:key="key2"
-            android:summary="EditText Summary"
-            android:title="EditText Preference" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="key3"
-            android:summary="CheckBox Summary"
-            android:title="CheckBox Preference" />
-        <Preference
-            android:defaultValue="@string/about_label"
-            android:key="key4"
-            android:summary="CheckBox Summary"
-            android:title="CheckBox Preference"/>
+            android:key="@string/key_edit_comment_tail"
+            android:persistent="true"
+            android:dependency="@string/key_comment_tail"
+            android:title="@string/modify_comment_tail_title" />
+
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about_label">
+
+        <Preference
+            android:icon="@mipmap/ic_launcher"
+            android:summary="@string/company_name"
+            android:title="@string/app_name">
+            <intent
+                android:targetClass="com.xinshang.audient.about.AboutActivity"
+                android:targetPackage="com.xinshang.audient" />
+        </Preference>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

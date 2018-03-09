@@ -16,6 +16,7 @@
 package com.xinshang.audient.toplist;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -144,20 +145,31 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     }
 
     @Override
-    public void showLoadingError() {
-        LogUtils.i(TAG, "showLoadingError");
+    public void setLoadingIndictor(boolean isActive) {
+        mSwipeRefreshLayout.setRefreshing(isActive);
     }
 
     @Override
-    public void showEmpty(boolean forceShow) {
-        LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
+    public void showSuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showLoadingError() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override
     public void showTopLists(List<ToplistResult.TopList> topLists) {
         mIsLoaded = true;
-
-        mSwipeRefreshLayout.setRefreshing(false);
 
         mAdapter.replace(topLists);
     }

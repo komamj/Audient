@@ -16,16 +16,12 @@
 package com.xinshang.audient.login;
 
 import com.xinshang.audient.model.AudientRepository;
-import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class LoginPresenter implements LoginContract.Presenter {
     public static final String TAG = LoginPresenter.class.getSimpleName();
@@ -100,7 +96,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void getAccessToken(WeChatMessageEvent messageEvent) {
-        final String code = messageEvent.getCode();
+        /*final String code = messageEvent.getCode();
         mRepository.getAccessToken(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,6 +120,6 @@ public class LoginPresenter implements LoginContract.Presenter {
                             mView.onLoginFinished();
                         }
                     }
-                });
+                });*/
     }
 }

@@ -96,11 +96,18 @@ public class TopListPresenter implements TopListContract.Presenter {
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "loadTopList error :" + t.toString());
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
+                            mView.showLoadingError();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
+                            mView.showSuccessfulMessage();
+                        }
                     }
                 });
 

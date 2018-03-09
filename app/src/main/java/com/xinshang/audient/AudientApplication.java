@@ -20,6 +20,8 @@ import android.os.StrictMode;
 
 import com.bumptech.glide.Glide;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.model.ApplicationModule;
 import com.xinshang.audient.model.AudientRepositoryComponent;
 import com.xinshang.audient.model.AudientRepositoryModule;
@@ -30,15 +32,20 @@ import com.xinshang.common.util.LogUtils;
 public class AudientApplication extends Application {
     private static final String TAG = AudientApplication.class.getSimpleName();
 
+    private IWXAPI mWeChatApi;
+
     private AudientRepositoryComponent mRepositoryComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        mWeChatApi = WXAPIFactory.createWXAPI(this, Constants.WECHAT_APP_ID, true);
+        mWeChatApi.registerApp(Constants.WECHAT_APP_ID);
+
         mRepositoryComponent = DaggerAudientRepositoryComponent.builder()
                 .applicationModule(new ApplicationModule(this))
-                .audientRepositoryModule(new AudientRepositoryModule(Constants.AUDIENT_HOST))
+                .audientRepositoryModule(new AudientRepositoryModule(mWeChatApi))
                 .build();
 
         enableStrictMode();
@@ -50,6 +57,10 @@ public class AudientApplication extends Application {
         }
 
         LeakCanary.install(this);
+    }
+
+    public IWXAPI getWXAPI() {
+        return mWeChatApi;
     }
 
     public AudientRepositoryComponent getRepositoryComponent() {

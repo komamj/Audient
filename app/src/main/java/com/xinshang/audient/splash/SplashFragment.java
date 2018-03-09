@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xinshang.audient.R;
-import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.main.MainActivity;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
@@ -53,7 +52,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         super.onViewCreated(view, savedInstanceState);
         LogUtils.i(TAG, "onViewCreated");
         if (mPresenter != null) {
-            mPresenter.loadLoginStatus();
+            mPresenter.delayLaunchMainView();
         }
     }
 
@@ -71,13 +70,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     }
 
     @Override
-    public void showNextView(boolean forceLogined) {
-        Intent intent;
-        if (forceLogined) {
-            intent = new Intent(mContext, MainActivity.class);
-        } else {
-            intent = new Intent(mContext, LoginActivity.class);
-        }
+    public void showMainView() {
+        Intent intent = new Intent(mContext, MainActivity.class);
         startActivity(intent);
         SplashActivity activity = (SplashActivity) mContext;
         activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

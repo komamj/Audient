@@ -26,10 +26,10 @@ public interface SplashContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        void showNextView(boolean forceLogined);
+        void showMainView();
     }
 
     interface Presenter extends BasePresenter {
-        void loadLoginStatus();
+        void delayLaunchMainView();
     }
 }

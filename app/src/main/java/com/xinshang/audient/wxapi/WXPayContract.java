@@ -15,35 +15,17 @@
  */
 package com.xinshang.audient.wxapi;
 
-import android.content.Intent;
-import android.support.v7.widget.Toolbar;
-
-import com.xinshang.audient.R;
-import com.xinshang.common.base.BaseActivity;
-
-import butterknife.BindView;
+import com.xinshang.common.base.BasePresenter;
+import com.xinshang.common.base.BaseView;
 
 /**
- * Created by koma on 3/5/18.
+ * Created by koma on 3/9/18.
  */
 
-public class WXPayEntryActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    @Override
-    protected void onPermissonGranted() {
-        setSupportActionBar(mToolbar);
+public interface WXPayContract {
+    interface View extends BaseView<WXEntryContract.Presenter> {
     }
 
-    @Override
-    public void onNewIntent(Intent newIntent) {
-        super.onNewIntent(newIntent);
-        setIntent(newIntent);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_base;
+    interface Presenter extends BasePresenter {
     }
 }

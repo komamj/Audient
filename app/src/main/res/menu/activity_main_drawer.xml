@@ -25,11 +25,6 @@
             android:icon="@drawable/ic_menu_send"
             android:title="@string/nav_send" />
         <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_about"
-            android:title="@string/action_about" />
-
-        <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_settings"
             android:title="@string/action_settings" />

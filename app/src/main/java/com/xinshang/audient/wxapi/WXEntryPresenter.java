@@ -13,35 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.splash;
+package com.xinshang.audient.wxapi;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.Token;
 import com.xinshang.common.util.LogUtils;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * Created by koma on 3/5/18.
+ * Created by koma on 3/9/18.
  */
 
-public class SplashPresenter implements SplashContract.Presenter {
-    private static final String TAG = SplashPresenter.class.getSimpleName();
+public class WXEntryPresenter implements WXEntryContract.Presenter {
+    private static final String TAG = WXEntryPresenter.class.getSimpleName();
 
-    private final SplashContract.View mView;
+    private final WXEntryContract.View mView;
+
     private final AudientRepository mRepository;
+
     private final CompositeDisposable mDisposables;
 
     @Inject
-    public SplashPresenter(SplashContract.View view, AudientRepository repository) {
+    public WXEntryPresenter(WXEntryContract.View view, AudientRepository repository) {
         mView = view;
         mRepository = repository;
         mDisposables = new CompositeDisposable();
@@ -63,30 +64,45 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     @Override
-    public void delayLaunchMainView() {
-        Disposable disposable = Flowable.just("")
-                .delay(2, TimeUnit.SECONDS)
+    public void loadAccessToken(String code) {
+        mView.setLoadIndicator(true);
+
+        Disposable disposable = mRepository.getAccessToken(code)
+                .doOnNext(new Consumer<Token>() {
+                    @Override
+                    public void accept(Token token) throws Exception {
+                        LogUtils.i(TAG, "doOnNext thread name :" + Thread.currentThread().getName());
+                        mRepository.persistenceAccessToken(token.accessToken);
+                        mRepository.persistenceRefreshToken(token.refreshToken);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<String>() {
+                .subscribeWith(new DisposableSubscriber<Token>() {
                     @Override
-                    public void onNext(String aBoolean) {
-                        if (mView.isActive()) {
-                            mView.showMainView();
-                        }
+                    public void onNext(Token token) {
+
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadLoginStatus error :" + t.toString());
+                        LogUtils.e(TAG, "loadAccessToken error :" + t.toString());
+                        mRepository.persistenceLoginStatus(false);
+                        if (mView.isActive()) {
+                            mView.setLoadIndicator(false);
+                            mView.showLoadingError();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        mRepository.persistenceLoginStatus(true);
+                        if (mView.isActive()) {
+                            mView.showSuccessfulMessage();
+                            mView.setLoadIndicator(false);
+                        }
                     }
                 });
-
         mDisposables.add(disposable);
     }
 }

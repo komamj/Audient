@@ -30,13 +30,6 @@
         </activity>
 
         <activity
-            android:name=".login.LoginActivity"
-            android:exported="false"
-            android:label="@string/login_label"
-            android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
-
-        <activity
             android:name=".main.MainActivity"
             android:exported="false"
             android:launchMode="singleTop"
@@ -100,7 +93,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -111,6 +104,7 @@
         <activity
             android:name=".setting.SettingsActivity"
             android:exported="false"
+            android:label="@string/nav_setting"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

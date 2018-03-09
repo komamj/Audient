@@ -22,10 +22,6 @@ import com.xinshang.common.base.BaseView;
 public class LoginContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
-
-        void setLoadingIndicator(boolean active);
-
-        void onLoginFinished();
     }
 
     interface Presenter extends BasePresenter {

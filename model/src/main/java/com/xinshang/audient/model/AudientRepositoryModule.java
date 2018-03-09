@@ -24,7 +24,6 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.helper.TokenInterceptor;
 import com.xinshang.audient.model.source.AudientDataSource;
@@ -60,10 +59,10 @@ public class AudientRepositoryModule {
 
     private static final String DB_NAME = "audient-db";
 
-    private final String mBaseUrl;
+    private final IWXAPI mIWXAPI;
 
-    public AudientRepositoryModule(String baseUrl) {
-        this.mBaseUrl = baseUrl;
+    public AudientRepositoryModule(IWXAPI iwxapi) {
+        this.mIWXAPI = iwxapi;
     }
 
     @Singleton
@@ -181,7 +180,7 @@ public class AudientRepositoryModule {
     @Provides
     Retrofit provideRetrofit(Gson gson, OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(mBaseUrl)
+                .baseUrl(Constants.AUDIENT_HOST)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -196,9 +195,7 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    IWXAPI provideWeChatApi(Context context) {
-        IWXAPI api = WXAPIFactory.createWXAPI(context, Constants.WECHAT_APP_ID, true);
-        api.registerApp(Constants.WECHAT_APP_ID);
-        return api;
+    IWXAPI provideIWXAPI() {
+        return this.mIWXAPI;
     }
 }

@@ -25,9 +25,11 @@ public interface TopListContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        void showLoadingError();
+        void setLoadingIndictor(boolean isActive);
 
-        void showEmpty(boolean forceShow);
+        void showSuccessfulMessage();
+
+        void showLoadingError();
 
         void showTopLists(List<ToplistResult.TopList> topLists);
     }
