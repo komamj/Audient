@@ -31,6 +31,7 @@ import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
+import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -196,6 +197,16 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<BaseResponse> cancelThumbUpComment(String commentId) {
         return mAudientApi.cancelThumbUpComment(commentId);
+    }
+
+    @Override
+    public Flowable<BaseResponse> thumbUpSong(ThumbUpSongRequest thumbUpSongRequest) {
+        return mAudientApi.thumbupSong(thumbUpSongRequest);
+    }
+
+    @Override
+    public Flowable<BaseResponse> cancelThumbUpSong(String storeId, String mediaId) {
+        return mAudientApi.cancelThumbUpSong(storeId, mediaId);
     }
 
     @Override

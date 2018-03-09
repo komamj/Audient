@@ -17,9 +17,11 @@ package com.xinshang.audient.nowplaying;
 
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Lyric;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.NowPlayingResult;
+import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.common.util.LogUtils;
 
 import org.reactivestreams.Publisher;
@@ -123,5 +125,51 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
                 });
 
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void thumbUpSong(ThumbUpSongRequest thumbUpSongRequest) {
+        mRepository.thumbUpSong(thumbUpSongRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "thumbUpSong error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void cancelThumbUpSong(String storeId, String mediaId) {
+        mRepository.cancelThumbUpSong(storeId, mediaId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "cancelThumbUpSong error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

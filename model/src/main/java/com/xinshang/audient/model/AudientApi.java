@@ -29,6 +29,7 @@ import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
+import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -235,7 +236,7 @@ public interface AudientApi {
      * 歌曲点赞
      */
     @POST("api/v1/storemusic/upvote")
-    Flowable<BaseResponse> thumbupSong();
+    Flowable<BaseResponse> thumbupSong(@Body ThumbUpSongRequest thumbUpSongRequest);
 
     /**
      * 取消歌曲点赞

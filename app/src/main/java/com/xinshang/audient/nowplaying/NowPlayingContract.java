@@ -17,6 +17,7 @@ package com.xinshang.audient.nowplaying;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Lyric;
+import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
@@ -37,5 +38,9 @@ public interface NowPlayingContract {
 
     interface Presenter extends BasePresenter {
         void loadNowPlaying();
+
+        void thumbUpSong(ThumbUpSongRequest thumbUpSongRequest);
+
+        void cancelThumbUpSong(String storeId, String mediaId);
     }
 }

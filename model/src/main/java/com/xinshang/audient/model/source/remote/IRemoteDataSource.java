@@ -28,6 +28,7 @@ import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
+import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistResult;
@@ -81,6 +82,10 @@ public interface IRemoteDataSource {
     Flowable<BaseResponse> thumbUpComment(String commentId);
 
     Flowable<BaseResponse> cancelThumbUpComment(String commentId);
+
+    Flowable<BaseResponse> thumbUpSong(ThumbUpSongRequest thumbUpSongRequest);
+
+    Flowable<BaseResponse> cancelThumbUpSong(String storeId, String mediaId);
 
     Flowable<StoreResponse> getStores(String ol, int page, int size, String sort);
 
