@@ -103,7 +103,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         if (comment.voted) {
             holder.mThumbUp.setImageResource(R.drawable.ic_thumb_uped);
         } else {
-            holder.mThumbUp.setImageResource(R.drawable.ic_thumb_up);
+            holder.mThumbUp.setImageResource(R.drawable.ic_thumb_up_black);
         }
     }
 
@@ -128,7 +128,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
                 mListener.onThumbUpClick(comment);
             }
             if (comment.voted) {
-                mThumbUp.setImageResource(R.drawable.ic_thumb_up);
+                mThumbUp.setImageResource(R.drawable.ic_thumb_up_black);
                 mCount.setText(String.valueOf(comment.voteCount - 1));
                 comment.voted = false;
                 comment.voteCount -= 1;

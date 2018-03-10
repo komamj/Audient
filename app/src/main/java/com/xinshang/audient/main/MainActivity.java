@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
+import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
 import com.xinshang.audient.model.entities.User;
@@ -238,6 +239,13 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     @Override
     public void showUser(User user) {
+        GlideApp.with(this)
+                .asBitmap()
+                .placeholder(R.drawable.ic_user)
+                .thumbnail(0.1f)
+                .circleCrop()
+                .load(user.avatar)
+                .into(mUserImage);
         mName.setText(user.nickName);
     }
 

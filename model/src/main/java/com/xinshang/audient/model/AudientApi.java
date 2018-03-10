@@ -233,7 +233,8 @@ public interface AudientApi {
      * 获取点赞信息
      */
     @GET("api/v1/storemusic/{id}/stat")
-    Flowable<StoreVoteResponse> getVoteInfo(@Path("sid") String storeId);
+    Flowable<StoreVoteResponse> getVoteInfo(@Path("id") String mediaId,
+                                            @Query("sid") String storeId);
 
     /**
      * 歌曲点赞

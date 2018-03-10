@@ -32,4 +32,6 @@ public class User {
     public String email;
     @SerializedName("phoneNumber")
     public String phoneNumber;
+    @SerializedName("avatar")
+    public String avatar;
 }

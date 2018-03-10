@@ -31,9 +31,9 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:scaleType="centerCrop"
-            android:tint="@android:color/white"
             app:borderWidth="0dp"
-            app:srcCompat="@drawable/ic_thumb_up" />
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_thumb_up_white" />
 
     </android.support.v7.widget.CardView>
 

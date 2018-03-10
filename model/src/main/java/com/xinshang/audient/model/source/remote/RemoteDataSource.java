@@ -185,8 +185,8 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<StoreVoteResponse> getVoteInfo(String storeId) {
-        return mAudientApi.getVoteInfo(storeId);
+    public Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId) {
+        return mAudientApi.getVoteInfo(mediaId, storeId);
     }
 
     @Override

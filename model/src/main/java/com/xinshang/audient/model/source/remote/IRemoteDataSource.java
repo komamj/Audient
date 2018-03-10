@@ -91,5 +91,5 @@ public interface IRemoteDataSource {
 
     void sendLoginRequest();
 
-    Flowable<StoreVoteResponse> getVoteInfo(String storeId);
+    Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId);
 }

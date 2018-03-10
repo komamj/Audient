@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -51,6 +52,8 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     TextView mMusicName;
     @BindView(R.id.tv_singer_name)
     TextView mSingerName;
+    @BindView(R.id.fab_thumb_up)
+    FloatingActionButton mFabThumbUp;
 
     @OnClick(R.id.fab_next)
     void skipNext() {
@@ -59,7 +62,7 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @OnClick(R.id.fab_thumb_up)
     void thumbUp() {
-
+        mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_black);
     }
 
     @OnClick(R.id.iv_favorite)

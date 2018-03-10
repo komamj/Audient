@@ -161,8 +161,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<StoreVoteResponse> getVoteInfo(String storeId) {
-        return mRemoteDataSource.getVoteInfo(storeId);
+    public Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId) {
+        return mRemoteDataSource.getVoteInfo(mediaId, storeId);
     }
 
     @Override
