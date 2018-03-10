@@ -21,6 +21,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -55,6 +56,10 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     @BindView(R.id.fab_thumb_up)
     FloatingActionButton mFabThumbUp;
 
+    private boolean mIsVoted;
+
+    private String mStoreId;
+
     @OnClick(R.id.fab_next)
     void skipNext() {
 
@@ -62,7 +67,15 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @OnClick(R.id.fab_thumb_up)
     void thumbUp() {
-        mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_black);
+        if (mPresenter != null) {
+            if (mIsVoted) {
+                mPresenter.cancelThumbUpSong(mStoreId, mAudient);
+            } else {
+                mPresenter.thumbUpSong(mAudient, mStoreId);
+            }
+        }
+
+        showVoteInfo(!mIsVoted);
     }
 
     @OnClick(R.id.iv_favorite)
@@ -97,6 +110,15 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_playing;
     }
@@ -117,6 +139,16 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
+    public void showVoteInfo(boolean isVoted) {
+        mIsVoted = isVoted;
+        if (isVoted) {
+            mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_black);
+        } else {
+            mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_white);
+        }
+    }
+
+    @Override
     public void showEmpty(boolean forceShow) {
 
     }
@@ -127,21 +159,10 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onDestroyView() {
+        super.onDestroyView();
 
-        LogUtils.i(TAG, "onResume");
-
-        if (mPresenter != null) {
-            mPresenter.subscribe();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        LogUtils.i(TAG, "onPause");
+        LogUtils.i(TAG, "onDestroyView");
 
         if (mPresenter != null) {
             mPresenter.unSubscribe();

@@ -17,7 +17,6 @@ package com.xinshang.audient.nowplaying;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Lyric;
-import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
@@ -26,6 +25,8 @@ public interface NowPlayingContract {
         boolean isActive();
 
         void showLoadingError();
+
+        void showVoteInfo(boolean isVoted);
 
         void showEmpty(boolean forceShow);
 
@@ -39,8 +40,10 @@ public interface NowPlayingContract {
     interface Presenter extends BasePresenter {
         void loadNowPlaying();
 
-        void thumbUpSong(ThumbUpSongRequest thumbUpSongRequest);
+        void loadVoteInfo(String mediaId, String storeId);
 
-        void cancelThumbUpSong(String storeId, String mediaId);
+        void thumbUpSong(Audient audient, String storeId);
+
+        void cancelThumbUpSong(String storeId, Audient audient);
     }
 }

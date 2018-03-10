@@ -21,7 +21,9 @@ import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Lyric;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.NowPlayingResult;
+import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
+import com.xinshang.audient.model.entities.VoteInfo;
 import com.xinshang.common.util.LogUtils;
 
 import org.reactivestreams.Publisher;
@@ -128,7 +130,46 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
     }
 
     @Override
-    public void thumbUpSong(ThumbUpSongRequest thumbUpSongRequest) {
+    public void loadVoteInfo(String mediaId, String storeId) {
+        Disposable disposable = mRepository.getVoteInfo(mediaId, storeId)
+                .map(new Function<StoreVoteResponse, VoteInfo>() {
+                    @Override
+                    public VoteInfo apply(StoreVoteResponse storeVoteResponse) throws Exception {
+                        return storeVoteResponse.voteInfo;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<VoteInfo>() {
+                    @Override
+                    public void onNext(VoteInfo voteInfo) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadVoteInfo error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
+
+    }
+
+    @Override
+    public void thumbUpSong(Audient audient, String storeId) {
+        ThumbUpSongRequest thumbUpSongRequest = new ThumbUpSongRequest();
+        thumbUpSongRequest.mediaId = audient.mediaId;
+        thumbUpSongRequest.albumId = audient.albumId;
+        thumbUpSongRequest.albumName = audient.albumName;
+        thumbUpSongRequest.artistName = audient.artistName;
+        thumbUpSongRequest.mediaName = audient.mediaName;
+        thumbUpSongRequest.storeId = storeId;
+
         mRepository.thumbUpSong(thumbUpSongRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -151,8 +192,8 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
     }
 
     @Override
-    public void cancelThumbUpSong(String storeId, String mediaId) {
-        mRepository.cancelThumbUpSong(storeId, mediaId)
+    public void cancelThumbUpSong(String storeId, Audient audient) {
+        mRepository.cancelThumbUpSong(storeId, audient.mediaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
