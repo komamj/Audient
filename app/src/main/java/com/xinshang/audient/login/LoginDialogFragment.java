@@ -84,7 +84,7 @@ public class LoginDialogFragment extends BaseDialogFragment implements LoginCont
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (mPresenter != null) {
-                    mPresenter.login();
+                    mPresenter.sendLoginRequest();
                 }
             }
         });
@@ -102,5 +102,25 @@ public class LoginDialogFragment extends BaseDialogFragment implements LoginCont
     @Override
     public boolean isActive() {
         return this.isAdded();
+    }
+
+    @Override
+    public void setLoadIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showSuccessfulMessage() {
+
+    }
+
+    @Override
+    public void showLoadingError() {
+
+    }
+
+    @Override
+    public void onLoginWXCompleted() {
+
     }
 }

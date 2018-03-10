@@ -15,22 +15,24 @@
  */
 package com.xinshang.audient.util;
 
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+
 /**
  * Created by koma_20 on 2018/3/3.
  */
 
 public class WeChatMessageEvent {
-    private String mCode;
+    private BaseResp mResp;
 
-    public WeChatMessageEvent(String code) {
-        this.mCode = code;
+    public WeChatMessageEvent(BaseResp resp) {
+        this.mResp = resp;
     }
 
-    public void setCode(String code) {
-        this.mCode = code;
+    public void setResp(BaseResp resp) {
+        this.mResp = resp;
     }
 
-    public String getCode() {
-        return this.mCode;
+    public BaseResp getResp() {
+        return this.mResp;
     }
 }

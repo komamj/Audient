@@ -16,17 +16,16 @@
 package com.xinshang.audient.login;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.xinshang.audient.R;
-import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -36,11 +35,18 @@ import butterknife.OnClick;
 public class LoginFragment extends BaseFragment implements LoginContract.View {
     private static final String TAG = LoginFragment.class.getSimpleName();
 
+    @BindView(R.id.progress_bar)
+    ContentLoadingProgressBar mProgressBar;
+
     private LoginContract.Presenter mPresenter;
 
-    @OnClick(R.id.btn_login)
+    @OnClick(R.id.btn_wx)
     void loginWeChat() {
-        mPresenter.login();
+        setLoadIndicator(true);
+
+        if (mPresenter != null) {
+            mPresenter.sendLoginRequest();
+        }
     }
 
 
@@ -61,28 +67,16 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EventBus.getDefault().register(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(WeChatMessageEvent messageEvent) {
-        LogUtils.i(TAG, "onMessageEvent code :" + messageEvent.getCode());
+        setLoadIndicator(false);
 
         if (mPresenter != null) {
-            mPresenter.getAccessToken(messageEvent);
+            mPresenter.subscribe();
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
         if (mPresenter != null) {
             mPresenter.unSubscribe();
@@ -102,5 +96,39 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     @Override
     public boolean isActive() {
         return this.isAdded();
+    }
+
+    @Override
+    public void setLoadIndicator(boolean active) {
+        if (active) {
+            mProgressBar.show();
+        } else {
+            mProgressBar.hide();
+        }
+    }
+
+    @Override
+    public void showSuccessfulMessage() {
+        if (getView() != null) {
+            Snackbar.make(getView(), R.string.login_successful_message, Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+
+        onLoginWXCompleted();
+    }
+
+    @Override
+    public void showLoadingError() {
+        if (getView() != null) {
+            Snackbar.make(getView(), R.string.login_error_message, Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    @Override
+    public void onLoginWXCompleted() {
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        activity.finish();
+        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

@@ -23,5 +23,7 @@ import dagger.Component;
 @ActivityScoped
 @Component(dependencies = AudientRepositoryComponent.class, modules = LoginPresenterModule.class)
 public interface LoginComponent {
-    void inject(LoginDialogFragment activity);
+    void inject(LoginDialogFragment dialogFragment);
+
+    void inject(LoginActivity activity);
 }

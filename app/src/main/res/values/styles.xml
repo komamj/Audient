@@ -28,7 +28,7 @@
         <item name="android:windowBackground">@mipmap/bg_splash</item>
     </style>
 
-    <style name="WXEntryTheme" parent="FullScreenTheme">
+    <style name="LoginTheme" parent="FullScreenTheme">
         <item name="android:windowBackground">@mipmap/bg_login</item>
     </style>
 

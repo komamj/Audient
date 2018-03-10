@@ -56,6 +56,7 @@ ext {
     retrofit_version = '2.3.0'
     interceptor_version = '3.7.0'
     eventbus_version = '3.1.1'
+    paging_version = '1.0.0-alpha6'
     leakcanary_version = '1.5.4'
     wechat_sdk_version = '5.1.4'
 }

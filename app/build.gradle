@@ -101,6 +101,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.interceptor_version"
     implementation "org.greenrobot:eventbus:$rootProject.ext.eventbus_version"
+    //PagingLibrary
+    implementation "android.arch.paging:runtime:$rootProject.ext.paging_version"
     //WeChat
     implementation "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:$rootProject.ext.wechat_sdk_version"
     //leakcanary

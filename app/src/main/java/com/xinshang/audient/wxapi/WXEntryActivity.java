@@ -15,74 +15,45 @@
  */
 package com.xinshang.audient.wxapi;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.xinshang.audient.AudientApplication;
-import com.xinshang.audient.R;
-import com.xinshang.common.base.BaseActivity;
-import com.xinshang.common.util.ActivityUtils;
+import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
-import javax.inject.Inject;
-
-import butterknife.BindView;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by koma on 3/2/18.
  */
 
-public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
+public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private static final String TAG = WXEntryActivity.class.getSimpleName();
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    @Inject
-    WXEntryPresenter mPresenter;
+    /*@Inject
+    WXEntryPresenter mPresenter;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
-    }
-
-    @Override
-    protected void onPermissonGranted() {
-        setSupportActionBar(mToolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        ((AudientApplication) getApplication()).getWXAPI()
-                .handleIntent(getIntent(), this);
-
-        WXEntryFragment fragment = (WXEntryFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.content_main);
-        if (fragment == null) {
-            fragment = WXEntryFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    fragment, R.id.content_main);
-        }
 
         // inject presenter layer
-        DaggerWXEntryComponent.builder().audientRepositoryComponent(
+        /*DaggerWXEntryComponent.builder().audientRepositoryComponent(
                 ((AudientApplication) getApplication()).getRepositoryComponent())
                 .wXEntryPresenterModule(new WXEntryPresenterModule(fragment))
                 .build()
-                .inject(this);
-    }
+                .inject(this);*/
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_wxentry;
+        ((AudientApplication) getApplication()).getWXAPI()
+                .handleIntent(getIntent(), this);
     }
 
     @Override
@@ -92,6 +63,9 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         LogUtils.i(TAG, "onNewIntent");
 
         setIntent(newIntent);
+
+        ((AudientApplication) getApplication()).getWXAPI()
+                .handleIntent(getIntent(), this);
     }
 
     @Override
@@ -115,9 +89,9 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     }
 
     @Override
-    public void onResp(BaseResp baseResp) {
-        if (mPresenter != null) {
-            mPresenter.processWXResponse(baseResp);
-        }
+    public void onResp(BaseResp response) {
+        LogUtils.i(TAG, "onResp " + response.errCode);
+        EventBus.getDefault().post(new WeChatMessageEvent(response));
+        finish();
     }
 }

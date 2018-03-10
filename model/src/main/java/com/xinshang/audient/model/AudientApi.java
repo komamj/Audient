@@ -59,9 +59,11 @@ public interface AudientApi {
     /**
      * 获取榜单详情
      */
-    @GET("api/v1/openmusic/toplist/{mediaId}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("mediaId") int topId,
-                                                   @Query("date") String updateKey);
+    @GET("api/v1/openmusic/toplist/{id}")
+    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
+                                                   @Query("date") String updateKey,
+                                                   @Query("p") int page,
+                                                   @Query("n") int pageCount);
 
     /**
      * 获取搜索结果.
@@ -69,7 +71,8 @@ public interface AudientApi {
      * @param keyword 关键字.
      */
     @GET("api/v1/openmusic/search")
-    Flowable<SearchResult> getSeachResults(@Query("w") String keyword);
+    Flowable<SearchResult> getSeachResults(@Query("w") String keyword, @Query("p") int page,
+                                           @Query("n") int pageCount);
 
     /**
      * 获取歌词.
@@ -194,9 +197,9 @@ public interface AudientApi {
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
-    Flowable<CommentResult> getComments(@Query("mid") String mid, @Query("page") int page,
-                                        @Query("size") int size,
-                                        @Query("sort") String sortord);
+    Flowable<CommentResult> getComments(@Query("mid") String mid, @Query("sort") String sortord,
+                                        @Query("sid") String storeId, @Query("page") int page,
+                                        @Query("size") int size);
 
     /**
      * 发表评论

@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
-import com.xinshang.audient.login.LoginDialogFragment;
+import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.playlist.PlaylistFragment;
@@ -103,8 +103,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                LoginDialogFragment.show(getSupportFragmentManager());
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 

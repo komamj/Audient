@@ -15,18 +15,28 @@
  */
 package com.xinshang.audient.login;
 
-import com.xinshang.audient.util.WeChatMessageEvent;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
 public class LoginContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
+
+        void setLoadIndicator(boolean active);
+
+        void showSuccessfulMessage();
+
+        void showLoadingError();
+
+        void onLoginWXCompleted();
     }
 
     interface Presenter extends BasePresenter {
-        void login();
+        void sendLoginRequest();
 
-        void getAccessToken(WeChatMessageEvent messageEvent);
+        void loadAccessToken(String code);
+
+        void processWXResponse(BaseResp response);
     }
 }

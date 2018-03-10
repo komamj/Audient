@@ -80,12 +80,12 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
 
     @Override
     public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
-        return mAudientApi.getToplistDetail(topId, showTime);
+        return mAudientApi.getToplistDetail(topId, showTime, 0, 30);
     }
 
     @Override
     public Flowable<SearchResult> getSearchReult(String keyword) {
-        return mAudientApi.getSeachResults(keyword);
+        return mAudientApi.getSeachResults(keyword, 0, 40);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
 
     @Override
     public Flowable<CommentResult> getCommentResult(String id) {
-        return mAudientApi.getComments(id, 0, 40, null);
+        return mAudientApi.getComments(id, null, null, 0, 40);
     }
 
     @Override

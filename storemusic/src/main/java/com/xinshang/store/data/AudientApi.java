@@ -55,8 +55,8 @@ public interface AudientApi {
     /**
      * 获取榜单详情
      */
-    @GET("api/v1/openmusic/toplist/{mediaId}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("mediaId") int topId,
+    @GET("api/v1/openmusic/toplist/{id}")
+    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
                                                    @Query("date") String updateKey);
 
     /**
