@@ -27,12 +27,20 @@ import com.xinshang.common.util.LogUtils;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class SettingsActivity extends BaseActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @OnClick(R.id.btn_cancel_login)
+    void cancelLogin() {
+        if (mPresenter != null) {
+            mPresenter.cancelLogin();
+        }
+    }
 
     @Inject
     SettingsPresenter mPresenter;
@@ -67,7 +75,7 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_base;
+        return R.layout.activity_settings;
     }
 
     @Override

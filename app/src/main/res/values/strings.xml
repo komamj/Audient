@@ -71,6 +71,7 @@
     <string name="modify_name">"重命名"</string>
 
     <!--Setting-->
+    <string name="cancel_login">"取消登录"</string>
     <string name="notification">"通知"</string>
     <string name="key_notification" translatable="false">key notification</string>
     <string name="notification_title">"接收消息推送"</string>

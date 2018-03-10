@@ -20,6 +20,8 @@ import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SettingsPresenter implements SettingsContract.Presenter {
@@ -55,5 +57,12 @@ public class SettingsPresenter implements SettingsContract.Presenter {
         LogUtils.i(TAG, "unSubscribe");
 
         mDisposables.clear();
+    }
+
+    @Override
+    public void cancelLogin() {
+        mRepository.persistenceLoginStatus(false);
+        mRepository.persistenceAccessToken("");
+        mRepository.persistenceRefreshToken("");
     }
 }
