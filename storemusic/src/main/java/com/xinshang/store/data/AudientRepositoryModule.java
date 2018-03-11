@@ -41,6 +41,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -48,7 +49,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -129,23 +129,39 @@ public class AudientRepositoryModule {
                     @Nullable
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
-                        Call<Token> tokenCall = new Retrofit.Builder()
+                        String refershToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                        LogUtils.i(TAG, "authenticate :" + refershToken);
+
+                        Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(Constants.STORE_MUSIC_HOST)
                                 .addConverterFactory(GsonConverterFactory.create(gson))
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                                .build()
-                                .create(AudientApi.class)
-                                .getToken(Constants.USER_NAME, Constants.USER_PASSWORD,
-                                        Constants.GRANT_TYPE, Constants.CLIENT_ID,
-                                        Constants.CLIENT_SECRET);
-                        String token = tokenCall.execute().body().accessToken;
-                        String accessToken = "Bearer " + token;
-                        LogUtils.i(TAG, "token :" + accessToken);
-                        sharedPreferences.edit()
-                                .putString(Constants.ACCESS_TOKEN, accessToken)
-                                .apply();
+                                .build();
+                        AudientApi audientApi = retrofit.create(AudientApi.class);
+
+                        audientApi.getAccessToken(Constants.USER_NAME, Constants.USER_PASSWORD,
+                                Constants.GRANT_TYPE, Constants.CLIENT_ID,
+                                Constants.CLIENT_SECRET)
+                                .subscribeWith(new DisposableSubscriber<Token>() {
+                                    @Override
+                                    public void onNext(Token token) {
+                                        sharedPreferences.edit()
+                                                .putString(Constants.ACCESS_TOKEN, token.accessToken)
+                                                .commit();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable t) {
+
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
                         return response.request().newBuilder()
-                                .header("Authorization", accessToken)
+                                .header("Authorization", "Bearer " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
                                 .build();
                     }
                 })

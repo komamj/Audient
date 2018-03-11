@@ -68,7 +68,7 @@ public class CommentPresenter implements CommentContract.Presenter {
 
     @Override
     public void loadComments(TencentMusic audient) {
-        Disposable disposable = mRepository.getCommentResult(audient.mediaId)
+        Disposable disposable = mRepository.getCommentResult(audient.mediaId, 0, 40, null)
                 .map(new Function<CommentResult, List<Comment>>() {
                     @Override
                     public List<Comment> apply(CommentResult commentResult) throws Exception {

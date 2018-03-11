@@ -22,10 +22,11 @@ import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
-import com.xinshang.store.data.entities.NowPlayingResult;
+import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.StoreKeeper;
+import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -59,23 +60,23 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<StoreKeeper> getStoreKeeperInfo() {
+    public Flowable<StoreKeeperResponse> getStoreKeeperInfo() {
         return mAudientApi.getStoreKeeperInfo();
     }
 
     @Override
     public Flowable<List<ToplistResult>> getTopList() {
-        return mAudientApi.getTopLists();
+        return mAudientApi.getToplists();
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
-        return mAudientApi.getToplistDetail(topId, showTime);
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count) {
+        return mAudientApi.getToplistDetail(topId, showTime, page, count);
     }
 
     @Override
-    public Flowable<SearchResult> getSearchReult(String keyword) {
-        return mAudientApi.getSeachResults(keyword);
+    public Flowable<SearchResult> getSearchReult(String keyword, int page, int count) {
+        return mAudientApi.getSeachResults(keyword, page, count);
     }
 
     @Override
@@ -94,16 +95,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<CommentResult> getCommentResult(String id) {
-        return mAudientApi.getComments(id, 0, 40, null);
-    }
-
-    @Override
-    public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
+    public Flowable<NowPlayingResponse> getNowPlaying(String storeId) {
+        return Flowable.create(new FlowableOnSubscribe<NowPlayingResponse>() {
             @Override
-            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
-                NowPlayingResult nowPlayingResult = new NowPlayingResult();
+            public void subscribe(FlowableEmitter<NowPlayingResponse> emitter) throws Exception {
+                NowPlayingResponse nowPlayingResult = new NowPlayingResponse();
                 TencentMusic audient = new TencentMusic();
                 audient.mediaId = "003evjhg3qIe9S";
                 audient.duration = 260;
@@ -112,12 +108,17 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
                 audient.mediaName = "一生中最爱";
                 audient.albumId = "0018tEZm032RCk";
                 audient.albumName = "神话1991";
-                nowPlayingResult.audient = audient;
+                nowPlayingResult.tencentMusic = audient;
 
                 emitter.onNext(nowPlayingResult);
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
+    }
+
+    @Override
+    public Flowable<CommentResult> getCommentResult(String id, int page, int count, String sortord) {
+        return mAudientApi.getComments(id, page, count, sortord);
     }
 
     @Override

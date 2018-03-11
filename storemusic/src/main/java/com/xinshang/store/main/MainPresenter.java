@@ -17,6 +17,7 @@ package com.xinshang.store.main;
 
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.StoreKeeper;
+import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -65,6 +67,12 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void loadStoreKeeperInfo() {
         Disposable disposable = mRepository.getStoreKeeperInfo()
+                .map(new Function<StoreKeeperResponse, StoreKeeper>() {
+                    @Override
+                    public StoreKeeper apply(StoreKeeperResponse storeKeeperResponse) throws Exception {
+                        return storeKeeperResponse.storeKeeper;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<StoreKeeper>() {

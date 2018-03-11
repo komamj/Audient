@@ -21,10 +21,10 @@ import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
-import com.xinshang.store.data.entities.NowPlayingResult;
+import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
-import com.xinshang.store.data.entities.StoreKeeper;
+import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -61,7 +61,7 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<StoreKeeper> getStoreKeeperInfo() {
+    public Flowable<StoreKeeperResponse> getStoreKeeperInfo() {
         return mRemoteDataSource.getStoreKeeperInfo();
     }
 
@@ -71,13 +71,13 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
-        return mRemoteDataSource.getToplistDetail(topId, showTime);
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count) {
+        return mRemoteDataSource.getToplistDetail(topId, showTime, page, count);
     }
 
     @Override
-    public Flowable<SearchResult> getSearchReult(String keyword) {
-        return mRemoteDataSource.getSearchReult(keyword);
+    public Flowable<SearchResult> getSearchReult(String keyword, int page, int count) {
+        return mRemoteDataSource.getSearchReult(keyword, page, count);
     }
 
     @Override
@@ -96,13 +96,13 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<CommentResult> getCommentResult(String id) {
-        return mRemoteDataSource.getCommentResult(id);
+    public Flowable<NowPlayingResponse> getNowPlaying(String storeId) {
+        return mRemoteDataSource.getNowPlaying(storeId);
     }
 
     @Override
-    public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return mRemoteDataSource.getNowPlayingResult();
+    public Flowable<CommentResult> getCommentResult(String id, int page, int count, String sortord) {
+        return mRemoteDataSource.getCommentResult(id, page, count, sortord);
     }
 
     @Override

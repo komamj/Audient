@@ -13,15 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.store.login;
+package com.xinshang.audient.model.entities;
 
-import com.xinshang.store.data.AudientRepositoryComponent;
-import com.xinshang.store.utils.ActivityScoped;
-
-import dagger.Component;
-
-@ActivityScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = LoginPresenterModule.class)
-public interface LoginComponent {
-    void inject(LoginActivity activity);
+public class NowPlayingResponse {
+    public Audient audient;
 }

@@ -99,7 +99,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         holder.mComment.setText(comment.comment);
         holder.mUserName.setText(comment.userNickname);
         holder.mTime.setText(comment.commentDate);
-        holder.mVoteCount.setText(comment.voteCount);
+        holder.mVoteCount.setText(String.valueOf(comment.voteCount));
     }
 
     public interface EventListener {

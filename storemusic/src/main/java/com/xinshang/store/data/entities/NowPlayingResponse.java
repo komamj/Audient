@@ -13,21 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.store.login;
+package com.xinshang.store.data.entities;
 
-import dagger.Module;
-import dagger.Provides;
+/**
+ * Created by koma_20 on 2018/3/11.
+ */
 
-@Module
-public class LoginPresenterModule {
-    private final LoginContract.View mView;
-
-    public LoginPresenterModule(LoginContract.View view) {
-        mView = view;
-    }
-
-    @Provides
-    LoginContract.View provideLoginContractView() {
-        return this.mView;
-    }
+public class NowPlayingResponse {
+    public TencentMusic tencentMusic;
 }

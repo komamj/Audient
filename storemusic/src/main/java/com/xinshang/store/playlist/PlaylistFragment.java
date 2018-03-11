@@ -140,6 +140,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
         if (mPresenter != null) {
             mPresenter.subscribe();
+            mPresenter.loadNowPlaying("");
+            mPresenter.loadAudients();
         }
     }
 

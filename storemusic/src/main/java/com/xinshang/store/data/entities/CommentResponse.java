@@ -41,7 +41,7 @@ public class CommentResponse {
         @SerializedName("size")
         public int size;
         @SerializedName("sort")
-        public String sort;
+        public List<Sortord> sortords;
         @SerializedName("numberOfElements")
         public int numberOfElements;
         @SerializedName("first")

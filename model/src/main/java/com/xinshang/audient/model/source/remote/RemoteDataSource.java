@@ -26,7 +26,7 @@ import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
-import com.xinshang.audient.model.entities.NowPlayingResult;
+import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
@@ -109,11 +109,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<NowPlayingResult> getNowPlayingResult() {
-        return Flowable.create(new FlowableOnSubscribe<NowPlayingResult>() {
+    public Flowable<NowPlayingResponse> getNowPlayingResult() {
+        return Flowable.create(new FlowableOnSubscribe<NowPlayingResponse>() {
             @Override
-            public void subscribe(FlowableEmitter<NowPlayingResult> emitter) throws Exception {
-                NowPlayingResult nowPlayingResult = new NowPlayingResult();
+            public void subscribe(FlowableEmitter<NowPlayingResponse> emitter) throws Exception {
+                NowPlayingResponse nowPlayingResult = new NowPlayingResponse();
                 Audient audient = new Audient();
                 audient.mediaId = "003evjhg3qIe9S";
                 audient.duration = 260;

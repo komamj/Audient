@@ -16,7 +16,7 @@
 package com.xinshang.store.playlist;
 
 import com.xinshang.store.data.AudientRepository;
-import com.xinshang.store.data.entities.NowPlayingResult;
+import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.LogUtils;
 
@@ -57,10 +57,6 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
-
-        loadNowPlaying();
-
-        loadAudients();
     }
 
     @Override
@@ -71,26 +67,27 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     }
 
     @Override
-    public void loadNowPlaying() {
-        Disposable disposable = mRepository.getNowPlayingResult()
-                .map(new Function<NowPlayingResult, TencentMusic>() {
+    public void loadNowPlaying(String storeId) {
+        Disposable disposable = mRepository.getNowPlaying(storeId)
+                .map(new Function<NowPlayingResponse, TencentMusic>() {
                     @Override
-                    public TencentMusic apply(NowPlayingResult nowPlayingResult) throws Exception {
-                        return nowPlayingResult.audient;
+                    public TencentMusic apply(NowPlayingResponse nowPlayingResponse) throws Exception {
+                        return nowPlayingResponse.tencentMusic;
                     }
-                }).subscribeOn(Schedulers.io())
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<TencentMusic>() {
                     @Override
-                    public void onNext(TencentMusic audient) {
+                    public void onNext(TencentMusic tencentMusic) {
                         if (mView.isActive()) {
-                            mView.showNowPlaying(audient);
+                            mView.showNowPlaying(tencentMusic);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadNowPlaying error " + t.toString());
+
                     }
 
                     @Override
@@ -132,7 +129,7 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     }
 
     @Override
-    public void thumbUp(TencentMusic audient) {
+    public void thumbUpSong(TencentMusic audient) {
         LogUtils.i(TAG, "thumbUp");
     }
 }

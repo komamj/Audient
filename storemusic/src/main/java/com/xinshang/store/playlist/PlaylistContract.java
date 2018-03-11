@@ -37,10 +37,10 @@ public interface PlaylistContract {
     }
 
     interface Presenter extends BasePresenter {
-        void loadNowPlaying();
+        void loadNowPlaying(String storeId);
 
         void loadAudients();
 
-        void thumbUp(TencentMusic audient);
+        void thumbUpSong(TencentMusic audient);
     }
 }

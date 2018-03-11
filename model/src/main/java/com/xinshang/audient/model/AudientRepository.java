@@ -23,7 +23,7 @@ import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
-import com.xinshang.audient.model.entities.NowPlayingResult;
+import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.StoreResponse;
@@ -106,7 +106,7 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<NowPlayingResult> getNowPlayingResult() {
+    public Flowable<NowPlayingResponse> getNowPlayingResult() {
         return mRemoteDataSource.getNowPlayingResult();
     }
 

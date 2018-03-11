@@ -20,7 +20,7 @@ import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Lyric;
 import com.xinshang.audient.model.entities.LyricResult;
-import com.xinshang.audient.model.entities.NowPlayingResult;
+import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.VoteInfo;
@@ -80,9 +80,9 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
         mDisposables.clear();
 
         Disposable disposable = mRepository.getNowPlayingResult()
-                .map(new Function<NowPlayingResult, Audient>() {
+                .map(new Function<NowPlayingResponse, Audient>() {
                     @Override
-                    public Audient apply(NowPlayingResult nowPlayingResult) throws Exception {
+                    public Audient apply(NowPlayingResponse nowPlayingResult) throws Exception {
                         return nowPlayingResult.audient;
                     }
                 }).subscribeOn(Schedulers.io())

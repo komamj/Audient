@@ -18,8 +18,6 @@ package com.xinshang.store.data.source.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.source.AudientDataSource;
 

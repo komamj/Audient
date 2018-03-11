@@ -17,7 +17,7 @@ package com.xinshang.audient.playlist;
 
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.audient.model.entities.NowPlayingResult;
+import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.common.util.LogUtils;
 
 import java.util.List;
@@ -73,9 +73,9 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     @Override
     public void loadNowPlaying() {
         Disposable disposable = mRepository.getNowPlayingResult()
-                .map(new Function<NowPlayingResult, Audient>() {
+                .map(new Function<NowPlayingResponse, Audient>() {
                     @Override
-                    public Audient apply(NowPlayingResult nowPlayingResult) throws Exception {
+                    public Audient apply(NowPlayingResponse nowPlayingResult) throws Exception {
                         return nowPlayingResult.audient;
                     }
                 }).subscribeOn(Schedulers.io())

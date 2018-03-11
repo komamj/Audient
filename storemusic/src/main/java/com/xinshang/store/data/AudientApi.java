@@ -21,11 +21,11 @@ import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
-import com.xinshang.store.data.entities.Music;
-import com.xinshang.store.data.entities.NowPlayingResult;
+import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.StoreKeeper;
+import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -34,7 +34,6 @@ import com.xinshang.store.data.entities.ToplistResult;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -50,14 +49,16 @@ public interface AudientApi {
      * 获取榜单列表.
      */
     @GET("api/v1/openmusic/toplist")
-    Flowable<List<ToplistResult>> getTopLists();
+    Flowable<List<ToplistResult>> getToplists();
 
     /**
      * 获取榜单详情
      */
     @GET("api/v1/openmusic/toplist/{id}")
     Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
-                                                   @Query("date") String updateKey);
+                                                   @Query("date") String updateKey,
+                                                   @Query("p") int page,
+                                                   @Query("n") int pageCount);
 
     /**
      * 获取搜索结果.
@@ -65,7 +66,8 @@ public interface AudientApi {
      * @param keyword 关键字.
      */
     @GET("api/v1/openmusic/search")
-    Flowable<SearchResult> getSeachResults(@Query("w") String keyword);
+    Flowable<SearchResult> getSeachResults(@Query("w") String keyword, @Query("p") int page,
+                                           @Query("n") int pageCount);
 
     /**
      * 获取歌词.
@@ -81,22 +83,8 @@ public interface AudientApi {
     @GET("api/v1/openmusic/{mediaId}/url")
     Flowable<FileResult> getFileResult(@Path("mediaId") String id);
 
-    @GET("nowplaying")
-    Flowable<NowPlayingResult> getNowPlayingResult();
-
     @GET("api/v1/me")
-    Flowable<StoreKeeper> getStoreKeeperInfo();
-
-    /**
-     * 获取access_token
-     */
-    @FormUrlEncoded
-    @POST("oauth/token")
-    Call<Token> getToken(@Field("username") String userName,
-                         @Field("password") String password,
-                         @Field("grant_type") String grantType,
-                         @Field("client_id") String clientId,
-                         @Field("client_secret") String clientSecret);
+    Flowable<StoreKeeperResponse> getStoreKeeperInfo();
 
     /**
      * 获取access_token
@@ -108,6 +96,12 @@ public interface AudientApi {
                                    @Field("grant_type") String grantType,
                                    @Field("client_id") String clientId,
                                    @Field("client_secret") String clientSecret);
+
+    /**
+     * 获取门店正在播放的歌曲信息
+     */
+    @GET("api/v1/nowplaying")
+    Flowable<NowPlayingResponse> getNowPlaying(String storeId);
 
     /**
      * 添加歌单
@@ -156,25 +150,12 @@ public interface AudientApi {
                                               @Field("name") String name);
 
     /**
-     * 点赞评论
-     */
-    @FormUrlEncoded
-    @POST("api/v1/musiccomment/upvote")
-    Flowable<Void> commentThumbUp(@Field("commentId") String commentId);
-
-    /**
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
     Flowable<CommentResult> getComments(@Query("mid") String mid,
                                         @Query("page") int page, @Query("size") int size,
                                         @Query("sort") String sortord);
-
-    /**
-     * 点播歌曲
-     */
-    @POST("api/v1/mod")
-    Flowable<BaseResponse> addToPlaylist(@Body Music music);
 
     /**
      * 获取店铺的默认播放列表

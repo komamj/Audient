@@ -29,7 +29,6 @@ import com.xinshang.store.base.AudientAdapter;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.favorite.MyFavoritesActivity;
-import com.xinshang.store.payment.PaymentDialogFragment;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
@@ -93,7 +92,6 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
             @Override
             public void onPlaylistChanged(TencentMusic audient) {
-                PaymentDialogFragment.show(getChildFragmentManager(), audient);
             }
         });
 

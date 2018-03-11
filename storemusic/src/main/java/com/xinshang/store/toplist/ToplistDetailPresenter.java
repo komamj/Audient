@@ -71,7 +71,7 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     public void loadToplistDetail(int topId, String showTime) {
         mDisposables.clear();
 
-        Disposable disposable = mRepository.getToplistDetail(topId, showTime)
+        Disposable disposable = mRepository.getToplistDetail(topId, showTime, 0, 40)
                 .map(new Function<ToplistDetailResult, List<TencentMusic>>() {
                     @Override
                     public List<TencentMusic> apply(ToplistDetailResult toplistDetailResult) throws Exception {
