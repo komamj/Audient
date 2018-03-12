@@ -112,14 +112,21 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
                     @Override
                     public void onNext(BaseResponse response) {
                         LogUtils.i(TAG, "addToFavorite " + response.message);
-                        if (response.resultCode == 0) {
-                            mView.showSuccessfullyAddedMessage();
+                        if (mView.isActive()) {
+                            if (response.resultCode == 0) {
+                                mView.showSuccessfullyAddedMessage();
+                            } else {
+                                mView.showFailedMessage();
+                            }
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "addToFavorite error " + t.toString());
+                        if (mView.isActive()) {
+                            mView.showFailedMessage();
+                        }
                     }
 
                     @Override

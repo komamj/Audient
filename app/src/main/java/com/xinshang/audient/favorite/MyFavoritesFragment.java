@@ -211,13 +211,24 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
         Snackbar.make(mFab, R.string.add_to_favorites_completed, Snackbar.LENGTH_SHORT)
                 .show();
 
-        if (getView() != null) {
-            getView().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((AppCompatActivity) mContext).finish();
-                }
-            }, 1500);
-        }
+        mFab.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((AppCompatActivity) mContext).finish();
+            }
+        }, 1500);
+    }
+
+    @Override
+    public void showFailedMessage() {
+        Snackbar.make(mFab, R.string.add_to_favorites_failed, Snackbar.LENGTH_SHORT)
+                .show();
+
+        mFab.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((AppCompatActivity) mContext).finish();
+            }
+        }, 1500);
     }
 }

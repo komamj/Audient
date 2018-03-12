@@ -28,10 +28,6 @@
         <item name="android:windowBackground">@mipmap/bg_splash</item>
     </style>
 
-    <style name="LoginTheme" parent="FullScreenTheme">
-        <item name="android:windowBackground">@mipmap/bg_login</item>
-    </style>
-
     <!--Dilog theme-->
     <style name="AuditionDilogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
 

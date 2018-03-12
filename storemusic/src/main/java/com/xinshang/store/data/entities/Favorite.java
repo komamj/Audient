@@ -17,6 +17,7 @@ package com.xinshang.store.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
@@ -113,6 +114,7 @@ public class Favorite implements Parcelable {
         parcel.writeString(modifyDate);
     }
 
+    @Keep
     public static class FavoritesSong {
 
         /**

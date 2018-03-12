@@ -58,8 +58,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @BindView(R.id.tv_name)
     TextView mName;
 
-    private boolean mIsPrepared;
-
     @OnClick(R.id.fab)
     void launchNowPlayingUI() {
         Intent intent = new Intent(mContext, NowPlayingActivity.class);
@@ -91,19 +89,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .playlistPresenterModule(new PlaylistPresenterModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
-
-        if (isVisibleToUser && mIsPrepared) {
-            if (mPresenter != null) {
-                mPresenter.subscribe();
-            }
-        }
     }
 
     @Override
@@ -140,8 +125,13 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
+    }
 
-        mIsPrepared = true;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LogUtils.i(TAG, "onResume");
 
         if (mPresenter != null) {
             mPresenter.subscribe();
@@ -149,8 +139,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
 
         LogUtils.i(TAG, "onPause");
 

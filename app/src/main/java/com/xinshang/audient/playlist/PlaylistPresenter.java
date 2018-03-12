@@ -18,9 +18,11 @@ package com.xinshang.audient.playlist;
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
+import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -30,8 +32,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okio.ByteString;
 
-public class PlaylistPresenter implements PlaylistContract.Presenter {
+public class PlaylistPresenter extends WebSocketListener implements PlaylistContract.Presenter {
     public static final String TAG = PlaylistPresenter.class.getSimpleName();
 
     private PlaylistContract.View mView;
@@ -40,6 +49,10 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
 
     private CompositeDisposable mDisposables;
 
+    private final OkHttpClient mClient;
+
+    private WebSocket mWebSocket;
+
     @Inject
     public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
         mView = view;
@@ -47,6 +60,12 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
         mRepository = repository;
 
         mDisposables = new CompositeDisposable();
+
+        mClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY))
+                .readTimeout(3, TimeUnit.SECONDS)
+                .build();
     }
 
     @Inject
@@ -58,14 +77,69 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
+        Request request = new Request.Builder()
+                .url(Constants.PLAYLIST_STATUS_HOST)
+                .build();
+
+        mWebSocket = mClient.newWebSocket(request, this);
+        mWebSocket.send("wocao");
+
         loadNowPlaying();
 
         loadAudients();
     }
 
+    /**
+     * Invoked when a web socket has been accepted by the remote peer and may begin transmitting
+     * messages.
+     */
+    public void onOpen(WebSocket webSocket, Response response) {
+        LogUtils.i(TAG, "onOpen");
+    }
+
+    /**
+     * Invoked when a text (type {@code 0x1}) message has been received.
+     */
+    public void onMessage(WebSocket webSocket, String text) {
+        LogUtils.i(TAG, "onMessage string : " + text);
+    }
+
+    /**
+     * Invoked when a binary (type {@code 0x2}) message has been received.
+     */
+    public void onMessage(WebSocket webSocket, ByteString bytes) {
+        LogUtils.i(TAG, "onMessage bytestring : " + bytes.toString());
+    }
+
+    /**
+     * Invoked when the peer has indicated that no more incoming messages will be transmitted.
+     */
+    public void onClosing(WebSocket webSocket, int code, String reason) {
+        LogUtils.i(TAG, "onClosing");
+    }
+
+    /**
+     * Invoked when both peers have indicated that no more messages will be transmitted and the
+     * connection has been successfully released. No further calls to this listener will be made.
+     */
+    public void onClosed(WebSocket webSocket, int code, String reason) {
+        LogUtils.i(TAG, "onClosed");
+    }
+
+    /**
+     * Invoked when a web socket has been closed due to an error reading from or writing to the
+     * network. Both outgoing and incoming messages may have been lost. No further calls to this
+     * listener will be made.
+     */
+    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+        LogUtils.i(TAG, "onFailure " + t.getMessage());
+    }
+
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
+
+        mWebSocket.cancel();
 
         mDisposables.clear();
     }

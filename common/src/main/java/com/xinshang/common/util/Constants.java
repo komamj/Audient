@@ -21,6 +21,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public final class Constants {
+    public static final String PLAYLIST_STATUS_HOST = "ws://101.132.122.196:8080/ws/stomp/topic/notice";
+    public static final String PLAY_COMMAND_HOST = "ws://101.132.122.196:8080/ws/stomp/app/control";
     public static final String AUDIENT_HOST = "http://101.132.122.196:8080/";
     public static final String CLIENT_ID = "USER_CLIENT";
     public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
