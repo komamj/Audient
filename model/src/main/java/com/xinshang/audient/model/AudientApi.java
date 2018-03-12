@@ -27,6 +27,7 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
+import com.xinshang.audient.model.entities.StoreOnlineResponse;
 import com.xinshang.audient.model.entities.StoreResponse;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
@@ -249,4 +250,7 @@ public interface AudientApi {
     @PATCH("api/v1/storemusic/cancelVote")
     Flowable<BaseResponse> cancelThumbUpSong(@Field("storeId") String storeId,
                                              @Field("mediaId") String mediaId);
+
+    @GET("store/{id}/online")
+    Flowable<StoreOnlineResponse> getStoreStatus(@Path("id") String storeId);
 }
