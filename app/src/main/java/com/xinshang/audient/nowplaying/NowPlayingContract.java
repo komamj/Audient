@@ -45,5 +45,7 @@ public interface NowPlayingContract {
         void thumbUpSong(Audient audient, String storeId);
 
         void cancelThumbUpSong(String storeId, Audient audient);
+
+        void playNext();
     }
 }

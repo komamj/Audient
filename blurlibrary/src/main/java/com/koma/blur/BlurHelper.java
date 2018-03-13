@@ -33,7 +33,8 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class BlurHelper {
-    public static Drawable createBlurredImageFromBitmap(Bitmap bitmap, Context context, int inSampleSize) {
+    public static Drawable createBlurredImageFromBitmap(Bitmap bitmap, Context context,
+                                                        int inSampleSize) {
 
         RenderScript rs = RenderScript.create(context);
         final BitmapFactory.Options options = new BitmapFactory.Options();

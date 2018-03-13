@@ -15,15 +15,18 @@
  */
 package com.xinshang.audient.nowplaying;
 
+import com.google.gson.Gson;
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.CommandRequest;
 import com.xinshang.audient.model.entities.Lyric;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.VoteInfo;
+import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
 import org.reactivestreams.Publisher;
@@ -37,8 +40,15 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okio.ByteString;
 
-public class NowPlayingPresenter implements NowPlayingContract.Presenter {
+public class NowPlayingPresenter extends WebSocketListener implements NowPlayingContract.Presenter {
     public static final String TAG = NowPlayingPresenter.class.getSimpleName();
 
     private NowPlayingContract.View mView;
@@ -47,6 +57,10 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
 
     private CompositeDisposable mDisposables;
 
+    private final OkHttpClient mClient;
+
+    private WebSocket mWebSocket;
+
     @Inject
     public NowPlayingPresenter(NowPlayingContract.View view, AudientRepository repository) {
         mView = view;
@@ -54,6 +68,11 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
         mRepository = repository;
 
         mDisposables = new CompositeDisposable();
+
+        mClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
     }
 
     @Inject
@@ -65,12 +84,68 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
+        Request request = new Request.Builder()
+                .url(Constants.PLAYLIST_STATUS_HOST)
+                .build();
+
+        mWebSocket = mClient.newWebSocket(request, this);
+
         loadNowPlaying();
+    }
+
+    /**
+     * Invoked when a web socket has been accepted by the remote peer and may begin transmitting
+     * messages.
+     */
+    public void onOpen(WebSocket webSocket, Response response) {
+        LogUtils.i(TAG, "onOpen");
+    }
+
+    /**
+     * Invoked when a text (type {@code 0x1}) message has been received.
+     */
+    public void onMessage(WebSocket webSocket, String text) {
+        LogUtils.i(TAG, "onMessage string : " + text);
+    }
+
+    /**
+     * Invoked when a binary (type {@code 0x2}) message has been received.
+     */
+    public void onMessage(WebSocket webSocket, ByteString bytes) {
+        LogUtils.i(TAG, "onMessage bytestring : " + bytes.toString());
+    }
+
+    /**
+     * Invoked when the peer has indicated that no more incoming messages will be transmitted.
+     */
+    public void onClosing(WebSocket webSocket, int code, String reason) {
+        LogUtils.i(TAG, "onClosing code : " + code + ",reason :" + reason);
+    }
+
+    /**
+     * Invoked when both peers have indicated that no more messages will be transmitted and the
+     * connection has been successfully released. No further calls to this listener will be made.
+     */
+    public void onClosed(WebSocket webSocket, int code, String reason) {
+        LogUtils.i(TAG, "onClosed code : " + code + ",reason :" + reason);
+    }
+
+    /**
+     * Invoked when a web socket has been closed due to an error reading from or writing to the
+     * network. Both outgoing and incoming messages may have been lost. No further calls to this
+     * listener will be made.
+     */
+    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+        LogUtils.i(TAG, "onFailure " + t.getMessage());
     }
 
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
+
+        if (mWebSocket != null) {
+            mWebSocket.cancel();
+        }
 
         mDisposables.clear();
     }
@@ -212,5 +287,15 @@ public class NowPlayingPresenter implements NowPlayingContract.Presenter {
 
                     }
                 });
+    }
+
+    @Override
+    public void playNext() {
+        CommandRequest commandRequest = new CommandRequest();
+        commandRequest.action = "next";
+        commandRequest.store = "4ca2e1a2-d5cc-490a-8371-63d8010a3964";
+        String command = new Gson().toJson(commandRequest);
+        LogUtils.i(TAG, "playNext command : " + command);
+        mWebSocket.send(command);
     }
 }

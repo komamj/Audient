@@ -22,7 +22,6 @@ import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -64,7 +63,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         mClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY))
-                .readTimeout(3, TimeUnit.SECONDS)
                 .build();
     }
 
@@ -82,7 +80,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                 .build();
 
         mWebSocket = mClient.newWebSocket(request, this);
-        mWebSocket.send("wocao");
 
         loadNowPlaying();
 
@@ -115,7 +112,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      * Invoked when the peer has indicated that no more incoming messages will be transmitted.
      */
     public void onClosing(WebSocket webSocket, int code, String reason) {
-        LogUtils.i(TAG, "onClosing");
+        LogUtils.i(TAG, "onClosing code : " + code + ",reason :" + reason);
     }
 
     /**
@@ -123,7 +120,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      * connection has been successfully released. No further calls to this listener will be made.
      */
     public void onClosed(WebSocket webSocket, int code, String reason) {
-        LogUtils.i(TAG, "onClosed");
+        LogUtils.i(TAG, "onClosed code : " + code + ",reason :" + reason);
     }
 
     /**

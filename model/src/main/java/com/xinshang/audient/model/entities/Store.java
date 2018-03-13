@@ -15,17 +15,29 @@
  */
 package com.xinshang.audient.model.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by koma_20 on 2018/3/5.
  */
 
+@Entity(tableName = "store")
 public class Store {
+    @NonNull
+    @PrimaryKey
     @SerializedName("id")
+    @ColumnInfo(name = "id")
     public String id;
+    @ColumnInfo(name = "name")
     @SerializedName("name")
     public String name;
+    @SerializedName("ownerId")
+    public String ownerId;
     @SerializedName("address")
     public String address;
     @SerializedName("location")

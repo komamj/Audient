@@ -62,7 +62,9 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @OnClick(R.id.fab_next)
     void skipNext() {
-
+        if (mPresenter != null) {
+            mPresenter.playNext();
+        }
     }
 
     @OnClick(R.id.fab_thumb_up)
@@ -113,8 +115,28 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        LogUtils.i(TAG, "onViewCreated");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LogUtils.i(TAG, "onResume");
+
         if (mPresenter != null) {
             mPresenter.subscribe();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LogUtils.i(TAG, "onPause");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
         }
     }
 
@@ -159,17 +181,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        LogUtils.i(TAG, "onDestroyView");
-
-        if (mPresenter != null) {
-            mPresenter.unSubscribe();
-        }
-    }
-
-    @Override
     public void showNowPlaying(Audient audient) {
         mAudient = audient;
 
@@ -187,6 +198,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @Override
     public void showLyric(Lyric lyric) {
-        LogUtils.i(TAG, "showLyric :" + lyric.lyric);
+       // LogUtils.i(TAG, "showLyric :" + lyric.lyric);
     }
 }
