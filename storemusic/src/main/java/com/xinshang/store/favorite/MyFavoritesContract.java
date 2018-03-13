@@ -31,6 +31,8 @@ public interface MyFavoritesContract {
         void showFavorites(List<Favorite> favorites);
 
         void showSuccessfullyAddedMessage();
+
+        void showFailedMessage();
     }
 
     interface Presenter extends BasePresenter {

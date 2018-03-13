@@ -16,7 +16,11 @@
 package com.xinshang.audient.main;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -35,6 +39,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.koma.blur.BlurHelper;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
@@ -74,7 +81,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     DrawerLayout mDrawerLayout;
     Button mLoginButton;
     TextView mName;
-    ImageView mUserImage;
+    ImageView mUserImage, mBlurImage;
 
     @Inject
     MainPresenter mPresenter;
@@ -100,6 +107,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         View headerView = mNavigationView.getHeaderView(0);
         mName = headerView.findViewById(R.id.tv_user_name);
         mUserImage = headerView.findViewById(R.id.iv_user);
+        mBlurImage = headerView.findViewById(R.id.iv_blur);
         mLoginButton = headerView.findViewById(R.id.btn_login);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +253,25 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                 .thumbnail(0.1f)
                 .circleCrop()
                 .load(user.avatar)
-                .into(mUserImage);
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(final @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        mUserImage.setImageBitmap(resource);
+                        Drawable drawable = BlurHelper.createBlurredImageFromBitmap(resource, MainActivity.this, 16);
+                        if (mBlurImage.getDrawable() != null) {
+                            final TransitionDrawable td =
+                                    new TransitionDrawable(new Drawable[]{
+                                            mBlurImage.getDrawable(),
+                                            drawable
+                                    });
+                            mBlurImage.setImageDrawable(td);
+                            td.startTransition(400);
+
+                        } else {
+                            mBlurImage.setImageDrawable(drawable);
+                        }
+                    }
+                });
         mName.setText(user.nickName);
     }
 

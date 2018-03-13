@@ -1,1 +1,1 @@
-include ':app', ':common', ':model', ':storemusic'
+include ':app', ':common', ':model', ':storemusic', ':blurlibrary'

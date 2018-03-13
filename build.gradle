@@ -59,4 +59,5 @@ ext {
     paging_version = '1.0.0-alpha6'
     leakcanary_version = '1.5.4'
     wechat_sdk_version = '5.1.4'
+    multidex_version = '1.0.1'
 }
