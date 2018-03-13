@@ -257,7 +257,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                     @Override
                     public void onResourceReady(final @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         mUserImage.setImageBitmap(resource);
-                        /*Drawable drawable = BlurHelper.createBlurredImageFromBitmap(resource, getApplicationContext(), 16);
+                        Drawable drawable = BlurHelper.createBlurredImageFromBitmap(resource, getApplicationContext(), 16);
                         if (mBlurImage.getDrawable() != null) {
                             final TransitionDrawable td =
                                     new TransitionDrawable(new Drawable[]{
@@ -269,7 +269,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
                         } else {
                             mBlurImage.setImageDrawable(drawable);
-                        }*/
+                        }
                     }
                 });
         mName.setText(user.nickName);
