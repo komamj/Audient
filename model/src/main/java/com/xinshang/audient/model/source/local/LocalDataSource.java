@@ -155,4 +155,16 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     public String getRefreshToken() {
         return mSharedPreferences.getString(Constants.REFRESH_TOKEN, "");
     }
+
+    @Override
+    public void persistenceStoreId(String storeId) {
+        mSharedPreferences.edit()
+                .putString(Constants.STORE_ID, storeId)
+                .apply();
+    }
+
+    @Override
+    public String getStoreId() {
+        return mSharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+    }
 }

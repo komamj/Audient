@@ -40,7 +40,5 @@ public interface PlaylistContract {
         void loadNowPlaying();
 
         void loadAudients();
-
-        void thumbUp(Audient audient);
     }
 }

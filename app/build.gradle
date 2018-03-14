@@ -10,9 +10,6 @@ android {
         versionName "1.0.00"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        renderscriptTargetApi 20
-        renderscriptSupportModeEnabled true
-
        // multiDexEnabled true
     }
 
@@ -116,7 +113,6 @@ dependencies {
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
     implementation project(':common')
     implementation project(':model')
-    implementation project(':blurlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

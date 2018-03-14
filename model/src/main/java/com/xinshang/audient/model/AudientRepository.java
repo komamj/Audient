@@ -219,4 +219,14 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     public String getRefreshToken() {
         return mLocalDataSource.getRefreshToken();
     }
+
+    @Override
+    public void persistenceStoreId(String storeId) {
+        mLocalDataSource.persistenceStoreId(storeId);
+    }
+
+    @Override
+    public String getStoreId() {
+        return mLocalDataSource.getStoreId();
+    }
 }

@@ -15,13 +15,22 @@
  */
 package com.xinshang.audient.main;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
+import com.xinshang.audient.util.ImageUtils;
 import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -91,6 +100,41 @@ public class MainPresenter implements MainContract.Presenter {
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "loadUserInfo error :" + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
+    }
+
+    @Override
+    public void blurBitmap(final Bitmap bitmap, final Context context, final int inSampleSize) {
+        Disposable disposable = Flowable.create(new FlowableOnSubscribe<Drawable>() {
+            @Override
+            public void subscribe(FlowableEmitter<Drawable> emitter) throws Exception {
+                Drawable drawable = ImageUtils.createBlurredImageFromBitmap(bitmap, context,
+                        inSampleSize);
+
+                emitter.onNext(drawable);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Drawable>() {
+                    @Override
+                    public void onNext(Drawable drawable) {
+                        if (mView != null) {
+                            mView.showBlurBackground(drawable);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "blurBitmap erorr : " + t.toString());
                     }
 
                     @Override

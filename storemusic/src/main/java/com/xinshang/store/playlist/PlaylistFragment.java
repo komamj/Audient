@@ -46,6 +46,11 @@ import butterknife.OnClick;
 public class PlaylistFragment extends BaseFragment implements PlaylistContract.View {
     private static final String TAG = PlaylistFragment.class.getSimpleName();
 
+    private static final String COMMAND_NEXT = "next";
+    private static final String COMMAND_STOP = "stop";
+    private static final String COMMAND_PAUSE = "pause";
+    private static final String COMMAND_PLAY = "play";
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
@@ -56,9 +61,12 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     ImageView mAlbum;
     @BindView(R.id.tv_name)
     TextView mName;
+    @BindView(R.id.iv_pause)
+    ImageView mPause;
+
     @Inject
     PlaylistPresenter mPresenter;
-    private boolean mIsPrepared;
+
     private PlaylistAdapter mAdapter;
 
     public PlaylistFragment() {
@@ -69,9 +77,25 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         return fragment;
     }
 
-    @OnClick(R.id.fab)
-    void launchNowPlayingUI() {
+    @OnClick(R.id.iv_pause)
+    void onPauseClick() {
+        if (mPresenter != null) {
+            mPresenter.sendCommand(COMMAND_PAUSE);
+        }
+    }
 
+    @OnClick(R.id.iv_stop)
+    void onStopClick() {
+        if (mPresenter != null) {
+            mPresenter.sendCommand(COMMAND_STOP);
+        }
+    }
+
+    @OnClick(R.id.iv_next)
+    void onNextClick() {
+        if (mPresenter != null) {
+            mPresenter.sendCommand(COMMAND_NEXT);
+        }
     }
 
     @Override
@@ -86,19 +110,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .playlistPresenterModule(new PlaylistPresenterModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
-
-        if (isVisibleToUser && mIsPrepared) {
-            if (mPresenter != null) {
-                mPresenter.subscribe();
-            }
-        }
     }
 
     @Override
@@ -136,18 +147,26 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
 
-        mIsPrepared = true;
-
         if (mPresenter != null) {
-            mPresenter.subscribe();
             mPresenter.loadNowPlaying("");
             mPresenter.loadAudients();
         }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onResume() {
+        super.onResume();
+
+        LogUtils.i(TAG, "onResume");
+
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
 
         LogUtils.i(TAG, "onPause");
 

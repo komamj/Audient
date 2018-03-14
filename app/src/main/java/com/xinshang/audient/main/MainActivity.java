@@ -41,7 +41,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.koma.blur.BlurHelper;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
@@ -257,22 +256,29 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                     @Override
                     public void onResourceReady(final @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         mUserImage.setImageBitmap(resource);
-                        Drawable drawable = BlurHelper.createBlurredImageFromBitmap(resource, getApplicationContext(), 16);
-                        if (mBlurImage.getDrawable() != null) {
-                            final TransitionDrawable td =
-                                    new TransitionDrawable(new Drawable[]{
-                                            mBlurImage.getDrawable(),
-                                            drawable
-                                    });
-                            mBlurImage.setImageDrawable(td);
-                            td.startTransition(400);
 
-                        } else {
-                            mBlurImage.setImageDrawable(drawable);
+                        if (mPresenter != null) {
+                            mPresenter.blurBitmap(resource, getApplicationContext(), 8);
                         }
                     }
                 });
         mName.setText(user.nickName);
+    }
+
+    @Override
+    public void showBlurBackground(Drawable drawable) {
+        if (mBlurImage.getDrawable() != null) {
+            final TransitionDrawable td =
+                    new TransitionDrawable(new Drawable[]{
+                            mBlurImage.getDrawable(),
+                            drawable
+                    });
+            mBlurImage.setImageDrawable(td);
+            td.startTransition(400);
+
+        } else {
+            mBlurImage.setImageDrawable(drawable);
+        }
     }
 
     static class AudientAdapter extends FragmentPagerAdapter {

@@ -16,4 +16,8 @@ public interface ILocalDataSource {
     void persistenceRefreshToken(String refreshToken);
 
     String getRefreshToken();
+
+    void persistenceStoreId(String storeId);
+
+    String getStoreId();
 }

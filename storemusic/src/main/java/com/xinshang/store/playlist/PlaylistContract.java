@@ -42,5 +42,7 @@ public interface PlaylistContract {
         void loadAudients();
 
         void thumbUpSong(TencentMusic audient);
+
+        void sendCommand(String command);
     }
 }

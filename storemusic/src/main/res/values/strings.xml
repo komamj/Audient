@@ -66,6 +66,9 @@
     <string name="action_delete">"删除"</string>
     <string name="modify_name">"重命名"</string>
 
+    <!--Playlist-->
+    <string name="now_playing">"当前门店正在播放："</string>
+
     <!--About-->
     <string name="about_label">"关于我们"</string>
     <string name="action_about">"关于"</string>

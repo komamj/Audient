@@ -89,6 +89,9 @@
     <string name="dark_theme_title">"夜间模式"</string>
     <string name="comment">"评论"</string>
 
+    <!--Playlist-->
+    <string name="now_playing">"当前门店正在播放："</string>
+
     <!--About-->
     <string name="about_label">"关于我们"</string>
     <string name="action_about">"关于"</string>

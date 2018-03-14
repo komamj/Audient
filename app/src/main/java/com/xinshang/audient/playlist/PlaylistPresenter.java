@@ -201,9 +201,4 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
         mDisposables.add(disposable);
     }
-
-    @Override
-    public void thumbUp(Audient audient) {
-        LogUtils.i(TAG, "thumbUp");
-    }
 }
