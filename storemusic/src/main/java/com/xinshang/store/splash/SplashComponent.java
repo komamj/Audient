@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.splash;
+package com.xinshang.store.splash;
 
-import com.xinshang.audient.model.AudientRepositoryComponent;
-import com.xinshang.common.util.ActivityScoped;
+import com.xinshang.store.data.AudientRepositoryComponent;
+import com.xinshang.store.utils.ActivityScoped;
 
 import dagger.Component;
 

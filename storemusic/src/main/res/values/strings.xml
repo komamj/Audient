@@ -14,13 +14,10 @@
 
     <!--Login-->
     <string name="login_label">"登录"</string>
-    <string name="login_title">"使用手机号码登录"</string>
-    <string name="forget_password">"忘记密码?"</string>
-    <string name="skip">"跳过"</string>
-    <string name="hint_user_name">"请输入手机号码"</string>
+    <string name="hint_user_name">"请输入用户名"</string>
     <string name="hint_password">"请输入密码"</string>
-    <string name="submit">"登录"</string>
-    <string name="action_sign_in_short">"登录"</string>
+    <string name="login_successful_message">"登录成功"</string>
+    <string name="login_error_message">"登录失败，请重试"</string>
 
     <string name="navigation_drawer_open">"打开导航栏"</string>
     <string name="navigation_drawer_close">"关闭导航栏"</string>

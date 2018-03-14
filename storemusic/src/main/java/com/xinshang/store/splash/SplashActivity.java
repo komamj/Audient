@@ -15,22 +15,18 @@
  */
 package com.xinshang.store.splash;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.xinshang.store.R;
+import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
-import com.xinshang.store.main.MainActivity;
+import com.xinshang.store.utils.ActivityUtils;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Flowable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import javax.inject.Inject;
 
 public class SplashActivity extends BaseActivity {
-    private CompositeDisposable mDisposables;
+    @Inject
+    SplashPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +35,17 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
-        mDisposables = new CompositeDisposable();
-
-        Disposable disposable = Flowable.timer(2, TimeUnit.SECONDS)
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        Intent intent = new Intent(SplashActivity.this,
-                                MainActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        SplashActivity.this.finish();
-                    }
-                });
-
-        mDisposables.add(disposable);
+        SplashFragment fragment = (SplashFragment) getSupportFragmentManager().findFragmentById(R.id.content_main);
+        if (fragment == null) {
+            fragment = SplashFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.content_main);
+        }
+        DaggerSplashComponent.builder()
+                .audientRepositoryComponent(
+                        ((StoreMusicApplication) getApplication()).getRepositoryComponent())
+                .splashPresenterModule(new SplashPresenterModule(fragment))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -64,12 +56,5 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         //do nothing
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mDisposables.clear();
     }
 }

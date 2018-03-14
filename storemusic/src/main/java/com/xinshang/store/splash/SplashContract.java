@@ -13,18 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.splash;
+package com.xinshang.store.splash;
 
-import com.xinshang.audient.model.AudientRepositoryComponent;
-import com.xinshang.common.util.ActivityScoped;
-
-import dagger.Component;
+import com.xinshang.store.base.BasePresenter;
+import com.xinshang.store.base.BaseView;
 
 /**
  * Created by koma on 3/5/18.
  */
-@ActivityScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = SplashPresenterModule.class)
-public interface SplashComponent {
-    void inject(SplashActivity splashActivity);
+
+public interface SplashContract {
+    interface View extends BaseView<Presenter> {
+        boolean isActive();
+
+        void showMainView();
+
+        void setLoadingIndicatorView(boolean isActive);
+
+        void showLoginView(boolean forceShow);
+
+        void showSuccessfullyLoginedMessage();
+
+        void showLoginError();
+    }
+
+    interface Presenter extends BasePresenter {
+        void delayLaunchMainView();
+
+        void login(String userName, String password);
+    }
 }

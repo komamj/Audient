@@ -30,6 +30,7 @@ import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
 import com.xinshang.store.data.entities.ToplistResult;
 import com.xinshang.store.data.source.AudientDataSource;
+import com.xinshang.store.data.source.local.ILocalDataSource;
 import com.xinshang.store.data.source.local.LocalDataSource;
 import com.xinshang.store.data.source.remote.IRemoteDataSource;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
@@ -42,7 +43,7 @@ import javax.inject.Singleton;
 import io.reactivex.Flowable;
 
 @Singleton
-public class AudientRepository implements AudientDataSource, IRemoteDataSource {
+public class AudientRepository implements AudientDataSource, IRemoteDataSource, ILocalDataSource {
     private final LocalDataSource mLocalDataSource;
 
     private final RemoteDataSource mRemoteDataSource;
@@ -143,5 +144,45 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<BaseResponse> deleteFavoritesSong(String favoritesId) {
         return mRemoteDataSource.deleteFavoritesSong(favoritesId);
+    }
+
+    @Override
+    public void persistenceLoginStatus(boolean loginStatus) {
+        mLocalDataSource.persistenceLoginStatus(loginStatus);
+    }
+
+    @Override
+    public boolean getLoginStatus() {
+        return mLocalDataSource.getLoginStatus();
+    }
+
+    @Override
+    public void persistenceAccessToken(String accessToken) {
+        mLocalDataSource.persistenceAccessToken(accessToken);
+    }
+
+    @Override
+    public String getAccessToken() {
+        return mLocalDataSource.getAccessToken();
+    }
+
+    @Override
+    public void persistenceRefreshToken(String refreshToken) {
+        mLocalDataSource.persistenceRefreshToken(refreshToken);
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return mLocalDataSource.getRefreshToken();
+    }
+
+    @Override
+    public void persistenceStoreId(String storeId) {
+        mLocalDataSource.persistenceStoreId(storeId);
+    }
+
+    @Override
+    public String getStoreId() {
+        return mLocalDataSource.getStoreId();
     }
 }

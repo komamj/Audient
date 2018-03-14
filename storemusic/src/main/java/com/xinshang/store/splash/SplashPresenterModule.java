@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.splash;
+package com.xinshang.store.splash;
 
-import com.xinshang.audient.model.AudientRepositoryComponent;
-import com.xinshang.common.util.ActivityScoped;
-
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * Created by koma on 3/5/18.
  */
-@ActivityScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = SplashPresenterModule.class)
-public interface SplashComponent {
-    void inject(SplashActivity splashActivity);
+@Module
+public class SplashPresenterModule {
+    private final SplashContract.View mView;
+
+    public SplashPresenterModule(SplashContract.View view) {
+        mView = view;
+    }
+
+    @Provides
+    SplashContract.View provideSplashContractView() {
+        return this.mView;
+    }
 }

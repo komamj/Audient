@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.source.AudientDataSource;
+import com.xinshang.store.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,5 +120,53 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
+    }
+
+    @Override
+    public void persistenceLoginStatus(boolean loginStatus) {
+        mSharedPreferences.edit()
+                .putBoolean(Constants.LOGIN_STATUS, loginStatus)
+                .apply();
+    }
+
+    @Override
+    public boolean getLoginStatus() {
+        return mSharedPreferences.getBoolean(Constants.LOGIN_STATUS, false);
+    }
+
+    @Override
+    public void persistenceAccessToken(String accessToken) {
+        mSharedPreferences.edit()
+                .putString(Constants.ACCESS_TOKEN, accessToken)
+                .apply();
+    }
+
+    @Override
+    public String getAccessToken() {
+        return mSharedPreferences.getString(Constants.ACCESS_TOKEN, "");
+    }
+
+    @Override
+    public void persistenceRefreshToken(String refreshToken) {
+        mSharedPreferences.edit()
+                .putString(Constants.REFRESH_TOKEN, refreshToken)
+                .apply();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return mSharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+    }
+
+    @Override
+    public void persistenceStoreId(String storeId) {
+        mSharedPreferences.edit()
+                .putString(Constants.STORE_ID, storeId)
+                .apply();
+    }
+
+    @Override
+    public String getStoreId() {
+        return mSharedPreferences.getString(Constants.REFRESH_TOKEN, "");
     }
 }

@@ -27,6 +27,9 @@ public final class Constants {
     public static final String CLIENT_ID = "STORE_CLIENT";
     public static final String CLIENT_SECRET = "ee6c85b4cf1142fbb9aaf484216af74c";
     public static final String GRANT_TYPE = "password";
+    public static final String LOGIN_STATUS = "login_status";
+
+    public static final String STORE_ID = "store_id";
 
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";

@@ -5,4 +5,19 @@ package com.xinshang.store.data.source.local;
  */
 
 public interface ILocalDataSource {
+    void persistenceLoginStatus(boolean loginStatus);
+
+    boolean getLoginStatus();
+
+    void persistenceAccessToken(String accessToken);
+
+    String getAccessToken();
+
+    void persistenceRefreshToken(String refreshToken);
+
+    String getRefreshToken();
+
+    void persistenceStoreId(String storeId);
+
+    String getStoreId();
 }
