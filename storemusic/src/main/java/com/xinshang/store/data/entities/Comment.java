@@ -24,9 +24,9 @@ import com.google.gson.annotations.SerializedName;
 public class Comment {
     @SerializedName("id")
     public String id;
-    @SerializedName("userId")
-    public String userId;
-    @SerializedName("userNickname")
+    @SerializedName("username")
+    public String userName;
+    @SerializedName("nickname")
     public String userNickname;
     @SerializedName("storeId")
     public String storeId;
@@ -40,6 +40,14 @@ public class Comment {
     public String parentId;
     @SerializedName("voteCount")
     public int voteCount;
+    @SerializedName("voted")
+    public boolean voted;
     @SerializedName("commentDate")
     public String commentDate;
+    @SerializedName("avatar")
+    public String avatar;
+    @SerializedName("storeName")
+    public String storeName;
+    @SerializedName("storeAddress")
+    public String storeAddress;
 }

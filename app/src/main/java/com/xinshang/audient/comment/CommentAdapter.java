@@ -17,6 +17,7 @@ package com.xinshang.audient.comment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         mGlideRequest = GlideApp.with(mContext)
                 .asBitmap()
                 .thumbnail(0.1f)
+                .circleCrop()
                 .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(R.drawable.ic_user);
     }
@@ -95,9 +97,13 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         Comment comment = mData.get(position);
 
-        mGlideRequest.load(comment).into(holder.mUserImage);
+        mGlideRequest.load(comment.avatar).into(holder.mUserImage);
         holder.mMessage.setText(comment.comment);
-        holder.mUserName.setText(comment.userNickname);
+        String userName = comment.userNickname;
+        if (TextUtils.isEmpty(userName)) {
+            userName = comment.userName;
+        }
+        holder.mUserName.setText(userName);
         holder.mTime.setText(comment.commentDate);
         holder.mCount.setText(String.valueOf(comment.voteCount));
         if (comment.voted) {
