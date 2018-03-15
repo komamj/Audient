@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.xinshang.audient.R;
 import com.xinshang.audient.comment.CommentActivity;
+import com.xinshang.audient.favorite.MyFavoritesActivity;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Lyric;
@@ -82,7 +83,9 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @OnClick(R.id.iv_favorite)
     void processFavorite() {
-
+        Intent intent = new Intent(mContext, MyFavoritesActivity.class);
+        intent.putExtra(Constants.KEY_AUDIENT, mAudient);
+        mContext.startActivity(intent);
     }
 
     @OnClick(R.id.iv_comment)
@@ -198,6 +201,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @Override
     public void showLyric(Lyric lyric) {
-       // LogUtils.i(TAG, "showLyric :" + lyric.lyric);
+        // LogUtils.i(TAG, "showLyric :" + lyric.lyric);
     }
 }
