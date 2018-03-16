@@ -18,22 +18,6 @@ package com.xinshang.store.data.entities;
 import com.google.gson.annotations.SerializedName;
 
 public class Music {
-    /**
-     * storeId :
-     * mediaId :
-     * mediaName :
-     * mediaInterval :
-     * artistId :
-     * artistName :
-     * albumId :
-     * albumName :
-     * price : 0
-     * discount : 0
-     * discountPrice : 0
-     * paymentWay :
-     * free : true
-     * freeWay : 0
-     */
     @SerializedName("storeId")
     public String storeId;
     @SerializedName("mediaId")
@@ -50,7 +34,7 @@ public class Music {
     public String albumId;
     @SerializedName("albumName")
     public String albumName;
-    @SerializedName("price")
+   /* @SerializedName("price")
     public int price;
     @SerializedName("discount")
     public int discount;
@@ -61,5 +45,5 @@ public class Music {
     @SerializedName("free")
     public boolean free;
     @SerializedName("freeWay")
-    public int freeWay;
+    public int freeWay;*/
 }

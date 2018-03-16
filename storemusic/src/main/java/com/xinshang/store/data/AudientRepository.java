@@ -21,6 +21,7 @@ import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
+import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
@@ -114,6 +115,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<Token> getToken(String userName, String password) {
         return mRemoteDataSource.getToken(userName, password);
+    }
+
+    @Override
+    public Flowable<BaseResponse> addToPlaylist(Music music) {
+        return mRemoteDataSource.addToPlaylist(music);
     }
 
     @Override

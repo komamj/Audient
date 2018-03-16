@@ -20,6 +20,7 @@ import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.MessageEvent;
+import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
@@ -174,6 +175,39 @@ public class MinePresenter implements MineContract.Presenter {
                     @Override
                     public void onComplete() {
 
+                    }
+                });
+    }
+
+    @Override
+    public void addToPlaylist(String storeId, TencentMusic tencentMusic) {
+        Music music = new Music();
+        music.storeId = storeId;
+        music.albumId = tencentMusic.albumId;
+        music.albumName = tencentMusic.albumName;
+        music.artistId = tencentMusic.artistId;
+        music.artistName = tencentMusic.artistName;
+        music.mediaInterval = String.valueOf(tencentMusic.duration);
+        music.mediaId = tencentMusic.mediaId;
+        music.mediaName = tencentMusic.mediaName;
+
+        mRepository.addToPlaylist(music)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addToPlaylist completed");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.i(TAG, "addToPlaylist completed");
                     }
                 });
     }

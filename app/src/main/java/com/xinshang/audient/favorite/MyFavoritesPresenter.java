@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -73,6 +74,13 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
                     @Override
                     public List<Favorite> apply(FavoritesResult favoriteResult) throws Exception {
                         return favoriteResult.favorites;
+                    }
+                })
+                .doOnNext(new Consumer<List<Favorite>>() {
+                    @Override
+                    public void accept(List<Favorite> favorites) throws Exception {
+                        LogUtils.i(TAG, "loadFavorites thread name :" +
+                                Thread.currentThread().getName() + "," + favorites.isEmpty());
                     }
                 })
                 .subscribeOn(Schedulers.io())

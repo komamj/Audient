@@ -23,6 +23,7 @@ import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
+import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
@@ -163,6 +164,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId) {
         return mRemoteDataSource.getVoteInfo(mediaId, storeId);
+    }
+
+    @Override
+    public Flowable<BaseResponse> addToPlaylist(Music music) {
+        return mRemoteDataSource.addToPlaylist(music);
     }
 
     @Override

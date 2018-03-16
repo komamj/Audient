@@ -21,10 +21,10 @@ import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
+import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
-import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
@@ -162,4 +162,10 @@ public interface AudientApi {
      */
     @GET("api/v1/storeplaylist")
     Flowable<BaseResponse> getPlaylist(@Query("sid") String storeId);
+
+    /**
+     * 点播歌曲
+     */
+    @POST("api/v1/storeplaylist")
+    Flowable<BaseResponse> addToPlaylist(@Body Music music);
 }

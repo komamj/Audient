@@ -208,12 +208,6 @@ public interface AudientApi {
     @POST("api/v1/musiccomment")
     Flowable<BaseResponse> postCommentRequest(@Body CommentRequest comment);
 
-    /**
-     * 点播歌曲
-     */
-    @POST("api/v1/mod")
-    Flowable<BaseResponse> addToPlaylist(@Body Music music);
-
     @GET("api/v1/mod/mywaitingcout")
     Flowable<BaseResponse> getCount(@Query("storeId") String storeId);
 
@@ -229,6 +223,12 @@ public interface AudientApi {
      */
     @GET("api/v1/storeplaylist")
     Flowable<BaseResponse> getPlaylist(@Query("sid") String storeId);
+
+    /**
+     * 点播歌曲
+     */
+    @POST("api/v1/storeplaylist")
+    Flowable<BaseResponse> addToPlaylist(@Body Music music);
 
     /**
      * 获取点赞信息

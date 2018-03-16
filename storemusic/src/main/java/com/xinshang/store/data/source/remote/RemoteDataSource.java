@@ -22,10 +22,10 @@ import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
+import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
-import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
@@ -130,6 +130,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     public Flowable<Token> getToken(String userName, String password) {
         return mAudientApi.getAccessToken(userName, password, Constants.GRANT_TYPE,
                 Constants.CLIENT_ID, Constants.CLIENT_SECRET);
+    }
+
+    @Override
+    public Flowable<BaseResponse> addToPlaylist(Music music) {
+        return mAudientApi.addToPlaylist(music);
     }
 
     @Override
