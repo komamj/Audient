@@ -15,6 +15,7 @@
  */
 package com.xinshang.store.data;
 
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
@@ -25,7 +26,9 @@ import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
+import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -120,6 +123,16 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<BaseResponse> addToPlaylist(Music music) {
         return mRemoteDataSource.addToPlaylist(music);
+    }
+
+    @Override
+    public Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(String storeId) {
+        return mRemoteDataSource.getStorePlaylist(storeId);
+    }
+
+    @Override
+    public Flowable<ApiResponse<List<Store>>> getStoreInfo() {
+        return mRemoteDataSource.getStoreInfo();
     }
 
     @Override

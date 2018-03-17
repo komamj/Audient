@@ -16,9 +16,14 @@
 package com.xinshang.store.splash;
 
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.ApiResponse;
+import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.utils.LogUtils;
 
+import org.reactivestreams.Publisher;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -28,6 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -113,11 +119,28 @@ public class SplashPresenter implements SplashContract.Presenter {
                         mRepository.persistenceLoginStatus(true);
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Token>() {
+                .flatMap(new Function<Token, Publisher<Store>>() {
                     @Override
-                    public void onNext(Token token) {
+                    public Publisher<Store> apply(Token token) throws Exception {
+                        return mRepository.getStoreInfo()
+                                .map(new Function<ApiResponse<List<Store>>, Store>() {
+                                    @Override
+                                    public Store apply(ApiResponse<List<Store>> listApiResponse) throws Exception {
+                                        return listApiResponse.data.get(0);
+                                    }
+                                });
+                    }
+                })
+                .doOnNext(new Consumer<Store>() {
+                    @Override
+                    public void accept(Store store) throws Exception {
+                        mRepository.persistenceStoreId(store.id);
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Store>() {
+                    @Override
+                    public void onNext(Store store) {
 
                     }
 

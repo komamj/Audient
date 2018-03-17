@@ -46,6 +46,6 @@ public interface MineContract {
 
         void deleteMyFavorite(Favorite favorite);
 
-        void addToPlaylist(String storeId, TencentMusic music);
+        void addToPlaylist(TencentMusic music);
     }
 }

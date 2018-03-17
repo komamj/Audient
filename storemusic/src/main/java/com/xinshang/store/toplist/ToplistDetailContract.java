@@ -34,5 +34,7 @@ public interface ToplistDetailContract {
 
     interface Presenter extends BasePresenter {
         void loadToplistDetail(int topId, String showTime);
+
+        void addToPlaylist(TencentMusic tencentMusic);
     }
 }

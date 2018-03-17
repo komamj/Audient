@@ -18,10 +18,16 @@ package com.xinshang.store.data.entities;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by koma on 3/6/18.
+ * Created by koma_20 on 2018/3/17.
  */
 
-public class StoreKeeperResponse {
-    @SerializedName("data")
-    public StoreKeeper storeKeeper;
+public class CommandResponse {
+    @SerializedName("code")
+    public String code;
+    @SerializedName("store")
+    public String store;
+    @SerializedName("action")
+    public String action;
+    @SerializedName("message")
+    public String message;
 }

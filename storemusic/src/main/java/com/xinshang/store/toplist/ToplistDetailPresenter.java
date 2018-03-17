@@ -16,6 +16,8 @@
 package com.xinshang.store.toplist;
 
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.BaseResponse;
+import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.ToplistDetailResult;
 import com.xinshang.store.utils.LogUtils;
@@ -100,5 +102,38 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
                 });
 
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void addToPlaylist(TencentMusic tencentMusic) {
+        Music music = new Music();
+        music.storeId = mRepository.getStoreId();
+        music.albumId = tencentMusic.albumId;
+        music.albumName = tencentMusic.albumName;
+        music.artistId = tencentMusic.artistId;
+        music.artistName = tencentMusic.artistName;
+        music.mediaInterval = String.valueOf(tencentMusic.duration);
+        music.mediaId = tencentMusic.mediaId;
+        music.mediaName = tencentMusic.mediaName;
+
+        mRepository.addToPlaylist(music)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addToPlaylist completed");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.i(TAG, "addToPlaylist completed");
+                    }
+                });
     }
 }

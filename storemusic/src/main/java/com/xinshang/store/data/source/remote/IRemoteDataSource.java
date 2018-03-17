@@ -1,5 +1,6 @@
 package com.xinshang.store.data.source.remote;
 
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
@@ -10,7 +11,9 @@ import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
+import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -60,4 +63,8 @@ public interface IRemoteDataSource {
     Flowable<Token> getToken(String userName, String password);
 
     Flowable<BaseResponse> addToPlaylist(Music music);
+
+    Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(String storeId);
+
+    Flowable<ApiResponse<List<Store>>> getStoreInfo();
 }

@@ -107,6 +107,9 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
             @Override
             public void onPlaylistChanged(TencentMusic audient) {
+                if (mPresenter != null) {
+                    mPresenter.addToPlaylist(audient);
+                }
             }
         });
 

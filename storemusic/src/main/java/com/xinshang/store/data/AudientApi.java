@@ -15,6 +15,7 @@
  */
 package com.xinshang.store.data;
 
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
@@ -25,7 +26,9 @@ import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
+import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -98,6 +101,16 @@ public interface AudientApi {
                                    @Field("client_secret") String clientSecret);
 
     /**
+     * 获取access_token
+     */
+    @FormUrlEncoded
+    @POST("oauth/token")
+    Flowable<Token> refreshAccessToken(@Field("grant_type") String grantType,
+                                       @Field("refresh_token") String refreshToken,
+                                       @Field("client_id") String clientId,
+                                       @Field("client_secret") String clientSecret);
+
+    /**
      * 获取门店正在播放的歌曲信息
      */
     @GET("api/v1/nowplaying")
@@ -161,11 +174,14 @@ public interface AudientApi {
      * 获取店铺的默认播放列表
      */
     @GET("api/v1/storeplaylist")
-    Flowable<BaseResponse> getPlaylist(@Query("sid") String storeId);
+    Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(@Query("sid") String storeId);
 
     /**
      * 点播歌曲
      */
     @POST("api/v1/storeplaylist")
     Flowable<BaseResponse> addToPlaylist(@Body Music music);
+
+    @GET("api/v1/store/my")
+    Flowable<ApiResponse<List<Store>>> getStoreInfo();
 }

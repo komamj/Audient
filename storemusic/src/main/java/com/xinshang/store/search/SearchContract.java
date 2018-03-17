@@ -36,5 +36,7 @@ public interface SearchContract {
 
     interface Presenter extends BasePresenter {
         void loadSearchResults(String keyword);
+
+        void addToPlaylist(TencentMusic tencentMusic);
     }
 }

@@ -121,7 +121,7 @@ public class MineFragment extends BaseFragment implements MineContract.View {
             @Override
             public void onPlaylistChanged(TencentMusic audient) {
                 if (mPresenter != null) {
-                    mPresenter.addToPlaylist("store1", audient);
+                    mPresenter.addToPlaylist(audient);
                 }
             }
         });

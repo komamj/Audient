@@ -17,6 +17,7 @@ package com.xinshang.store.toplist;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
+import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.ToplistResult;
 
 import java.util.List;

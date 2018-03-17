@@ -139,7 +139,28 @@ public class AudientRepositoryModule {
                                 .build();
                         AudientApi audientApi = retrofit.create(AudientApi.class);
 
-                        audientApi.getAccessToken(Constants.USER_NAME, Constants.USER_PASSWORD,
+                        audientApi.refreshAccessToken("refresh_token", refershToken,
+                                Constants.CLIENT_ID, Constants.CLIENT_SECRET)
+                                .subscribeWith(new DisposableSubscriber<Token>() {
+                                    @Override
+                                    public void onNext(Token token) {
+                                        LogUtils.i(TAG, "wocao token :" + token.toString());
+                                        sharedPreferences.edit()
+                                                .putString(Constants.ACCESS_TOKEN, token.accessToken)
+                                                .commit();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable t) {
+                                        LogUtils.e(TAG, "wocao token error :" + t.toString());
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
+                        /*audientApi.getAccessToken(Constants.USER_NAME, Constants.USER_PASSWORD,
                                 Constants.GRANT_TYPE, Constants.CLIENT_ID,
                                 Constants.CLIENT_SECRET)
                                 .subscribeWith(new DisposableSubscriber<Token>() {
@@ -159,7 +180,7 @@ public class AudientRepositoryModule {
                                     public void onComplete() {
 
                                     }
-                                });
+                                });*/
                         return response.request().newBuilder()
                                 .header("Authorization", "Bearer " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
                                 .build();

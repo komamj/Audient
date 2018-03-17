@@ -180,9 +180,9 @@ public class MinePresenter implements MineContract.Presenter {
     }
 
     @Override
-    public void addToPlaylist(String storeId, TencentMusic tencentMusic) {
+    public void addToPlaylist(TencentMusic tencentMusic) {
         Music music = new Music();
-        music.storeId = storeId;
+        music.storeId = mRepository.getStoreId();
         music.albumId = tencentMusic.albumId;
         music.albumName = tencentMusic.albumName;
         music.artistId = tencentMusic.artistId;

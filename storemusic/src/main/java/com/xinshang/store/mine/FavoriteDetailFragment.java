@@ -103,6 +103,9 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
 
             @Override
             public void onPlaylistChanged(TencentMusic audient) {
+                if (mPresenter != null) {
+                    mPresenter.addToPlaylist(audient);
+                }
             }
         });
 

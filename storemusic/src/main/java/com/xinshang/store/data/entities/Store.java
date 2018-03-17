@@ -21,29 +21,37 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by koma_20 on 2018/3/5.
+ * Created by koma_20 on 2018/3/17.
  */
 
-public class Location implements Parcelable {
-    @SerializedName("latitude")
-    public double latitude;
-    @SerializedName("longitude")
-    public double longitude;
+public class Store implements Parcelable {
+    @SerializedName("id")
+    public String id;
+    @SerializedName("name")
+    public String name;
+    @SerializedName("address")
+    public String address;
+    @SerializedName("location")
+    public Location location;
+    @SerializedName("registedDate")
+    public String registedDate;
 
-    protected Location(Parcel in) {
-        latitude = in.readDouble();
-        longitude = in.readDouble();
+    protected Store(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        address = in.readString();
+        registedDate = in.readString();
     }
 
-    public static final Creator<Location> CREATOR = new Creator<Location>() {
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
         @Override
-        public Location createFromParcel(Parcel in) {
-            return new Location(in);
+        public Store createFromParcel(Parcel in) {
+            return new Store(in);
         }
 
         @Override
-        public Location[] newArray(int size) {
-            return new Location[size];
+        public Store[] newArray(int size) {
+            return new Store[size];
         }
     };
 
@@ -54,7 +62,9 @@ public class Location implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeDouble(latitude);
-        parcel.writeDouble(longitude);
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(address);
+        parcel.writeString(registedDate);
     }
 }

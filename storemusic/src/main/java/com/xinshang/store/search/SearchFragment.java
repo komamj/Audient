@@ -92,6 +92,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
             @Override
             public void onPlaylistChanged(TencentMusic audient) {
+                if (mPresenter != null) {
+                    mPresenter.addToPlaylist(audient);
+                }
             }
         });
 
