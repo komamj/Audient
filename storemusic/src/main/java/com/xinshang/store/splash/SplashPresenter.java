@@ -115,7 +115,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                     @Override
                     public void accept(Token token) throws Exception {
                         mRepository.persistenceAccessToken(token.accessToken);
-                        mRepository.persistenceAccessToken(token.refreshToken);
+                        mRepository.persistenceRefreshToken(token.refreshToken);
                         mRepository.persistenceLoginStatus(true);
                     }
                 })
