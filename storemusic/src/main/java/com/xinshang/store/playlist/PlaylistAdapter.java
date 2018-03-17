@@ -34,6 +34,7 @@ import com.xinshang.store.R;
 import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
 import com.xinshang.store.comment.CommentActivity;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
@@ -42,7 +43,7 @@ import com.xinshang.store.utils.Constants;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PlaylistAdapter extends BaseAdapter<TencentMusic, PlaylistAdapter.PlaylistViewHolder> {
+public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.PlaylistViewHolder> {
     private static final String TAG = PlaylistAdapter.class.getSimpleName();
     private final GlideRequest<Bitmap> mGlideRequest;
     private EventListener mListener;
@@ -57,24 +58,25 @@ public class PlaylistAdapter extends BaseAdapter<TencentMusic, PlaylistAdapter.P
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
-    public void setEventListener(EventListener listener) {
-        this.mListener = listener;
-    }
-
     @Override
-    protected boolean areItemsTheSame(TencentMusic oldItem, TencentMusic newItem) {
+    protected boolean areItemsTheSame(StorePlaylist oldItem, StorePlaylist newItem) {
         return TextUtils.equals(oldItem.mediaId, newItem.mediaId);
     }
 
     @Override
-    protected boolean areContentsTheSame(TencentMusic oldItem, TencentMusic newItem) {
+    protected boolean areContentsTheSame(StorePlaylist oldItem, StorePlaylist newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(TencentMusic oldItem, TencentMusic newItem) {
+    protected Object getChangePayload(StorePlaylist oldItem, StorePlaylist newItem) {
         return null;
     }
+
+    public void setEventListener(EventListener listener) {
+        this.mListener = listener;
+    }
+
 
     @Override
     public PlaylistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,12 +87,12 @@ public class PlaylistAdapter extends BaseAdapter<TencentMusic, PlaylistAdapter.P
 
     @Override
     public void onBindViewHolder(PlaylistViewHolder holder, int position) {
-        TencentMusic audient = mData.get(position);
+        StorePlaylist storePlaylist = mData.get(position);
 
-        mGlideRequest.load(audient).into(holder.mAlbum);
+        mGlideRequest.load(storePlaylist).into(holder.mAlbum);
 
-        holder.mName.setText(audient.mediaName);
-        holder.mArtistName.setText(audient.artistName);
+        holder.mName.setText(storePlaylist.mediaName);
+        holder.mArtistName.setText(storePlaylist.artistName);
     }
 
     public interface EventListener {
@@ -116,17 +118,24 @@ public class PlaylistAdapter extends BaseAdapter<TencentMusic, PlaylistAdapter.P
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    TencentMusic audient = mData.get(getAdapterPosition());
+                    StorePlaylist storePlaylist = mData.get(getAdapterPosition());
+                    TencentMusic tencentMusic = new TencentMusic();
+                    tencentMusic.albumId= storePlaylist.albumId;
+                    tencentMusic.artistId= storePlaylist.artistId;
+                    tencentMusic.albumName= storePlaylist.albumName;
+                    tencentMusic.artistName= storePlaylist.artistName;
+                    tencentMusic.mediaId= storePlaylist.mediaId;
+                    tencentMusic.mediaName = storePlaylist.mediaName;
 
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
                             if (mListener != null) {
-                                mListener.onFavoriteMenuClick(audient);
+                                mListener.onFavoriteMenuClick(tencentMusic);
                             }
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra(Constants.KEY_AUDIENT, audient);
+                            intent.putExtra(Constants.KEY_AUDIENT, tencentMusic);
                             mContext.startActivity(intent);
                             break;
                     }

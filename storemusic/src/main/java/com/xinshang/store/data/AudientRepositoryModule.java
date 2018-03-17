@@ -117,7 +117,7 @@ public class AudientRepositoryModule {
     @Provides
     OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences,
                                      final Gson gson) {
-        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+        final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
@@ -130,13 +130,15 @@ public class AudientRepositoryModule {
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
                         String refershToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                        LogUtils.i(TAG, "authenticate :" + refershToken);
+                        LogUtils.i(TAG, "authenticate refreshToken :" + refershToken);
 
                         Retrofit retrofit = new Retrofit.Builder()
+                                .client(new OkHttpClient.Builder().addInterceptor(logInterceptor).build())
                                 .baseUrl(Constants.STORE_MUSIC_HOST)
                                 .addConverterFactory(GsonConverterFactory.create(gson))
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .build();
+
                         AudientApi audientApi = retrofit.create(AudientApi.class);
 
                         audientApi.refreshAccessToken("refresh_token", refershToken,
@@ -182,7 +184,8 @@ public class AudientRepositoryModule {
                                     }
                                 });*/
                         return response.request().newBuilder()
-                                .header("Authorization", "Bearer " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
+                                .header("Authorization", "Bearer " +
+                                        sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
                                 .build();
                     }
                 })

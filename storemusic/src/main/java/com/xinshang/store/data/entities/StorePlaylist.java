@@ -15,6 +15,8 @@
  */
 package com.xinshang.store.data.entities;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -50,4 +52,46 @@ public class StorePlaylist {
     public String albumName;
     @SerializedName("joinedDate")
     public String joinedDate;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("audient with mediaId ");
+        builder.append(mediaId);
+        builder.append(",mediaName ");
+        builder.append(mediaName);
+        builder.append(",artistId ");
+        builder.append(artistId);
+        builder.append(",album ");
+        builder.append(albumId);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        StorePlaylist storePlaylist = (StorePlaylist) o;
+
+        return TextUtils.equals(id, storePlaylist.id)
+                && TextUtils.equals(storeId, storePlaylist.storeId)
+                && TextUtils.equals(userId, storePlaylist.userId)
+                && TextUtils.equals(demandId, storePlaylist.demandId)
+                && TextUtils.equals(demandTime, storePlaylist.demandTime)
+                && TextUtils.equals(mediaSource, storePlaylist.mediaSource)
+                && TextUtils.equals(this.mediaId, storePlaylist.mediaId)
+                && TextUtils.equals(mediaInterval, storePlaylist.mediaInterval)
+                && TextUtils.equals(this.mediaName, storePlaylist.mediaName)
+                && TextUtils.equals(this.artistId, storePlaylist.artistId)
+                && TextUtils.equals(this.artistName, storePlaylist.artistName)
+                && TextUtils.equals(this.albumId, storePlaylist.albumId)
+                && TextUtils.equals(this.albumName, storePlaylist.albumName)
+                && TextUtils.equals(joinedDate, storePlaylist.joinedDate);
+    }
 }

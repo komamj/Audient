@@ -17,6 +17,7 @@ package com.xinshang.store.playlist;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 
 import java.util.List;
@@ -33,13 +34,13 @@ public interface PlaylistContract {
 
         void showNowPlaying(TencentMusic audient);
 
-        void showAudients(List<TencentMusic> audients);
+        void showPlaylist(List<StorePlaylist> storePlaylists);
     }
 
     interface Presenter extends BasePresenter {
-        void loadNowPlaying(String storeId);
+        void loadNowPlaying();
 
-        void loadAudients();
+        void loadStorePlaylist();
 
         void thumbUpSong(TencentMusic audient);
 

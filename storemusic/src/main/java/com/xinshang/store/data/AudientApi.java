@@ -173,13 +173,13 @@ public interface AudientApi {
     /**
      * 获取店铺的默认播放列表
      */
-    @GET("api/v1/storeplaylist")
-    Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(@Query("sid") String storeId);
+    @GET("api/v1/storeplaylist/{id}")
+    Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(@Path("id") String storeId);
 
     /**
      * 点播歌曲
      */
-    @POST("api/v1/storeplaylist")
+    @POST("api/v1/storeplaylist/")
     Flowable<BaseResponse> addToPlaylist(@Body Music music);
 
     @GET("api/v1/store/my")

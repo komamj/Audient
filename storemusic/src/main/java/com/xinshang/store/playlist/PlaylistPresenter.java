@@ -17,8 +17,10 @@ package com.xinshang.store.playlist;
 
 import com.google.gson.Gson;
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.CommandRequest;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
@@ -82,6 +84,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                 .build();
 
         mWebSocket = mClient.newWebSocket(request, this);
+
+        loadStorePlaylist();
     }
 
     /**
@@ -140,7 +144,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void loadNowPlaying(String storeId) {
+    public void loadNowPlaying() {
+        String storeId = mRepository.getStoreId();
         Disposable disposable = mRepository.getNowPlaying(storeId)
                 .map(new Function<NowPlayingResponse, TencentMusic>() {
                     @Override
@@ -173,31 +178,37 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void loadAudients() {
-        Disposable disposable = mRepository.getAudientTests()
+    public void loadStorePlaylist() {
+        String storeId = mRepository.getStoreId();
+        Disposable disposable = mRepository.getStorePlaylist(storeId)
+                .map(new Function<ApiResponse<List<StorePlaylist>>, List<StorePlaylist>>() {
+                    @Override
+                    public List<StorePlaylist> apply(ApiResponse<List<StorePlaylist>> listApiResponse) throws Exception {
+                        return listApiResponse.data;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<TencentMusic>>() {
+                .subscribeWith(new DisposableSubscriber<List<StorePlaylist>>() {
                     @Override
-                    public void onNext(List<TencentMusic> audients) {
+                    public void onNext(List<StorePlaylist> storePlaylists) {
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
-
-                            mView.showAudients(audients);
+                            mView.showPlaylist(storePlaylists);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadAudients error " + t.toString());
+                        LogUtils.e(TAG, "loadStorePlaylist error : " + t.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.showProgressBar(false);
+                        }
                     }
                 });
-
         mDisposables.add(disposable);
     }
 

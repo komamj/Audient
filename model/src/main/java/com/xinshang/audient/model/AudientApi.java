@@ -221,8 +221,8 @@ public interface AudientApi {
     /**
      * 获取店铺的默认播放列表
      */
-    @GET("api/v1/storeplaylist")
-    Flowable<BaseResponse> getPlaylist(@Query("sid") String storeId);
+    @GET("api/v1/storeplaylist/{id}")
+    Flowable<BaseResponse> getPlaylist(@Path("id") String storeId);
 
     /**
      * 点播歌曲

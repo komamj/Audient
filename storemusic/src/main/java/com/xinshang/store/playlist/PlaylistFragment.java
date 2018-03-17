@@ -29,6 +29,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
+import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.helper.GlideApp;
@@ -122,7 +123,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadAudients();
+                    mPresenter.loadStorePlaylist();
                 }
             }
         });
@@ -148,8 +149,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-            mPresenter.loadNowPlaying("");
-            mPresenter.loadAudients();
+            mPresenter.loadNowPlaying();
+            mPresenter.loadStorePlaylist();
         }
     }
 
@@ -215,10 +216,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showAudients(List<TencentMusic> audients) {
+    public void showPlaylist(List<StorePlaylist> storePlaylists) {
         mSwipeRefreshLayout.setRefreshing(false);
 
-        mAdapter.replace(audients);
+        mAdapter.replace(storePlaylists);
     }
 
     @Override
