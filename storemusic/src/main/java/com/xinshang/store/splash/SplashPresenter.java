@@ -134,6 +134,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                 .doOnNext(new Consumer<Store>() {
                     @Override
                     public void accept(Store store) throws Exception {
+                        LogUtils.i(TAG, "getStoreInfo : " + store.id);
                         mRepository.persistenceStoreId(store.id);
                     }
                 }).subscribeOn(Schedulers.io())

@@ -221,7 +221,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     public void sendCommand(String command) {
         CommandRequest commandRequest = new CommandRequest();
         commandRequest.action = command;
-        commandRequest.store = "4ca2e1a2-d5cc-490a-8371-63d8010a3964";
+        commandRequest.store = mRepository.getStoreId();
         String message = new Gson().toJson(commandRequest);
 
         LogUtils.i(TAG, "senCommand : " + message);

@@ -184,4 +184,7 @@ public interface AudientApi {
 
     @GET("api/v1/store/my")
     Flowable<ApiResponse<List<Store>>> getStoreInfo();
+
+    @POST("api/v1/storeplaylist/{id}/playfav")
+    Flowable<BaseResponse> playFavorite(@Path("id") String favoritesId);
 }

@@ -167,6 +167,6 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
 
     @Override
     public String getStoreId() {
-        return mSharedPreferences.getString(Constants.STORE_ID, "4ca2e1a2-d5cc-490a-8371-63d8010a3964");
+        return mSharedPreferences.getString(Constants.STORE_ID, "");
     }
 }
