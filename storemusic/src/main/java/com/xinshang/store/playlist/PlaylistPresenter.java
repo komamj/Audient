@@ -55,6 +55,7 @@ import okio.ByteString;
 public class PlaylistPresenter extends WebSocketListener implements PlaylistContract.Presenter {
     private static final String TAG = PlaylistPresenter.class.getSimpleName();
 
+    private static final String COMMAND_BIND = "bind";
     private static final String COMMAND_NEXT = "next";
     private static final String COMMAND_STOP = "stop";
     private static final String COMMAND_PAUSE = "pause";
@@ -113,6 +114,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         LogUtils.i(TAG, "onOpen");
+
+        sendCommand(COMMAND_BIND);
 
         Flowable.just("").delay(3, TimeUnit.SECONDS)
                 .flatMap(new Function<String, Publisher<String>>() {

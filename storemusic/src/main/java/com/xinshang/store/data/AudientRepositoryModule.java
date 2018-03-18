@@ -17,6 +17,7 @@ package com.xinshang.store.data;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.xinshang.store.data.source.local.AudientDatabase;
 import com.xinshang.store.data.source.local.LocalDataSource;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
 import com.xinshang.store.helper.TokenInterceptor;
+import com.xinshang.store.splash.SplashActivity;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
@@ -115,7 +117,7 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences,
+    OkHttpClient provideOkHttpClient(final Context context, final Cache cache, final SharedPreferences sharedPreferences,
                                      final Gson gson) {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
@@ -133,7 +135,9 @@ public class AudientRepositoryModule {
                         LogUtils.i(TAG, "authenticate refreshToken :" + refershToken);
 
                         Retrofit retrofit = new Retrofit.Builder()
-                                .client(new OkHttpClient.Builder().addInterceptor(logInterceptor).build())
+                                .client(new OkHttpClient.Builder()
+                                        .addInterceptor(logInterceptor)
+                                        .build())
                                 .baseUrl(Constants.STORE_MUSIC_HOST)
                                 .addConverterFactory(GsonConverterFactory.create(gson))
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -154,7 +158,14 @@ public class AudientRepositoryModule {
 
                                     @Override
                                     public void onError(Throwable t) {
-                                        LogUtils.e(TAG, "wocao token error :" + t.toString());
+                                        LogUtils.e(TAG, "wocao token error :" + t.getMessage());
+
+                                        sharedPreferences.edit()
+                                                .putBoolean(Constants.LOGIN_STATUS, false)
+                                                .commit();
+
+                                        Intent intent = new Intent(context, SplashActivity.class);
+                                        context.startActivity(intent);
                                     }
 
                                     @Override
