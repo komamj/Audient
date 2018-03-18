@@ -17,6 +17,7 @@ package com.xinshang.store.data;
 
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
+import com.xinshang.store.data.entities.CommandResponse;
 import com.xinshang.store.data.entities.CommentResult;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
@@ -126,6 +127,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public Flowable<BaseResponse> addAllToPlaylist(String favoritesId) {
+        return mRemoteDataSource.addAllToPlaylist(favoritesId);
+    }
+
+    @Override
     public Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(String storeId) {
         return mRemoteDataSource.getStorePlaylist(storeId);
     }
@@ -203,5 +209,10 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public String getStoreId() {
         return mLocalDataSource.getStoreId();
+    }
+
+    @Override
+    public Flowable<CommandResponse> parsingCommandResponse(String response) {
+        return mLocalDataSource.parsingCommandResponse(response);
     }
 }

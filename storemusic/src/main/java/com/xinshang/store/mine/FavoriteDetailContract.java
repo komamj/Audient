@@ -39,5 +39,7 @@ public interface FavoriteDetailContract {
         void addToPlaylist(TencentMusic tencentMusic);
 
         void deleteFavoriteSong(Favorite.FavoritesSong favoritesSong);
+
+        void addAllToPlaylist(String favoritesId);
     }
 }

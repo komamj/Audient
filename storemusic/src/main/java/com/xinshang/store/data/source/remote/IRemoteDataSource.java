@@ -64,6 +64,8 @@ public interface IRemoteDataSource {
 
     Flowable<BaseResponse> addToPlaylist(Music music);
 
+    Flowable<BaseResponse> addAllToPlaylist(String favoritesId);
+
     Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(String storeId);
 
     Flowable<ApiResponse<List<Store>>> getStoreInfo();

@@ -81,21 +81,21 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @OnClick(R.id.iv_pause)
     void onPauseClick() {
         if (mPresenter != null) {
-            mPresenter.sendCommand(COMMAND_PAUSE);
+            mPresenter.doPauseOrPlay();
         }
     }
 
     @OnClick(R.id.iv_stop)
     void onStopClick() {
         if (mPresenter != null) {
-            mPresenter.sendCommand(COMMAND_STOP);
+            mPresenter.stop();
         }
     }
 
     @OnClick(R.id.iv_next)
     void onNextClick() {
         if (mPresenter != null) {
-            mPresenter.sendCommand(COMMAND_NEXT);
+            mPresenter.next();
         }
     }
 
@@ -220,6 +220,15 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mSwipeRefreshLayout.setRefreshing(false);
 
         mAdapter.replace(storePlaylists);
+    }
+
+    @Override
+    public void updatePlayIcon(boolean isPlaying) {
+        if (isPlaying) {
+            mPause.setImageResource(R.drawable.ic_pause);
+        } else {
+            mPause.setImageResource(R.drawable.ic_play);
+        }
     }
 
     @Override

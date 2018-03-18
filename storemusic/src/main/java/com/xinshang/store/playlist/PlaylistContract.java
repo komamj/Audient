@@ -35,6 +35,8 @@ public interface PlaylistContract {
         void showNowPlaying(TencentMusic audient);
 
         void showPlaylist(List<StorePlaylist> storePlaylists);
+
+        void updatePlayIcon(boolean isPlaying);
     }
 
     interface Presenter extends BasePresenter {
@@ -42,8 +44,16 @@ public interface PlaylistContract {
 
         void loadStorePlaylist();
 
+        void doPauseOrPlay();
+
+        void stop();
+
+        void next();
+
         void thumbUpSong(TencentMusic audient);
 
         void sendCommand(String command);
+
+        boolean isPlaying();
     }
 }

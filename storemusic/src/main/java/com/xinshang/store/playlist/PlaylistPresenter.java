@@ -15,24 +15,33 @@
  */
 package com.xinshang.store.playlist;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.CommandRequest;
+import com.xinshang.store.data.entities.CommandResponse;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
+import org.reactivestreams.Publisher;
+
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.OkHttpClient;
@@ -44,7 +53,12 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import okio.ByteString;
 
 public class PlaylistPresenter extends WebSocketListener implements PlaylistContract.Presenter {
-    public static final String TAG = PlaylistPresenter.class.getSimpleName();
+    private static final String TAG = PlaylistPresenter.class.getSimpleName();
+
+    private static final String COMMAND_NEXT = "next";
+    private static final String COMMAND_STOP = "stop";
+    private static final String COMMAND_PAUSE = "pause";
+    private static final String COMMAND_PLAY = "play";
 
     private PlaylistContract.View mView;
 
@@ -55,6 +69,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private final OkHttpClient mClient;
 
     private WebSocket mWebSocket;
+
+    private boolean mIsPlaying;
+
+    private String mMessage;
 
     @Inject
     public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
@@ -92,20 +110,101 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      * Invoked when a web socket has been accepted by the remote peer and may begin transmitting
      * messages.
      */
+    @Override
     public void onOpen(WebSocket webSocket, Response response) {
         LogUtils.i(TAG, "onOpen");
+
+        Flowable.just("").delay(3, TimeUnit.SECONDS)
+                .flatMap(new Function<String, Publisher<String>>() {
+                    @Override
+                    public Publisher<String> apply(String s) throws Exception {
+                        return Flowable.just(mMessage);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        if (TextUtils.isEmpty(s)) {
+                            mIsPlaying = false;
+                        } else {
+                            mIsPlaying = true;
+                        }
+                        if (mView.isActive()) {
+                            mView.updatePlayIcon(mIsPlaying);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     /**
      * Invoked when a text (type {@code 0x1}) message has been received.
      */
-    public void onMessage(WebSocket webSocket, String text) {
+    @Override
+    public void onMessage(WebSocket webSocket, final String text) {
+        mMessage = text;
+
         LogUtils.i(TAG, "onMessage string : " + text);
+
+        Disposable disposable = mRepository.parsingCommandResponse(text)
+                .filter(new Predicate<CommandResponse>() {
+                    @Override
+                    public boolean test(CommandResponse commandResponse) throws Exception {
+                        return TextUtils.equals(commandResponse.store, mRepository.getStoreId());
+                    }
+                })
+                .doOnNext(new Consumer<CommandResponse>() {
+                    @Override
+                    public void accept(CommandResponse commandResponse) throws Exception {
+                        LogUtils.i(TAG, "onMessage string : " + text);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<CommandResponse>() {
+                    @Override
+                    public void onNext(CommandResponse commandResponse) {
+                        LogUtils.i(TAG, "onMessage commandResponse : " + commandResponse.toString());
+                        if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            mIsPlaying = true;
+                        } else if (TextUtils.equals(COMMAND_PAUSE, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            mIsPlaying = false;
+                        } else if (TextUtils.equals(COMMAND_STOP, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            mIsPlaying = false;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "onMessage error :" + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
     }
 
     /**
      * Invoked when a binary (type {@code 0x2}) message has been received.
      */
+    @Override
     public void onMessage(WebSocket webSocket, ByteString bytes) {
         LogUtils.i(TAG, "onMessage bytestring : " + bytes.toString());
     }
@@ -113,6 +212,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     /**
      * Invoked when the peer has indicated that no more incoming messages will be transmitted.
      */
+    @Override
     public void onClosing(WebSocket webSocket, int code, String reason) {
         LogUtils.i(TAG, "onClosing code : " + code + ",reason :" + reason);
     }
@@ -121,6 +221,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      * Invoked when both peers have indicated that no more messages will be transmitted and the
      * connection has been successfully released. No further calls to this listener will be made.
      */
+    @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
         LogUtils.i(TAG, "onClosed code : " + code + ",reason :" + reason);
     }
@@ -130,6 +231,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      * network. Both outgoing and incoming messages may have been lost. No further calls to this
      * listener will be made.
      */
+    @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         LogUtils.i(TAG, "onFailure " + t.getMessage());
     }
@@ -213,6 +315,45 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
+    public void doPauseOrPlay() {
+        if (isPlaying()) {
+            sendCommand(COMMAND_PAUSE);
+            mIsPlaying = false;
+        } else {
+            sendCommand(COMMAND_PLAY);
+            mIsPlaying = true;
+        }
+
+        if (mView.isActive()) {
+            mView.updatePlayIcon(isPlaying());
+        }
+    }
+
+    @Override
+    public void stop() {
+        sendCommand(COMMAND_STOP);
+        mIsPlaying = false;
+        if (mView.isActive()) {
+            mView.updatePlayIcon(isPlaying());
+        }
+    }
+
+    @Override
+    public void next() {
+        if (isPlaying()) {
+            sendCommand(COMMAND_NEXT);
+        } else {
+            sendCommand(COMMAND_PLAY);
+        }
+
+        mIsPlaying = true;
+
+        if (mView.isActive()) {
+            mView.updatePlayIcon(isPlaying());
+        }
+    }
+
+    @Override
     public void thumbUpSong(TencentMusic audient) {
         LogUtils.i(TAG, "thumbUp");
     }
@@ -227,5 +368,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         LogUtils.i(TAG, "senCommand : " + message);
 
         mWebSocket.send(message);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mIsPlaying;
     }
 }

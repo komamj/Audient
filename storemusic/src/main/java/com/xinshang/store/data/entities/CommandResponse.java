@@ -15,19 +15,55 @@
  */
 package com.xinshang.store.data.entities;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by koma_20 on 2018/3/17.
  */
 
-public class CommandResponse {
+public class CommandResponse<T> {
     @SerializedName("code")
-    public String code;
+    public int code;
     @SerializedName("store")
     public String store;
     @SerializedName("action")
     public String action;
+    @SerializedName("data")
+    public T data;
     @SerializedName("message")
     public String message;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("command response with code ");
+        builder.append(code);
+        builder.append(",store ");
+        builder.append(store);
+        builder.append(",action ");
+        builder.append(action);
+        builder.append(",message ");
+        builder.append(message);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CommandResponse commandResponse = (CommandResponse) o;
+
+        return this.code == commandResponse.code
+                && TextUtils.equals(message, commandResponse.message)
+                && TextUtils.equals(action, commandResponse.action)
+                && TextUtils.equals(store, commandResponse.store);
+    }
 }

@@ -18,6 +18,8 @@ package com.xinshang.store.data.source.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.xinshang.store.data.entities.CommandResponse;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.utils.Constants;
@@ -45,14 +47,18 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
 
     private final AudientDao mAudientDao;
 
+    private final Gson mGson;
+
     @Inject
     public LocalDataSource(Context context, AudientDao audientDao,
-                           SharedPreferences sharedPreferences) {
+                           SharedPreferences sharedPreferences, Gson gson) {
         mContext = context;
 
         mAudientDao = audientDao;
 
         mSharedPreferences = sharedPreferences;
+
+        mGson = gson;
     }
 
     @Override
@@ -168,5 +174,17 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     @Override
     public String getStoreId() {
         return mSharedPreferences.getString(Constants.STORE_ID, "");
+    }
+
+    @Override
+    public Flowable<CommandResponse> parsingCommandResponse(final String response) {
+        return Flowable.create(new FlowableOnSubscribe<CommandResponse>() {
+            @Override
+            public void subscribe(FlowableEmitter<CommandResponse> emitter) throws Exception {
+                CommandResponse commandResponse = mGson.fromJson(response, CommandResponse.class);
+                emitter.onNext(commandResponse);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
     }
 }

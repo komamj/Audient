@@ -48,12 +48,15 @@ public class FavoriteDetailActivity extends BaseActivity {
     ImageView mAlbum;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+
+    private Favorite mFavorite;
+
     @Inject
     FavoriteDetailPresenter mPresenter;
 
     @OnClick(R.id.fab)
     void onFabClick() {
-
+        mPresenter.addAllToPlaylist(mFavorite.favoritesId);
     }
 
     @Override
@@ -68,9 +71,9 @@ public class FavoriteDetailActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
-        Favorite favorite = getIntent().getParcelableExtra(Constants.KEY_FAVORITE);
+        mFavorite = getIntent().getParcelableExtra(Constants.KEY_FAVORITE);
 
-        mToolbar.setTitle(favorite.favoriteName);
+        mToolbar.setTitle(mFavorite.favoriteName);
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
@@ -83,14 +86,14 @@ public class FavoriteDetailActivity extends BaseActivity {
                 .asBitmap()
                 .transition(new BitmapTransitionOptions())
                 .placeholder(R.drawable.ic_album)
-                .load(favorite.coverImageUrl).into(mAlbum);
+                .load(mFavorite.coverImageUrl).into(mAlbum);
 
-        mFab.setImageResource(R.drawable.ic_unfavorite);
+        mFab.setImageResource(R.drawable.ic_playlist_play);
 
         FavoriteDetailFragment fragment = (FavoriteDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
         if (fragment == null) {
-            fragment = FavoriteDetailFragment.newInstance(favorite);
+            fragment = FavoriteDetailFragment.newInstance(mFavorite);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.content_main, fragment)

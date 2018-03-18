@@ -68,8 +68,8 @@ public class AudientRepositoryModule {
     @Singleton
     @Provides
     AudientDataSource provideLocalDataSource(Context context, AudientDao audientDao,
-                                             SharedPreferences sharedPreferences) {
-        return new LocalDataSource(context, audientDao, sharedPreferences);
+                                             SharedPreferences sharedPreferences, Gson gson) {
+        return new LocalDataSource(context, audientDao, sharedPreferences, gson);
     }
 
     @Singleton

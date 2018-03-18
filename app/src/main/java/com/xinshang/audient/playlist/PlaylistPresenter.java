@@ -52,6 +52,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
     private WebSocket mWebSocket;
 
+    private boolean mIsPlaying;
+
     @Inject
     public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
         mView = view;

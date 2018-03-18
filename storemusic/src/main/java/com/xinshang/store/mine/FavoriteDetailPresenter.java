@@ -167,4 +167,29 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
                     }
                 });
     }
+
+    @Override
+    public void addAllToPlaylist(String favoritesId) {
+        mRepository.addAllToPlaylist(favoritesId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (baseResponse.resultCode == 0) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addAllToPlaylist error : " + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }
