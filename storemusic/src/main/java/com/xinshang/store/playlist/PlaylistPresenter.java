@@ -79,6 +79,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
     private String mNowPlayingMediaId;
 
+    private List<StorePlaylist> mPlaylist;
+
     @Inject
     public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
         mView = view;
@@ -107,8 +109,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                 .build();
 
         mWebSocket = mClient.newWebSocket(request, this);
-
-        loadStorePlaylist();
     }
 
     /**
@@ -161,7 +161,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void onMessage(WebSocket webSocket, final String text) {
         LogUtils.i(TAG, "onMessage text : " + text);
-        
+
         mMessage = text;
 
         final Disposable disposable = mRepository.parsingCommandResponse(text)
@@ -178,9 +178,14 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                                 && commandResponse.code == 0) {
                             mIsPlaying = true;
 
-                            String mediaId = commandResponse.data;
+                            String mediaId = "";
 
-                            LogUtils.i(TAG, "now playing media id : " + mediaId);
+                            for (StorePlaylist storePlaylist : mPlaylist) {
+                                if (TextUtils.equals(commandResponse.data, storePlaylist.id)) {
+                                    mediaId = storePlaylist.mediaId;
+                                    break;
+                                }
+                            }
 
                             Disposable nowPlayingDisposable = mRepository.getSongDetailResult(mediaId)
                                     .map(new Function<SongDetailResult, TencentMusic>() {
@@ -337,6 +342,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                 .subscribeWith(new DisposableSubscriber<List<StorePlaylist>>() {
                     @Override
                     public void onNext(List<StorePlaylist> storePlaylists) {
+                        mPlaylist = storePlaylists;
+
                         if (mView.isActive()) {
                             mView.showPlaylist(storePlaylists);
                         }
