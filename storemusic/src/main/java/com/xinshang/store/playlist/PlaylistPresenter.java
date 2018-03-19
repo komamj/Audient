@@ -22,8 +22,6 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.CommandRequest;
 import com.xinshang.store.data.entities.CommandResponse;
-import com.xinshang.store.data.entities.NowPlayingResponse;
-import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
@@ -62,6 +60,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private static final String COMMAND_STOP = "stop";
     private static final String COMMAND_PAUSE = "pause";
     private static final String COMMAND_PLAY = "play";
+    private static final String COMMAND_START = "start";
 
     private PlaylistContract.View mView;
 
@@ -178,43 +177,12 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                                 && commandResponse.code == 0) {
                             mIsPlaying = true;
 
-                            String mediaId = "";
+                            loadNowPlaying(commandResponse.data);
+                        } else if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            mIsPlaying = true;
 
-                            for (StorePlaylist storePlaylist : mPlaylist) {
-                                if (TextUtils.equals(commandResponse.data, storePlaylist.id)) {
-                                    mediaId = storePlaylist.mediaId;
-                                    break;
-                                }
-                            }
-
-                            Disposable nowPlayingDisposable = mRepository.getSongDetailResult(mediaId)
-                                    .map(new Function<SongDetailResult, TencentMusic>() {
-                                        @Override
-                                        public TencentMusic apply(SongDetailResult songDetailResult) throws Exception {
-                                            return songDetailResult.audient;
-                                        }
-                                    })
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribeWith(new DisposableSubscriber<TencentMusic>() {
-                                        @Override
-                                        public void onNext(TencentMusic tencentMusic) {
-                                            if (mView.isActive()) {
-                                                mView.showNowPlaying(tencentMusic);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable t) {
-                                            LogUtils.e(TAG, "getNowPlaying error : " + t.getMessage());
-                                        }
-
-                                        @Override
-                                        public void onComplete() {
-
-                                        }
-                                    });
-                            mDisposables.add(nowPlayingDisposable);
+                            loadNowPlaying(commandResponse.message);
                         }
                     }
                 })
@@ -225,6 +193,9 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                     public void onNext(CommandResponse<String> commandResponse) {
                         LogUtils.i(TAG, "onMessage commandResponse : " + commandResponse.toString());
                         if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            mIsPlaying = true;
+                        } else if (TextUtils.equals(COMMAND_START, commandResponse.action)
                                 && commandResponse.code == 0) {
                             mIsPlaying = true;
                         } else if (TextUtils.equals(COMMAND_PAUSE, commandResponse.action)
@@ -294,22 +265,27 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void loadNowPlaying() {
-        String storeId = mRepository.getStoreId();
-        Disposable disposable = mRepository.getNowPlaying(storeId)
-                .map(new Function<NowPlayingResponse, TencentMusic>() {
+    public void loadNowPlaying(String id) {
+        Flowable.just(id)
+                .map(new Function<String, StorePlaylist>() {
                     @Override
-                    public TencentMusic apply(NowPlayingResponse nowPlayingResponse) throws Exception {
-                        return nowPlayingResponse.tencentMusic;
+                    public StorePlaylist apply(String s) throws Exception {
+                        for (StorePlaylist storePlaylist : mPlaylist) {
+                            if (TextUtils.equals(s, storePlaylist.id)) {
+                                LogUtils.i(TAG, "nnnnnnn   " + s);
+                                return storePlaylist;
+                            }
+                        }
+                        return null;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<TencentMusic>() {
+                .subscribeWith(new DisposableSubscriber<StorePlaylist>() {
                     @Override
-                    public void onNext(TencentMusic tencentMusic) {
+                    public void onNext(StorePlaylist storePlaylist) {
                         if (mView.isActive()) {
-                            mView.showNowPlaying(tencentMusic);
+                            mView.showNowPlaying(storePlaylist);
                         }
                     }
 
@@ -323,8 +299,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
                     }
                 });
-
-        mDisposables.add(disposable);
     }
 
     @Override
@@ -370,7 +344,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
             sendCommand(COMMAND_PAUSE);
             mIsPlaying = false;
         } else {
-            sendCommand(COMMAND_PLAY);
+            sendCommand(COMMAND_START);
             mIsPlaying = true;
         }
 
@@ -393,7 +367,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         if (isPlaying()) {
             sendCommand(COMMAND_NEXT);
         } else {
-            sendCommand(COMMAND_PLAY);
+            sendCommand(COMMAND_START);
         }
 
         mIsPlaying = true;

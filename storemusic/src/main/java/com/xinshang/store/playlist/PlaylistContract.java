@@ -32,7 +32,7 @@ public interface PlaylistContract {
 
         void showProgressBar(boolean forceShow);
 
-        void showNowPlaying(TencentMusic audient);
+        void showNowPlaying(StorePlaylist storePlaylist);
 
         void showPlaylist(List<StorePlaylist> storePlaylists);
 
@@ -40,7 +40,7 @@ public interface PlaylistContract {
     }
 
     interface Presenter extends BasePresenter {
-        void loadNowPlaying();
+        void loadNowPlaying(String id);
 
         void loadStorePlaylist();
 

@@ -149,7 +149,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-            mPresenter.loadNowPlaying();
             mPresenter.loadStorePlaylist();
         }
     }
@@ -202,17 +201,19 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showNowPlaying(TencentMusic audient) {
+    public void showNowPlaying(StorePlaylist storePlaylist) {
+        LogUtils.i(TAG,"showNowPlaying : "+ storePlaylist.mediaName);
+
         GlideApp.with(this)
                 .asBitmap()
                 .circleCrop()
-                .load(audient)
+                .load(storePlaylist)
                 .thumbnail(0.1f)
                 .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(R.drawable.ic_album)
                 .into(mAlbum);
 
-        mName.setText(audient.mediaName);
+        mName.setText(storePlaylist.mediaName);
     }
 
     @Override
