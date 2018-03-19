@@ -42,6 +42,7 @@
 
         <TextView
             android:id="@+id/tv_artist_name"
+            android:layout_marginTop="4dp"
             style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

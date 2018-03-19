@@ -126,6 +126,17 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        LogUtils.i(TAG, "onDestroyView");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_base;
     }

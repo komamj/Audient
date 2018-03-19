@@ -160,6 +160,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      */
     @Override
     public void onMessage(WebSocket webSocket, final String text) {
+        LogUtils.i(TAG, "onMessage text : " + text);
+        
         mMessage = text;
 
         final Disposable disposable = mRepository.parsingCommandResponse(text)
