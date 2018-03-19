@@ -121,7 +121,7 @@ public class AudientRepositoryModule {
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
 
         return new OkHttpClient.Builder()

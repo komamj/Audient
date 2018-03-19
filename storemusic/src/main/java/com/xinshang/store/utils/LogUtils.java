@@ -21,7 +21,7 @@ import com.xinshang.store.BuildConfig;
 
 
 public class LogUtils {
-    private static final boolean IS_DEBUG = BuildConfig.LOG_DEBUG;
+    private static final boolean IS_DEBUG = true;
     private static final String TAG = "KomaLog";
 
     public static void d(String tag, String msg) {

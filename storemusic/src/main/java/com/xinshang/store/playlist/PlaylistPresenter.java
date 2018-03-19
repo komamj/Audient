@@ -272,7 +272,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                     public StorePlaylist apply(String s) throws Exception {
                         for (StorePlaylist storePlaylist : mPlaylist) {
                             if (TextUtils.equals(s, storePlaylist.id)) {
-                                LogUtils.i(TAG, "nnnnnnn   " + s);
                                 return storePlaylist;
                             }
                         }
