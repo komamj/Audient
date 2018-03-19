@@ -20,23 +20,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:color/darker_gray" />
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_album"
-            app:layout_constraintEnd_toEndOf="@id/iv_album"
-            app:layout_constraintStart_toStartOf="@id/iv_album"
-            app:layout_constraintTop_toTopOf="@id/iv_album"
-            app:srcCompat="@drawable/ic_favorite" />
-
         <TextView
             android:id="@+id/tv_favorite_name"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="0dp"
+            android:paddingStart="@dimen/nav_header_vertical_spacing"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:maxLines="1"
-            android:paddingStart="@dimen/nav_header_vertical_spacing"
             android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="@id/iv_more"
             app:layout_constraintEnd_toStartOf="@id/iv_more"

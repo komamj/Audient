@@ -172,6 +172,26 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public void persistenceUserName(String userName) {
+        mLocalDataSource.persistenceUserName(userName);
+    }
+
+    @Override
+    public String getUserName() {
+        return mLocalDataSource.getUserName();
+    }
+
+    @Override
+    public void persistenceUserPassword(String password) {
+        mLocalDataSource.persistenceUserPassword(password);
+    }
+
+    @Override
+    public String getUserPassword() {
+        return mLocalDataSource.getUserPassword();
+    }
+
+    @Override
     public void persistenceLoginStatus(boolean loginStatus) {
         mLocalDataSource.persistenceLoginStatus(loginStatus);
     }
@@ -212,7 +232,7 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<CommandResponse> parsingCommandResponse(String response) {
+    public Flowable<CommandResponse<String>> parsingCommandResponse(String response) {
         return mLocalDataSource.parsingCommandResponse(response);
     }
 }

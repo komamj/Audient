@@ -129,6 +129,28 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     }
 
     @Override
+    public void persistenceUserName(String userName) {
+        mSharedPreferences.edit().putString(Constants.USER_NAME, userName)
+                .apply();
+    }
+
+    @Override
+    public String getUserName() {
+        return mSharedPreferences.getString(Constants.USER_NAME, "");
+    }
+
+    @Override
+    public void persistenceUserPassword(String password) {
+        mSharedPreferences.edit().putString(Constants.USER_PASSWORD, password)
+                .apply();
+    }
+
+    @Override
+    public String getUserPassword() {
+        return mSharedPreferences.getString(Constants.USER_PASSWORD, "");
+    }
+
+    @Override
     public void persistenceLoginStatus(boolean loginStatus) {
         mSharedPreferences.edit()
                 .putBoolean(Constants.LOGIN_STATUS, loginStatus)
@@ -177,10 +199,10 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     }
 
     @Override
-    public Flowable<CommandResponse> parsingCommandResponse(final String response) {
-        return Flowable.create(new FlowableOnSubscribe<CommandResponse>() {
+    public Flowable<CommandResponse<String>> parsingCommandResponse(final String response) {
+        return Flowable.create(new FlowableOnSubscribe<CommandResponse<String>>() {
             @Override
-            public void subscribe(FlowableEmitter<CommandResponse> emitter) throws Exception {
+            public void subscribe(FlowableEmitter<CommandResponse<String>> emitter) throws Exception {
                 CommandResponse commandResponse = mGson.fromJson(response, CommandResponse.class);
                 emitter.onNext(commandResponse);
                 emitter.onComplete();

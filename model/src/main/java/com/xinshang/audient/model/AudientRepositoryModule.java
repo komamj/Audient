@@ -130,7 +130,6 @@ public class AudientRepositoryModule {
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
                         String refershToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                        LogUtils.i(TAG, "authenticate :" + refershToken);
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(Constants.AUDIENT_HOST)
                                 .client(new OkHttpClient.Builder().addInterceptor(logInterceptor).build())
@@ -143,15 +142,20 @@ public class AudientRepositoryModule {
                                 .subscribeWith(new DisposableSubscriber<Token>() {
                                     @Override
                                     public void onNext(Token token) {
-                                        LogUtils.i(TAG, "wocao token :" + token.toString());
                                         sharedPreferences.edit()
                                                 .putString(Constants.ACCESS_TOKEN, token.accessToken)
+                                                .commit();
+                                        sharedPreferences.edit()
+                                                .putString(Constants.REFRESH_TOKEN, token.refreshToken)
                                                 .commit();
                                     }
 
                                     @Override
                                     public void onError(Throwable t) {
-                                        LogUtils.e(TAG, "wocao token error :" + t.toString());
+                                        LogUtils.e(TAG, "refresh token error :" + t.getMessage());
+
+                                        sharedPreferences.edit().putBoolean(Constants.LOGIN_STATUS, false)
+                                                .apply();
                                     }
 
                                     @Override
@@ -160,7 +164,6 @@ public class AudientRepositoryModule {
                                     }
                                 });
 
-                        LogUtils.i(TAG, "nmb " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""));
                         return response.request().newBuilder()
                                 .header("Authorization", "Bearer " + sharedPreferences.getString(Constants.ACCESS_TOKEN, ""))
                                 .build();

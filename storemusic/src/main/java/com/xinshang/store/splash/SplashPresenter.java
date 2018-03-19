@@ -105,7 +105,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     @Override
-    public void login(String userName, String password) {
+    public void login(final String userName, final String password) {
         if (mView.isActive()) {
             mView.setLoadingIndicatorView(true);
         }
@@ -114,9 +114,13 @@ public class SplashPresenter implements SplashContract.Presenter {
                 .doOnNext(new Consumer<Token>() {
                     @Override
                     public void accept(Token token) throws Exception {
-                        mRepository.persistenceAccessToken(token.accessToken);
-                        mRepository.persistenceRefreshToken(token.refreshToken);
-                        mRepository.persistenceLoginStatus(true);
+                        if (token != null) {
+                            mRepository.persistenceAccessToken(token.accessToken);
+                            mRepository.persistenceRefreshToken(token.refreshToken);
+                            mRepository.persistenceLoginStatus(true);
+                            mRepository.persistenceUserName(userName);
+                            mRepository.persistenceUserName(password);
+                        }
                     }
                 })
                 .flatMap(new Function<Token, Publisher<Store>>() {

@@ -17,7 +17,6 @@ package com.xinshang.store.data;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -32,7 +31,6 @@ import com.xinshang.store.data.source.local.AudientDatabase;
 import com.xinshang.store.data.source.local.LocalDataSource;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
 import com.xinshang.store.helper.TokenInterceptor;
-import com.xinshang.store.splash.SplashActivity;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
@@ -117,7 +115,7 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(final Context context, final Cache cache, final SharedPreferences sharedPreferences,
+    OkHttpClient provideOkHttpClient(final Cache cache, final SharedPreferences sharedPreferences,
                                      final Gson gson) {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
@@ -145,12 +143,12 @@ public class AudientRepositoryModule {
 
                         AudientApi audientApi = retrofit.create(AudientApi.class);
 
-                        audientApi.refreshAccessToken("refresh_token", refershToken,
+                        audientApi.getAccessToken(sharedPreferences.getString(Constants.USER_NAME, ""),
+                                sharedPreferences.getString(Constants.USER_PASSWORD, ""), Constants.GRANT_TYPE,
                                 Constants.CLIENT_ID, Constants.CLIENT_SECRET)
                                 .subscribeWith(new DisposableSubscriber<Token>() {
                                     @Override
                                     public void onNext(Token token) {
-                                        LogUtils.i(TAG, "wocao token :" + token.toString());
                                         sharedPreferences.edit()
                                                 .putString(Constants.ACCESS_TOKEN, token.accessToken)
                                                 .commit();
@@ -158,14 +156,7 @@ public class AudientRepositoryModule {
 
                                     @Override
                                     public void onError(Throwable t) {
-                                        LogUtils.e(TAG, "wocao token error :" + t.getMessage());
-
-                                        sharedPreferences.edit()
-                                                .putBoolean(Constants.LOGIN_STATUS, false)
-                                                .commit();
-
-                                        Intent intent = new Intent(context, SplashActivity.class);
-                                        context.startActivity(intent);
+                                        LogUtils.e(TAG, "token error :" + t.getMessage());
                                     }
 
                                     @Override

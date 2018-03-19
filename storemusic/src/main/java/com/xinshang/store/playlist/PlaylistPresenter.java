@@ -23,6 +23,7 @@ import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.CommandRequest;
 import com.xinshang.store.data.entities.CommandResponse;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
@@ -56,6 +57,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private static final String TAG = PlaylistPresenter.class.getSimpleName();
 
     private static final String COMMAND_BIND = "bind";
+    private static final String COMMAND_STATUS = "status";
     private static final String COMMAND_NEXT = "next";
     private static final String COMMAND_STOP = "stop";
     private static final String COMMAND_PAUSE = "pause";
@@ -74,6 +76,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private boolean mIsPlaying;
 
     private String mMessage;
+
+    private String mNowPlayingMediaId;
 
     @Inject
     public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
@@ -158,26 +162,60 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     public void onMessage(WebSocket webSocket, final String text) {
         mMessage = text;
 
-        LogUtils.i(TAG, "onMessage string : " + text);
-
-        Disposable disposable = mRepository.parsingCommandResponse(text)
-                .filter(new Predicate<CommandResponse>() {
+        final Disposable disposable = mRepository.parsingCommandResponse(text)
+                .filter(new Predicate<CommandResponse<String>>() {
                     @Override
-                    public boolean test(CommandResponse commandResponse) throws Exception {
+                    public boolean test(CommandResponse<String> commandResponse) throws Exception {
                         return TextUtils.equals(commandResponse.store, mRepository.getStoreId());
                     }
                 })
-                .doOnNext(new Consumer<CommandResponse>() {
+                .doOnNext(new Consumer<CommandResponse<String>>() {
                     @Override
-                    public void accept(CommandResponse commandResponse) throws Exception {
-                        LogUtils.i(TAG, "onMessage string : " + text);
+                    public void accept(CommandResponse<String> commandResponse) throws Exception {
+                        if (TextUtils.equals(COMMAND_STATUS, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            mIsPlaying = true;
+
+                            String mediaId = commandResponse.data;
+
+                            LogUtils.i(TAG, "now playing media id : " + mediaId);
+
+                            Disposable nowPlayingDisposable = mRepository.getSongDetailResult(mediaId)
+                                    .map(new Function<SongDetailResult, TencentMusic>() {
+                                        @Override
+                                        public TencentMusic apply(SongDetailResult songDetailResult) throws Exception {
+                                            return songDetailResult.audient;
+                                        }
+                                    })
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribeWith(new DisposableSubscriber<TencentMusic>() {
+                                        @Override
+                                        public void onNext(TencentMusic tencentMusic) {
+                                            if (mView.isActive()) {
+                                                mView.showNowPlaying(tencentMusic);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable t) {
+                                            LogUtils.e(TAG, "getNowPlaying error : " + t.getMessage());
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
+                                    });
+                            mDisposables.add(nowPlayingDisposable);
+                        }
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<CommandResponse>() {
+                .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
                     @Override
-                    public void onNext(CommandResponse commandResponse) {
+                    public void onNext(CommandResponse<String> commandResponse) {
                         LogUtils.i(TAG, "onMessage commandResponse : " + commandResponse.toString());
                         if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
                                 && commandResponse.code == 0) {
