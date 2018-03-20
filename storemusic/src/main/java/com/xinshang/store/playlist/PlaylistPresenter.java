@@ -336,11 +336,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
     @Override
     public void next() {
-        if (isPlaying()) {
-            sendCommand(COMMAND_NEXT);
-        } else {
-            sendCommand(COMMAND_START);
-        }
+        sendCommand(COMMAND_NEXT);
     }
 
     @Override
