@@ -170,7 +170,8 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
 
     @Override
     public void addAllToPlaylist(String favoritesId) {
-        mRepository.addAllToPlaylist(favoritesId)
+        String storeId = mRepository.getStoreId();
+        mRepository.addAllToPlaylist(storeId, favoritesId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {

@@ -119,7 +119,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                             mRepository.persistenceRefreshToken(token.refreshToken);
                             mRepository.persistenceLoginStatus(true);
                             mRepository.persistenceUserName(userName);
-                            mRepository.persistenceUserName(password);
+                            mRepository.persistenceUserPassword(password);
                         }
                     }
                 })

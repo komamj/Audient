@@ -27,10 +27,7 @@ import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
-import org.reactivestreams.Publisher;
-
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -61,6 +58,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private static final String COMMAND_PAUSE = "pause";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_START = "start";
+    private static final String STOPPED = "stoped";
+    private static final String PAUSED = "paused";
 
     private PlaylistContract.View mView;
 
@@ -74,9 +73,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
     private boolean mIsPlaying;
 
-    private String mMessage;
-
-    private String mNowPlayingMediaId;
+    private String mNowPlayingId = "";
 
     private List<StorePlaylist> mPlaylist;
 
@@ -119,39 +116,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         LogUtils.i(TAG, "onOpen");
 
         sendCommand(COMMAND_BIND);
-
-        Flowable.just("").delay(3, TimeUnit.SECONDS)
-                .flatMap(new Function<String, Publisher<String>>() {
-                    @Override
-                    public Publisher<String> apply(String s) throws Exception {
-                        return Flowable.just(mMessage);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        if (TextUtils.isEmpty(s)) {
-                            mIsPlaying = false;
-                        } else {
-                            mIsPlaying = true;
-                        }
-                        if (mView.isActive()) {
-                            mView.updatePlayIcon(mIsPlaying);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
     /**
@@ -159,10 +123,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      */
     @Override
     public void onMessage(WebSocket webSocket, final String text) {
-        LogUtils.i(TAG, "onMessage text : " + text);
-
-        mMessage = text;
-
         final Disposable disposable = mRepository.parsingCommandResponse(text)
                 .filter(new Predicate<CommandResponse<String>>() {
                     @Override
@@ -175,14 +135,24 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                     public void accept(CommandResponse<String> commandResponse) throws Exception {
                         if (TextUtils.equals(COMMAND_STATUS, commandResponse.action)
                                 && commandResponse.code == 0) {
-                            mIsPlaying = true;
-
-                            loadNowPlaying(commandResponse.data);
+                            String message = commandResponse.data;
+                            if (TextUtils.equals(message, STOPPED) || TextUtils.equals(message, PAUSED)) {
+                                mIsPlaying = false;
+                            } else {
+                                if (!TextUtils.equals(mNowPlayingId, message)) {
+                                    mNowPlayingId = message;
+                                    loadNowPlaying(message);
+                                }
+                            }
                         } else if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
                                 && commandResponse.code == 0) {
                             mIsPlaying = true;
 
-                            loadNowPlaying(commandResponse.message);
+                            String message = commandResponse.message;
+                            if (!TextUtils.equals(mNowPlayingId, message)) {
+                                mNowPlayingId = message;
+                                loadNowPlaying(message);
+                            }
                         }
                     }
                 })
@@ -191,7 +161,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                 .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
                     @Override
                     public void onNext(CommandResponse<String> commandResponse) {
-                        LogUtils.i(TAG, "onMessage commandResponse : " + commandResponse.toString());
+                        LogUtils.i(TAG, "onMessage text : " + text);
                         if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
                                 && commandResponse.code == 0) {
                             mIsPlaying = true;

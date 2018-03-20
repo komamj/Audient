@@ -141,8 +141,8 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> addAllToPlaylist(String favoritesId) {
-        return mAudientApi.addAllToPlaylist(favoritesId);
+    public Flowable<BaseResponse> addAllToPlaylist(String storeId, String favoritesId) {
+        return mAudientApi.addAllToPlaylist(storeId, favoritesId);
     }
 
     @Override

@@ -127,8 +127,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<BaseResponse> addAllToPlaylist(String favoritesId) {
-        return mRemoteDataSource.addAllToPlaylist(favoritesId);
+    public Flowable<BaseResponse> addAllToPlaylist(String storeId, String favoritesId) {
+        return mRemoteDataSource.addAllToPlaylist(storeId, favoritesId);
     }
 
     @Override
