@@ -141,7 +141,7 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
 
     @Override
     public void deleteFavoriteSong(Favorite.FavoritesSong favoritesSong) {
-        mRepository.deleteFavoritesSong(favoritesSong.favoritesId)
+        mRepository.deleteFavoritesSong(favoritesSong.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {

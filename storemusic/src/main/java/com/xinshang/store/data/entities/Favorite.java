@@ -127,7 +127,7 @@ public class Favorite implements Parcelable {
          * albumId :
          * albumName :
          */
-
+        public String id;
         public String favoritesId;
         public String mediaId;
         public String mediaName;
