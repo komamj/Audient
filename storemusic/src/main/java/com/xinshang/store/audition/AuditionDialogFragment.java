@@ -46,8 +46,6 @@ import butterknife.OnClick;
 public class AuditionDialogFragment extends DialogFragment implements AuditionContract.View {
     private static final String TAG = AuditionDialogFragment.class.getSimpleName();
 
-    private static final int LIMITED_TIME = 30;
-
     @BindView(R.id.tv_artist_name)
     TextView mActorName;
     @BindView(R.id.tv_name)
@@ -115,7 +113,6 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
 
         ButterKnife.bind(this, view);
 
-        mProgressBar.setMax((int) getLimitedTime());
         mProgressBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     int userSelectedPosition = 0;
@@ -169,11 +166,6 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     }
 
     @Override
-    public long getLimitedTime() {
-        return TimeUnit.SECONDS.toMillis(LIMITED_TIME);
-    }
-
-    @Override
     public String getAudientId() {
         return this.mAudient.mediaId;
     }
@@ -219,5 +211,10 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
         } else if (playState == Constants.COMPLETED) {
             mPauseButton.setImageResource(R.drawable.ic_replay);
         }
+    }
+
+    @Override
+    public void dismissAuditionDialog() {
+        dismiss();
     }
 }

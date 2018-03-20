@@ -100,6 +100,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
+        loadStorePlaylist();
+
         Request request = new Request.Builder()
                 .url(Constants.PLAYLIST_STATUS_HOST)
                 .build();
@@ -114,8 +116,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         LogUtils.i(TAG, "onOpen");
-
-        sendCommand(COMMAND_BIND);
     }
 
     /**
@@ -139,9 +139,11 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                             if (TextUtils.equals(message, STOPPED) || TextUtils.equals(message, PAUSED)) {
                                 mIsPlaying = false;
                             } else {
-                                if (!TextUtils.equals(mNowPlayingId, message)) {
-                                    mNowPlayingId = message;
-                                    loadNowPlaying(message);
+                                mIsPlaying = true;
+                                String id = commandResponse.message;
+                                if (!TextUtils.equals(mNowPlayingId, id)) {
+                                    mNowPlayingId = id;
+                                    loadNowPlaying(id);
                                 }
                             }
                         } else if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
@@ -153,18 +155,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                                 mNowPlayingId = message;
                                 loadNowPlaying(message);
                             }
-                        }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
-                    @Override
-                    public void onNext(CommandResponse<String> commandResponse) {
-                        LogUtils.i(TAG, "onMessage text : " + text);
-                        if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
-                                && commandResponse.code == 0) {
-                            mIsPlaying = true;
                         } else if (TextUtils.equals(COMMAND_START, commandResponse.action)
                                 && commandResponse.code == 0) {
                             mIsPlaying = true;
@@ -174,6 +164,17 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                         } else if (TextUtils.equals(COMMAND_STOP, commandResponse.action)
                                 && commandResponse.code == 0) {
                             mIsPlaying = false;
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
+                    @Override
+                    public void onNext(CommandResponse<String> commandResponse) {
+                        LogUtils.i(TAG, "onMessage text : " + text);
+                        if (mView.isActive()) {
+                            mView.updatePlayIcon(isPlaying());
                         }
                     }
 
@@ -302,6 +303,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                         if (mView.isActive()) {
                             mView.showProgressBar(false);
                         }
+
+                        sendCommand(COMMAND_BIND);
                     }
                 });
         mDisposables.add(disposable);
@@ -366,5 +369,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public boolean isPlaying() {
         return mIsPlaying;
+    }
+
+    @Override
+    public void onCommandResponse(String message) {
+
     }
 }

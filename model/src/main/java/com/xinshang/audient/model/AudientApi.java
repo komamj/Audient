@@ -161,7 +161,7 @@ public interface AudientApi {
     Flowable<FavoriteListResult> getFavoriteListResult(@Path("id") String favoriteId);
 
     /**
-     * 删除歌单里的歌曲
+     * 删除歌单
      */
     @DELETE("api/v1/favorites/{id}")
     Flowable<BaseResponse> deleteFavorite(@Path("id") String id);

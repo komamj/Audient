@@ -36,6 +36,8 @@ public final class Constants {
     public static final String USER_NAME = "user_name";
     public static final String USER_PASSWORD = "user_password";
 
+    public static final int PAYLOAD_PLAYING = 0;
+
     // favorite
     public static final String KEY_FAVORITE = "key_favorite";
 

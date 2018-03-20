@@ -17,6 +17,7 @@ package com.xinshang.store.data.entities;
 
 import android.text.TextUtils;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -52,6 +53,9 @@ public class StorePlaylist {
     public String albumName;
     @SerializedName("joinedDate")
     public String joinedDate;
+    @Expose(deserialize = false, serialize = false)
+    public boolean isPlaying;
+
 
     @Override
     public String toString() {
@@ -92,6 +96,7 @@ public class StorePlaylist {
                 && TextUtils.equals(this.artistName, storePlaylist.artistName)
                 && TextUtils.equals(this.albumId, storePlaylist.albumId)
                 && TextUtils.equals(this.albumName, storePlaylist.albumName)
-                && TextUtils.equals(joinedDate, storePlaylist.joinedDate);
+                && TextUtils.equals(joinedDate, storePlaylist.joinedDate)
+                && isPlaying == storePlaylist.isPlaying;
     }
 }

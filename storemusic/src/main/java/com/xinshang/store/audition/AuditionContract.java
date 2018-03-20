@@ -24,8 +24,6 @@ public interface AuditionContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        long getLimitedTime();
-
         String getAudientId();
 
         void showAudient(TencentMusic audient);
@@ -37,6 +35,8 @@ public interface AuditionContract {
         void showSecondaryProgress(int progress);
 
         void updateControllView(@Constants.PlayState int playState);
+
+        void dismissAuditionDialog();
     }
 
     interface Presenter extends BasePresenter {

@@ -147,10 +147,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
-
-        if (mPresenter != null) {
-            mPresenter.loadStorePlaylist();
-        }
     }
 
     @Override
@@ -214,6 +210,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .into(mAlbum);
 
         mName.setText(storePlaylist.mediaName);
+
+        List<StorePlaylist> storePlaylists = mAdapter.getData();
+        int position = storePlaylists.indexOf(storePlaylist);
+        LogUtils.i(TAG, "showNowPlaying position : " + position);
     }
 
     @Override

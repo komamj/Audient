@@ -238,9 +238,7 @@ public class AuditionPresenter implements AuditionContract.Presenter,
 
     @Override
     public void doPauseOrPlay() {
-        if (isCompleted()) {
-            replay();
-        } else if (isPlaying()) {
+        if (isPlaying()) {
             pause();
         } else {
             play();
@@ -256,14 +254,6 @@ public class AuditionPresenter implements AuditionContract.Presenter,
                     public void onNext(Long aLong) {
                         if (isPlaying()) {
                             int currentPosition = getCurrentPosition();
-
-                            if (currentPosition >= mView.getLimitedTime()) {
-                                pause();
-
-                                if (mView.isActive()) {
-                                    mView.updateControllView(Constants.COMPLETED);
-                                }
-                            }
 
                             if (mView.isActive()) {
                                 mView.showProgress(currentPosition);
@@ -288,14 +278,6 @@ public class AuditionPresenter implements AuditionContract.Presenter,
     private boolean isPlaying() {
         if (mMediaPlayer != null) {
             return mMediaPlayer.isPlaying();
-        }
-
-        return false;
-    }
-
-    private boolean isCompleted() {
-        if (getCurrentPosition() >= mView.getLimitedTime()) {
-            return true;
         }
 
         return false;
@@ -332,7 +314,9 @@ public class AuditionPresenter implements AuditionContract.Presenter,
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        if (mView.isActive()) {
+            mView.dismissAuditionDialog();
+        }
     }
 
     @Override
@@ -346,11 +330,11 @@ public class AuditionPresenter implements AuditionContract.Presenter,
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        /*int duration = mMediaPlayer.getDuration();
+        int duration = mMediaPlayer.getDuration();
 
         if (mView.isActive()) {
             mView.setMaxProgress(duration);
-        }*/
+        }
 
         play();
     }

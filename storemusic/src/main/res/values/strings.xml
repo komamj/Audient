@@ -4,7 +4,6 @@
     <string name="permission_rationale">需要权限来展示访问。</string>
     <string name="permissions_not_granted">请前往设置授予权限。</string>
     <!--Drawer-->
-    <string name="nav_track">"我的足迹"</string>
     <string name="nav_recommend">"发现"</string>
     <string name="nav_store_info">"店铺信息"</string>
     <string name="more">"更多"</string>
@@ -27,7 +26,7 @@
 
     <!--Mine-->
     <string name="my_favorite">"我的收藏:"</string>
-    <string name="my_dynamic">"我的动态:"</string>
+    <string name="my_dynamic">"店铺动态:"</string>
     <string name="default_favorite">"我喜欢"</string>
     <string name="add_playlist">"新建歌单"</string>
     <string name="new_playlist_title">"请输入歌单名称..."</string>
@@ -40,17 +39,17 @@
 
     <!--TabLayout-->
     <string-array name="page_title">
-        <item>"我的"</item>
+        <item>"店铺"</item>
         <item>"播放列表"</item>
         <item>"发现"</item>
     </string-array>
 
     <!--Comment-->
     <string name="comment_label">"评论"</string>
-    <string name="no_comment">"还没有评论，抢沙发。"</string>
+    <string name="no_comment">"还没有评论"</string>
 
     <!--Audition-->
-    <string name="audition_title">"试听30秒"</string>
+    <string name="audition_title">"试听"</string>
 
     <!--MyFavorites-->
     <string name="add_to_favorites">"收藏到歌单"</string>

@@ -40,6 +40,8 @@ import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
 import com.xinshang.store.utils.Constants;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -60,7 +62,7 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
 
     @Override
     protected boolean areItemsTheSame(StorePlaylist oldItem, StorePlaylist newItem) {
-        return TextUtils.equals(oldItem.mediaId, newItem.mediaId);
+        return TextUtils.equals(oldItem.id, newItem.id);
     }
 
     @Override
@@ -70,7 +72,11 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
 
     @Override
     protected Object getChangePayload(StorePlaylist oldItem, StorePlaylist newItem) {
-        return null;
+        if (oldItem.isPlaying != newItem.isPlaying) {
+            return Constants.PAYLOAD_PLAYING;
+        } else {
+            return null;
+        }
     }
 
     public void setEventListener(EventListener listener) {
@@ -83,6 +89,15 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_playlist,
                 parent, false);
         return new PlaylistViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(PlaylistViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+        } else if (((int) payloads.get(0)) == Constants.PAYLOAD_PLAYING) {
+
+        }
     }
 
     @Override

@@ -55,5 +55,7 @@ public interface PlaylistContract {
         void sendCommand(String command);
 
         boolean isPlaying();
+
+        void onCommandResponse(String message);
     }
 }
