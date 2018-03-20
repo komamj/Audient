@@ -341,12 +341,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         } else {
             sendCommand(COMMAND_START);
         }
-
-        mIsPlaying = true;
-
-        if (mView.isActive()) {
-            mView.updatePlayIcon(isPlaying());
-        }
     }
 
     @Override
