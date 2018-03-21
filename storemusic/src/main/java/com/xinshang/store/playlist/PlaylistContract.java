@@ -26,6 +26,12 @@ public interface PlaylistContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
+        void setNextActive(boolean active);
+
+        void setStopActive(boolean active);
+
+        void setPauseActive(boolean active);
+
         void showLoadingError();
 
         void showEmpty(boolean forceShow);

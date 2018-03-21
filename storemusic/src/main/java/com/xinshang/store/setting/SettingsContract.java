@@ -23,5 +23,6 @@ public interface SettingsContract {
     }
 
     interface Presenter extends BasePresenter {
+        void cancelLogin();
     }
 }

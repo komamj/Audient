@@ -9,11 +9,6 @@
         android:title="@string/nav_store_info" />
 
     <group android:id="@+id/more">
-
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/action_settings" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
@@ -22,6 +17,10 @@
             android:id="@+id/nav_send"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/nav_send" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/action_settings" />
     </group>
 
 </menu>

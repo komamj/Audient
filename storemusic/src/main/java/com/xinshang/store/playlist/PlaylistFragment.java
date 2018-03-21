@@ -64,6 +64,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     TextView mName;
     @BindView(R.id.iv_pause)
     ImageView mPause;
+    @BindView(R.id.iv_stop)
+    ImageView mStop;
+    @BindView(R.id.iv_next)
+    ImageView mNext;
 
     @Inject
     PlaylistPresenter mPresenter;
@@ -116,6 +120,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setStopActive(false);
+        setNextActive(false);
+        setPauseActive(false);
 
         showProgressBar(true);
 
@@ -174,6 +182,21 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @Override
     public boolean isActive() {
         return this.isAdded();
+    }
+
+    @Override
+    public void setNextActive(boolean active) {
+        mNext.setEnabled(active);
+    }
+
+    @Override
+    public void setStopActive(boolean active) {
+        mStop.setEnabled(active);
+    }
+
+    @Override
+    public void setPauseActive(boolean active) {
+        mPause.setEnabled(active);
     }
 
     @Override

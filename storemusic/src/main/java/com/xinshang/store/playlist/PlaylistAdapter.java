@@ -135,6 +135,7 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
                 public boolean onMenuItemClick(MenuItem item) {
                     StorePlaylist storePlaylist = mData.get(getAdapterPosition());
                     TencentMusic tencentMusic = new TencentMusic();
+                    tencentMusic.duration = Long.parseLong(storePlaylist.mediaInterval);
                     tencentMusic.albumId= storePlaylist.albumId;
                     tencentMusic.artistId= storePlaylist.artistId;
                     tencentMusic.albumName= storePlaylist.albumName;

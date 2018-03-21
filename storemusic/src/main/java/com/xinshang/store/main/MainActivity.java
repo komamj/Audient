@@ -41,6 +41,7 @@ import com.xinshang.store.data.entities.StoreKeeper;
 import com.xinshang.store.mine.MineFragment;
 import com.xinshang.store.playlist.PlaylistFragment;
 import com.xinshang.store.search.SearchActivity;
+import com.xinshang.store.setting.SettingsActivity;
 import com.xinshang.store.toplist.TopListFragment;
 import com.xinshang.store.utils.LogUtils;
 
@@ -183,6 +184,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
         if (id == R.id.nav_store_info) {
         } else if (id == R.id.nav_setting) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

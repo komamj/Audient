@@ -16,10 +16,11 @@
 package com.xinshang.store.setting;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 
 import com.xinshang.store.R;
-import com.xinshang.store.utils.LogUtils;
 
 public class SettingsFragment extends PreferenceFragment implements SettingsContract.View {
     private static final String TAG = SettingsFragment.class.getSimpleName();
@@ -36,12 +37,13 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        LogUtils.i(TAG, "onCreate");
-
         addPreferencesFromResource(R.xml.settings);
     }
 
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
     @Override
     public void setPresenter(SettingsContract.Presenter presenter) {
         mPresenter = presenter;

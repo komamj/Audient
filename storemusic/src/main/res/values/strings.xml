@@ -5,7 +5,7 @@
     <string name="permissions_not_granted">请前往设置授予权限。</string>
     <!--Drawer-->
     <string name="nav_recommend">"发现"</string>
-    <string name="nav_store_info">"店铺信息"</string>
+    <string name="nav_store_info">"店铺管理"</string>
     <string name="more">"更多"</string>
     <string name="nav_setting">设置</string>
     <string name="nav_share">"分享"</string>
@@ -70,6 +70,24 @@
     <string name="action_about">"关于"</string>
     <!--Splash-->
     <string name="splash_description" translatable="false">"CopyRight"</string>
+
+    <!--Setting-->
+    <string name="cancel_login">"取消登录"</string>
+    <string name="notification">"通知"</string>
+    <string name="key_notification" translatable="false">key notification</string>
+    <string name="notification_title">"接收消息推送"</string>
+    <string name="notification_sumary">"功能还在开发中"</string>
+    <string name="theme">"主题"</string>
+    <string name="off">"关闭"</string>
+    <string name="on">"开启"</string>
+    <string name="comment_tail_summary">"开启后可以自定义"</string>
+    <string name="comment_tail_title">"评论小尾巴"</string>
+    <string name="modify_comment_tail_title">"设置评论小尾巴"</string>
+    <string name="key_comment_tail" translatable="false">key_comment_tail</string>
+    <string name="key_edit_comment_tail" translatable="false">key_edit_comment_tail</string>
+    <string name="key_dark_theme" translatable="false">key_dark_theme</string>
+    <string name="dark_theme_title">"夜间模式"</string>
+    <string name="comment">"评论"</string>
 
     <string name="company_name" translatable="false">"成都心尚信息技术有限公司"</string>
     <string name="company_description" translatable="false">"    即乐由成都心尚信息技术有限公司于2018年创建。心尚公司获取正规授权歌曲，与各类线下商家紧密合作，为用户提供店铺内即时音乐点播服务。\n    心尚公司以“用心”作为公司和每位员工的行为准则，以“创造更美好的生活”为目标，致力于为用户提供更多元化的线下消费体验。"</string>

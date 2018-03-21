@@ -15,6 +15,7 @@
  */
 package com.xinshang.store.setting;
 
+
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.utils.LogUtils;
 
@@ -55,5 +56,12 @@ public class SettingsPresenter implements SettingsContract.Presenter {
         LogUtils.i(TAG, "unSubscribe");
 
         mDisposables.clear();
+    }
+
+    @Override
+    public void cancelLogin() {
+        mRepository.persistenceLoginStatus(false);
+        mRepository.persistenceAccessToken("");
+        mRepository.persistenceRefreshToken("");
     }
 }
