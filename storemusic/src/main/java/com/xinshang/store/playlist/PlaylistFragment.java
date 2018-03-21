@@ -221,7 +221,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
     @Override
     public void showNowPlaying(StorePlaylist storePlaylist) {
-        LogUtils.i(TAG,"showNowPlaying : "+ storePlaylist.mediaName);
+        LogUtils.i(TAG, "showNowPlaying : " + storePlaylist.mediaName);
 
         GlideApp.with(this)
                 .asBitmap()

@@ -35,9 +35,7 @@ import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.OkHttpClient;
@@ -124,17 +122,19 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void onMessage(WebSocket webSocket, final String text) {
         final Disposable disposable = mRepository.parsingCommandResponse(text)
-                .filter(new Predicate<CommandResponse<String>>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
                     @Override
-                    public boolean test(CommandResponse<String> commandResponse) throws Exception {
-                        return TextUtils.equals(commandResponse.store, mRepository.getStoreId());
-                    }
-                })
-                .doOnNext(new Consumer<CommandResponse<String>>() {
-                    @Override
-                    public void accept(CommandResponse<String> commandResponse) throws Exception {
+                    public void onNext(CommandResponse<String> commandResponse) {
+                        LogUtils.i(TAG, "onMessage text : " + text);
                         if (TextUtils.equals(COMMAND_STATUS, commandResponse.action)
                                 && commandResponse.code == 0) {
+                            if (mView.isActive()) {
+                                mView.setNextActive(true);
+                                mView.setPauseActive(true);
+                                mView.setStopActive(true);
+                            }
                             String message = commandResponse.data;
                             if (TextUtils.equals(message, STOPPED) || TextUtils.equals(message, PAUSED)) {
                                 mIsPlaying = false;
@@ -152,6 +152,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
                             String message = commandResponse.message;
                             if (!TextUtils.equals(mNowPlayingId, message)) {
+                                LogUtils.i(TAG, "play nowPlayingId : " + message);
                                 mNowPlayingId = message;
                                 loadNowPlaying(message);
                             }
@@ -165,14 +166,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                                 && commandResponse.code == 0) {
                             mIsPlaying = false;
                         }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
-                    @Override
-                    public void onNext(CommandResponse<String> commandResponse) {
-                        LogUtils.i(TAG, "onMessage text : " + text);
                         if (mView.isActive()) {
                             mView.updatePlayIcon(isPlaying());
                         }
