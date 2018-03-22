@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
@@ -212,7 +211,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .circleCrop()
                 .load(storePlaylist)
                 .thumbnail(0.1f)
-                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(R.drawable.ic_album)
                 .into(mAlbum);
 
