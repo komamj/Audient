@@ -31,6 +31,7 @@ import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.MessageEvent;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.favorite.MyFavoritesActivity;
+import com.xinshang.store.playlist.ConfirmDialog;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
@@ -119,10 +120,16 @@ public class MineFragment extends BaseFragment implements MineContract.View {
             }
 
             @Override
-            public void onPlaylistChanged(TencentMusic audient) {
-                if (mPresenter != null) {
-                    mPresenter.addToPlaylist(audient);
-                }
+            public void onPlaylistChanged(final TencentMusic audient) {
+                ConfirmDialog.showConfirmDialog(getChildFragmentManager(),
+                        new ConfirmDialog.OnConfirmListener() {
+                            @Override
+                            public void onConfirm() {
+                                if (mPresenter != null) {
+                                    mPresenter.addToPlaylist(audient);
+                                }
+                            }
+                        }, mContext.getString(R.string.action_playlist));
             }
         });
 

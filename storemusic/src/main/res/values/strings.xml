@@ -32,7 +32,7 @@
     <string name="new_playlist_title">"请输入歌单名称..."</string>
 
     <!--Search-->
-    <string name="action_playlist">"加入播放列表"</string>
+    <string name="action_playlist">"添加到播放列表"</string>
     <string name="action_favorite">"加入收藏"</string>
     <string name="action_comment">"查看评论"</string>
     <string name="search_no_result">"没有相关音乐,请换个关键词试试。"</string>
