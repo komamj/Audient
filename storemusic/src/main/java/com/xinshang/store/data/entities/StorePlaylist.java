@@ -20,6 +20,8 @@ import android.text.TextUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+
 /**
  * Created by koma_20 on 2018/3/17.
  */
@@ -68,6 +70,8 @@ public class StorePlaylist {
         builder.append(artistId);
         builder.append(",album ");
         builder.append(albumId);
+        builder.append(",isPlaying ");
+        builder.append(isPlaying);
         return builder.toString();
     }
 
@@ -83,20 +87,25 @@ public class StorePlaylist {
 
         StorePlaylist storePlaylist = (StorePlaylist) o;
 
-        return TextUtils.equals(id, storePlaylist.id)
-                && TextUtils.equals(storeId, storePlaylist.storeId)
-                && TextUtils.equals(userId, storePlaylist.userId)
-                && TextUtils.equals(demandId, storePlaylist.demandId)
-                && TextUtils.equals(demandTime, storePlaylist.demandTime)
-                && TextUtils.equals(mediaSource, storePlaylist.mediaSource)
+        return TextUtils.equals(this.id, storePlaylist.id)
+                && TextUtils.equals(this.storeId, storePlaylist.storeId)
+                && TextUtils.equals(this.userId, storePlaylist.userId)
+                && TextUtils.equals(this.demandId, storePlaylist.demandId)
+                && TextUtils.equals(this.demandTime, storePlaylist.demandTime)
+                && TextUtils.equals(this.mediaSource, storePlaylist.mediaSource)
                 && TextUtils.equals(this.mediaId, storePlaylist.mediaId)
-                && TextUtils.equals(mediaInterval, storePlaylist.mediaInterval)
+                && TextUtils.equals(this.mediaInterval, storePlaylist.mediaInterval)
                 && TextUtils.equals(this.mediaName, storePlaylist.mediaName)
                 && TextUtils.equals(this.artistId, storePlaylist.artistId)
                 && TextUtils.equals(this.artistName, storePlaylist.artistName)
                 && TextUtils.equals(this.albumId, storePlaylist.albumId)
                 && TextUtils.equals(this.albumName, storePlaylist.albumName)
                 && TextUtils.equals(joinedDate, storePlaylist.joinedDate)
-                && isPlaying == storePlaylist.isPlaying;
+                && this.isPlaying == storePlaylist.isPlaying;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{id, storeId, mediaId, mediaName, isPlaying});
     }
 }

@@ -35,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textColor="@color/colorPrimaryText"
             android:singleLine="true"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +44,7 @@
         <TextView
             android:id="@+id/tv_artist_name"
             android:layout_marginTop="4dp"
+            android:textColor="@color/colorSecondaryText"
             style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -18,7 +18,6 @@ package com.xinshang.store.playlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -56,8 +55,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
     ContentLoadingProgressBar mProgressBar;
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.iv_album)
     ImageView mAlbum;
     @BindView(R.id.tv_name)
@@ -99,6 +96,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @OnClick(R.id.iv_next)
     void onNextClick() {
         if (mPresenter != null) {
+            setNextActive(false);
             mPresenter.next();
         }
     }
@@ -126,18 +124,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         setPauseActive(false);
 
         showProgressBar(true);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (mPresenter != null) {
-                    mPresenter.loadStorePlaylist();
-                }
-            }
-        });
-
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
-                R.color.colorPrimary);
 
         mAdapter = new PlaylistAdapter(mContext);
         mAdapter.setEventListener(new PlaylistAdapter.EventListener() {
@@ -221,8 +207,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
     @Override
     public void showNowPlaying(StorePlaylist storePlaylist) {
-        LogUtils.i(TAG, "showNowPlaying : " + storePlaylist.mediaName);
-
         GlideApp.with(this)
                 .asBitmap()
                 .circleCrop()
@@ -233,16 +217,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .into(mAlbum);
 
         mName.setText(storePlaylist.mediaName);
-
-        List<StorePlaylist> storePlaylists = mAdapter.getData();
-        int position = storePlaylists.indexOf(storePlaylist);
-        LogUtils.i(TAG, "showNowPlaying position : " + position);
     }
 
     @Override
     public void showPlaylist(List<StorePlaylist> storePlaylists) {
-        mSwipeRefreshLayout.setRefreshing(false);
-
         mAdapter.replace(storePlaylists);
     }
 

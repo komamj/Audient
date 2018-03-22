@@ -16,18 +16,27 @@
 package com.xinshang.store.widget;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatImageView;
+import android.util.AttributeSet;
 
 /**
  * Created by koma_20 on 2018/3/21.
  */
 
-public class ControlButton extends AppCompatImageButton {
+public class ControlImageView extends AppCompatImageView {
     private static final float ACTIVE_ALPHA = 0.54f;
     private static final float INACTIVE_ALPHA = 0.4f;
 
-    public ControlButton(Context context) {
-        super(context);
+    public ControlImageView(Context context) {
+        this(context, null);
+    }
+
+    public ControlImageView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public ControlImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -37,5 +46,6 @@ public class ControlButton extends AppCompatImageButton {
         } else {
             setAlpha(INACTIVE_ALPHA);
         }
+        super.setEnabled(enabled);
     }
 }

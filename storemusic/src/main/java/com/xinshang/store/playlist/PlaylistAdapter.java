@@ -47,7 +47,9 @@ import butterknife.OnClick;
 
 public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.PlaylistViewHolder> {
     private static final String TAG = PlaylistAdapter.class.getSimpleName();
+
     private final GlideRequest<Bitmap> mGlideRequest;
+
     private EventListener mListener;
 
     public PlaylistAdapter(Context context) {
@@ -96,7 +98,11 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position);
         } else if (((int) payloads.get(0)) == Constants.PAYLOAD_PLAYING) {
-
+            if (mData.get(position).isPlaying) {
+                holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+            } else {
+                holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryText));
+            }
         }
     }
 
@@ -107,6 +113,11 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
         mGlideRequest.load(storePlaylist).into(holder.mAlbum);
 
         holder.mName.setText(storePlaylist.mediaName);
+        if (storePlaylist.isPlaying) {
+            holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+        } else {
+            holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryText));
+        }
         holder.mArtistName.setText(storePlaylist.artistName);
     }
 
