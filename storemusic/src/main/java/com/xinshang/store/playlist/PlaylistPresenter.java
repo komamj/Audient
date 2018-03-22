@@ -31,6 +31,7 @@ import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -89,6 +90,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         mClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY))
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
                 .build();
     }
 
