@@ -221,7 +221,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      */
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        LogUtils.i(TAG, "onFailure " + t.getMessage());
+        LogUtils.i(TAG, "onFailure " + t.getMessage() + ",response : " + response.message());
     }
 
     @Override

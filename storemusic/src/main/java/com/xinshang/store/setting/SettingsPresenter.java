@@ -63,5 +63,7 @@ public class SettingsPresenter implements SettingsContract.Presenter {
         mRepository.persistenceLoginStatus(false);
         mRepository.persistenceAccessToken("");
         mRepository.persistenceRefreshToken("");
+        mRepository.persistenceUserName("");
+        mRepository.persistenceUserPassword("");
     }
 }

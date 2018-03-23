@@ -15,6 +15,7 @@
  */
 package com.xinshang.store.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
+import com.xinshang.store.splash.SplashActivity;
 import com.xinshang.store.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -40,6 +42,9 @@ public class SettingsActivity extends BaseActivity {
         if (mPresenter != null) {
             mPresenter.cancelLogin();
         }
+
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
     }
 
     @Inject
