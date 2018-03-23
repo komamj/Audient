@@ -42,10 +42,14 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Inject
     TopListPresenter mPresenter;
+
     private boolean mIsPrepared;
+
     private boolean mIsLoaded;
+
     private TopListAdapter mAdapter;
 
     public TopListFragment() {

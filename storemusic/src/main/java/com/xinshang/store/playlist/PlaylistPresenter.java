@@ -29,6 +29,7 @@ import com.xinshang.store.utils.LogUtils;
 
 import org.reactivestreams.Publisher;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -60,6 +61,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private static final String COMMAND_PAUSE = "pause";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_START = "start";
+    private static final String PLAYING = "playing";
+    private static final String FINISHED = "finished";
     private static final String STOPPED = "stoped";
     private static final String PAUSED = "paused";
 
@@ -135,7 +138,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                 .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
                     @Override
                     public void onNext(CommandResponse<String> commandResponse) {
-                        LogUtils.i(TAG, "onMessage text : " + text);
+                        LogUtils.i(TAG, "onMessage text : " + commandResponse.toString());
                         if (TextUtils.equals(COMMAND_STATUS, commandResponse.action)
                                 && commandResponse.code == 0) {
                             if (mView.isActive()) {
@@ -146,7 +149,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                             String message = commandResponse.data;
                             if (TextUtils.equals(message, STOPPED) || TextUtils.equals(message, PAUSED)) {
                                 mIsPlaying = false;
-                            } else {
+                            } else if (TextUtils.equals(message, PLAYING)) {
                                 mIsPlaying = true;
                                 loadNowPlaying(commandResponse.message);
                             }
@@ -221,7 +224,15 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      */
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        LogUtils.i(TAG, "onFailure " + t.getMessage() + ",response : " + response.message());
+        LogUtils.i(TAG, "onFailure " + t.getMessage());
+        if (response != null) {
+            LogUtils.e(TAG, "onFailure response : " + response.message());
+        }
+
+        if (t instanceof SocketTimeoutException) {
+            unSubscribe();
+            subscribe();
+        }
     }
 
     @Override
@@ -283,7 +294,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
                     @Override
                     public void onError(Throwable t) {
-
+                        LogUtils.e(TAG, "loadNowPlaying error : " + t.getMessage());
                     }
 
                     @Override
@@ -320,7 +331,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                     @Override
                     public void onComplete() {
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIndicator(false);
                         }
 
                         sendCommand(COMMAND_BIND);

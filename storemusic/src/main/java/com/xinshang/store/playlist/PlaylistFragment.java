@@ -17,7 +17,7 @@ package com.xinshang.store.playlist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -45,15 +45,10 @@ import butterknife.OnClick;
 public class PlaylistFragment extends BaseFragment implements PlaylistContract.View {
     private static final String TAG = PlaylistFragment.class.getSimpleName();
 
-    private static final String COMMAND_NEXT = "next";
-    private static final String COMMAND_STOP = "stop";
-    private static final String COMMAND_PAUSE = "pause";
-    private static final String COMMAND_PLAY = "play";
-
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
-    ContentLoadingProgressBar mProgressBar;
     @BindView(R.id.iv_album)
     ImageView mAlbum;
     @BindView(R.id.tv_name)
@@ -122,7 +117,20 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         setNextActive(false);
         setPauseActive(false);
 
-        showProgressBar(true);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.unSubscribe();
+                    mPresenter.subscribe();
+                }
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+
+        setLoadingIndicator(true);
 
         mAdapter = new PlaylistAdapter(mContext);
         mAdapter.setEventListener(new PlaylistAdapter.EventListener() {
@@ -195,13 +203,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showProgressBar(boolean forceShow) {
-        LogUtils.i(TAG, "showProressBar forceShow :" + forceShow);
-        if (forceShow) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+    public void setLoadingIndicator(boolean isActive) {
+        mSwipeRefreshLayout.setRefreshing(isActive);
     }
 
     @Override

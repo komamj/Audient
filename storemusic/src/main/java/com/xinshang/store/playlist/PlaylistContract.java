@@ -36,7 +36,7 @@ public interface PlaylistContract {
 
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIndicator(boolean isActive);
 
         void showNowPlaying(StorePlaylist storePlaylist);
 
