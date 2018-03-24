@@ -13,39 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.store.mine;
+package com.xinshang.store.about;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.Favorite;
-import com.xinshang.store.data.entities.TencentMusic;
 
-import java.util.List;
+/**
+ * Created by koma_20 on 2018/3/1.
+ */
 
-public interface FavoriteDetailContract {
+public interface AboutContract {
     interface View extends BaseView<Presenter> {
-        void setLoadingIndicator(boolean active);
-
-        boolean isActive();
-
-        String getFavoritesId();
-
-        void showFavoritesSong(List<Favorite.FavoritesSong> favoritesSongs);
-
-        void showLoadingError();
-
-        void showAddSuccessfulMessage();
-
-        void showAddFailedMessage();
     }
 
     interface Presenter extends BasePresenter {
-        void loadData(String favoriteId);
-
-        void addToPlaylist(TencentMusic tencentMusic);
-
-        void deleteFavoriteSong(Favorite.FavoritesSong favoritesSong);
-
-        void addAllToPlaylist(String favoritesId);
     }
 }

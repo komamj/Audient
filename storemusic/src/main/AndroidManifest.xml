@@ -71,6 +71,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".about.AboutActivity"
+            android:exported="false"
+            android:label="@string/about_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".store.StoreInfoActivity"
             android:exported="false"
             android:label="@string/about_label"

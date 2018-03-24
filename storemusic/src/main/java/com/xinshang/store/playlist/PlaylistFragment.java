@@ -223,6 +223,13 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @Override
     public void showPlaylist(List<StorePlaylist> storePlaylists) {
         mAdapter.replace(storePlaylists);
+
+        for (int i = 0; i < storePlaylists.size(); i++) {
+            if (storePlaylists.get(i).isPlaying) {
+                mRecyclerView.scrollToPosition(i);
+                break;
+            }
+        }
     }
 
     @Override

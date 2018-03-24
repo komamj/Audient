@@ -17,13 +17,18 @@ package com.xinshang.store.toplist;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.ToplistResult;
 
 import java.util.List;
 
 public interface TopListContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
+        void setLoadingIndictor(boolean isActive);
+
+        void showSuccessfulMessage();
+
         void showLoadingError();
 
         void showEmpty(boolean forceShow);

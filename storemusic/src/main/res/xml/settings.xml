@@ -17,9 +17,9 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/key_dark_theme"
+            android:persistent="true"
             android:summaryOff="@string/off"
             android:summaryOn="@string/on"
-            android:persistent="true"
             android:title="@string/dark_theme_title" />
 
     </PreferenceCategory>
@@ -33,9 +33,9 @@
             android:title="@string/comment_tail_title" />
 
         <EditTextPreference
+            android:dependency="@string/key_comment_tail"
             android:key="@string/key_edit_comment_tail"
             android:persistent="true"
-            android:dependency="@string/key_comment_tail"
             android:title="@string/modify_comment_tail_title" />
 
     </PreferenceCategory>
@@ -47,8 +47,8 @@
             android:summary="@string/company_name"
             android:title="@string/app_name">
             <intent
-                android:targetClass="com.xinshang.audient.about.AboutActivity"
-                android:targetPackage="com.xinshang.audient" />
+                android:targetClass="com.xinshang.store.about.AboutActivity"
+                android:targetPackage="com.xinshang.store" />
         </Preference>
 
     </PreferenceCategory>

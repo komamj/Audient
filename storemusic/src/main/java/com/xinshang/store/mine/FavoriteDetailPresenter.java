@@ -177,14 +177,22 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
-                        if (baseResponse.resultCode == 0) {
-
+                        if (mView.isActive()) {
+                            if (baseResponse.resultCode == 0) {
+                                mView.showAddSuccessfulMessage();
+                            } else {
+                                mView.showAddFailedMessage();
+                            }
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "addAllToPlaylist error : " + t.getMessage());
+
+                        if (mView.isActive()) {
+                            mView.showAddFailedMessage();
+                        }
                     }
 
                     @Override

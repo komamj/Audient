@@ -11,6 +11,10 @@
     <string name="nav_share">"分享"</string>
     <string name="nav_send">"反馈"</string>
 
+    <!--Loading-->
+    <string name="loading_error_message">"加载出错了，请稍后再试"</string>
+    <string name="loading_successful_message">"加载完成"</string>
+
     <!--Login-->
     <string name="login_label">"登录"</string>
     <string name="hint_user_name">"请输入用户名"</string>
@@ -30,6 +34,8 @@
     <string name="default_favorite">"我喜欢"</string>
     <string name="add_playlist">"新建歌单"</string>
     <string name="new_playlist_title">"请输入歌单名称..."</string>
+    <string name="added_successful_message">"播放列表已更新。"</string>
+    <string name="added_failed_message">"播放列表更新失败。"</string>
 
     <!--Search-->
     <string name="action_playlist">"添加到播放列表"</string>

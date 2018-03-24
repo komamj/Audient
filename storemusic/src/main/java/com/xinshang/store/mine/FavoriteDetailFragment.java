@@ -16,6 +16,7 @@
 package com.xinshang.store.mine;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -167,5 +168,32 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
     @Override
     public void showFavoritesSong(List<Favorite.FavoritesSong> favoritesSongs) {
         mAdapter.replace(favoritesSongs);
+    }
+
+    @Override
+    public void showLoadingError() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showAddSuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.added_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showAddFailedMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.added_failed_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 }
