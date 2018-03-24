@@ -45,6 +45,8 @@ public class SettingsActivity extends BaseActivity {
 
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        this.finish();
     }
 
     @Inject

@@ -147,10 +147,21 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                                 mView.setStopActive(true);
                             }
                             String message = commandResponse.data;
-                            if (TextUtils.equals(message, STOPPED) || TextUtils.equals(message, PAUSED)) {
+                            if (TextUtils.equals(message, STOPPED)) {
                                 mIsPlaying = false;
+                                if (mView.isActive()) {
+                                    mView.setNextActive(false);
+                                }
+                            } else if (TextUtils.equals(message, PAUSED)) {
+                                mIsPlaying = false;
+                                if (mView.isActive()) {
+                                    mView.setNextActive(true);
+                                }
                             } else if (TextUtils.equals(message, PLAYING)) {
                                 mIsPlaying = true;
+                                if (mView.isActive()) {
+                                    mView.setNextActive(true);
+                                }
                                 loadNowPlaying(commandResponse.message);
                             }
                         } else if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
@@ -173,6 +184,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                         } else if (TextUtils.equals(COMMAND_STOP, commandResponse.action)
                                 && commandResponse.code == 0) {
                             mIsPlaying = false;
+
+                            if (mView.isActive()) {
+                                mView.setNextActive(false);
+                            }
                         }
                         if (mView.isActive()) {
                             mView.updatePlayIcon(isPlaying());
@@ -343,24 +358,14 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     public void doPauseOrPlay() {
         if (isPlaying()) {
             sendCommand(COMMAND_PAUSE);
-            mIsPlaying = false;
         } else {
             sendCommand(COMMAND_START);
-            mIsPlaying = true;
-        }
-
-        if (mView.isActive()) {
-            mView.updatePlayIcon(isPlaying());
         }
     }
 
     @Override
     public void stop() {
         sendCommand(COMMAND_STOP);
-        mIsPlaying = false;
-        if (mView.isActive()) {
-            mView.updatePlayIcon(isPlaying());
-        }
     }
 
     @Override

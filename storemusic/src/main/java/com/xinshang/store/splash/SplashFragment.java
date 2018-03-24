@@ -108,6 +108,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     @Override
     public void showMainView() {
         Intent intent = new Intent(mContext, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         SplashActivity activity = (SplashActivity) mContext;
         activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
