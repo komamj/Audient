@@ -9,7 +9,7 @@
         android:id="@+id/card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardCornerRadius="8dp"
         app:cardElevation="16dp"
         app:cardUseCompatPadding="true"
@@ -24,7 +24,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -66,11 +66,13 @@
 
                 <Button
                     android:id="@+id/btn_login"
-                    style="?android:textAppearanceSmall"
+                    style="@style/Widget.AppCompat.Button.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/colorPrimary"
                     android:text="@string/login_label"
+                    android:textColor="@android:color/white"
                     android:textStyle="bold" />
 
             </LinearLayout>

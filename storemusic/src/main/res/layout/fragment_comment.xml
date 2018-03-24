@@ -29,7 +29,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="还没有评论，抢沙发。"
+        android:text="@string/no_comment"
         android:textSize="26sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/swipe_refresh_layout"
