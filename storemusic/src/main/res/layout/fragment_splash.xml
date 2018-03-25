@@ -9,7 +9,7 @@
         android:id="@+id/card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="8dp"
         app:cardElevation="16dp"
         app:cardUseCompatPadding="true"
