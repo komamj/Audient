@@ -71,6 +71,8 @@ public class LoginDialogFragment extends BaseDialogFragment implements LoginCont
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        setCancelable(false);
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
         final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_login,
@@ -88,8 +90,6 @@ public class LoginDialogFragment extends BaseDialogFragment implements LoginCont
                 }
             }
         });
-
-        builder.setNegativeButton(android.R.string.cancel, null);
 
         return builder.create();
     }

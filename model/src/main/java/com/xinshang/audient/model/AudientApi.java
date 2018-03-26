@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.model;
 
+import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommentRequest;
@@ -27,8 +28,8 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
-import com.xinshang.audient.model.entities.StoreOnlineResponse;
-import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreDataBean;
+import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
@@ -215,8 +216,8 @@ public interface AudientApi {
      * 获取所有店铺
      */
     @GET("store")
-    Flowable<StoreResponse> getStores(@Query("ol") String ol, @Query("page") int page,
-                                      @Query("size") int size, @Query("sort") String sort);
+    Flowable<ApiResponse<StoreDataBean>> getStores(@Query("ol") boolean isOnline, @Query("page") int page,
+                                                   @Query("size") int size, @Query("sort") String sort);
 
     /**
      * 获取店铺的默认播放列表
@@ -227,7 +228,7 @@ public interface AudientApi {
     /**
      * 点播歌曲
      */
-    @POST("api/v1/storeplaylist")
+    @POST("api/v1/mod")
     Flowable<BaseResponse> addToPlaylist(@Body Music music);
 
     /**
@@ -252,5 +253,11 @@ public interface AudientApi {
                                              @Field("mediaId") String mediaId);
 
     @GET("store/{id}/online")
-    Flowable<StoreOnlineResponse> getStoreStatus(@Path("id") String storeId);
+    Flowable<ApiResponse> getStoreStatus(@Path("id") String storeId);
+
+    /**
+     * 获取店铺的默认播放列表
+     */
+    @GET("api/v1/storeplaylist/{id}")
+    Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(@Path("id") String storeId);
 }

@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.playlist;
+package com.xinshang.audient.store;
+
 import com.xinshang.audient.model.AudientRepositoryComponent;
 import com.xinshang.common.util.FragmentScoped;
 
 import dagger.Component;
 
+/**
+ * Created by koma on 3/26/18.
+ */
 @FragmentScoped
-@Component(dependencies = AudientRepositoryComponent.class, modules = PlaylistPresenterModule.class)
-public interface PlatlistComponent {
-    void inject(PlaylistFragment fragment);
+@Component(dependencies = AudientRepositoryComponent.class, modules = StoresPresenterModule.class)
+public interface StoresComponent {
+    void inject(StoresDialogFragment dialogFragment);
 }

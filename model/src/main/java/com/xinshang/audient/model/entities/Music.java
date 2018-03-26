@@ -34,7 +34,7 @@ public class Music {
     public String albumId;
     @SerializedName("albumName")
     public String albumName;
-   /* @SerializedName("price")
+    @SerializedName("price")
     public int price;
     @SerializedName("discount")
     public int discount;
@@ -45,5 +45,5 @@ public class Music {
     @SerializedName("free")
     public boolean free;
     @SerializedName("freeWay")
-    public int freeWay;*/
+    public int freeWay;
 }

@@ -18,7 +18,6 @@ package com.xinshang.audient.model.helper;
 import android.content.SharedPreferences;
 
 import com.xinshang.common.util.Constants;
-import com.xinshang.common.util.LogUtils;
 
 import java.io.IOException;
 
@@ -31,7 +30,8 @@ import okhttp3.Response;
  */
 
 public class TokenInterceptor implements Interceptor {
-    private static final String TAG = TokenInterceptor.class.getSimpleName();
+    private static final String HEADER_NAME = "Authorization";
+    private static final String HEADER_VALUE = "Bearer ";
 
     private SharedPreferences mSharedPreference;
 
@@ -42,9 +42,8 @@ public class TokenInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         String accessToken = mSharedPreference.getString(Constants.ACCESS_TOKEN, "");
-        LogUtils.i(TAG, "intercept : accessToken :" + accessToken);
         Request request = chain.request().newBuilder()
-                .header("Authorization", "Bearer " + accessToken)
+                .header(HEADER_NAME, HEADER_VALUE + accessToken)
                 .build();
         return chain.proceed(request);
     }

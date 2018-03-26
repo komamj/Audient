@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.model.source.remote;
 
+import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommentRequest;
@@ -27,7 +28,8 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
-import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreDataBean;
+import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
@@ -88,11 +90,13 @@ public interface IRemoteDataSource {
 
     Flowable<BaseResponse> cancelThumbUpSong(String storeId, String mediaId);
 
-    Flowable<StoreResponse> getStores(String ol, int page, int size, String sort);
+    Flowable<ApiResponse<StoreDataBean>> getStores(boolean isOnline, int page, int size, String sort);
 
     void sendLoginRequest();
 
     Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId);
 
     Flowable<BaseResponse> addToPlaylist(Music music);
+
+    Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(String storeId);
 }

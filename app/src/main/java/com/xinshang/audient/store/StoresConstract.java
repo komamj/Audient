@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.splash;
+package com.xinshang.audient.store;
 
-import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.xinshang.audient.model.entities.Store;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
+import java.util.List;
+
 /**
- * Created by koma on 3/5/18.
+ * Created by koma on 3/26/18.
  */
 
-public interface SplashContract {
+public interface StoresConstract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        void showMainView();
-
-        void showLoginDialog();
-
-        void showStoresDialog();
-
-        void showSuccessfulMessage();
+        void showStores(List<Store> stores);
 
         void showLoadingError();
 
@@ -41,10 +37,6 @@ public interface SplashContract {
     }
 
     interface Presenter extends BasePresenter {
-        void delayLaunchMainView();
-
-        void loadAccessToken(String code);
-
-        void processWXResponse(BaseResp response);
+        void loadStores();
     }
 }

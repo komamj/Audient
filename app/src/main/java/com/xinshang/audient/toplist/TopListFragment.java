@@ -44,10 +44,6 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private boolean mIsPrepared;
-
-    private boolean mIsLoaded;
-
     private TopListAdapter mAdapter;
 
     @Inject
@@ -73,21 +69,6 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
                 .topListPresenterModule(new TopListPresenterModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
-
-        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
-            mSwipeRefreshLayout.setRefreshing(true);
-
-            if (mPresenter != null) {
-                mPresenter.subscribe();
-            }
-        }
     }
 
     @Override
@@ -120,14 +101,16 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
 
-        mIsPrepared = true;
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
-        LogUtils.i(TAG, "onDestroy");
+        LogUtils.i(TAG, "onDestroyView");
 
         if (mPresenter != null) {
             mPresenter.unSubscribe();
@@ -169,8 +152,6 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
     @Override
     public void showTopLists(List<ToplistResult.TopList> topLists) {
-        mIsLoaded = true;
-
         mAdapter.replace(topLists);
     }
 }

@@ -18,7 +18,9 @@ package com.xinshang.audient.model.source.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.CommandResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
 
@@ -43,14 +45,18 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
 
     private final AudientDao mAudientDao;
 
+    private final Gson mGson;
+
     @Inject
     public LocalDataSource(Context context, AudientDao audientDao,
-                           SharedPreferences sharedPreferences) {
+                           SharedPreferences sharedPreferences, Gson gson) {
         mContext = context;
 
         mAudientDao = audientDao;
 
         mSharedPreferences = sharedPreferences;
+
+        mGson = gson;
     }
 
     @Override
@@ -166,5 +172,18 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     @Override
     public String getStoreId() {
         return mSharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+    }
+
+    @Override
+    public Flowable<CommandResponse<String>> parsingCommandResponse(final String response) {
+        return Flowable.create(new FlowableOnSubscribe<CommandResponse<String>>() {
+            @Override
+            public void subscribe(FlowableEmitter<CommandResponse<String>> emitter) throws Exception {
+                CommandResponse commandResponse = mGson.fromJson(response, CommandResponse.class);
+
+                emitter.onNext(commandResponse);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
     }
 }

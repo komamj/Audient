@@ -15,8 +15,10 @@
  */
 package com.xinshang.audient.model;
 
+import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.CommandResponse;
 import com.xinshang.audient.model.entities.CommentRequest;
 import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
@@ -27,7 +29,8 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
-import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreDataBean;
+import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
@@ -172,6 +175,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(String storeId) {
+        return mRemoteDataSource.getStorePlaylist(storeId);
+    }
+
+    @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mRemoteDataSource.thumbUpComment(commentId);
     }
@@ -192,8 +200,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
-        return mRemoteDataSource.getStores(ol, page, size, sort);
+    public Flowable<ApiResponse<StoreDataBean>> getStores(boolean isOnline, int page, int size, String sort) {
+        return mRemoteDataSource.getStores(isOnline, page, size, sort);
     }
 
     @Override
@@ -234,5 +242,10 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public String getStoreId() {
         return mLocalDataSource.getStoreId();
+    }
+
+    @Override
+    public Flowable<CommandResponse<String>> parsingCommandResponse(String response) {
+        return mLocalDataSource.parsingCommandResponse(response);
     }
 }

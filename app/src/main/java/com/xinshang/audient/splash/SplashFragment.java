@@ -17,12 +17,18 @@ package com.xinshang.audient.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.View;
 
 import com.xinshang.audient.R;
+import com.xinshang.audient.login.LoginDialogFragment;
 import com.xinshang.audient.main.MainActivity;
+import com.xinshang.audient.store.StoresDialogFragment;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
+
+import butterknife.BindView;
 
 /**
  * Created by koma on 3/5/18.
@@ -30,6 +36,9 @@ import com.xinshang.common.util.LogUtils;
 
 public class SplashFragment extends BaseFragment implements SplashContract.View {
     private static final String TAG = SplashFragment.class.getSimpleName();
+
+    @BindView(R.id.progress_bar)
+    ContentLoadingProgressBar mProgressBar;
 
     private SplashContract.Presenter mPresenter;
 
@@ -50,9 +59,11 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         LogUtils.i(TAG, "onViewCreated");
+
         if (mPresenter != null) {
-            mPresenter.delayLaunchMainView();
+            mPresenter.subscribe();
         }
     }
 
@@ -76,5 +87,42 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         SplashActivity activity = (SplashActivity) mContext;
         activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         activity.finish();
+    }
+
+    @Override
+    public void showLoginDialog() {
+        LoginDialogFragment.show(getChildFragmentManager());
+    }
+
+    @Override
+    public void showStoresDialog() {
+        StoresDialogFragment.show(getChildFragmentManager());
+    }
+
+    @Override
+    public void showSuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showLoadingError() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean isActive) {
+        if (isActive) {
+            mProgressBar.show();
+        } else {
+            mProgressBar.hide();
+        }
     }
 }

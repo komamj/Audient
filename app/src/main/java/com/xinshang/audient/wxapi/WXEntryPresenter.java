@@ -73,7 +73,6 @@ public class WXEntryPresenter implements WXEntryContract.Presenter {
                 .doOnNext(new Consumer<Token>() {
                     @Override
                     public void accept(Token token) throws Exception {
-                        LogUtils.i(TAG, "doOnNext thread name :" + Thread.currentThread().getName());
                         mRepository.persistenceAccessToken(token.accessToken);
                         mRepository.persistenceRefreshToken(token.refreshToken);
                     }
@@ -88,7 +87,6 @@ public class WXEntryPresenter implements WXEntryContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadAccessToken error :" + t.toString());
                         mRepository.persistenceLoginStatus(false);
                         if (mView.isActive()) {
                             mView.setLoadIndicator(false);
@@ -100,8 +98,8 @@ public class WXEntryPresenter implements WXEntryContract.Presenter {
                     public void onComplete() {
                         mRepository.persistenceLoginStatus(true);
                         if (mView.isActive()) {
-                            mView.showSuccessfulMessage();
                             mView.setLoadIndicator(false);
+                            mView.showSuccessfulMessage();
                         }
                     }
                 });

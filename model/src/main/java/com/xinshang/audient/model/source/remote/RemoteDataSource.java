@@ -15,9 +15,12 @@
  */
 package com.xinshang.audient.model.source.remote;
 
+import android.support.annotation.NonNull;
+
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.xinshang.audient.model.AudientApi;
+import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommentRequest;
@@ -30,7 +33,8 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
-import com.xinshang.audient.model.entities.StoreResponse;
+import com.xinshang.audient.model.entities.StoreDataBean;
+import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
@@ -53,6 +57,7 @@ import io.reactivex.FlowableOnSubscribe;
 @Singleton
 public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
+    private static final String SCOPE = "snsapi_userinfo";
 
     private final AudientApi mAudientApi;
 
@@ -180,7 +185,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public void sendLoginRequest() {
         final SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
+        req.scope = SCOPE;
         req.state = TAG;
         mWeChatApi.sendReq(req);
     }
@@ -193,6 +198,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<BaseResponse> addToPlaylist(Music music) {
         return mAudientApi.addToPlaylist(music);
+    }
+
+    @Override
+    public Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(@NonNull String storeId) {
+        return mAudientApi.getStorePlaylist(storeId);
     }
 
     @Override
@@ -216,7 +226,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<StoreResponse> getStores(String ol, int page, int size, String sort) {
-        return mAudientApi.getStores(ol, page, size, sort);
+    public Flowable<ApiResponse<StoreDataBean>> getStores(boolean isOnline, int page, int size, String sort) {
+        return mAudientApi.getStores(isOnline, page, size, sort);
     }
 }

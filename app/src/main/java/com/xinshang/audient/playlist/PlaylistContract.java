@@ -16,6 +16,7 @@
 package com.xinshang.audient.playlist;
 
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
@@ -29,16 +30,22 @@ public interface PlaylistContract {
 
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIndicator(boolean isActive);
 
-        void showNowPlaying(Audient audient);
+        void showNowPlaying(StoreSong storePlaylist);
 
-        void showAudients(List<Audient> audients);
+        void showPlaylist(List<StoreSong> storePlaylists);
     }
 
     interface Presenter extends BasePresenter {
-        void loadNowPlaying();
+        void loadNowPlaying(String id);
 
-        void loadAudients();
+        void loadStorePlaylist();
+
+        void thumbUpSong(Audient audient);
+
+        void sendCommand(String command);
+
+        void onCommandResponse(String message);
     }
 }

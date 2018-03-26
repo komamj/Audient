@@ -15,9 +15,15 @@
  */
 package com.xinshang.audient.model.entities;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
- * Created by koma_20 on 2018/3/12.
+ * Created by koma on 3/26/18.
  */
 
-public class StoreOnlineResponse {
+public class StoreDataBean {
+    @SerializedName("content")
+    public List<Store> stores;
 }

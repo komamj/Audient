@@ -101,14 +101,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.v4.widget.ContentLoadingProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
-        app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-        app:layout_constraintStart_toStartOf="@+id/swipe_refresh_layout"
-        app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout" />
-
 </android.support.constraint.ConstraintLayout>

@@ -16,6 +16,7 @@
 package com.xinshang.audient.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -36,12 +37,22 @@ public class Store {
     @ColumnInfo(name = "name")
     @SerializedName("name")
     public String name;
+    @ColumnInfo(name = "ownerId")
     @SerializedName("ownerId")
     public String ownerId;
+    @ColumnInfo(name = "address")
     @SerializedName("address")
     public String address;
+    @Embedded
     @SerializedName("location")
     public Location location;
+    @ColumnInfo(name = "registedDate")
     @SerializedName("registedDate")
     public String registedDate;
+    @ColumnInfo(name = "online")
+    @SerializedName("online")
+    public boolean online;
+    @ColumnInfo(name = "lastOnlineDate")
+    @SerializedName("lastOnlineDate")
+    public String lastOnlineDate;
 }

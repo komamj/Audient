@@ -56,8 +56,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AudientRepositoryModule {
     private static final String TAG = AudientRepositoryModule.class.getSimpleName();
-
     private static final String DB_NAME = "audient-db";
+    private static final String GRANT_TYPE = "refresh_token";
 
     private final IWXAPI mIWXAPI;
 
@@ -68,8 +68,8 @@ public class AudientRepositoryModule {
     @Singleton
     @Provides
     AudientDataSource provideLocalDataSource(Context context, AudientDao audientDao,
-                                             SharedPreferences sharedPreferences) {
-        return new LocalDataSource(context, audientDao, sharedPreferences);
+                                             SharedPreferences sharedPreferences, Gson gson) {
+        return new LocalDataSource(context, audientDao, sharedPreferences, gson);
     }
 
     @Singleton
@@ -81,8 +81,7 @@ public class AudientRepositoryModule {
     @Singleton
     @Provides
     SharedPreferences provideSharePreferences(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences;
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Singleton
@@ -118,9 +117,8 @@ public class AudientRepositoryModule {
     OkHttpClient provideOkHttpClient(Cache cache, final SharedPreferences sharedPreferences,
                                      final Gson gson) {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+
         if (BuildConfig.DEBUG) {
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        } else {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
 
@@ -137,7 +135,7 @@ public class AudientRepositoryModule {
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .build();
                         AudientApi audientApi = retrofit.create(AudientApi.class);
-                        audientApi.refreshAccessToken("refresh_token", refershToken,
+                        audientApi.refreshAccessToken(GRANT_TYPE, refershToken,
                                 Constants.CLIENT_ID, Constants.CLIENT_SECRET)
                                 .subscribeWith(new DisposableSubscriber<Token>() {
                                     @Override
@@ -156,6 +154,8 @@ public class AudientRepositoryModule {
 
                                         sharedPreferences.edit().putBoolean(Constants.LOGIN_STATUS, false)
                                                 .apply();
+
+                                       android.os.Process.killProcess(android.os.Process.myPid());
                                     }
 
                                     @Override

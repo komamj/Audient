@@ -35,19 +35,22 @@ import com.xinshang.audient.comment.CommentActivity;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.helper.GlideRequest;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.common.base.BaseAdapter;
 import com.xinshang.common.base.BaseViewHolder;
 import com.xinshang.common.util.Constants;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.PlaylistViewHolder> {
+public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.PlaylistViewHolder> {
     private static final String TAG = PlaylistAdapter.class.getSimpleName();
 
-    private EventListener mListener;
-
     private final GlideRequest<Bitmap> mGlideRequest;
+
+    private EventListener mListener;
 
     public PlaylistAdapter(Context context) {
         super(context);
@@ -59,24 +62,29 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
-    public void setEventListener(EventListener listener) {
-        this.mListener = listener;
+    @Override
+    protected boolean areItemsTheSame(StoreSong oldItem, StoreSong newItem) {
+        return TextUtils.equals(oldItem.id, newItem.id);
     }
 
     @Override
-    protected boolean areItemsTheSame(Audient oldItem, Audient newItem) {
-        return TextUtils.equals(oldItem.mediaId, newItem.mediaId);
-    }
-
-    @Override
-    protected boolean areContentsTheSame(Audient oldItem, Audient newItem) {
+    protected boolean areContentsTheSame(StoreSong oldItem, StoreSong newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(Audient oldItem, Audient newItem) {
-        return null;
+    protected Object getChangePayload(StoreSong oldItem, StoreSong newItem) {
+        if (oldItem.isPlaying != newItem.isPlaying) {
+            return Constants.PAYLOAD_PLAYING;
+        } else {
+            return null;
+        }
     }
+
+    public void setEventListener(EventListener listener) {
+        this.mListener = listener;
+    }
+
 
     @Override
     public PlaylistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -86,13 +94,35 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
     }
 
     @Override
+    public void onBindViewHolder(PlaylistViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+        } else if (((int) payloads.get(0)) == Constants.PAYLOAD_PLAYING) {
+            if (mData.get(position).isPlaying) {
+                holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+            } else {
+                holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryText));
+            }
+        }
+    }
+
+    @Override
     public void onBindViewHolder(PlaylistViewHolder holder, int position) {
-        Audient audient = mData.get(position);
+        StoreSong storePlaylist = mData.get(position);
 
-        mGlideRequest.load(audient).into(holder.mAlbum);
+        mGlideRequest.load(storePlaylist).into(holder.mAlbum);
 
-        holder.mName.setText(audient.mediaName);
-        holder.mArtistName.setText(audient.artistName);
+        holder.mName.setText(storePlaylist.mediaName);
+        if (storePlaylist.isPlaying) {
+            holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+        } else {
+            holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryText));
+        }
+        holder.mArtistName.setText(storePlaylist.artistName);
+    }
+
+    public interface EventListener {
+        void onFavoriteMenuClick(Audient audient);
     }
 
     class PlaylistViewHolder extends BaseViewHolder {
@@ -103,6 +133,10 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
         @BindView(R.id.tv_artist_name)
         TextView mArtistName;
 
+        PlaylistViewHolder(View itemView) {
+            super(itemView);
+        }
+
         @OnClick(R.id.iv_more)
         void showPopupMenu(View view) {
             PopupMenu popupMenu = new PopupMenu(mContext, view);
@@ -110,17 +144,25 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    Audient audient = mData.get(getAdapterPosition());
+                    StoreSong storePlaylist = mData.get(getAdapterPosition());
+                    Audient tencentMusic = new Audient();
+                    tencentMusic.duration = Long.parseLong(storePlaylist.mediaInterval);
+                    tencentMusic.albumId = storePlaylist.albumId;
+                    tencentMusic.artistId = storePlaylist.artistId;
+                    tencentMusic.albumName = storePlaylist.albumName;
+                    tencentMusic.artistName = storePlaylist.artistName;
+                    tencentMusic.mediaId = storePlaylist.mediaId;
+                    tencentMusic.mediaName = storePlaylist.mediaName;
 
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
                             if (mListener != null) {
-                                mListener.onFavoriteMenuClick(audient);
+                                mListener.onFavoriteMenuClick(tencentMusic);
                             }
                             break;
                         case R.id.action_comment:
                             Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra(Constants.KEY_AUDIENT, audient);
+                            intent.putExtra(Constants.KEY_AUDIENT, tencentMusic);
                             mContext.startActivity(intent);
                             break;
                     }
@@ -129,13 +171,5 @@ public class PlaylistAdapter extends BaseAdapter<Audient, PlaylistAdapter.Playli
             });
             popupMenu.show();
         }
-
-        PlaylistViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-    public interface EventListener {
-        void onFavoriteMenuClick(Audient audient);
     }
 }
