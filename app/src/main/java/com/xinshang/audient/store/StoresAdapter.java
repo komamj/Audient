@@ -31,6 +31,7 @@ import com.xinshang.common.base.BaseViewHolder;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 
 /**
  * Created by koma on 3/26/18.
@@ -39,8 +40,14 @@ import butterknife.BindView;
 public class StoresAdapter extends BaseAdapter<Store, StoresAdapter.StoresVH> {
     private static final String TAG = StoresAdapter.class.getSimpleName();
 
+    private OnCheckedChangeListener mListener;
+
     public StoresAdapter(Context context) {
         super(context);
+    }
+
+    public void setListener(OnCheckedChangeListener listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -68,7 +75,7 @@ public class StoresAdapter extends BaseAdapter<Store, StoresAdapter.StoresVH> {
     @Override
     public void onBindViewHolder(@NonNull StoresVH holder, int position, List<Object> payloads) {
         if (payloads.isEmpty()) {
-
+            onBindViewHolder(holder, position);
         }
     }
 
@@ -90,8 +97,19 @@ public class StoresAdapter extends BaseAdapter<Store, StoresAdapter.StoresVH> {
         @BindView(R.id.cb_confirm)
         CheckBox mConfirm;
 
+        @OnCheckedChanged(R.id.cb_confirm)
+        void onCheckedChange() {
+            if (mListener != null) {
+                mListener.onCheckedChange();
+            }
+        }
+
         public StoresVH(View view) {
             super(view);
         }
+    }
+
+    public interface OnCheckedChangeListener {
+        void onCheckedChange();
     }
 }

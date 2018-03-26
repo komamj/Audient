@@ -26,12 +26,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.base.BaseDialogFragment;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.widget.AudientItemDecoration;
+import com.xinshang.common.util.LogUtils;
 
 import java.util.List;
 
@@ -45,6 +47,8 @@ import butterknife.ButterKnife;
  */
 
 public class StoresDialogFragment extends BaseDialogFragment implements StoresConstract.View {
+    private static final String TAG = StoresDialogFragment.class.getSimpleName();
+
     private static final String DIALOG_TAG = "dialog_stores";
 
     @BindView(R.id.progress_bar)
@@ -66,6 +70,8 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setCancelable(false);
+
         DaggerStoresComponent.builder().audientRepositoryComponent(
                 ((AudientApplication) (getActivity().getApplication())).getRepositoryComponent())
                 .storesPresenterModule(new StoresPresenterModule(this))
@@ -74,24 +80,18 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        setCancelable(false);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
-        final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_stores,
-                null, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_stores, container, false);
         ButterKnife.bind(this, view);
 
-        builder.setTitle(R.string.store_title);
-        builder.setView(view);
+        return view;
+    }
 
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-            }
-        });
+        LogUtils.i(TAG, "onViewCreated");
 
         mAdapter = new StoresAdapter(mContext);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -103,8 +103,6 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
         if (mPresenter != null) {
             mPresenter.subscribe();
         }
-
-        return builder.create();
     }
 
     @Override

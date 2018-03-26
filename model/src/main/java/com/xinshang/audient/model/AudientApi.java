@@ -215,7 +215,7 @@ public interface AudientApi {
     /**
      * 获取所有店铺
      */
-    @GET("store")
+    @GET("api/v1/store")
     Flowable<ApiResponse<StoreDataBean>> getStores(@Query("ol") boolean isOnline, @Query("page") int page,
                                                    @Query("size") int size, @Query("sort") String sort);
 
@@ -252,7 +252,7 @@ public interface AudientApi {
     Flowable<BaseResponse> cancelThumbUpSong(@Field("storeId") String storeId,
                                              @Field("mediaId") String mediaId);
 
-    @GET("store/{id}/online")
+    @GET("api/v1/store/{id}/online")
     Flowable<ApiResponse> getStoreStatus(@Path("id") String storeId);
 
     /**
