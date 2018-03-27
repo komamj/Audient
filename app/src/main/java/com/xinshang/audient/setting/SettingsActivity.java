@@ -15,12 +15,14 @@
  */
 package com.xinshang.audient.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
+import com.xinshang.audient.splash.SplashActivity;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.LogUtils;
 
@@ -40,6 +42,11 @@ public class SettingsActivity extends BaseActivity {
         if (mPresenter != null) {
             mPresenter.cancelLogin();
         }
+
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        this.finish();
     }
 
     @Inject

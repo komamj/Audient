@@ -46,6 +46,7 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
+import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.playlist.PlaylistFragment;
 import com.xinshang.audient.search.SearchActivity;
@@ -279,6 +280,11 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         } else {
             mBlurImage.setImageDrawable(drawable);
         }
+    }
+
+    @Override
+    public void showStore(Store store) {
+
     }
 
     static class AudientAdapter extends FragmentPagerAdapter {

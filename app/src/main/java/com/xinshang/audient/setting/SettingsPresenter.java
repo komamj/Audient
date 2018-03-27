@@ -20,8 +20,6 @@ import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SettingsPresenter implements SettingsContract.Presenter {

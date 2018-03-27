@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
@@ -30,6 +31,8 @@ public interface MainContract {
         void showUser(User user);
 
         void showBlurBackground(Drawable drawable);
+
+        void showStore(Store store);
     }
 
     interface Presenter extends BasePresenter {
@@ -38,5 +41,7 @@ public interface MainContract {
         void loadUserInfo();
 
         void blurBitmap(Bitmap bitmap, Context context, int inSampleSize);
+
+        void loadStore();
     }
 }

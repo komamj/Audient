@@ -144,4 +144,9 @@ public class MainPresenter implements MainContract.Presenter {
                 });
         mDisposables.add(disposable);
     }
+
+    @Override
+    public void loadStore() {
+
+    }
 }
