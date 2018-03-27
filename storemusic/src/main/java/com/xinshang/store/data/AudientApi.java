@@ -70,7 +70,7 @@ public interface AudientApi {
      */
     @GET("api/v1/openmusic/search")
     Flowable<SearchResult> getSeachResults(@Query("w") String keyword, @Query("p") int page,
-                                           @Query("n") int pageCount);
+                                           @Query("n") int pageCount, @Query("f") boolean filter);
 
     /**
      * 获取歌词.

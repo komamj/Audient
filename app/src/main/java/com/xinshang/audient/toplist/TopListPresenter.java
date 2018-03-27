@@ -16,7 +16,8 @@
 package com.xinshang.audient.toplist;
 
 import com.xinshang.audient.model.AudientRepository;
-import com.xinshang.audient.model.entities.ToplistResult;
+import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.common.util.LogUtils;
 
 import java.net.ConnectException;
@@ -76,11 +77,17 @@ public class TopListPresenter implements TopListContract.Presenter {
         }
 
         Disposable disposable = mRepository.getTopList()
-                .map(new Function<List<ToplistResult>, List<ToplistResult.TopList>>() {
+                .map(new Function<ApiResponse<List<ToplistDataBean>>, List<ToplistDataBean>>() {
                     @Override
-                    public List<ToplistResult.TopList> apply(List<ToplistResult> topListResults) throws Exception {
-                        List<ToplistResult.TopList> topLists = new ArrayList<>();
-                        for (ToplistResult.TopList topList : topListResults.get(0).topLists) {
+                    public List<ToplistDataBean> apply(ApiResponse<List<ToplistDataBean>> listApiResponse) throws Exception {
+                        return listApiResponse.data;
+                    }
+                })
+                .map(new Function<List<ToplistDataBean>, List<ToplistDataBean.TopList>>() {
+                    @Override
+                    public List<ToplistDataBean.TopList> apply(List<ToplistDataBean> topListResults) throws Exception {
+                        List<ToplistDataBean.TopList> topLists = new ArrayList<>();
+                        for (ToplistDataBean.TopList topList : topListResults.get(0).topLists) {
                             if (isLegal(topList)) {
                                 topLists.add(topList);
                             }
@@ -90,9 +97,9 @@ public class TopListPresenter implements TopListContract.Presenter {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<ToplistResult.TopList>>() {
+                .subscribeWith(new DisposableSubscriber<List<ToplistDataBean.TopList>>() {
                     @Override
-                    public void onNext(List<ToplistResult.TopList> topLists) {
+                    public void onNext(List<ToplistDataBean.TopList> topLists) {
                         if (mView.isActive()) {
                             mView.showTopLists(topLists);
                         }
@@ -122,8 +129,8 @@ public class TopListPresenter implements TopListContract.Presenter {
         mDisposables.add(disposable);
     }
 
-    private static boolean isLegal(ToplistResult.TopList topList) {
-        String name = topList.listName;
+    private static boolean isLegal(ToplistDataBean.TopList topList) {
+        String name = topList.title;
         if (name.contains("巅峰榜·歌手") || name.contains("·网络歌曲")
                 || name.contains("·MV") || name.contains("·腾讯音乐人原创榜")) {
             return false;

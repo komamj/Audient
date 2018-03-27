@@ -79,7 +79,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
 
     @Override
     public Flowable<SearchResult> getSearchReult(String keyword, int page, int count) {
-        return mAudientApi.getSeachResults(keyword, page, count);
+        return mAudientApi.getSeachResults(keyword, page, count, false);
     }
 
     @Override

@@ -15,7 +15,7 @@
  */
 package com.xinshang.audient.toplist;
 
-import com.xinshang.audient.model.entities.ToplistResult;
+import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
@@ -31,7 +31,7 @@ public interface TopListContract {
 
         void showLoadingError();
 
-        void showTopLists(List<ToplistResult.TopList> topLists);
+        void showTopLists(List<ToplistDataBean.TopList> topLists);
     }
 
     interface Presenter extends BasePresenter {

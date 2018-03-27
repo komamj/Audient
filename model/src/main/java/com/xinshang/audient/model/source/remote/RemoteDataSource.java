@@ -39,7 +39,7 @@ import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
-import com.xinshang.audient.model.entities.ToplistResult;
+import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
@@ -80,7 +80,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopList() {
+    public Flowable<ApiResponse<List<ToplistDataBean>>> getTopList() {
         return mAudientApi.getTopLists();
     }
 
@@ -92,7 +92,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
 
     @Override
     public Flowable<SearchResult> getSearchReult(String keyword) {
-        return mAudientApi.getSeachResults(keyword, 0, 40);
+        return mAudientApi.getSeachResults(keyword, 0, 40, true);
     }
 
     @Override

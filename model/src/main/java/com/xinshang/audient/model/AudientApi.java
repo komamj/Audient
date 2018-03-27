@@ -33,8 +33,8 @@ import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
+import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
-import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
 
@@ -56,14 +56,14 @@ public interface AudientApi {
      * 获取榜单列表.
      */
     @GET("api/v1/openmusic/toplist")
-    Flowable<List<ToplistResult>> getTopLists();
+    Flowable<ApiResponse<List<ToplistDataBean>>> getTopLists();
 
     /**
      * 获取榜单详情
      */
     @GET("api/v1/openmusic/toplist/{id}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
-                                                   @Query("date") String updateKey,
+    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") long topId,
+                                                   @Query("k") String updateKey,
                                                    @Query("p") int page,
                                                    @Query("n") int pageCount);
 
@@ -74,7 +74,7 @@ public interface AudientApi {
      */
     @GET("api/v1/openmusic/search")
     Flowable<SearchResult> getSeachResults(@Query("w") String keyword, @Query("p") int page,
-                                           @Query("n") int pageCount);
+                                           @Query("n") int pageCount, @Query("f") boolean filter);
 
     /**
      * 获取歌词.
@@ -260,4 +260,10 @@ public interface AudientApi {
 
     @GET("api/v1/store/{id}")
     Flowable<ApiResponse<Store>> getStore(@Path("id") String id);
+
+    /**
+     * 反馈
+     */
+    @POST("api/v1/feedback")
+    Flowable<ApiResponse> postFeedback(@Field("title") String title, @Field("content") String content);
 }

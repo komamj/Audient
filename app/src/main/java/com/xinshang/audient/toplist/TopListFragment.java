@@ -24,7 +24,7 @@ import android.view.View;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.main.MainActivity;
-import com.xinshang.audient.model.entities.ToplistResult;
+import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
@@ -162,7 +162,7 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     }
 
     @Override
-    public void showTopLists(List<ToplistResult.TopList> topLists) {
+    public void showTopLists(List<ToplistDataBean.TopList> topLists) {
         mIsLoaded = true;
 
         mAdapter.replace(topLists);

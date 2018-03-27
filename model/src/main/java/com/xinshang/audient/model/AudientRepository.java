@@ -34,8 +34,8 @@ import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
+import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
-import com.xinshang.audient.model.entities.ToplistResult;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.audient.model.source.local.ILocalDataSource;
@@ -75,7 +75,7 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopList() {
+    public Flowable<ApiResponse<List<ToplistDataBean>>> getTopList() {
         return mRemoteDataSource.getTopList();
     }
 
