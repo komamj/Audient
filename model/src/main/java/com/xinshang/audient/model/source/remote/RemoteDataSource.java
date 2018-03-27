@@ -85,8 +85,9 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime) {
-        return mAudientApi.getToplistDetail(topId, showTime, 0, 30);
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page,
+                                                          int size) {
+        return mAudientApi.getToplistDetail(topId, showTime, page, size);
     }
 
     @Override

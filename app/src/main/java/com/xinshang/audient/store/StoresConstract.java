@@ -34,9 +34,13 @@ public interface StoresConstract {
         void showLoadingError();
 
         void setLoadingIndicator(boolean isActive);
+
+        void showMainView();
     }
 
     interface Presenter extends BasePresenter {
         void loadStores();
+
+        void persistenceStore(Store store);
     }
 }

@@ -16,7 +16,6 @@
 package com.xinshang.audient.toplist;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +43,9 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private boolean mIsPrepared;
+    private boolean mIsLoaded;
+
     private TopListAdapter mAdapter;
 
     @Inject
@@ -69,6 +71,17 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
                 .topListPresenterModule(new TopListPresenterModule(this))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.subscribe();
+            }
+        }
     }
 
     @Override
@@ -101,9 +114,7 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
 
-        if (mPresenter != null) {
-            mPresenter.subscribe();
-        }
+        mIsPrepared = true;
     }
 
     @Override
@@ -134,24 +145,26 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
     @Override
     public void showSuccessfulMessage() {
-        if (getView() == null) {
+        /*if (getView() == null) {
             return;
         }
         Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
-                .show();
+                .show();*/
     }
 
     @Override
     public void showLoadingError() {
-        if (getView() == null) {
+        /*if (getView() == null) {
             return;
         }
         Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
-                .show();
+                .show();*/
     }
 
     @Override
     public void showTopLists(List<ToplistResult.TopList> topLists) {
+        mIsLoaded = true;
+
         mAdapter.replace(topLists);
     }
 }

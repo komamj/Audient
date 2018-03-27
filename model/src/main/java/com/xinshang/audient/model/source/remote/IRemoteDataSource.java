@@ -50,7 +50,7 @@ public interface IRemoteDataSource {
 
     Flowable<List<ToplistResult>> getTopList();
 
-    Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime);
+    Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int size);
 
     Flowable<SearchResult> getSearchReult(String keyword);
 

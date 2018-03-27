@@ -34,5 +34,6 @@
 
     <!--Dilog theme-->
     <style name="AuditionDilogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
+    <style name="StoreDilogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
 
 </resources>

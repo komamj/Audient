@@ -107,6 +107,14 @@ public class StoresPresenter implements StoresConstract.Presenter {
     }
 
     @Override
+    public void persistenceStore(Store store) {
+        mRepository.persistenceStoreId(store.id);
+        mRepository.persistenceLoginStatus(true);
+
+        mView.showMainView();
+    }
+
+    @Override
     public void unSubscribe() {
         mDisposables.clear();
     }

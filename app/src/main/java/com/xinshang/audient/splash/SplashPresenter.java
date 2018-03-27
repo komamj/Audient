@@ -152,7 +152,6 @@ public class SplashPresenter implements SplashContract.Presenter {
 
                     @Override
                     public void onComplete() {
-                       // mRepository.persistenceLoginStatus(true);
                         if (mView.isActive()) {
                             mView.setLoadingIndicator(false);
                             mView.showSuccessfulMessage();

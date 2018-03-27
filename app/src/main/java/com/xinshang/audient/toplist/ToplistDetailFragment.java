@@ -87,7 +87,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadToplistDetail(mTopId, mShowTime);
+                    mPresenter.subscribe();
                 }
             }
         });
@@ -120,7 +120,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-            mPresenter.loadToplistDetail(mTopId, mShowTime);
+            mPresenter.subscribe();
         }
     }
 

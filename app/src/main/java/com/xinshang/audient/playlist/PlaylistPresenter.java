@@ -278,6 +278,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void loadStorePlaylist() {
         String storeId = mRepository.getStoreId();
+
         mRepository.getStorePlaylist(storeId)
                 .map(new Function<ApiResponse<List<StoreSong>>, List<StoreSong>>() {
                     @Override

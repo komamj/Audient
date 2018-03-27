@@ -33,6 +33,6 @@ public interface ToplistDetailContract {
     }
 
     interface Presenter extends BasePresenter {
-        void loadToplistDetail(int topId, String showTime);
+        void loadToplistDetail(int topId, String showTime, int page, int pageCount);
     }
 }

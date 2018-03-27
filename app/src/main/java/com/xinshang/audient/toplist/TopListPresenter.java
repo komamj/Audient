@@ -71,6 +71,10 @@ public class TopListPresenter implements TopListContract.Presenter {
 
     @Override
     public void loadTopList() {
+        if (mView.isActive()) {
+            mView.setLoadingIndictor(true);
+        }
+
         Disposable disposable = mRepository.getTopList()
                 .map(new Function<List<ToplistResult>, List<ToplistResult.TopList>>() {
                     @Override

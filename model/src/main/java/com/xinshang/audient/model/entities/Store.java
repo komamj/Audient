@@ -20,8 +20,11 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Arrays;
 
 /**
  * Created by koma_20 on 2018/3/5.
@@ -55,4 +58,44 @@ public class Store {
     @ColumnInfo(name = "lastOnlineDate")
     @SerializedName("lastOnlineDate")
     public String lastOnlineDate;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("store with id ");
+        builder.append(id);
+        builder.append(",name ");
+        builder.append(name);
+        builder.append(",address ");
+        builder.append(address);
+        builder.append(",registedDate ");
+        builder.append(registedDate);
+        builder.append(",online ");
+        builder.append(online);
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Store store = (Store) o;
+
+        return TextUtils.equals(this.id, store.id)
+                && TextUtils.equals(this.name, store.name)
+                && TextUtils.equals(this.address, store.address)
+                && TextUtils.equals(this.ownerId,store.ownerId)
+                && TextUtils.equals(this.registedDate,store.registedDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{id, name, address, ownerId, registedDate, online});
+    }
 }

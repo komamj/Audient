@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.xinshang.audient.R;
@@ -31,7 +30,6 @@ import com.xinshang.common.base.BaseViewHolder;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 
 /**
  * Created by koma on 3/26/18.
@@ -40,13 +38,14 @@ import butterknife.OnCheckedChanged;
 public class StoresAdapter extends BaseAdapter<Store, StoresAdapter.StoresVH> {
     private static final String TAG = StoresAdapter.class.getSimpleName();
 
-    private OnCheckedChangeListener mListener;
+    private OnItemClickListener mListener;
+
 
     public StoresAdapter(Context context) {
         super(context);
     }
 
-    public void setListener(OnCheckedChangeListener listener) {
+    public void setListener(OnItemClickListener listener) {
         this.mListener = listener;
     }
 
@@ -89,27 +88,31 @@ public class StoresAdapter extends BaseAdapter<Store, StoresAdapter.StoresVH> {
         viewHolder.mAddress.setText(store.address);
     }
 
-    public class StoresVH extends BaseViewHolder {
+    public class StoresVH extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_name)
         TextView mName;
         @BindView(R.id.tv_address)
         TextView mAddress;
-        @BindView(R.id.cb_confirm)
-        CheckBox mConfirm;
-
-        @OnCheckedChanged(R.id.cb_confirm)
-        void onCheckedChange() {
-            if (mListener != null) {
-                mListener.onCheckedChange();
-            }
-        }
 
         public StoresVH(View view) {
             super(view);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int positon = getAdapterPosition();
+
+            Store store = mData.get(positon);
+
+            if (mListener != null) {
+                mListener.onItemClick(store);
+            }
         }
     }
 
-    public interface OnCheckedChangeListener {
-        void onCheckedChange();
+    public interface OnItemClickListener {
+        void onItemClick(Store store);
     }
 }

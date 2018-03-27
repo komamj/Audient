@@ -15,11 +15,11 @@
  */
 package com.xinshang.audient.store;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +31,9 @@ import android.view.ViewGroup;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.base.BaseDialogFragment;
+import com.xinshang.audient.main.MainActivity;
 import com.xinshang.audient.model.entities.Store;
+import com.xinshang.audient.splash.SplashActivity;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.util.LogUtils;
 
@@ -70,6 +72,8 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.StoreDilogTheme);
+
         setCancelable(false);
 
         DaggerStoresComponent.builder().audientRepositoryComponent(
@@ -80,7 +84,7 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_stores, container, false);
         ButterKnife.bind(this, view);
 
@@ -94,11 +98,27 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
         LogUtils.i(TAG, "onViewCreated");
 
         mAdapter = new StoresAdapter(mContext);
+        mAdapter.setListener(new StoresAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Store store) {
+                if (mPresenter != null) {
+                    mPresenter.persistenceStore(store);
+                }
+            }
+        });
+        mRecylerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecylerView.setLayoutManager(layoutManager);
         mRecylerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecylerView.setAdapter(mAdapter);
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         if (mPresenter != null) {
             mPresenter.subscribe();
@@ -106,8 +126,8 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
 
         if (mPresenter != null) {
             mPresenter.unSubscribe();
@@ -127,6 +147,15 @@ public class StoresDialogFragment extends BaseDialogFragment implements StoresCo
     @Override
     public void showStores(List<Store> stores) {
         mAdapter.replace(stores);
+    }
+
+    @Override
+    public void showMainView() {
+        Intent intent = new Intent(mContext, MainActivity.class);
+        startActivity(intent);
+        SplashActivity activity = (SplashActivity) mContext;
+        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        activity.finish();
     }
 
     @Override

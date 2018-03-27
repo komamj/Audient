@@ -58,7 +58,7 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
-        loadToplistDetail(mView.getTopId(), mView.getShowTime());
+        loadToplistDetail(mView.getTopId(), mView.getShowTime(), 0, 300);
     }
 
     @Override
@@ -68,10 +68,10 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     }
 
     @Override
-    public void loadToplistDetail(int topId, String showTime) {
+    public void loadToplistDetail(int topId, String showTime, int page, int pageCount) {
         mDisposables.clear();
 
-        Disposable disposable = mRepository.getToplistDetail(topId, showTime)
+        Disposable disposable = mRepository.getToplistDetail(topId, showTime, page, pageCount)
                 .map(new Function<ToplistDetailResult, List<Audient>>() {
                     @Override
                     public List<Audient> apply(ToplistDetailResult toplistDetailResult) throws Exception {

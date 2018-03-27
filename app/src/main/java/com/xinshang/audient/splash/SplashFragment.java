@@ -62,6 +62,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
         LogUtils.i(TAG, "onViewCreated");
 
+        setLoadingIndicator(false);
+
         if (mPresenter != null) {
             mPresenter.subscribe();
         }
