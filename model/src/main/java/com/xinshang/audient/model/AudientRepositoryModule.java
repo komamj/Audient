@@ -153,7 +153,7 @@ public class AudientRepositoryModule {
                                         LogUtils.e(TAG, "refresh token error :" + t.getMessage());
 
                                         sharedPreferences.edit().putBoolean(Constants.LOGIN_STATUS, false)
-                                                .apply();
+                                                .commit();
 
                                        android.os.Process.killProcess(android.os.Process.myPid());
                                     }
