@@ -38,8 +38,8 @@ import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
 import com.xinshang.audient.model.entities.ThumbUpSongRequest;
 import com.xinshang.audient.model.entities.Token;
-import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.ToplistDataBean;
+import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
@@ -204,6 +204,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(@NonNull String storeId) {
         return mAudientApi.getStorePlaylist(storeId);
+    }
+
+    @Override
+    public Flowable<ApiResponse> sendFeedback(String title, String content) {
+        return mAudientApi.postFeedback(title, content);
     }
 
     @Override

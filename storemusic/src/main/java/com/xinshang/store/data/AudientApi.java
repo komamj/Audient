@@ -177,6 +177,12 @@ public interface AudientApi {
     Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(@Path("id") String storeId);
 
     /**
+     * 移除播放列表
+     */
+    @DELETE("api/v1/storeplaylist/{id}")
+    Flowable<BaseResponse> deleteSongFormPlaylist(@Path("id") String id);
+
+    /**
      * 点播歌曲
      */
     @POST("api/v1/storeplaylist/")
@@ -185,6 +191,9 @@ public interface AudientApi {
     @GET("api/v1/store/my")
     Flowable<ApiResponse<List<Store>>> getStoreInfo();
 
+    /**
+     * 播放整个歌单
+     */
     @FormUrlEncoded
     @POST("api/v1/storeplaylist/{id}/playfav")
     Flowable<BaseResponse> addAllToPlaylist(@Path("id") String storeId,

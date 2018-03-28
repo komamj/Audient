@@ -15,8 +15,6 @@
  */
 package com.xinshang.audient.model.entities;
 
-import android.text.TextUtils;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -25,52 +23,9 @@ public class ToplistDataBean {
     @SerializedName("id")
     public long id;
     @SerializedName("items")
-    public List<TopList> topLists;
+    public List<Toplist> topLists;
     @SerializedName("name")
     public String name;
     @SerializedName("title")
     public String title;
-
-    public static class TopList {
-        @SerializedName("id")
-        public int id;
-        @SerializedName("key")
-        public String key;
-        @SerializedName("name")
-        public String name;
-        @SerializedName("title")
-        public String title;
-        @SerializedName("listenNum")
-        public int listenNum;
-        @SerializedName("coverImage")
-        public String coverImage;
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            TopList topList = (TopList) o;
-
-            return this.id == topList.id && TextUtils.equals(this.name, topList.name)
-                    && TextUtils.equals(this.coverImage, topList.coverImage)
-                    && TextUtils.equals(this.key, topList.key)
-                    && TextUtils.equals(this.title, topList.title)
-                    && this.listenNum == topList.listenNum;
-        }
-
-        public static class SongBean {
-            @SerializedName("singername")
-            public String actorName;
-            @SerializedName("songid")
-            public long songId;
-            @SerializedName("songname")
-            public String musicName;
-        }
-    }
 }

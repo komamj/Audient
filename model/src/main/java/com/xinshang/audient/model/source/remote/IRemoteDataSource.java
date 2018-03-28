@@ -99,4 +99,6 @@ public interface IRemoteDataSource {
     Flowable<BaseResponse> addToPlaylist(Music music);
 
     Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(String storeId);
+
+    Flowable<ApiResponse> sendFeedback(String title, String content);
 }

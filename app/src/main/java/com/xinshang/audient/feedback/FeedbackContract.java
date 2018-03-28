@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.toplist;
+package com.xinshang.audient.feedback;
 
-import com.xinshang.audient.model.entities.Toplist;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
-import java.util.List;
+/**
+ * Created by koma on 3/28/18.
+ */
 
-public interface TopListContract {
+public interface FeedbackContract {
     interface View extends BaseView<Presenter> {
-        boolean isActive();
-
-        void setLoadingIndictor(boolean isActive);
+        void setLoadingIndicator(boolean isActive);
 
         void showSuccessfulMessage();
-
-        void showLoadingError();
-
-        void showTopLists(List<Toplist> topLists);
     }
 
     interface Presenter extends BasePresenter {
-        void loadTopList();
+        void sendFeedback(String title, String content);
     }
 }

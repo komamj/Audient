@@ -30,15 +30,15 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.helper.GlideRequest;
-import com.xinshang.audient.model.entities.ToplistDataBean;
+import com.xinshang.audient.model.entities.Toplist;
+import com.xinshang.audient.model.entities.ToplistSong;
 import com.xinshang.common.base.BaseAdapter;
 import com.xinshang.common.base.BaseViewHolder;
 import com.xinshang.common.util.Constants;
-import com.xinshang.common.util.LogUtils;
 
 import butterknife.BindView;
 
-public class TopListAdapter extends BaseAdapter<ToplistDataBean.TopList, TopListAdapter.TopListViewHolder> {
+public class TopListAdapter extends BaseAdapter<Toplist, TopListAdapter.TopListViewHolder> {
     private final GlideRequest<Bitmap> mGlideRequest;
 
     public TopListAdapter(Context context) {
@@ -52,17 +52,17 @@ public class TopListAdapter extends BaseAdapter<ToplistDataBean.TopList, TopList
     }
 
     @Override
-    protected boolean areItemsTheSame(ToplistDataBean.TopList oldItem, ToplistDataBean.TopList newItem) {
+    protected boolean areItemsTheSame(Toplist oldItem, Toplist newItem) {
         return oldItem.id == newItem.id;
     }
 
     @Override
-    protected boolean areContentsTheSame(ToplistDataBean.TopList oldItem, ToplistDataBean.TopList newItem) {
+    protected boolean areContentsTheSame(Toplist oldItem, Toplist newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(ToplistDataBean.TopList oldItem, ToplistDataBean.TopList newItem) {
+    protected Object getChangePayload(Toplist oldItem, Toplist newItem) {
         return null;
     }
 
@@ -75,18 +75,18 @@ public class TopListAdapter extends BaseAdapter<ToplistDataBean.TopList, TopList
 
     @Override
     public void onBindViewHolder(TopListViewHolder holder, int position) {
-        ToplistDataBean.TopList topList = mData.get(position);
+        Toplist topList = mData.get(position);
         mGlideRequest.load(topList.coverImage).into(holder.mAlbum);
-        /*holder.mFirstSong.setText(buildString(topList.songBeans.get(0)));
-        holder.mSecondSong.setText(buildString(topList.songBeans.get(1)));
-        holder.mThirdSong.setText(buildString(topList.songBeans.get(2)));*/
+        holder.mFirstSong.setText(buildString(topList.toplistSongs.get(0)));
+        holder.mSecondSong.setText(buildString(topList.toplistSongs.get(1)));
+        holder.mThirdSong.setText(buildString(topList.toplistSongs.get(2)));
     }
 
-    private String buildString(ToplistDataBean.TopList.SongBean songBean) {
+    private String buildString(ToplistSong songBean) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(songBean.musicName);
+        stringBuilder.append(songBean.songName);
         stringBuilder.append(" - ");
-        stringBuilder.append(songBean.actorName);
+        stringBuilder.append(songBean.artistName);
 
         return stringBuilder.toString();
     }
@@ -115,7 +115,7 @@ public class TopListAdapter extends BaseAdapter<ToplistDataBean.TopList, TopList
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            ToplistDataBean.TopList topList = mData.get(position);
+            Toplist topList = mData.get(position);
             Intent intent = new Intent(mContext, TopListDetailActivity.class);
             intent.putExtra(Constants.KEY_TOP_ID, topList.id);
             intent.putExtra(Constants.KEY_top_list_name, topList.name);

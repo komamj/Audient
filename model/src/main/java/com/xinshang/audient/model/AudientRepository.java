@@ -181,6 +181,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public Flowable<ApiResponse> sendFeedback(String title, String content) {
+        return mRemoteDataSource.sendFeedback(title, content);
+    }
+
+    @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mRemoteDataSource.thumbUpComment(commentId);
     }

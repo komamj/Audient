@@ -45,6 +45,7 @@
             style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:singleLine="true"
             android:textSize="13sp"
