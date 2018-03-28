@@ -22,7 +22,6 @@ public class CommentRequest {
     public String mediaId;
     @SerializedName("comment")
     public String message;
-
     @SerializedName("storeId")
     public String storeId;
     @SerializedName("location")

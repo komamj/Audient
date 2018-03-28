@@ -68,7 +68,7 @@ public class EditCommentPresenter implements EditCommentContract.Presenter {
     @Override
     public void addComment(Audient audient, String content) {
         CommentRequest comment = new CommentRequest();
-        comment.storeId = "垃圾店";
+        comment.storeId = mRepository.getStoreId();
         comment.message = content;
         comment.mediaId = audient.mediaId;
         mRepository.addComment(comment)

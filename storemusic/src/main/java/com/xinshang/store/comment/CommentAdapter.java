@@ -49,7 +49,6 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
                 .asBitmap()
                 .thumbnail(0.1f)
                 .circleCrop()
-                .transition(new BitmapTransitionOptions().crossFade())
                 .placeholder(R.drawable.ic_user);
     }
 
