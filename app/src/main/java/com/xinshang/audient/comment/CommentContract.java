@@ -17,13 +17,15 @@ package com.xinshang.audient.comment;
 
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
-import com.xinshang.audient.model.entities.CommentResponse;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
+import java.util.List;
+
 public interface CommentContract {
     interface View extends BaseView<Presenter> {
-        void showComments(CommentResponse commentResponse);
+        void showComments(List<Comment> comments);
 
         boolean isActive();
 

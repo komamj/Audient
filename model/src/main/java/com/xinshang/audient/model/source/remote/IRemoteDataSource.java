@@ -18,8 +18,8 @@ package com.xinshang.audient.model.source.remote;
 import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
@@ -60,7 +60,8 @@ public interface IRemoteDataSource {
 
     Flowable<FileResult> getFileResult(String id);
 
-    Flowable<CommentResult> getCommentResult(String id);
+    Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page,
+                                                       int size);
 
     Flowable<NowPlayingResponse> getNowPlayingResult();
 

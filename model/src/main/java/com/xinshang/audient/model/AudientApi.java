@@ -18,8 +18,8 @@ package com.xinshang.audient.model;
 import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
@@ -196,9 +196,9 @@ public interface AudientApi {
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
-    Flowable<CommentResult> getComments(@Query("mid") String mid, @Query("sort") String sortord,
-                                        @Query("sid") String storeId, @Query("page") int page,
-                                        @Query("size") int size);
+    Flowable<ApiResponse<CommentDataBean>> getComments(@Query("mid") String mid, @Query("sort") String sortord,
+                                                       @Query("sid") String storeId, @Query("page") int page,
+                                                       @Query("size") int size);
 
     /**
      * 发表评论

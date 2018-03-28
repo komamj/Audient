@@ -19,8 +19,8 @@ import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommandResponse;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
@@ -106,8 +106,9 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<CommentResult> getCommentResult(String id) {
-        return mRemoteDataSource.getCommentResult(id);
+    public Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page,
+                                                              int size) {
+        return mRemoteDataSource.getComments(mid, sortord, storeId, page, size);
     }
 
     @Override

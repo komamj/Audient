@@ -23,11 +23,32 @@ import java.util.List;
  * Created by koma on 3/5/18.
  */
 
-public class CommentResponse {
+public class CommentDataBean {
     @SerializedName("inStore")
-    public List<Comment> inStoreComment;
+    public InStoreBean inStoreComment;
     @SerializedName("others")
     public OthersBean othersComment;
+
+    public static class InStoreBean {
+        @SerializedName("last")
+        public boolean last;
+        @SerializedName("totalElements")
+        public int totalElements;
+        @SerializedName("totalPages")
+        public int totalPages;
+        @SerializedName("number")
+        public int number;
+        @SerializedName("size")
+        public int size;
+        @SerializedName("sort")
+        public List<Sortord> sortords;
+        @SerializedName("numberOfElements")
+        public int numberOfElements;
+        @SerializedName("first")
+        public boolean first;
+        @SerializedName("content")
+        public List<Comment> comments;
+    }
 
     public static class OthersBean {
         @SerializedName("last")

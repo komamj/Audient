@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
-import com.xinshang.audient.model.entities.CommentResponse;
 import com.xinshang.audient.model.entities.MessageEvent;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
@@ -36,6 +35,8 @@ import com.xinshang.common.util.LogUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -165,8 +166,8 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     }
 
     @Override
-    public void showComments(CommentResponse commentResponse) {
-        mAdapter.replace(commentResponse.othersComment.comments);
+    public void showComments(List<Comment> comments) {
+        mAdapter.replace(comments);
     }
 
     @Override

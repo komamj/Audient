@@ -16,18 +16,22 @@
 package com.xinshang.audient.comment;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Comment;
-import com.xinshang.audient.model.entities.CommentResponse;
-import com.xinshang.audient.model.entities.CommentResult;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.common.util.LogUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -67,27 +71,50 @@ public class CommentPresenter implements CommentContract.Presenter {
 
     @Override
     public void loadComments(Audient audient) {
-        Disposable disposable = mRepository.getCommentResult(audient.mediaId)
-                .map(new Function<CommentResult, CommentResponse>() {
+        String storeId = mRepository.getStoreId();
+
+        Disposable disposable = mRepository.getComments(audient.mediaId, null, storeId,
+                0, 300)
+                .map(new Function<ApiResponse<CommentDataBean>, CommentDataBean>() {
                     @Override
-                    public CommentResponse apply(CommentResult commentResult) throws Exception {
-                        return commentResult.commentResponse;
+                    public CommentDataBean apply(ApiResponse<CommentDataBean> commentDataBeanApiResponse) throws Exception {
+                        return commentDataBeanApiResponse.data;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<CommentResponse>() {
+                .doOnNext(new Consumer<CommentDataBean>() {
                     @Override
-                    public void onNext(CommentResponse commentResponse) {
+                    public void accept(CommentDataBean commentDataBean) throws Exception {
                         if (mView.isActive()) {
-                            mView.showComments(commentResponse);
-                            if (commentResponse.inStoreComment == null &&
-                                    (commentResponse.othersComment == null
-                                            || commentResponse.othersComment.comments.isEmpty())) {
+                            if ((commentDataBean.inStoreComment == null
+                                    || commentDataBean.inStoreComment.comments.isEmpty())
+                                    && (commentDataBean.othersComment == null
+                                    || commentDataBean.othersComment.comments.isEmpty())) {
                                 mView.showEmpty(true);
                             } else {
                                 mView.showEmpty(false);
                             }
+                        }
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .map(new Function<CommentDataBean, List<Comment>>() {
+                    @Override
+                    public List<Comment> apply(CommentDataBean commentDataBean) throws Exception {
+                        List<Comment> comments = new ArrayList<>();
+                        comments.addAll(commentDataBean.inStoreComment.comments);
+                        comments.addAll(commentDataBean.othersComment.comments);
+                        return comments;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Comment>>() {
+
+                    @Override
+                    public void onNext(List<Comment> comments) {
+                        if (mView.isActive()) {
+                            mView.showComments(comments);
                         }
                     }
 

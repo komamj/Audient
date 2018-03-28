@@ -23,8 +23,8 @@ import com.xinshang.audient.model.AudientApi;
 import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
-import com.xinshang.audient.model.entities.CommentResult;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.FileResult;
@@ -111,8 +111,9 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<CommentResult> getCommentResult(String id) {
-        return mAudientApi.getComments(id, null, null, 0, 40);
+    public Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page,
+                                                              int size) {
+        return mAudientApi.getComments(mid, sortord, storeId, page, size);
     }
 
     @Override
