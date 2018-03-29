@@ -3,19 +3,19 @@
 An android open source project about "Audient"
 
 # ScreenShots
-<img src="./ScreenShots/Screenshot_splash.png">
+<img src="./Screenshots/Screenshot_splash.png">
 
-<img src="./ScreenShots/Screenshot_playlist.png">
+<img src="./Screenshots/Screenshot_playlist.png">
 
-<img src="./ScreenShots/Screenshot_mine.png">
+<img src="./Screenshots/Screenshot_mine.png">
 
-<img src="./ScreenShots/Screenshot_toplist.png">
+<img src="./Screenshots/Screenshot_toplist.png">
 
-<img src="./ScreenShots/Screenshot_search.png">
+<img src="./Screenshots/Screenshot_search.png">
 
-<img src="./ScreenShots/Screenshot_comment.png">
+<img src="./Screenshots/Screenshot_comment.png">
 
-<img src="./ScreenShots/Screenshot_toplist_detail.png">
+<img src="./Screenshots/Screenshot_toplist_detail.png">
 
 # LICENCE
 
