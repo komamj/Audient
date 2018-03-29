@@ -24,9 +24,17 @@ import com.xinshang.common.base.BaseView;
 
 public interface FeedbackContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
         void setLoadingIndicator(boolean isActive);
 
         void showSuccessfulMessage();
+
+        void showFailedMessage();
+
+        void showErrorTitle();
+
+        void showErrorContent();
     }
 
     interface Presenter extends BasePresenter {

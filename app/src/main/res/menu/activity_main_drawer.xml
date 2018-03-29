@@ -21,7 +21,7 @@
             android:icon="@drawable/ic_menu_share"
             android:title="@string/nav_share" />
         <item
-            android:id="@+id/nav_send"
+            android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/nav_send" />
         <item

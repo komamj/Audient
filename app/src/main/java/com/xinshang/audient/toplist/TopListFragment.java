@@ -16,6 +16,7 @@
 package com.xinshang.audient.toplist;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -145,20 +146,20 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
 
     @Override
     public void showSuccessfulMessage() {
-        /*if (getView() == null) {
+        if (getView() == null) {
             return;
         }
         Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
-                .show();*/
+                .show();
     }
 
     @Override
     public void showLoadingError() {
-        /*if (getView() == null) {
+        if (getView() == null) {
             return;
         }
         Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
-                .show();*/
+                .show();
     }
 
     @Override

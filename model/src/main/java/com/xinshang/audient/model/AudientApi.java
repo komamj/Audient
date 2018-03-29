@@ -265,5 +265,6 @@ public interface AudientApi {
      * 反馈
      */
     @POST("api/v1/feedback")
+    @FormUrlEncoded
     Flowable<ApiResponse> postFeedback(@Field("title") String title, @Field("content") String content);
 }

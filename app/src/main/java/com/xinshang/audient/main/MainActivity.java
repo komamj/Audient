@@ -43,6 +43,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
+import com.xinshang.audient.feedback.FeedbackDialogFragment;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
@@ -218,9 +219,15 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "https://github.com/komamj/Audient");
+            if(intent.resolveActivity(getPackageManager()) != null){
+                startActivity(intent);
+            }
+        } else if (id == R.id.nav_feedback) {
+            FeedbackDialogFragment.show(getSupportFragmentManager());
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);

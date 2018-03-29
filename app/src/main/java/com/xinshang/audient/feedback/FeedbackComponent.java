@@ -26,4 +26,5 @@ import dagger.Component;
 @FragmentScoped
 @Component(dependencies = AudientRepositoryComponent.class, modules = FeedbackPresenterModule.class)
 public interface FeedbackComponent {
+    void inject(FeedbackDialogFragment feedbackDialogFragment);
 }

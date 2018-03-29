@@ -15,6 +15,8 @@
  */
 package com.xinshang.audient.feedback;
 
+import android.text.TextUtils;
+
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.common.util.LogUtils;
@@ -66,6 +68,14 @@ public class FeedbackPresenter implements FeedbackContract.Presenter {
 
     @Override
     public void sendFeedback(String title, String content) {
+        if (isInValid(title, content)) {
+            return;
+        }
+
+        if (mView.isActive()) {
+            mView.setLoadingIndicator(true);
+        }
+
         Disposable disposable = mRepository.sendFeedback(title, content)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,21 +83,42 @@ public class FeedbackPresenter implements FeedbackContract.Presenter {
                     @Override
                     public void onNext(ApiResponse apiResponse) {
                         if (apiResponse.resultCode == 0) {
-
+                            mView.showSuccessfulMessage();
+                        } else {
+                            mView.showFailedMessage();
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         LogUtils.e(TAG, "sendFeedback error : " + t.getMessage());
+
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
                     }
                 });
 
         mDisposables.add(disposable);
+    }
+
+    private boolean isInValid(String title, String content) {
+        if (TextUtils.isEmpty(title)) {
+            mView.showErrorTitle();
+
+            return true;
+        } else if (TextUtils.isEmpty(content)) {
+            mView.showErrorContent();
+
+            return true;
+        }
+        return false;
     }
 }
