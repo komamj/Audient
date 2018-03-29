@@ -24,11 +24,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.helper.GlideRequest;
 import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.common.base.BaseAdapter;
 import com.xinshang.common.base.BaseViewHolder;
 
@@ -38,9 +38,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentViewHolder> {
+    private static final int VIEW_TYPE_NORMAL = 0;
+    private static final int VIEW_TYPE_HEADER = 1;
+
     private final GlideRequest<Bitmap> mGlideRequest;
 
     private EventListener mListener;
+
+    private CommentDataBean mCommentDataBean;
 
     public CommentAdapter(Context context) {
         super(context);
@@ -54,6 +59,10 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
 
     public void setListener(EventListener listener) {
         this.mListener = listener;
+    }
+
+    public void setCommentDataBean(CommentDataBean commentDataBean) {
+        mCommentDataBean = commentDataBean;
     }
 
     public void addComment(Comment comment) {
@@ -85,16 +94,44 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
     }
 
     @Override
-    public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_comment, parent,
-                false);
+    public int getItemViewType(int position) {
+        if (!mCommentDataBean.inStoreComment.comments.isEmpty()) {
+            int size = mCommentDataBean.inStoreComment.comments.size();
+            if (position == 0 || position == size) {
+                return VIEW_TYPE_HEADER;
+            }
+        }
+        return VIEW_TYPE_NORMAL;
+    }
 
-        return new CommentViewHolder(view);
+    @Override
+    public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_HEADER) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_comment_header, parent,
+                    false);
+
+            return new CommentHeaderViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_comment, parent,
+                    false);
+
+            return new CommentViewHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         Comment comment = mData.get(position);
+
+        if (getItemViewType(position) == VIEW_TYPE_HEADER) {
+            if (position == 0) {
+                ((CommentHeaderViewHolder) holder).mTitle.setText(
+                        mContext.getString(R.string.store_comment_description));
+            } else {
+                ((CommentHeaderViewHolder) holder).mTitle.setText(
+                        mContext.getString(R.string.all_comment_description));
+            }
+        }
 
         mGlideRequest.load(comment.avatar).into(holder.mUserImage);
         holder.mMessage.setText(comment.comment);
@@ -103,6 +140,7 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
             userName = comment.userName;
         }
         holder.mUserName.setText(userName);
+        holder.mStoreName.setText(comment.storeName);
         holder.mTime.setText(comment.commentDate);
         holder.mCount.setText(String.valueOf(comment.voteCount));
         if (comment.voted) {
@@ -115,8 +153,10 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
     class CommentViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_user)
         ImageView mUserImage;
-        @BindView(R.id.tv_dynamic)
+        @BindView(R.id.tv_user_name)
         TextView mUserName;
+        @BindView(R.id.tv_store_name)
+        TextView mStoreName;
         @BindView(R.id.tv_comment)
         TextView mMessage;
         @BindView(R.id.tv_time)
@@ -146,6 +186,15 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         }
 
         CommentViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    class CommentHeaderViewHolder extends CommentViewHolder {
+        @BindView(R.id.tv_title)
+        TextView mTitle;
+
+        CommentHeaderViewHolder(View view) {
             super(view);
         }
     }

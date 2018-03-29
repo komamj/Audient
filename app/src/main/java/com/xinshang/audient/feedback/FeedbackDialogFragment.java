@@ -179,10 +179,16 @@ public class FeedbackDialogFragment extends BaseDialogFragment implements Feedba
     @Override
     public void showErrorTitle() {
         mTitle.setError(mEmptyTitleMessage);
+        mTitle.setFocusable(true);
+        mTitle.setFocusableInTouchMode(true);
+        mTitle.requestFocus();
     }
 
     @Override
     public void showErrorContent() {
         mContent.setError(mEmptyContentMessage);
+        mContent.setFocusable(true);
+        mContent.setFocusableInTouchMode(true);
+        mContent.requestFocus();
     }
 }

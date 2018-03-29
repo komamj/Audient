@@ -27,6 +27,8 @@ public interface CommentContract {
     interface View extends BaseView<Presenter> {
         void showComments(List<Comment> comments);
 
+        void showCommentDataBean(CommentDataBean commentDataBean);
+
         boolean isActive();
 
         void showLoadingError();

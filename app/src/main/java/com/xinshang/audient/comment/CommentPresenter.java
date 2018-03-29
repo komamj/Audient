@@ -87,10 +87,8 @@ public class CommentPresenter implements CommentContract.Presenter {
                     @Override
                     public void accept(CommentDataBean commentDataBean) throws Exception {
                         if (mView.isActive()) {
-                            if ((commentDataBean.inStoreComment == null
-                                    || commentDataBean.inStoreComment.comments.isEmpty())
-                                    && (commentDataBean.othersComment == null
-                                    || commentDataBean.othersComment.comments.isEmpty())) {
+                            mView.showCommentDataBean(commentDataBean);
+                            if ((commentDataBean.othersComment.comments.isEmpty())) {
                                 mView.showEmpty(true);
                             } else {
                                 mView.showEmpty(false);

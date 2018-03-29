@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.xinshang.audient.R;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Comment;
+import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.MessageEvent;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
@@ -168,6 +169,11 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     @Override
     public void showComments(List<Comment> comments) {
         mAdapter.replace(comments);
+    }
+
+    @Override
+    public void showCommentDataBean(CommentDataBean commentDataBean) {
+        mAdapter.setCommentDataBean(commentDataBean);
     }
 
     @Override
