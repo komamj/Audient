@@ -33,9 +33,11 @@ public interface CommentContract {
 
         void showLoadingError();
 
+        void showSuccessfulMessage();
+
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIncator(boolean isActive);
     }
 
     interface Presenter extends BasePresenter {

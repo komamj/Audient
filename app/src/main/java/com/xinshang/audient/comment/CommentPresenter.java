@@ -121,15 +121,17 @@ public class CommentPresenter implements CommentContract.Presenter {
                         LogUtils.e(TAG, "loadComments error :" + t.toString());
 
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIncator(false);
                             mView.showEmpty(true);
+                            mView.showLoadingError();
                         }
                     }
 
                     @Override
                     public void onComplete() {
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIncator(false);
+                            mView.showSuccessfulMessage();
                         }
                     }
                 });

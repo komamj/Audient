@@ -16,6 +16,7 @@
 package com.xinshang.audient.comment;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,6 +97,8 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
                 R.color.colorPrimary);
+
+        setLoadingIncator(true);
 
         mAdapter = new CommentAdapter(mContext);
         mAdapter.setListener(new CommentAdapter.EventListener() {
@@ -182,8 +185,21 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     }
 
     @Override
-    public void showLoadingError() {
+    public void showSuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
 
+    @Override
+    public void showLoadingError() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override
@@ -196,7 +212,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     }
 
     @Override
-    public void showProgressBar(boolean forceShow) {
+    public void setLoadingIncator(boolean forceShow) {
         mSwipeRefreshLayout.setRefreshing(forceShow);
     }
 }
