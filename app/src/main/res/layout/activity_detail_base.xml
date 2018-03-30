@@ -55,7 +55,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:tint="@android:color/white"
         app:borderWidth="0dp"
-        app:fabSize="mini"
         app:layout_anchor="@+id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 

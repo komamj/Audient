@@ -79,7 +79,6 @@ public class FavoriteDetailActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-
         GlideApp.with(this)
                 .asBitmap()
                 .transition(new BitmapTransitionOptions())

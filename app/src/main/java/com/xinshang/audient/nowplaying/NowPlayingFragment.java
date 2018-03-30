@@ -167,7 +167,7 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
     public void showVoteInfo(boolean isVoted) {
         mIsVoted = isVoted;
         if (isVoted) {
-            mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_black);
+            mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_inactive);
         } else {
             mFabThumbUp.setImageResource(R.drawable.ic_thumb_up_white);
         }

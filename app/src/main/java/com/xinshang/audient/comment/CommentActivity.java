@@ -82,7 +82,7 @@ public class CommentActivity extends BaseActivity {
 
         mAudient = getIntent().getParcelableExtra(Constants.KEY_AUDIENT);
 
-        mFab.setImageResource(R.drawable.ic_add);
+        mFab.setImageResource(R.drawable.ic_add_white);
 
         GlideApp.with(this)
                 .load(mAudient)
