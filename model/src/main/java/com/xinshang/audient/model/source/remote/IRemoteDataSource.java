@@ -28,6 +28,7 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
+import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
 import com.xinshang.audient.model.entities.StoreSong;
 import com.xinshang.audient.model.entities.StoreVoteResponse;
@@ -47,6 +48,8 @@ import io.reactivex.Flowable;
 
 public interface IRemoteDataSource {
     Flowable<UserResponse> getUserInfo();
+
+    Flowable<ApiResponse<Store>> getStoreInfo(String storeId);
 
     Flowable<ApiResponse<List<ToplistDataBean>>> getTopList();
 

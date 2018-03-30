@@ -259,7 +259,7 @@ public interface AudientApi {
     Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(@Path("id") String storeId);
 
     @GET("api/v1/store/{id}")
-    Flowable<ApiResponse<Store>> getStore(@Path("id") String id);
+    Flowable<ApiResponse<Store>> getStoreInfo(@Path("id") String id);
 
     /**
      * 反馈

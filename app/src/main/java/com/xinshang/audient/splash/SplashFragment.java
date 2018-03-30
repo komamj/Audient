@@ -19,14 +19,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xinshang.audient.R;
 import com.xinshang.audient.login.LoginDialogFragment;
 import com.xinshang.audient.main.MainActivity;
-import com.xinshang.audient.store.StoresDialogFragment;
+import com.xinshang.audient.model.entities.Store;
+import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -39,6 +45,12 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @BindView(R.id.progress_bar)
     ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.card_view)
+    CardView mCardView;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    private StoresAdapter mAdapter;
 
     private SplashContract.Presenter mPresenter;
 
@@ -63,6 +75,23 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         LogUtils.i(TAG, "onViewCreated");
 
         setLoadingIndicator(false);
+
+        mAdapter = new StoresAdapter(mContext);
+        mAdapter.setListener(new StoresAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Store store) {
+                if (mPresenter != null) {
+                    mPresenter.persistenceStore(store);
+                }
+            }
+        });
+
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
+        mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
             mPresenter.subscribe();
@@ -97,8 +126,17 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     }
 
     @Override
-    public void showStoresDialog() {
-        StoresDialogFragment.show(getChildFragmentManager());
+    public void showStoresUI(boolean forceShow) {
+        if (forceShow) {
+            mCardView.setVisibility(View.VISIBLE);
+        } else {
+            mCardView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showStores(List<Store> stores) {
+        mAdapter.replace(stores);
     }
 
     @Override

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.store;
+package com.xinshang.audient.splash;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

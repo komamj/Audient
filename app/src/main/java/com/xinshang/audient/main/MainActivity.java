@@ -35,7 +35,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +44,6 @@ import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.feedback.FeedbackDialogFragment;
 import com.xinshang.audient.helper.GlideApp;
-import com.xinshang.audient.login.LoginActivity;
 import com.xinshang.audient.mine.MineFragment;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.User;
@@ -80,7 +78,6 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    Button mLoginButton;
     TextView mName;
     ImageView mUserImage, mBlurImage;
 
@@ -109,14 +106,6 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         mName = headerView.findViewById(R.id.tv_user_name);
         mUserImage = headerView.findViewById(R.id.iv_user);
         mBlurImage = headerView.findViewById(R.id.iv_blur);
-        mLoginButton = headerView.findViewById(R.id.btn_login);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // inject presenter layer
         DaggerMainComponent.builder().audientRepositoryComponent(
@@ -141,6 +130,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     public void onNewIntent(Intent newIntent) {
         super.onNewIntent(newIntent);
+
         setIntent(newIntent);
 
         LogUtils.i(TAG, "onNewIntent");
@@ -153,8 +143,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         LogUtils.i(TAG, "onResume");
 
         if (mPresenter != null) {
-            mPresenter.loadLoginStatus();
-            mPresenter.loadUserInfo();
+            mPresenter.subscribe();
         }
     }
 
@@ -240,20 +229,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     }
 
     @Override
-    public void showLoginView(boolean isLogin) {
-        if (isLogin) {
-            mLoginButton.setVisibility(View.GONE);
-            mName.setVisibility(View.VISIBLE);
-            mUserImage.setVisibility(View.VISIBLE);
-        } else {
-            mLoginButton.setVisibility(View.VISIBLE);
-            mName.setVisibility(View.GONE);
-            mUserImage.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void showUser(User user) {
+    public void showUserInfo(User user) {
         GlideApp.with(this)
                 .asBitmap()
                 .placeholder(R.drawable.ic_user)
@@ -270,6 +246,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                         }
                     }
                 });
+
         mName.setText(user.nickName);
     }
 
@@ -290,8 +267,10 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     }
 
     @Override
-    public void showStore(Store store) {
-
+    public void showStoreInfo(Store store) {
+        if (store != null) {
+            mToolbar.setSubtitle(store.name);
+        }
     }
 
     static class AudientAdapter extends FragmentPagerAdapter {

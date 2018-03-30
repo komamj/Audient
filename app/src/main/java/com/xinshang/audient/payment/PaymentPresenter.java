@@ -1,10 +1,17 @@
 package com.xinshang.audient.payment;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Music;
+import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Created by koma on 3/1/18.
@@ -37,5 +44,48 @@ public class PaymentPresenter implements PaymentContract.Presenter {
     @Override
     public void unSubscribe() {
 
+    }
+
+    @Override
+    public void addToPlaylist(Audient audient) {
+        String storeId = mRepository.getStoreId();
+        Music music = new Music();
+        music.storeId = storeId;
+        music.mediaId = audient.mediaId;
+        music.mediaName = audient.mediaName;
+        music.mediaInterval = String.valueOf(audient.duration);
+        music.artistId = audient.artistId;
+        music.artistName = audient.artistName;
+        music.albumId = audient.albumId;
+        music.albumName = audient.albumName;
+        music.price = 1;
+        music.discount = 0;
+        music.discountPrice = 1;
+        music.paymentWay = "微信支付";
+        music.free = false;
+        music.freeWay = 0;
+        mRepository.addToPlaylist(music)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        if (response.resultCode == 0) {
+                            LogUtils.i(TAG, "addToPlaylist successful");
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addToPlaylist error : " + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

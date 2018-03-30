@@ -26,22 +26,18 @@ import com.xinshang.common.base.BaseView;
 
 public interface MainContract {
     interface View extends BaseView<Presenter> {
-        void showLoginView(boolean isLogin);
-
-        void showUser(User user);
+        void showUserInfo(User user);
 
         void showBlurBackground(Drawable drawable);
 
-        void showStore(Store store);
+        void showStoreInfo(Store store);
     }
 
     interface Presenter extends BasePresenter {
-        void loadLoginStatus();
-
         void loadUserInfo();
 
         void blurBitmap(Bitmap bitmap, Context context, int inSampleSize);
 
-        void loadStore();
+        void loadStoreInfo();
     }
 }

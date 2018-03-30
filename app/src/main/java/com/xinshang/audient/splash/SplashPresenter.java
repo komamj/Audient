@@ -18,6 +18,9 @@ package com.xinshang.audient.splash;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.Store;
+import com.xinshang.audient.model.entities.StoreDataBean;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.util.WeChatMessageEvent;
 import com.xinshang.common.util.LogUtils;
@@ -26,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -35,6 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -122,8 +127,6 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void loadAccessToken(String code) {
-        mView.setLoadingIndicator(true);
-
         Disposable disposable = mRepository.getAccessToken(code)
                 .doOnNext(new Consumer<Token>() {
                     @Override
@@ -137,7 +140,11 @@ public class SplashPresenter implements SplashContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<Token>() {
                     @Override
                     public void onNext(Token token) {
+                        if (mView.isActive()) {
+                            mView.showStoresUI(true);
 
+                            loadStores();
+                        }
                     }
 
                     @Override
@@ -145,7 +152,6 @@ public class SplashPresenter implements SplashContract.Presenter {
                         LogUtils.e(TAG, "loadAccessToken error :" + t.toString());
                         mRepository.persistenceLoginStatus(false);
                         if (mView.isActive()) {
-                            mView.setLoadingIndicator(false);
                             mView.showLoadingError();
                         }
                     }
@@ -153,18 +159,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                     @Override
                     public void onComplete() {
                         if (mView.isActive()) {
-                            mView.setLoadingIndicator(false);
                             mView.showSuccessfulMessage();
-
-                            Flowable.just("").delay(1, TimeUnit.SECONDS)
-                                    .subscribe(new Consumer<String>() {
-                                        @Override
-                                        public void accept(String s) throws Exception {
-                                            if (mView.isActive()) {
-                                                mView.showStoresDialog();
-                                            }
-                                        }
-                                    });
                         }
                     }
                 });
@@ -189,5 +184,55 @@ public class SplashPresenter implements SplashContract.Presenter {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void loadStores() {
+        if (mView.isActive()) {
+            mView.setLoadingIndicator(true);
+        }
+
+        Disposable disposable = mRepository.getStores(true, 0, 20, null)
+                .map(new Function<ApiResponse<StoreDataBean>, List<Store>>() {
+                    @Override
+                    public List<Store> apply(ApiResponse<StoreDataBean> storeDataBeanApiResponse) throws Exception {
+                        return storeDataBeanApiResponse.data.stores;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Store>>() {
+                    @Override
+                    public void onNext(List<Store> stores) {
+                        if (mView.isActive()) {
+                            mView.showStores(stores);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "getStores error : " + t.getMessage());
+
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
+                    }
+                });
+        mDisposables.add(disposable);
+    }
+
+    @Override
+    public void persistenceStore(Store store) {
+        mRepository.persistenceStoreId(store.id);
+        mRepository.persistenceLoginStatus(true);
+
+        mView.showMainView();
     }
 }

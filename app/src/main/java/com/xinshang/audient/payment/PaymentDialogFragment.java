@@ -53,6 +53,9 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
 
     @OnClick(R.id.btn_confirm)
     void onConfirmClick() {
+        if (mPresenter != null) {
+            mPresenter.addToPlaylist(mAudient);
+        }
     }
 
     private Audient mAudient;
@@ -100,6 +103,7 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
                 .thumbnail(0.1f)
                 .circleCrop()
                 .into(mAlbum);
+
         mName.setText(mAudient.mediaName);
     }
 

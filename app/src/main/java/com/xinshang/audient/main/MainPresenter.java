@@ -20,6 +20,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.util.ImageUtils;
@@ -64,6 +66,10 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
+
+        loadUserInfo();
+
+        loadStoreInfo();
     }
 
     @Override
@@ -71,11 +77,6 @@ public class MainPresenter implements MainContract.Presenter {
         LogUtils.i(TAG, "unSubscribe");
 
         mDisposables.clear();
-    }
-
-    @Override
-    public void loadLoginStatus() {
-        mView.showLoginView(mRepository.getLoginStatus());
     }
 
     @Override
@@ -93,7 +94,7 @@ public class MainPresenter implements MainContract.Presenter {
                     @Override
                     public void onNext(User user) {
                         if (mView != null) {
-                            mView.showUser(user);
+                            mView.showUserInfo(user);
                         }
                     }
 
@@ -146,7 +147,35 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void loadStore() {
+    public void loadStoreInfo() {
+        Disposable disposable = mRepository.getStoreInfo(mRepository.getStoreId())
+                .map(new Function<ApiResponse<Store>, Store>() {
+                    @Override
+                    public Store apply(ApiResponse<Store> storeApiResponse) throws Exception {
+                        return storeApiResponse.data;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Store>() {
+                    @Override
+                    public void onNext(Store store) {
+                        if (mView != null) {
+                            mView.showStoreInfo(store);
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadStoreInfo error : " + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        mDisposables.add(disposable);
     }
 }

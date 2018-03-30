@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.payment;
 
+import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
 
@@ -27,5 +28,6 @@ public interface PaymentContract {
     }
 
     interface Presenter extends BasePresenter {
+        void addToPlaylist(Audient audient);
     }
 }

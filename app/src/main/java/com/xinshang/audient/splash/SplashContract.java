@@ -16,8 +16,11 @@
 package com.xinshang.audient.splash;
 
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.xinshang.audient.model.entities.Store;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
+
+import java.util.List;
 
 /**
  * Created by koma on 3/5/18.
@@ -31,7 +34,9 @@ public interface SplashContract {
 
         void showLoginDialog();
 
-        void showStoresDialog();
+        void showStoresUI(boolean forceShow);
+
+        void showStores(List<Store> stores);
 
         void showSuccessfulMessage();
 
@@ -46,5 +51,9 @@ public interface SplashContract {
         void loadAccessToken(String code);
 
         void processWXResponse(BaseResp response);
+
+        void loadStores();
+
+        void persistenceStore(Store store);
     }
 }
