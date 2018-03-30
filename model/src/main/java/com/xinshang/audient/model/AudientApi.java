@@ -22,6 +22,7 @@ import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
+import com.xinshang.audient.model.entities.Feedback;
 import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
@@ -265,6 +266,5 @@ public interface AudientApi {
      * 反馈
      */
     @POST("api/v1/feedback")
-    @FormUrlEncoded
-    Flowable<ApiResponse> postFeedback(@Field("title") String title, @Field("content") String content);
+    Flowable<ApiResponse> postFeedback(@Body Feedback feedback);
 }

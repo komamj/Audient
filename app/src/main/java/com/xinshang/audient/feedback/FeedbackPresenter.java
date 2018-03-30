@@ -19,6 +19,7 @@ import android.text.TextUtils;
 
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.Feedback;
 import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
@@ -76,7 +77,11 @@ public class FeedbackPresenter implements FeedbackContract.Presenter {
             mView.setLoadingIndicator(true);
         }
 
-        Disposable disposable = mRepository.sendFeedback(title, content)
+        Feedback feedback = new Feedback();
+        feedback.title = title;
+        feedback.content = content;
+
+        Disposable disposable = mRepository.sendFeedback(feedback)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<ApiResponse>() {

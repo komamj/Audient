@@ -17,6 +17,7 @@ package com.xinshang.audient.feedback;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -52,6 +53,8 @@ public class FeedbackDialogFragment extends BaseDialogFragment implements Feedba
     EditText mContent;
     @BindView(R.id.progress_bar)
     ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
 
     @BindString(R.string.empty_title_error_message)
     String mEmptyTitleMessage;
@@ -160,19 +163,20 @@ public class FeedbackDialogFragment extends BaseDialogFragment implements Feedba
 
     @Override
     public void showSuccessfulMessage() {
-        if (getView() == null) {
-            return;
-        }
-        Snackbar.make(getView(), R.string.feedback_successful_message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(mFab, R.string.feedback_successful_message, Snackbar.LENGTH_SHORT)
                 .show();
+
+        mFab.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        }, 1000);
     }
 
     @Override
     public void showFailedMessage() {
-        if (getView() == null) {
-            return;
-        }
-        Snackbar.make(getView(), R.string.feedback_failed_message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(mFab, R.string.feedback_failed_message, Snackbar.LENGTH_SHORT)
                 .show();
     }
 
