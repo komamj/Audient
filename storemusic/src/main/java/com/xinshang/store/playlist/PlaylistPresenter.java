@@ -23,8 +23,7 @@ import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommandRequest;
 import com.xinshang.store.data.entities.CommandResponse;
-import com.xinshang.store.data.entities.StorePlaylist;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
@@ -79,9 +78,9 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
     private boolean mIsPlaying;
 
-    private List<StorePlaylist> mPlaylist;
+    private List<StoreSong> mPlaylist;
 
-    private StorePlaylist mNowPlaying;
+    private StoreSong mNowPlaying;
 
     @Inject
     public PlaylistPresenter(PlaylistContract.View view, AudientRepository repository) {
@@ -263,45 +262,45 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void loadNowPlaying(String id) {
         Disposable disposable = Flowable.just(id)
-                .flatMap(new Function<String, Publisher<List<StorePlaylist>>>() {
+                .flatMap(new Function<String, Publisher<List<StoreSong>>>() {
                     @Override
-                    public Publisher<List<StorePlaylist>> apply(String s) throws Exception {
-                        List<StorePlaylist> storePlaylists = new ArrayList<>();
-                        for (StorePlaylist storePlaylist : mPlaylist) {
-                            StorePlaylist playlist = new StorePlaylist();
-                            playlist.id = storePlaylist.id;
-                            playlist.mediaName = storePlaylist.mediaName;
-                            playlist.mediaId = storePlaylist.mediaId;
-                            playlist.storeId = storePlaylist.storeId;
-                            playlist.albumId = storePlaylist.albumId;
-                            playlist.albumName = storePlaylist.albumName;
-                            playlist.artistId = storePlaylist.artistId;
-                            playlist.artistName = storePlaylist.artistName;
-                            playlist.demandId = storePlaylist.demandId;
-                            playlist.demandTime = storePlaylist.demandTime;
-                            playlist.mediaInterval = storePlaylist.mediaInterval;
-                            playlist.mediaSource = storePlaylist.mediaSource;
-                            playlist.joinedDate = storePlaylist.joinedDate;
-                            playlist.userId = storePlaylist.userId;
+                    public Publisher<List<StoreSong>> apply(String s) throws Exception {
+                        List<StoreSong> storeSongs = new ArrayList<>();
+                        for (StoreSong storeSong : mPlaylist) {
+                            StoreSong playlist = new StoreSong();
+                            playlist.id = storeSong.id;
+                            playlist.mediaName = storeSong.mediaName;
+                            playlist.mediaId = storeSong.mediaId;
+                            playlist.storeId = storeSong.storeId;
+                            playlist.albumId = storeSong.albumId;
+                            playlist.albumName = storeSong.albumName;
+                            playlist.artistId = storeSong.artistId;
+                            playlist.artistName = storeSong.artistName;
+                            playlist.demandId = storeSong.demandId;
+                            playlist.demandTime = storeSong.demandTime;
+                            playlist.mediaInterval = storeSong.mediaInterval;
+                            playlist.mediaSource = storeSong.mediaSource;
+                            playlist.joinedDate = storeSong.joinedDate;
+                            playlist.userId = storeSong.userId;
 
-                            if (TextUtils.equals(s, storePlaylist.id)) {
+                            if (TextUtils.equals(s, storeSong.id)) {
                                 playlist.isPlaying = true;
 
-                                mNowPlaying = storePlaylist;
+                                mNowPlaying = storeSong;
                             } else {
                                 playlist.isPlaying = false;
                             }
 
-                            storePlaylists.add(playlist);
+                            storeSongs.add(playlist);
                         }
-                        return Flowable.just(storePlaylists);
+                        return Flowable.just(storeSongs);
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<StorePlaylist>>() {
+                .subscribeWith(new DisposableSubscriber<List<StoreSong>>() {
                     @Override
-                    public void onNext(List<StorePlaylist> storePlaylists) {
+                    public void onNext(List<StoreSong> storePlaylists) {
                         if (mView.isActive()) {
                             mView.showNowPlaying(mNowPlaying);
                             mView.showPlaylist(storePlaylists);
@@ -325,17 +324,17 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     public void loadStorePlaylist() {
         String storeId = mRepository.getStoreId();
         mRepository.getStorePlaylist(storeId)
-                .map(new Function<ApiResponse<List<StorePlaylist>>, List<StorePlaylist>>() {
+                .map(new Function<ApiResponse<List<StoreSong>>, List<StoreSong>>() {
                     @Override
-                    public List<StorePlaylist> apply(ApiResponse<List<StorePlaylist>> listApiResponse) throws Exception {
+                    public List<StoreSong> apply(ApiResponse<List<StoreSong>> listApiResponse) throws Exception {
                         return listApiResponse.data;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<StorePlaylist>>() {
+                .subscribeWith(new DisposableSubscriber<List<StoreSong>>() {
                     @Override
-                    public void onNext(List<StorePlaylist> storePlaylists) {
+                    public void onNext(List<StoreSong> storePlaylists) {
                         mPlaylist = storePlaylists;
                     }
 
@@ -390,20 +389,25 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void deleteSongFromPlaylist(TencentMusic tencentMusic) {
-        String id = tencentMusic.mediaId;
+    public void deleteStoreSong(StoreSong storeSong) {
+        String id = storeSong.id;
+
         mRepository.deleteSongFromPlaylist(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
-
+                        if (baseResponse.resultCode == 0) {
+                            LogUtils.i(TAG, "deleteStoreSong completed");
+                            unSubscribe();
+                            subscribe();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "deleteSongFromPlaylist error : " + t.getMessage());
+                        LogUtils.e(TAG, "deleteStoreSong error : " + t.getMessage());
                     }
 
                     @Override

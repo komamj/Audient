@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
-import com.xinshang.store.data.entities.StorePlaylist;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.helper.GlideApp;
@@ -142,9 +142,9 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
             }
 
             @Override
-            public void onDeleteMenuClick(TencentMusic tencentMusic) {
+            public void onDeleteMenuClick(StoreSong storeSong) {
                 if (mPresenter != null) {
-                    mPresenter.deleteSongFromPlaylist(tencentMusic);
+                    mPresenter.deleteStoreSong(storeSong);
                 }
             }
         });
@@ -215,7 +215,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showNowPlaying(StorePlaylist storePlaylist) {
+    public void showNowPlaying(StoreSong storePlaylist) {
         GlideApp.with(this)
                 .asBitmap()
                 .circleCrop()
@@ -228,7 +228,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showPlaylist(List<StorePlaylist> storePlaylists) {
+    public void showPlaylist(List<StoreSong> storePlaylists) {
         mAdapter.replace(storePlaylists);
 
         for (int i = 0; i < storePlaylists.size(); i++) {

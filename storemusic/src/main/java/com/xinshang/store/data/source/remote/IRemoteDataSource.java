@@ -13,7 +13,7 @@ import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
-import com.xinshang.store.data.entities.StorePlaylist;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
@@ -69,7 +69,7 @@ public interface IRemoteDataSource {
 
     Flowable<BaseResponse> addAllToPlaylist(String storeId, String favoritesId);
 
-    Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(String storeId);
+    Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(String storeId);
 
     Flowable<ApiResponse<List<Store>>> getStoreInfo();
 }

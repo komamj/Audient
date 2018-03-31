@@ -17,7 +17,7 @@ package com.xinshang.store.playlist;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.StorePlaylist;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.TencentMusic;
 
 import java.util.List;
@@ -38,9 +38,9 @@ public interface PlaylistContract {
 
         void setLoadingIndicator(boolean isActive);
 
-        void showNowPlaying(StorePlaylist storePlaylist);
+        void showNowPlaying(StoreSong storePlaylist);
 
-        void showPlaylist(List<StorePlaylist> storePlaylists);
+        void showPlaylist(List<StoreSong> storePlaylists);
 
         void updatePlayIcon(boolean isPlaying);
     }
@@ -60,6 +60,6 @@ public interface PlaylistContract {
 
         boolean isPlaying();
 
-        void deleteSongFromPlaylist(TencentMusic tencentMusic);
+        void deleteStoreSong(StoreSong storeSong);
     }
 }

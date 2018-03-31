@@ -34,7 +34,7 @@ import com.xinshang.store.R;
 import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
 import com.xinshang.store.comment.CommentActivity;
-import com.xinshang.store.data.entities.StorePlaylist;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
@@ -45,7 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.PlaylistViewHolder> {
+public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.PlaylistViewHolder> {
     private static final String TAG = PlaylistAdapter.class.getSimpleName();
 
     private final GlideRequest<Bitmap> mGlideRequest;
@@ -63,17 +63,17 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
     }
 
     @Override
-    protected boolean areItemsTheSame(StorePlaylist oldItem, StorePlaylist newItem) {
+    protected boolean areItemsTheSame(StoreSong oldItem, StoreSong newItem) {
         return TextUtils.equals(oldItem.id, newItem.id);
     }
 
     @Override
-    protected boolean areContentsTheSame(StorePlaylist oldItem, StorePlaylist newItem) {
+    protected boolean areContentsTheSame(StoreSong oldItem, StoreSong newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(StorePlaylist oldItem, StorePlaylist newItem) {
+    protected Object getChangePayload(StoreSong oldItem, StoreSong newItem) {
         if (oldItem.isPlaying != newItem.isPlaying) {
             return Constants.PAYLOAD_PLAYING;
         } else {
@@ -108,7 +108,7 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
 
     @Override
     public void onBindViewHolder(PlaylistViewHolder holder, int position) {
-        StorePlaylist storePlaylist = mData.get(position);
+        StoreSong storePlaylist = mData.get(position);
 
         mGlideRequest.load(storePlaylist).into(holder.mAlbum);
 
@@ -124,7 +124,7 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
     public interface EventListener {
         void onFavoriteMenuClick(TencentMusic audient);
 
-        void onDeleteMenuClick(TencentMusic tencentMusic);
+        void onDeleteMenuClick(StoreSong storeSong);
     }
 
     class PlaylistViewHolder extends BaseViewHolder {
@@ -146,15 +146,15 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    StorePlaylist storePlaylist = mData.get(getAdapterPosition());
+                    StoreSong storeSong = mData.get(getAdapterPosition());
                     TencentMusic tencentMusic = new TencentMusic();
-                    tencentMusic.duration = Long.parseLong(storePlaylist.mediaInterval);
-                    tencentMusic.albumId= storePlaylist.albumId;
-                    tencentMusic.artistId= storePlaylist.artistId;
-                    tencentMusic.albumName= storePlaylist.albumName;
-                    tencentMusic.artistName= storePlaylist.artistName;
-                    tencentMusic.mediaId= storePlaylist.mediaId;
-                    tencentMusic.mediaName = storePlaylist.mediaName;
+                    tencentMusic.duration = Long.parseLong(storeSong.mediaInterval);
+                    tencentMusic.albumId = storeSong.albumId;
+                    tencentMusic.artistId = storeSong.artistId;
+                    tencentMusic.albumName = storeSong.albumName;
+                    tencentMusic.artistName = storeSong.artistName;
+                    tencentMusic.mediaId = storeSong.mediaId;
+                    tencentMusic.mediaName = storeSong.mediaName;
 
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
@@ -169,7 +169,7 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
                             break;
                         case R.id.action_delete:
                             if (mListener != null) {
-                                mListener.onDeleteMenuClick(tencentMusic);
+                                mListener.onDeleteMenuClick(storeSong);
                             }
                             break;
                         default:

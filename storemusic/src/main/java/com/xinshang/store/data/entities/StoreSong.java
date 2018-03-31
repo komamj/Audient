@@ -26,7 +26,7 @@ import java.util.Arrays;
  * Created by koma_20 on 2018/3/17.
  */
 
-public class StorePlaylist {
+public class StoreSong {
     @SerializedName("id")
     public String id;
     @SerializedName("storeId")
@@ -85,7 +85,7 @@ public class StorePlaylist {
             return false;
         }
 
-        StorePlaylist storePlaylist = (StorePlaylist) o;
+        StoreSong storePlaylist = (StoreSong) o;
 
         return TextUtils.equals(this.id, storePlaylist.id)
                 && TextUtils.equals(this.storeId, storePlaylist.storeId)

@@ -29,7 +29,7 @@ import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
-import com.xinshang.store.data.entities.StorePlaylist;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
@@ -151,7 +151,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<ApiResponse<List<StorePlaylist>>> getStorePlaylist(String storeId) {
+    public Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(String storeId) {
         return mAudientApi.getStorePlaylist(storeId);
     }
 
