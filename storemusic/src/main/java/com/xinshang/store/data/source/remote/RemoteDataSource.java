@@ -18,7 +18,7 @@ package com.xinshang.store.data.source.remote;
 import com.xinshang.store.data.AudientApi;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.CommentResult;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
@@ -32,8 +32,8 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
+import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.data.entities.ToplistDetailResult;
-import com.xinshang.store.data.entities.ToplistResult;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.utils.Constants;
 
@@ -68,7 +68,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopList() {
+    public Flowable<ApiResponse<List<ToplistDataBean>>> getToplists() {
         return mAudientApi.getToplists();
     }
 
@@ -120,8 +120,8 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<CommentResult> getCommentResult(String id, int page, int count, String sortord) {
-        return mAudientApi.getComments(id, page, count, sortord);
+    public Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page, int size) {
+        return mAudientApi.getComments(mid, sortord, storeId, page, size);
     }
 
     @Override
@@ -138,6 +138,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<BaseResponse> addToPlaylist(Music music) {
         return mAudientApi.addToPlaylist(music);
+    }
+
+    @Override
+    public Flowable<BaseResponse> deleteSongFromPlaylist(String id) {
+        return mAudientApi.deleteSongFromPlaylist(id);
     }
 
     @Override

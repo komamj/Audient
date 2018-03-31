@@ -56,12 +56,10 @@ public interface PlaylistContract {
 
         void next();
 
-        void thumbUpSong(TencentMusic audient);
-
         void sendCommand(String command);
 
         boolean isPlaying();
 
-        void onCommandResponse(String message);
+        void deleteSongFromPlaylist(TencentMusic tencentMusic);
     }
 }

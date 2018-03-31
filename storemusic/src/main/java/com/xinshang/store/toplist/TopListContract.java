@@ -17,12 +17,14 @@ package com.xinshang.store.toplist;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.ToplistResult;
+import com.xinshang.store.data.entities.Toplist;
 
 import java.util.List;
 
 public interface TopListContract {
     interface View extends BaseView<Presenter> {
+        void showEmpty(boolean forceShow);
+
         boolean isActive();
 
         void setLoadingIndictor(boolean isActive);
@@ -31,9 +33,7 @@ public interface TopListContract {
 
         void showLoadingError();
 
-        void showEmpty(boolean forceShow);
-
-        void showTopLists(List<ToplistResult.TopList> topLists);
+        void showTopLists(List<Toplist> topLists);
     }
 
     interface Presenter extends BasePresenter {

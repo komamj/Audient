@@ -24,8 +24,8 @@ import android.util.AttributeSet;
  */
 
 public class ControlImageView extends AppCompatImageView {
-    private static final float ACTIVE_ALPHA = 0.54f;
-    private static final float INACTIVE_ALPHA = 0.4f;
+    private static final float ACTIVE_ALPHA = 1.0f;
+    private static final float INACTIVE_ALPHA = 0.54f;
 
     public ControlImageView(Context context) {
         this(context, null);
@@ -46,6 +46,7 @@ public class ControlImageView extends AppCompatImageView {
         } else {
             setAlpha(INACTIVE_ALPHA);
         }
+
         super.setEnabled(enabled);
     }
 }

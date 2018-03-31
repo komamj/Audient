@@ -53,6 +53,8 @@
     <!--Comment-->
     <string name="comment_label">"评论"</string>
     <string name="no_comment">"还没有评论"</string>
+    <string name="store_comment_description">"店内评论："</string>
+    <string name="all_comment_description">"所有评论："</string>
 
     <!--Audition-->
     <string name="audition_title">"试听"</string>

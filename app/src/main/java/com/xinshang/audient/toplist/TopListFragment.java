@@ -163,6 +163,11 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     }
 
     @Override
+    public void showEmpty(boolean forceShow) {
+        LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
+    }
+
+    @Override
     public void showTopLists(List<Toplist> topLists) {
         mIsLoaded = true;
 

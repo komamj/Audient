@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.ApiResponse;
+import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommandRequest;
 import com.xinshang.store.data.entities.CommandResponse;
 import com.xinshang.store.data.entities.StorePlaylist;
@@ -374,11 +375,6 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void thumbUpSong(TencentMusic audient) {
-        LogUtils.i(TAG, "thumbUp");
-    }
-
-    @Override
     public void sendCommand(String command) {
         CommandRequest commandRequest = new CommandRequest();
         commandRequest.action = command;
@@ -394,7 +390,26 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void onCommandResponse(String message) {
+    public void deleteSongFromPlaylist(TencentMusic tencentMusic) {
+        String id = tencentMusic.mediaId;
+        mRepository.deleteSongFromPlaylist(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "deleteSongFromPlaylist error : " + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

@@ -52,7 +52,7 @@ public interface IRemoteDataSource {
 
     Flowable<ApiResponse<Store>> getStoreInfo(String storeId);
 
-    Flowable<ApiResponse<List<ToplistDataBean>>> getTopList();
+    Flowable<ApiResponse<List<ToplistDataBean>>> getToplists();
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int size);
 

@@ -82,8 +82,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<ApiResponse<List<ToplistDataBean>>> getTopList() {
-        return mRemoteDataSource.getTopList();
+    public Flowable<ApiResponse<List<ToplistDataBean>>> getToplists() {
+        return mRemoteDataSource.getToplists();
     }
 
     @Override

@@ -17,7 +17,7 @@ package com.xinshang.store.data;
 
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.CommentResult;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
@@ -31,8 +31,8 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
+import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.data.entities.ToplistDetailResult;
-import com.xinshang.store.data.entities.ToplistResult;
 
 import java.util.List;
 
@@ -52,14 +52,14 @@ public interface AudientApi {
      * 获取榜单列表.
      */
     @GET("api/v1/openmusic/toplist")
-    Flowable<List<ToplistResult>> getToplists();
+    Flowable<ApiResponse<List<ToplistDataBean>>> getToplists();
 
     /**
      * 获取榜单详情
      */
     @GET("api/v1/openmusic/toplist/{id}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") int topId,
-                                                   @Query("date") String updateKey,
+    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") long topId,
+                                                   @Query("k") String updateKey,
                                                    @Query("p") int page,
                                                    @Query("n") int pageCount);
 
@@ -166,9 +166,9 @@ public interface AudientApi {
      * 获取评论列表
      */
     @GET("api/v1/musiccomment")
-    Flowable<CommentResult> getComments(@Query("mid") String mid,
-                                        @Query("page") int page, @Query("size") int size,
-                                        @Query("sort") String sortord);
+    Flowable<ApiResponse<CommentDataBean>> getComments(@Query("mid") String mid, @Query("sort") String sortord,
+                                                       @Query("sid") String storeId, @Query("page") int page,
+                                                       @Query("size") int size);
 
     /**
      * 获取店铺的默认播放列表
@@ -180,7 +180,7 @@ public interface AudientApi {
      * 移除播放列表
      */
     @DELETE("api/v1/storeplaylist/{id}")
-    Flowable<BaseResponse> deleteSongFormPlaylist(@Path("id") String id);
+    Flowable<BaseResponse> deleteSongFromPlaylist(@Path("id") String id);
 
     /**
      * 点播歌曲

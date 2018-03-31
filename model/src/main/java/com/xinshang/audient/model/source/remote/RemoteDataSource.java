@@ -87,7 +87,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<ApiResponse<List<ToplistDataBean>>> getTopList() {
+    public Flowable<ApiResponse<List<ToplistDataBean>>> getToplists() {
         return mAudientApi.getTopLists();
     }
 

@@ -9,7 +9,7 @@
         android:id="@+id/card_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:cardCornerRadius="@dimen/nav_header_vertical_spacing"
+        app:cardCornerRadius="6dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintDimensionRatio="w,1:2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,10 +18,10 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/nav_header_vertical_spacing"
             android:layout_height="match_parent"
-            android:paddingStart="@dimen/nav_header_vertical_spacing"
+            android:paddingBottom="@dimen/nav_header_vertical_spacing"
             android:paddingEnd="@dimen/nav_header_vertical_spacing"
+            android:paddingStart="@dimen/nav_header_vertical_spacing"
             android:paddingTop="@dimen/nav_header_vertical_spacing">
 
             <ImageView
@@ -38,8 +38,9 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/song_info"
                 android:layout_width="0dp"
-                android:paddingStart="@dimen/nav_header_vertical_spacing"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
+                android:layout_marginStart="@dimen/nav_header_vertical_spacing"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_album"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_album"
@@ -81,9 +82,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            app:elevation="@dimen/nav_header_vertical_spacing"
+            app:pressedTranslationZ="@dimen/activity_vertical_margin"
             android:tint="@android:color/white"
-            app:borderWidth="0dp"
             app:fabSize="mini"
+            app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_queue" />
 
     </android.support.v7.widget.CardView>

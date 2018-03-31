@@ -16,6 +16,7 @@
 package com.xinshang.store.comment;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.xinshang.store.R;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.Comment;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.MessageEvent;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
@@ -96,6 +98,8 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
                 R.color.colorPrimary);
 
+        setLoadingIncator(true);
+
         mAdapter = new CommentAdapter(mContext);
 
         mRecyclerView.setHasFixedSize(true);
@@ -163,13 +167,31 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     }
 
     @Override
+    public void showCommentDataBean(CommentDataBean commentDataBean) {
+        mAdapter.setCommentDataBean(commentDataBean);
+    }
+
+    @Override
     public boolean isActive() {
         return this.isAdded();
     }
 
     @Override
-    public void showLoadingError() {
+    public void showSuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
 
+    @Override
+    public void showLoadingError() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override
@@ -182,7 +204,7 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
     }
 
     @Override
-    public void showProgressBar(boolean forceShow) {
+    public void setLoadingIncator(boolean forceShow) {
         mSwipeRefreshLayout.setRefreshing(forceShow);
     }
 }

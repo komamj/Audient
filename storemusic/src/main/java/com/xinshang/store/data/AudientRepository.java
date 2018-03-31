@@ -18,7 +18,7 @@ package com.xinshang.store.data;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommandResponse;
-import com.xinshang.store.data.entities.CommentResult;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
@@ -32,8 +32,8 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
+import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.data.entities.ToplistDetailResult;
-import com.xinshang.store.data.entities.ToplistResult;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.data.source.local.ILocalDataSource;
 import com.xinshang.store.data.source.local.LocalDataSource;
@@ -72,8 +72,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<List<ToplistResult>> getTopList() {
-        return mRemoteDataSource.getTopList();
+    public Flowable<ApiResponse<List<ToplistDataBean>>> getToplists() {
+        return mRemoteDataSource.getToplists();
     }
 
     @Override
@@ -107,8 +107,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<CommentResult> getCommentResult(String id, int page, int count, String sortord) {
-        return mRemoteDataSource.getCommentResult(id, page, count, sortord);
+    public Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page, int size) {
+        return mRemoteDataSource.getComments(mid, sortord, storeId, page, size);
     }
 
     @Override
@@ -124,6 +124,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<BaseResponse> addToPlaylist(Music music) {
         return mRemoteDataSource.addToPlaylist(music);
+    }
+
+    @Override
+    public Flowable<BaseResponse> deleteSongFromPlaylist(String id) {
+        return mRemoteDataSource.deleteSongFromPlaylist(id);
     }
 
     @Override

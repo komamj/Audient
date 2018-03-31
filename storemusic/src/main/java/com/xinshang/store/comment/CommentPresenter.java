@@ -15,13 +15,14 @@
  */
 package com.xinshang.store.comment;
 
-
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.Comment;
-import com.xinshang.store.data.entities.CommentResult;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -68,21 +70,48 @@ public class CommentPresenter implements CommentContract.Presenter {
 
     @Override
     public void loadComments(TencentMusic audient) {
-        Disposable disposable = mRepository.getCommentResult(audient.mediaId, 0, 40, null)
-                .map(new Function<CommentResult, List<Comment>>() {
+        String storeId = mRepository.getStoreId();
+
+        Disposable disposable = mRepository.getComments(audient.mediaId, null, storeId,
+                0, 300)
+                .map(new Function<ApiResponse<CommentDataBean>, CommentDataBean>() {
                     @Override
-                    public List<Comment> apply(CommentResult commentResult) throws Exception {
-                        return commentResult.commentResponse.othersComment.comments;
+                    public CommentDataBean apply(ApiResponse<CommentDataBean> commentDataBeanApiResponse) throws Exception {
+                        return commentDataBeanApiResponse.data;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<CommentDataBean>() {
+                    @Override
+                    public void accept(CommentDataBean commentDataBean) throws Exception {
+                        if (mView.isActive()) {
+                            mView.showCommentDataBean(commentDataBean);
+                            if ((commentDataBean.othersComment.comments.isEmpty())) {
+                                mView.showEmpty(true);
+                            } else {
+                                mView.showEmpty(false);
+                            }
+                        }
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .map(new Function<CommentDataBean, List<Comment>>() {
+                    @Override
+                    public List<Comment> apply(CommentDataBean commentDataBean) throws Exception {
+                        List<Comment> comments = new ArrayList<>();
+                        comments.addAll(commentDataBean.inStoreComment.comments);
+                        comments.addAll(commentDataBean.othersComment.comments);
+                        return comments;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Comment>>() {
+
                     @Override
                     public void onNext(List<Comment> comments) {
                         if (mView.isActive()) {
                             mView.showComments(comments);
-                            mView.showEmpty(comments.isEmpty());
                         }
                     }
 
@@ -91,15 +120,17 @@ public class CommentPresenter implements CommentContract.Presenter {
                         LogUtils.e(TAG, "loadComments error :" + t.toString());
 
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIncator(false);
                             mView.showEmpty(true);
+                            mView.showLoadingError();
                         }
                     }
 
                     @Override
                     public void onComplete() {
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIncator(false);
+                            mView.showSuccessfulMessage();
                         }
                     }
                 });

@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_thumb_up_count"
         app:layout_constraintTop_toTopOf="@+id/iv_user"
-        app:srcCompat="@drawable/ic_thumb_up_inactive" />
+        app:srcCompat="@drawable/ic_thumb_up" />
 
     <TextView
         android:id="@+id/tv_comment"

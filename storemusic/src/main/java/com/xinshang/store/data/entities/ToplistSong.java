@@ -17,7 +17,13 @@ package com.xinshang.store.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CommentResult {
-    @SerializedName("data")
-    public CommentResponse commentResponse;
+/**
+ * Created by koma on 3/28/18.
+ */
+
+public class ToplistSong {
+    @SerializedName("mediaName")
+    public String songName;
+    @SerializedName("artistName")
+    public String artistName;
 }

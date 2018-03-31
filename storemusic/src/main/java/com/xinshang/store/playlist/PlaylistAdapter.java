@@ -123,6 +123,8 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
 
     public interface EventListener {
         void onFavoriteMenuClick(TencentMusic audient);
+
+        void onDeleteMenuClick(TencentMusic tencentMusic);
     }
 
     class PlaylistViewHolder extends BaseViewHolder {
@@ -140,7 +142,7 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
         @OnClick(R.id.iv_more)
         void showPopupMenu(View view) {
             PopupMenu popupMenu = new PopupMenu(mContext, view);
-            popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.playlist_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -164,6 +166,13 @@ public class PlaylistAdapter extends BaseAdapter<StorePlaylist, PlaylistAdapter.
                             Intent intent = new Intent(mContext, CommentActivity.class);
                             intent.putExtra(Constants.KEY_AUDIENT, tencentMusic);
                             mContext.startActivity(intent);
+                            break;
+                        case R.id.action_delete:
+                            if (mListener != null) {
+                                mListener.onDeleteMenuClick(tencentMusic);
+                            }
+                            break;
+                        default:
                             break;
                     }
                     return true;

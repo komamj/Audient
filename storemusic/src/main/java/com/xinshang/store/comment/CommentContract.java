@@ -18,6 +18,7 @@ package com.xinshang.store.comment;
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
 import com.xinshang.store.data.entities.Comment;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.TencentMusic;
 
 import java.util.List;
@@ -26,13 +27,17 @@ public interface CommentContract {
     interface View extends BaseView<Presenter> {
         void showComments(List<Comment> comments);
 
+        void showCommentDataBean(CommentDataBean commentDataBean);
+
         boolean isActive();
 
         void showLoadingError();
 
+        void showSuccessfulMessage();
+
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIncator(boolean isActive);
     }
 
     interface Presenter extends BasePresenter {

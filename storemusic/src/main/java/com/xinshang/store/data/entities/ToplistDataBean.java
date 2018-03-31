@@ -13,30 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.toplist;
+package com.xinshang.store.data.entities;
 
-import com.xinshang.audient.model.entities.Toplist;
-import com.xinshang.common.base.BasePresenter;
-import com.xinshang.common.base.BaseView;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public interface TopListContract {
-    interface View extends BaseView<Presenter> {
-        boolean isActive();
-
-        void setLoadingIndictor(boolean isActive);
-
-        void showSuccessfulMessage();
-
-        void showLoadingError();
-
-        void showEmpty(boolean forceShow);
-
-        void showTopLists(List<Toplist> topLists);
-    }
-
-    interface Presenter extends BasePresenter {
-        void loadTopList();
-    }
+public class ToplistDataBean {
+    @SerializedName("id")
+    public long id;
+    @SerializedName("items")
+    public List<Toplist> topLists;
+    @SerializedName("name")
+    public String name;
+    @SerializedName("title")
+    public String title;
 }

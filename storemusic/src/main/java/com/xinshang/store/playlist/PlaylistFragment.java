@@ -140,6 +140,13 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 intent.putExtra(Constants.KEY_AUDIENT, audient);
                 mContext.startActivity(intent);
             }
+
+            @Override
+            public void onDeleteMenuClick(TencentMusic tencentMusic) {
+                if (mPresenter != null) {
+                    mPresenter.deleteSongFromPlaylist(tencentMusic);
+                }
+            }
         });
 
         mRecyclerView.setHasFixedSize(true);

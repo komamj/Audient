@@ -16,9 +16,13 @@
 package com.xinshang.store.toplist;
 
 import com.xinshang.store.data.AudientRepository;
-import com.xinshang.store.data.entities.ToplistResult;
+import com.xinshang.store.data.entities.ApiResponse;
+import com.xinshang.store.data.entities.Toplist;
+import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.utils.LogUtils;
 
+import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,31 +73,59 @@ public class TopListPresenter implements TopListContract.Presenter {
 
     @Override
     public void loadTopList() {
-        Disposable disposable = mRepository.getTopList()
-                .map(new Function<List<ToplistResult>, List<ToplistResult.TopList>>() {
+        mDisposables.clear();
+
+        if (mView.isActive()) {
+            mView.setLoadingIndictor(true);
+        }
+
+        Disposable disposable = mRepository.getToplists()
+                .map(new Function<ApiResponse<List<ToplistDataBean>>, List<ToplistDataBean>>() {
                     @Override
-                    public List<ToplistResult.TopList> apply(List<ToplistResult> topListResults) throws Exception {
-                        return topListResults.get(0).topLists;
+                    public List<ToplistDataBean> apply(ApiResponse<List<ToplistDataBean>> listApiResponse) throws Exception {
+                        return listApiResponse.data;
+                    }
+                })
+                .map(new Function<List<ToplistDataBean>, List<Toplist>>() {
+                    @Override
+                    public List<Toplist> apply(List<ToplistDataBean> toplistDataBeans) throws Exception {
+                        List<Toplist> topLists = new ArrayList<>();
+
+                        for (ToplistDataBean toplistDataBean : toplistDataBeans) {
+                            topLists.addAll(toplistDataBean.topLists);
+                        }
+
+                        return topLists;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<ToplistResult.TopList>>() {
+                .subscribeWith(new DisposableSubscriber<List<Toplist>>() {
                     @Override
-                    public void onNext(List<ToplistResult.TopList> topLists) {
-                        if (mView != null) {
+                    public void onNext(List<Toplist> topLists) {
+                        if (mView.isActive()) {
                             mView.showTopLists(topLists);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.i(TAG, "loadTopList error :" + t.toString());
+                        if (t instanceof ConnectException) {
+                            LogUtils.e(TAG, "loadTopList connect error :");
+                        }
+                        LogUtils.e(TAG, "loadTopList error :" + t.toString());
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
+                            mView.showLoadingError();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
+                            mView.showSuccessfulMessage();
+                        }
                     }
                 });
 

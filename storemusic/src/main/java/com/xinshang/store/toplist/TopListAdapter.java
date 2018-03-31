@@ -30,14 +30,15 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.store.R;
 import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
-import com.xinshang.store.data.entities.ToplistResult;
+import com.xinshang.store.data.entities.Toplist;
+import com.xinshang.store.data.entities.ToplistSong;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
 import com.xinshang.store.utils.Constants;
 
 import butterknife.BindView;
 
-public class TopListAdapter extends BaseAdapter<ToplistResult.TopList, TopListAdapter.TopListViewHolder> {
+public class TopListAdapter extends BaseAdapter<Toplist, TopListAdapter.TopListViewHolder> {
     private final GlideRequest<Bitmap> mGlideRequest;
 
     public TopListAdapter(Context context) {
@@ -51,17 +52,17 @@ public class TopListAdapter extends BaseAdapter<ToplistResult.TopList, TopListAd
     }
 
     @Override
-    protected boolean areItemsTheSame(ToplistResult.TopList oldItem, ToplistResult.TopList newItem) {
-        return oldItem.topId == newItem.topId;
+    protected boolean areItemsTheSame(Toplist oldItem, Toplist newItem) {
+        return oldItem.id == newItem.id;
     }
 
     @Override
-    protected boolean areContentsTheSame(ToplistResult.TopList oldItem, ToplistResult.TopList newItem) {
+    protected boolean areContentsTheSame(Toplist oldItem, Toplist newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(ToplistResult.TopList oldItem, ToplistResult.TopList newItem) {
+    protected Object getChangePayload(Toplist oldItem, Toplist newItem) {
         return null;
     }
 
@@ -74,18 +75,18 @@ public class TopListAdapter extends BaseAdapter<ToplistResult.TopList, TopListAd
 
     @Override
     public void onBindViewHolder(TopListViewHolder holder, int position) {
-        ToplistResult.TopList topList = mData.get(position);
-        mGlideRequest.load(topList.picUrl).into(holder.mAlbum);
-        holder.mFirstSong.setText(buildString(topList.songBeans.get(0)));
-        holder.mSecondSong.setText(buildString(topList.songBeans.get(1)));
-        holder.mThirdSong.setText(buildString(topList.songBeans.get(2)));
+        Toplist topList = mData.get(position);
+        mGlideRequest.load(topList.coverImage).into(holder.mAlbum);
+        holder.mFirstSong.setText(buildString(topList.toplistSongs.get(0)));
+        holder.mSecondSong.setText(buildString(topList.toplistSongs.get(1)));
+        holder.mThirdSong.setText(buildString(topList.toplistSongs.get(2)));
     }
 
-    private String buildString(ToplistResult.TopList.SongBean songBean) {
+    private String buildString(ToplistSong songBean) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(songBean.musicName);
+        stringBuilder.append(songBean.songName);
         stringBuilder.append(" - ");
-        stringBuilder.append(songBean.actorName);
+        stringBuilder.append(songBean.artistName);
 
         return stringBuilder.toString();
     }
@@ -114,12 +115,12 @@ public class TopListAdapter extends BaseAdapter<ToplistResult.TopList, TopListAd
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            ToplistResult.TopList topList = mData.get(position);
+            Toplist topList = mData.get(position);
             Intent intent = new Intent(mContext, TopListDetailActivity.class);
-            intent.putExtra(Constants.KEY_TOP_ID, topList.topId);
-            intent.putExtra(Constants.KEY_top_list_name, topList.listName);
-            intent.putExtra(Constants.KEY_UPDATE, topList.updateKey);
-            intent.putExtra(Constants.KEY_PIC_URL, topList.picUrl);
+            intent.putExtra(Constants.KEY_TOP_ID, topList.id);
+            intent.putExtra(Constants.KEY_top_list_name, topList.name);
+            intent.putExtra(Constants.KEY_UPDATE, topList.key);
+            intent.putExtra(Constants.KEY_PIC_URL, topList.coverImage);
             mContext.startActivity(intent);
         }
     }

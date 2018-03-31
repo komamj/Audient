@@ -25,7 +25,7 @@ import android.view.View;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
-import com.xinshang.store.data.entities.ToplistResult;
+import com.xinshang.store.data.entities.Toplist;
 import com.xinshang.store.main.MainActivity;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
@@ -168,16 +168,14 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     }
 
     @Override
-    public void showEmpty(boolean forceShow) {
-        LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
+    public void showTopLists(List<Toplist> topLists) {
+        mIsLoaded = true;
+
+        mAdapter.replace(topLists);
     }
 
     @Override
-    public void showTopLists(List<ToplistResult.TopList> topLists) {
-        mIsLoaded = true;
-
-        mSwipeRefreshLayout.setRefreshing(false);
-
-        mAdapter.replace(topLists);
+    public void showEmpty(boolean forceShow) {
+        LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
     }
 }

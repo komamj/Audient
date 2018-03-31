@@ -2,7 +2,7 @@ package com.xinshang.store.data.source.remote;
 
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
-import com.xinshang.store.data.entities.CommentResult;
+import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.FileResult;
@@ -16,8 +16,8 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StorePlaylist;
 import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
+import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.data.entities.ToplistDetailResult;
-import com.xinshang.store.data.entities.ToplistResult;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import io.reactivex.Flowable;
 public interface IRemoteDataSource {
     Flowable<StoreKeeperResponse> getStoreKeeperInfo();
 
-    Flowable<List<ToplistResult>> getTopList();
+    Flowable<ApiResponse<List<ToplistDataBean>>> getToplists();
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count);
 
@@ -44,7 +44,8 @@ public interface IRemoteDataSource {
 
     Flowable<NowPlayingResponse> getNowPlaying(String storeId);
 
-    Flowable<CommentResult> getCommentResult(String id, int page, int count, String sortord);
+    Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page,
+                                                       int size);
 
     Flowable<BaseResponse> addToFavorite(String favoriteId, TencentMusic audient);
 
@@ -63,6 +64,8 @@ public interface IRemoteDataSource {
     Flowable<Token> getToken(String userName, String password);
 
     Flowable<BaseResponse> addToPlaylist(Music music);
+
+    Flowable<BaseResponse> deleteSongFromPlaylist(String id);
 
     Flowable<BaseResponse> addAllToPlaylist(String storeId, String favoritesId);
 

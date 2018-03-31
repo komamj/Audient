@@ -79,7 +79,7 @@ public class TopListPresenter implements TopListContract.Presenter {
             mView.setLoadingIndictor(true);
         }
 
-        Disposable disposable = mRepository.getTopList()
+        Disposable disposable = mRepository.getToplists()
                 .map(new Function<ApiResponse<List<ToplistDataBean>>, List<ToplistDataBean>>() {
                     @Override
                     public List<ToplistDataBean> apply(ApiResponse<List<ToplistDataBean>> listApiResponse) throws Exception {
@@ -144,8 +144,7 @@ public class TopListPresenter implements TopListContract.Presenter {
                 || name.contains("美国公告牌榜") || name.contains("美国iTunes榜")
                 || name.contains("韩国Mnet榜") || name.contains("英国UK榜")
                 || name.contains("日本公信榜") || name.contains("香港电台榜")
-                || name.contains("香港商台榜")
-                || name.contains("台湾幽浮榜")) {
+                || name.contains("香港商台榜") || name.contains("台湾幽浮榜")) {
             return false;
         }
         return true;
