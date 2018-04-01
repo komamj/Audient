@@ -61,7 +61,7 @@
                 <TextView
                     android:id="@+id/tv_name"
                     style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:maxLines="1"
@@ -82,11 +82,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:elevation="@dimen/nav_header_vertical_spacing"
-            app:pressedTranslationZ="@dimen/activity_vertical_margin"
             android:tint="@android:color/white"
-            app:fabSize="mini"
             app:borderWidth="0dp"
+            app:elevation="@dimen/nav_header_vertical_spacing"
+            app:fabSize="mini"
+            app:pressedTranslationZ="@dimen/activity_vertical_margin"
             app:srcCompat="@drawable/ic_queue" />
 
     </android.support.v7.widget.CardView>

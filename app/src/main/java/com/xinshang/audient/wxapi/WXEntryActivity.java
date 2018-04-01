@@ -36,21 +36,11 @@ import org.greenrobot.eventbus.EventBus;
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private static final String TAG = WXEntryActivity.class.getSimpleName();
 
-    /*@Inject
-    WXEntryPresenter mPresenter;*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
-
-        // inject presenter layer
-        /*DaggerWXEntryComponent.builder().audientRepositoryComponent(
-                ((AudientApplication) getApplication()).getRepositoryComponent())
-                .wXEntryPresenterModule(new WXEntryPresenterModule(fragment))
-                .build()
-                .inject(this);*/
 
         ((AudientApplication) getApplication()).getWXAPI()
                 .handleIntent(getIntent(), this);

@@ -15,35 +15,57 @@
  */
 package com.xinshang.audient.wxapi;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 
-import com.xinshang.audient.R;
-import com.xinshang.common.base.BaseActivity;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.xinshang.audient.AudientApplication;
+import com.xinshang.audient.util.WeChatMessageEvent;
+import com.xinshang.common.util.LogUtils;
 
-import butterknife.BindView;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by koma on 3/5/18.
  */
 
-public class WXPayEntryActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
+    private static final String TAG = WXPayEntryActivity.class.getSimpleName();
 
     @Override
-    protected void onPermissonGranted() {
-        setSupportActionBar(mToolbar);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LogUtils.i(TAG, "onCreate");
+
+        ((AudientApplication) getApplication()).getWXAPI()
+                .handleIntent(getIntent(), this);
     }
 
     @Override
-    public void onNewIntent(Intent newIntent) {
+    protected void onNewIntent(Intent newIntent) {
         super.onNewIntent(newIntent);
+
+        LogUtils.i(TAG, "onNewIntent");
+
         setIntent(newIntent);
+
+        ((AudientApplication) getApplication()).getWXAPI()
+                .handleIntent(getIntent(), this);
     }
 
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_base;
+    public void onReq(BaseReq baseReq) {
+
+    }
+
+    @Override
+    public void onResp(BaseResp response) {
+        LogUtils.i(TAG, "onResp " + response.errCode);
+        EventBus.getDefault().post(new WeChatMessageEvent(response));
+        finish();
     }
 }
