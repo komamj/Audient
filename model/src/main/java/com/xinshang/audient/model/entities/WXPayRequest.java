@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.payment;
-
-import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.common.base.BasePresenter;
-import com.xinshang.common.base.BaseView;
+package com.xinshang.audient.model.entities;
 
 /**
- * Created by koma on 3/1/18.
+ * Created by koma_20 on 2018/4/2.
  */
 
-public interface PaymentContract {
-    interface View extends BaseView<Presenter> {
-    }
-
-    interface Presenter extends BasePresenter {
-        void addToPlaylist(Audient audient);
-
-        void postOrder(Audient audient);
-    }
+public class WXPayRequest {
+    public String storeId;
+    public String clientIP;
+    public String mediaId;
+    public String mediaName;
+    public String mediaInterval;
+    public String artistId;
+    public String artistName;
+    public String albumId;
+    public String albumName;
+    public float price;
+    public int paymentWay;
 }

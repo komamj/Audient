@@ -18,6 +18,7 @@ package com.xinshang.audient.payment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -54,7 +55,7 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
     @OnClick(R.id.btn_confirm)
     void onConfirmClick() {
         if (mPresenter != null) {
-            mPresenter.addToPlaylist(mAudient);
+            mPresenter.postOrder(mAudient);
         }
     }
 
@@ -87,7 +88,7 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_payment, container, false);
         ButterKnife.bind(this, view);
         return view;

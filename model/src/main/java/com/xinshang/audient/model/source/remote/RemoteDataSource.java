@@ -43,6 +43,7 @@ import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.UserResponse;
+import com.xinshang.audient.model.entities.WXPayRequest;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
 
@@ -217,6 +218,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<ApiResponse> sendFeedback(Feedback feedback) {
         return mAudientApi.postFeedback(feedback);
+    }
+
+    @Override
+    public Flowable<BaseResponse> postOrder(WXPayRequest wxPayRequest) {
+        return mAudientApi.postOrder(wxPayRequest);
     }
 
     @Override

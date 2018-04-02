@@ -38,6 +38,7 @@ import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
+import com.xinshang.audient.model.entities.WXPayRequest;
 
 import java.util.List;
 
@@ -267,4 +268,11 @@ public interface AudientApi {
      */
     @POST("api/v1/feedback")
     Flowable<ApiResponse> postFeedback(@Body Feedback feedback);
+
+    /**
+     * 提交订单
+     */
+    @POST("api/v1/modorder/wxpay")
+    Flowable<BaseResponse> postOrder(@Body WXPayRequest wxPayRequest);
+
 }
