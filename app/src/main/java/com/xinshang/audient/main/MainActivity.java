@@ -50,6 +50,7 @@ import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.playlist.PlaylistFragment;
 import com.xinshang.audient.search.SearchActivity;
 import com.xinshang.audient.setting.SettingsActivity;
+import com.xinshang.audient.store.StoresActivity;
 import com.xinshang.audient.toplist.TopListFragment;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.LogUtils;
@@ -61,6 +62,7 @@ import javax.inject.Inject;
 
 import butterknife.BindArray;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements MainContract.View,
         NavigationView.OnNavigationItemSelectedListener {
@@ -78,6 +80,16 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R.id.tv_title)
+    TextView mTitle;
+
+    @OnClick(R.id.tv_title)
+    void launchStoresActivity() {
+        Intent intent = new Intent(this, StoresActivity.class);
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
     TextView mName;
     ImageView mUserImage, mBlurImage;
 
@@ -93,6 +105,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     @Override
     protected void onPermissonGranted() {
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
 
         mToolbar.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +289,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     public void showStoreInfo(Store store) {
         if (store != null) {
-            mToolbar.setSubtitle(store.name);
+            mTitle.setText(store.name);
         }
     }
 

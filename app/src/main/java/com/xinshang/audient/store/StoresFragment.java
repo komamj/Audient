@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.splash;
+package com.xinshang.audient.store;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v7.widget.CardView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xinshang.audient.R;
-import com.xinshang.audient.login.LoginDialogFragment;
 import com.xinshang.audient.main.MainActivity;
 import com.xinshang.audient.model.entities.Store;
-import com.xinshang.audient.store.StoresAdapter;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.LogUtils;
@@ -38,35 +35,31 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Created by koma on 3/5/18.
+ * Created by koma on 4/2/18.
  */
 
-public class SplashFragment extends BaseFragment implements SplashContract.View {
-    private static final String TAG = SplashFragment.class.getSimpleName();
+public class StoresFragment extends BaseFragment implements StoresContract.View {
+    private static final String TAG = StoresFragment.class.getSimpleName();
 
-    @BindView(R.id.progress_bar)
-    ContentLoadingProgressBar mProgressBar;
-    @BindView(R.id.card_view)
-    CardView mCardView;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private StoresAdapter mAdapter;
 
-    private SplashContract.Presenter mPresenter;
+    private StoresContract.Presenter mPresenter;
 
-    public static SplashFragment newInstance() {
-        return new SplashFragment();
+    public static StoresFragment newInstance() {
+        StoresFragment fragment = new StoresFragment();
+        return fragment;
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_splash;
-    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Override
-    public void setPresenter(SplashContract.Presenter presenter) {
-        mPresenter = presenter;
+        LogUtils.i(TAG, "onCreate");
     }
 
     @Override
@@ -75,7 +68,19 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
         LogUtils.i(TAG, "onViewCreated");
 
-        setLoadingIndicator(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadStores();
+                }
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+
+        setLoadingIndicator(true);
 
         mAdapter = new StoresAdapter(mContext);
         mAdapter.setListener(new StoresAdapter.OnItemClickListener() {
@@ -93,6 +98,11 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         if (mPresenter != null) {
             mPresenter.subscribe();
@@ -100,11 +110,22 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
+
         if (mPresenter != null) {
             mPresenter.unSubscribe();
         }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_base;
+    }
+
+    @Override
+    public void setPresenter(StoresContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override
@@ -113,38 +134,11 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     }
 
     @Override
-    public void showMainView() {
-        Intent intent = new Intent(mContext, MainActivity.class);
-        startActivity(intent);
-        SplashActivity activity = (SplashActivity) mContext;
-        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        activity.finish();
-    }
-
-    @Override
-    public void showLoginDialog() {
-        LoginDialogFragment.show(getChildFragmentManager());
-    }
-
-    @Override
-    public void showStoresUI(boolean forceShow) {
-        if (forceShow) {
-            mCardView.setVisibility(View.VISIBLE);
-        } else {
-            mCardView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void showStores(List<Store> stores) {
-        mAdapter.replace(stores);
-    }
-
-    @Override
     public void showSuccessfulMessage() {
         if (getView() == null) {
             return;
         }
+
         Snackbar.make(getView(), R.string.loading_successful_message, Snackbar.LENGTH_SHORT)
                 .show();
     }
@@ -154,16 +148,32 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         if (getView() == null) {
             return;
         }
+
         Snackbar.make(getView(), R.string.loading_error_message, Snackbar.LENGTH_SHORT)
                 .show();
     }
 
     @Override
+    public void showEmpty(boolean forceShow) {
+
+    }
+
+    @Override
     public void setLoadingIndicator(boolean isActive) {
-        if (isActive) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+        mSwipeRefreshLayout.setRefreshing(isActive);
+    }
+
+    @Override
+    public void showStores(List<Store> stores) {
+        mAdapter.replace(stores);
+    }
+
+    @Override
+    public void showMainView() {
+        Intent intent = new Intent(mContext, MainActivity.class);
+        startActivity(intent);
+        StoresActivity activity = (StoresActivity) mContext;
+        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        activity.finish();
     }
 }

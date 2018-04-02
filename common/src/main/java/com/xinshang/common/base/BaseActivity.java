@@ -33,7 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 0;
 
     private static String[] PERMISSONS = {Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @Override
@@ -47,15 +47,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)
                     || ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    || ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_PHONE_STATE)) {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Snackbar.make(getWindow().getDecorView(), R.string.permission_rationale,
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction(android.R.string.ok, new View.OnClickListener() {

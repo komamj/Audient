@@ -13,54 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xinshang.audient.favorite;
+package com.xinshang.audient.store;
 
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
-import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.ActivityUtils;
-import com.xinshang.common.util.Constants;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * Created by koma on 4/2/18.
+ */
 
-public class MyFavoritesActivity extends BaseActivity {
-    private static final String TAG = MyFavoritesActivity.class.getSimpleName();
-
+public class StoresActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Inject
-    MyFavoritesPresenter mPresenter;
+    StoresPresenter mPresenter;
 
     @Override
     protected void onPermissonGranted() {
         setSupportActionBar(mToolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        Audient audient = getIntent().getParcelableExtra(Constants.KEY_AUDIENT);
-
-        MyFavoritesFragment fragment = (MyFavoritesFragment) getSupportFragmentManager()
+        StoresFragment storesFragment = (StoresFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
 
-        if (fragment == null) {
-            fragment = MyFavoritesFragment.newInstance(audient);
+        if (storesFragment == null) {
+            storesFragment = StoresFragment.newInstance();
 
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.content_main);
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), storesFragment,
+                    R.id.content_main);
         }
 
-        // inject presenter
-        DaggerMyFavoritesPresenterComponent.builder()
-                .audientRepositoryComponent(((AudientApplication) getApplication()).getRepositoryComponent())
-                .myFavoritesPresenterModule(new MyFavoritesPresenterModule(fragment))
+        DaggerStoresComponent.builder()
+                .audientRepositoryComponent(
+                        ((AudientApplication) getApplication()).getRepositoryComponent())
+                .storesPresenterModule(new StoresPresenterModule(storesFragment))
                 .build()
                 .inject(this);
     }
@@ -72,7 +72,6 @@ public class MyFavoritesActivity extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
             finish();
         }

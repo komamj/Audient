@@ -35,11 +35,14 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onPermissonGranted() {
-        SplashFragment fragment = (SplashFragment) getSupportFragmentManager().findFragmentById(R.id.content_main);
+        SplashFragment fragment = (SplashFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.content_main);
+
         if (fragment == null) {
             fragment = SplashFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.content_main);
         }
+
         DaggerSplashComponent.builder()
                 .audientRepositoryComponent(
                         ((AudientApplication) getApplication()).getRepositoryComponent())
