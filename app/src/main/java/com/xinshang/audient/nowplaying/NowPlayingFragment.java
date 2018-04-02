@@ -20,10 +20,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xinshang.audient.R;
@@ -44,12 +42,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
 
     @BindView(R.id.iv_album)
     ImageView mAlbum;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgress;
-    @BindView(R.id.tv_current)
-    TextView mCurrent;
-    @BindView(R.id.tv_duration)
-    TextView mDuration;
     @BindView(R.id.tv_name)
     TextView mMusicName;
     @BindView(R.id.tv_singer_name)
@@ -194,7 +186,6 @@ public class NowPlayingFragment extends BaseFragment implements NowPlayingContra
                 .load(audient)
                 .into(mAlbum);
 
-        mDuration.setText(DateUtils.formatElapsedTime(audient.duration));
         mMusicName.setText(audient.mediaName);
         mSingerName.setText(audient.artistName);
     }

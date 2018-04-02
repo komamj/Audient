@@ -95,6 +95,13 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     protected void onPermissonGranted() {
         setSupportActionBar(mToolbar);
 
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogUtils.i(TAG, "onClick");
+            }
+        });
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);

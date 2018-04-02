@@ -37,35 +37,6 @@
 
     </android.support.v7.widget.CardView>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:progress="10"
-        app:layout_constraintEnd_toEndOf="@+id/card_view"
-        app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/card_view" />
-
-    <TextView
-        android:id="@+id/tv_current"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_duration"
-        app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
-
-    <TextView
-        android:id="@+id/tv_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        app:layout_constraintEnd_toEndOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
-
     <TextView
         android:id="@+id/tv_name"
         style="@style/TextAppearance.AppCompat.Title"
@@ -76,7 +47,7 @@
         android:text="海阔天空"
         app:layout_constraintEnd_toEndOf="@+id/card_view"
         app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/tv_current" />
+        app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
     <TextView
         android:id="@+id/tv_singer_name"
