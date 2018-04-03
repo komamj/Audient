@@ -178,8 +178,10 @@ public class SplashPresenter implements SplashContract.Presenter {
                 this.loadAccessToken(code);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
+                android.os.Process.killProcess(android.os.Process.myPid());
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                android.os.Process.killProcess(android.os.Process.myPid());
                 break;
             default:
                 break;

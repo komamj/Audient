@@ -171,6 +171,7 @@ public class StoresFragment extends BaseFragment implements StoresContract.View 
     @Override
     public void showMainView() {
         Intent intent = new Intent(mContext, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         StoresActivity activity = (StoresActivity) mContext;
         activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
