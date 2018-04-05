@@ -9,60 +9,48 @@
     android:paddingStart="@dimen/nav_header_vertical_spacing"
     android:paddingTop="@dimen/nav_header_vertical_spacing">
 
-    <ImageView
-        android:id="@+id/iv_user"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/info_layout"
+    <TextView
+        android:id="@+id/tv_user_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_user"
-        app:layout_constraintEnd_toStartOf="@+id/tv_thumb_up_count"
-        app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toTopOf="@+id/iv_user">
+        android:layout_marginStart="@dimen/nav_header_vertical_spacing"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/colorActive"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_thumb_up_count"
+        app:layout_constraintStart_toEndOf="@id/iv_user"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_user_name"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/colorInActive"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_user_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
 
-        <TextView
-            android:id="@+id/tv_time"
-            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_user_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
-
-    </android.support.constraint.ConstraintLayout>
+    <com.xinshang.audient.widget.SquareImageView
+        android:id="@+id/iv_user"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@id/tv_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_user_name" />
 
     <TextView
         android:id="@+id/tv_thumb_up_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
         app:layout_constraintBottom_toBottomOf="@id/iv_thumb_up"
         app:layout_constraintEnd_toStartOf="@id/iv_thumb_up"
-        app:layout_constraintStart_toEndOf="@id/info_layout"
+        app:layout_constraintStart_toEndOf="@id/tv_user_name"
         app:layout_constraintTop_toTopOf="@id/iv_thumb_up" />
 
     <ImageView
@@ -80,11 +68,13 @@
 
     <TextView
         android:id="@+id/tv_comment"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+        android:textColor="@color/colorInActive"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/info_layout"
+        app:layout_constraintStart_toStartOf="@id/tv_user_name"
         app:layout_constraintTop_toBottomOf="@+id/iv_user" />
 
     <TextView
@@ -96,6 +86,8 @@
         android:gravity="center"
         android:maxLines="1"
         android:singleLine="true"
+        android:textColor="@color/colorInActive"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_comment" />
