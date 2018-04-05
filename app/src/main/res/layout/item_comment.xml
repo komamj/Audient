@@ -17,7 +17,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/colorActive"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/tv_thumb_up_count"
         app:layout_constraintStart_toEndOf="@id/iv_user"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +72,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/nav_header_vertical_spacing"
-        android:textColor="@color/colorInActive"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_user_name"
         app:layout_constraintTop_toBottomOf="@+id/iv_user" />
