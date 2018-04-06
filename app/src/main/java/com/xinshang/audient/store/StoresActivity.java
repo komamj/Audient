@@ -15,6 +15,8 @@
  */
 package com.xinshang.audient.store;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -22,6 +24,7 @@ import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.ActivityUtils;
+import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
@@ -32,11 +35,18 @@ import butterknife.BindView;
  */
 
 public class StoresActivity extends BaseActivity {
+    private static final String TAG = StoresActivity.class.getSimpleName();
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Inject
     StoresPresenter mPresenter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected void onPermissonGranted() {
@@ -63,6 +73,15 @@ public class StoresActivity extends BaseActivity {
                 .storesPresenterModule(new StoresPresenterModule(storesFragment))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent newIntent) {
+        super.onNewIntent(newIntent);
+
+        LogUtils.i(TAG, "onNewIntent");
+
+        setIntent(newIntent);
     }
 
     @Override

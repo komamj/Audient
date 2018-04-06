@@ -25,6 +25,11 @@ import com.xinshang.common.base.BaseView;
 
 public interface PaymentContract {
     interface View extends BaseView<Presenter> {
+        boolean isActive();
+
+        void setLoadingIndicator(boolean isActive);
+
+        void dismissPaymentView();
     }
 
     interface Presenter extends BasePresenter {

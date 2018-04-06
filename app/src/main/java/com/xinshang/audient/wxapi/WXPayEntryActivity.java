@@ -19,11 +19,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.xinshang.audient.AudientApplication;
-import com.xinshang.audient.util.WeChatMessageEvent;
+import com.xinshang.audient.util.WXEntryMessageEvent;
+import com.xinshang.audient.util.WXPayEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,8 +66,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp response) {
-        LogUtils.i(TAG, "onResp " + response.errCode);
-        EventBus.getDefault().post(new WeChatMessageEvent(response));
-        finish();
+        if (response.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            LogUtils.i(TAG, "onResp " + response.errCode);
+            EventBus.getDefault().post(new WXPayEntryMessageEvent(response));
+            finish();
+        }
     }
 }

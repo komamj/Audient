@@ -40,6 +40,7 @@ android {
             zipAlignEnabled false
             //不去除无用资源
             shrinkResources false
+            // 配置签名
             signingConfig signingConfigs.debug
         }
 

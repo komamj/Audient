@@ -24,7 +24,7 @@ import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.xinshang.audient.AudientApplication;
-import com.xinshang.audient.util.WeChatMessageEvent;
+import com.xinshang.audient.util.WXEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,7 +81,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp response) {
         LogUtils.i(TAG, "onResp " + response.errCode);
-        EventBus.getDefault().post(new WeChatMessageEvent(response));
+        EventBus.getDefault().post(new WXEntryMessageEvent(response));
         finish();
     }
 }

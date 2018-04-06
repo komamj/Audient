@@ -21,10 +21,10 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
  * Created by koma_20 on 2018/3/3.
  */
 
-public class WeChatMessageEvent {
+public class WXEntryMessageEvent {
     private BaseResp mResp;
 
-    public WeChatMessageEvent(BaseResp resp) {
+    public WXEntryMessageEvent(BaseResp resp) {
         this.mResp = resp;
     }
 

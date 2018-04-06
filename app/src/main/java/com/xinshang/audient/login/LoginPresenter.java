@@ -19,7 +19,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.Token;
-import com.xinshang.audient.util.WeChatMessageEvent;
+import com.xinshang.audient.util.WXEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,7 +66,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(WeChatMessageEvent messageEvent) {
+    public void onMessageEvent(WXEntryMessageEvent messageEvent) {
         this.processWXResponse(messageEvent.getResp());
     }
 

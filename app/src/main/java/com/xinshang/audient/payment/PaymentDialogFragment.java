@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
     TextView mName;
     @BindView(R.id.iv_album)
     ImageView mAlbum;
+    @BindView(R.id.progress_bar)
+    ContentLoadingProgressBar mProgressBar;
 
     @OnClick(R.id.btn_confirm)
     void onConfirmClick() {
@@ -90,13 +93,17 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_payment, container, false);
+
         ButterKnife.bind(this, view);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setLoadingIndicator(false);
 
         GlideApp.with(this)
                 .load(mAudient)
@@ -106,10 +113,42 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
                 .into(mAlbum);
 
         mName.setText(mAudient.mediaName);
+
+        if (mPresenter != null) {
+            mPresenter.subscribe();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
     }
 
     @Override
     public void setPresenter(PaymentContract.Presenter presenter) {
 
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.isAdded();
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean isActive) {
+        if (isActive) {
+            mProgressBar.show();
+        } else {
+            mProgressBar.hide();
+        }
+    }
+
+    @Override
+    public void dismissPaymentView() {
+        dismiss();
     }
 }

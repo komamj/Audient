@@ -22,7 +22,7 @@ import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
 import com.xinshang.audient.model.entities.Token;
-import com.xinshang.audient.util.WeChatMessageEvent;
+import com.xinshang.audient.util.WXEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -84,7 +84,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(WeChatMessageEvent messageEvent) {
+    public void onMessageEvent(WXEntryMessageEvent messageEvent) {
         this.processWXResponse(messageEvent.getResp());
     }
 

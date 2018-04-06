@@ -155,6 +155,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
     @Override
     public void showNowPlaying(StoreSong storeSong) {
+        if (storeSong == null) {
+            return;
+        }
+
         GlideApp.with(this)
                 .asBitmap()
                 .circleCrop()

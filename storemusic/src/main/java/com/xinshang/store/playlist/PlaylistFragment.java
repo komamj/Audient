@@ -215,16 +215,20 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
-    public void showNowPlaying(StoreSong storePlaylist) {
+    public void showNowPlaying(StoreSong storeSong) {
+        if (storeSong == null) {
+            return;
+        }
+
         GlideApp.with(this)
                 .asBitmap()
                 .circleCrop()
-                .load(storePlaylist)
+                .load(storeSong)
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.ic_album)
                 .into(mAlbum);
 
-        mName.setText(storePlaylist.mediaName);
+        mName.setText(storeSong.mediaName);
     }
 
     @Override

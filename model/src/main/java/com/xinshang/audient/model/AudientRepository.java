@@ -28,6 +28,8 @@ import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
+import com.xinshang.audient.model.entities.OrderResponse;
+import com.xinshang.audient.model.entities.PayRequestInfo;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
@@ -175,6 +177,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public void sendWXPayRequest(PayRequestInfo payRequestInfo) {
+        mRemoteDataSource.sendWXPayRequest(payRequestInfo);
+    }
+
+    @Override
     public Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId) {
         return mRemoteDataSource.getVoteInfo(mediaId, storeId);
     }
@@ -195,7 +202,7 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<BaseResponse> postOrder(WXPayRequest wxPayRequest) {
+    public Flowable<ApiResponse<OrderResponse>> postOrder(WXPayRequest wxPayRequest) {
         return mRemoteDataSource.postOrder(wxPayRequest);
     }
 

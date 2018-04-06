@@ -100,7 +100,6 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:label="@string/login_label"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoDisplay" />
 
@@ -108,6 +107,7 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoDisplay"
             android:screenOrientation="portrait" />
 
         <activity
@@ -119,6 +119,7 @@
 
         <activity android:name=".store.StoresActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:label="@string/store_title"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

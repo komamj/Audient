@@ -18,6 +18,7 @@ package com.xinshang.audient.model.source.remote;
 import android.support.annotation.NonNull;
 
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.xinshang.audient.model.AudientApi;
 import com.xinshang.audient.model.entities.ApiResponse;
@@ -32,6 +33,8 @@ import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
+import com.xinshang.audient.model.entities.OrderResponse;
+import com.xinshang.audient.model.entities.PayRequestInfo;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
@@ -61,6 +64,8 @@ import io.reactivex.FlowableOnSubscribe;
 public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
     private static final String SCOPE = "snsapi_userinfo";
+    private static final String PARTNER_ID = "1499452532";
+    private static final String PACKAGE_VALUE = "Sign=WXPay";
 
     private final AudientApi mAudientApi;
 
@@ -201,6 +206,20 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
+    public void sendWXPayRequest(PayRequestInfo payRequestInfo) {
+        final PayReq payReq = new PayReq();
+        payReq.appId = payRequestInfo.appId;
+        payReq.partnerId = payRequestInfo.partnerId;
+        payReq.packageValue = payRequestInfo.packageValue;
+        payReq.nonceStr = payRequestInfo.nonceStr;
+        payReq.timeStamp = payRequestInfo.timeStamp;
+        payReq.prepayId = payRequestInfo.prepareId;
+        payReq.sign = payRequestInfo.sign;
+
+        mWeChatApi.sendReq(payReq);
+    }
+
+    @Override
     public Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId) {
         return mAudientApi.getVoteInfo(mediaId, storeId);
     }
@@ -221,7 +240,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> postOrder(WXPayRequest wxPayRequest) {
+    public Flowable<ApiResponse<OrderResponse>> postOrder(WXPayRequest wxPayRequest) {
         return mAudientApi.postOrder(wxPayRequest);
     }
 

@@ -1,17 +1,27 @@
 package com.xinshang.audient.payment;
 
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Music;
+import com.xinshang.audient.model.entities.OrderResponse;
+import com.xinshang.audient.model.entities.PayRequestInfo;
 import com.xinshang.audient.model.entities.WXPayRequest;
+import com.xinshang.audient.util.WXPayEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -22,9 +32,15 @@ import io.reactivex.subscribers.DisposableSubscriber;
 public class PaymentPresenter implements PaymentContract.Presenter {
     private static final String TAG = PaymentPresenter.class.getSimpleName();
 
+    private static final float PRICE = 0.01f;
+
     private final PaymentContract.View mView;
+
     private final AudientRepository mRepository;
+
     private final CompositeDisposable mDisposables;
+
+    private Audient mAudient;
 
     @Inject
     public PaymentPresenter(PaymentContract.View view, AudientRepository repository) {
@@ -40,11 +56,18 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
     @Override
     public void subscribe() {
+        EventBus.getDefault().register(this);
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WXPayEntryMessageEvent messageEvent) {
+        this.processWXResponse(messageEvent.getResp());
     }
 
     @Override
     public void unSubscribe() {
+        EventBus.getDefault().unregister(this);
+
         mDisposables.clear();
     }
 
@@ -66,7 +89,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
         music.paymentWay = "微信支付";
         music.free = false;
         music.freeWay = 0;
-        mRepository.addToPlaylist(music)
+        Disposable disposable = mRepository.addToPlaylist(music)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
@@ -86,14 +109,26 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.dismissPaymentView();
+                        }
                     }
                 });
+
+        mDisposables.add(disposable);
     }
 
     @Override
     public void postOrder(Audient audient) {
+        mAudient = audient;
+
+        if (mView.isActive()) {
+            mView.setLoadingIndicator(true);
+        }
+
+        String storeId = mRepository.getStoreId();
         WXPayRequest wxPayRequest = new WXPayRequest();
+        wxPayRequest.storeId = storeId;
         wxPayRequest.mediaId = audient.mediaId;
         wxPayRequest.mediaName = audient.mediaName;
         wxPayRequest.mediaInterval = String.valueOf(audient.duration);
@@ -101,17 +136,29 @@ public class PaymentPresenter implements PaymentContract.Presenter {
         wxPayRequest.albumName = audient.albumName;
         wxPayRequest.artistId = audient.artistId;
         wxPayRequest.artistName = audient.artistName;
-        wxPayRequest.price = 1.00f;
-        wxPayRequest.paymentWay = 1;
-        wxPayRequest.clientIP = "";
+        wxPayRequest.price = PRICE;
 
         Disposable disposable = mRepository.postOrder(wxPayRequest)
+                .map(new Function<ApiResponse<OrderResponse>, OrderResponse>() {
+                    @Override
+                    public OrderResponse apply(ApiResponse<OrderResponse> orderResponseApiResponse) throws Exception {
+                        return orderResponseApiResponse.data;
+                    }
+                })
+                .map(new Function<OrderResponse, PayRequestInfo>() {
+                    @Override
+                    public PayRequestInfo apply(OrderResponse orderResponse) throws Exception {
+                        return orderResponse.payRequestInfo;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                .subscribeWith(new DisposableSubscriber<PayRequestInfo>() {
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
-
+                    public void onNext(PayRequestInfo payRequestInfo) {
+                        if (mView.isActive()) {
+                            mRepository.sendWXPayRequest(payRequestInfo);
+                        }
                     }
 
                     @Override
@@ -121,9 +168,28 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
                     @Override
                     public void onComplete() {
-
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
                     }
                 });
+
         mDisposables.add(disposable);
+    }
+
+    public void processWXResponse(BaseResp response) {
+        LogUtils.i(TAG, "onResp " + response.errCode);
+
+        switch (response.errCode) {
+            case BaseResp.ErrCode.ERR_OK:
+                addToPlaylist(mAudient);
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                break;
+            default:
+                break;
+        }
     }
 }

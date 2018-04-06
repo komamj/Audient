@@ -27,6 +27,8 @@ import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
+import com.xinshang.audient.model.entities.OrderResponse;
+import com.xinshang.audient.model.entities.PayRequestInfo;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
@@ -100,6 +102,8 @@ public interface IRemoteDataSource {
 
     void sendLoginRequest();
 
+    void sendWXPayRequest(PayRequestInfo payRequestInfo);
+
     Flowable<StoreVoteResponse> getVoteInfo(String mediaId, String storeId);
 
     Flowable<BaseResponse> addToPlaylist(Music music);
@@ -108,5 +112,5 @@ public interface IRemoteDataSource {
 
     Flowable<ApiResponse> sendFeedback(Feedback feedback);
 
-    Flowable<BaseResponse> postOrder(WXPayRequest wxPayRequest);
+    Flowable<ApiResponse<OrderResponse>> postOrder(WXPayRequest wxPayRequest);
 }

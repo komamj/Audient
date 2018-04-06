@@ -15,20 +15,31 @@
  */
 package com.xinshang.audient.model.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by koma_20 on 2018/4/2.
  */
 
 public class WXPayRequest {
+    @SerializedName("storeId")
     public String storeId;
+    @SerializedName("clientIP")
     public String clientIP;
+    @SerializedName("mediaId")
     public String mediaId;
+    @SerializedName("mediaName")
     public String mediaName;
+    @SerializedName("mediaInterval")
     public String mediaInterval;
+    @SerializedName("artistId")
     public String artistId;
+    @SerializedName("artistName")
     public String artistName;
+    @SerializedName("albumId")
     public String albumId;
+    @SerializedName("albumName")
     public String albumName;
+    @SerializedName("price")
     public float price;
-    public int paymentWay;
 }

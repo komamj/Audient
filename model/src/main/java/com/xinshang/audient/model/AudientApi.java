@@ -26,6 +26,7 @@ import com.xinshang.audient.model.entities.Feedback;
 import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
+import com.xinshang.audient.model.entities.OrderResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
@@ -273,6 +274,11 @@ public interface AudientApi {
      * 提交订单
      */
     @POST("api/v1/modorder/wxpay")
-    Flowable<BaseResponse> postOrder(@Body WXPayRequest wxPayRequest);
+    Flowable<ApiResponse<OrderResponse>> postOrder(@Body WXPayRequest wxPayRequest);
 
+    /**
+     * 查询订单结果
+     */
+    @GET("api/v1/modorder/wxpay/tradestate")
+    Flowable<BaseResponse> getOrderResult(@Query("tid") String tid, @Query("oid") String oid);
 }
