@@ -118,9 +118,9 @@ public class AudientRepositoryModule {
                                      final Gson gson) {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
 
-        if (BuildConfig.DEBUG) {
+       // if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }
+       // }
 
         return new OkHttpClient.Builder()
                 .authenticator(new Authenticator() {

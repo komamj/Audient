@@ -178,7 +178,8 @@ public class PaymentPresenter implements PaymentContract.Presenter {
     }
 
     public void processWXResponse(BaseResp response) {
-        LogUtils.i(TAG, "onResp " + response.errCode);
+        LogUtils.i(TAG, "onResp " + response.errCode + ",message :" + response.errStr+","
+        + response.transaction);
 
         switch (response.errCode) {
             case BaseResp.ErrCode.ERR_OK:

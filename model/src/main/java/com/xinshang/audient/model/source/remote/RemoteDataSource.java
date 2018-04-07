@@ -49,6 +49,7 @@ import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.model.entities.WXPayRequest;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
 
 import java.util.List;
 
@@ -74,6 +75,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Inject
     public RemoteDataSource(AudientApi audientApi, IWXAPI weChatApi) {
         mAudientApi = audientApi;
+
         mWeChatApi = weChatApi;
     }
 
@@ -200,8 +202,10 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public void sendLoginRequest() {
         final SendAuth.Req req = new SendAuth.Req();
+
         req.scope = SCOPE;
         req.state = TAG;
+
         mWeChatApi.sendReq(req);
     }
 
@@ -213,8 +217,10 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
         payReq.packageValue = payRequestInfo.packageValue;
         payReq.nonceStr = payRequestInfo.nonceStr;
         payReq.timeStamp = payRequestInfo.timeStamp;
-        payReq.prepayId = payRequestInfo.prepareId;
+        payReq.prepayId = payRequestInfo.prepayId;
         payReq.sign = payRequestInfo.sign;
+
+        LogUtils.i(TAG, "sendWXPayRequest : " + payRequestInfo.toString());
 
         mWeChatApi.sendReq(payReq);
     }

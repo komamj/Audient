@@ -3,6 +3,6 @@ package com.xinshang.audient.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 public class OrderResponse {
-    @SerializedName("prepare")
+    @SerializedName("prepay")
     public PayRequestInfo payRequestInfo;
 }

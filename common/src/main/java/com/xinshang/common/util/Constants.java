@@ -37,7 +37,6 @@ public final class Constants {
 
     // wechat
     public static final String WECHAT_APP_ID = "wxc80eb13e9ed3e040";
-    public static final String WECHAT_SECRET = "5d2c48e32aa7213f2f26724f3c648b6a";
 
     public static final int PAYLOAD_PLAYING = 0;
 
