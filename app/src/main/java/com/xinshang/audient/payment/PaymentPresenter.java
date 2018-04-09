@@ -31,6 +31,7 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class PaymentPresenter implements PaymentContract.Presenter {
     private static final String TAG = PaymentPresenter.class.getSimpleName();
+    private static final String PAYMENT_WAY = "微信支付";
 
     private static final float PRICE = 0.01f;
 
@@ -61,7 +62,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(WXPayEntryMessageEvent messageEvent) {
-        this.processWXResponse(messageEvent.getResp());
+        this.processWXPayResponse(messageEvent.getResp());
     }
 
     @Override
@@ -83,10 +84,10 @@ public class PaymentPresenter implements PaymentContract.Presenter {
         music.artistName = audient.artistName;
         music.albumId = audient.albumId;
         music.albumName = audient.albumName;
-        music.price = 1;
+        music.price = PRICE;
         music.discount = 0;
-        music.discountPrice = 1;
-        music.paymentWay = "微信支付";
+        music.discountPrice = PRICE;
+        music.paymentWay = PAYMENT_WAY;
         music.free = false;
         music.freeWay = 0;
         Disposable disposable = mRepository.addToPlaylist(music)
@@ -110,6 +111,8 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                     @Override
                     public void onComplete() {
                         if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+
                             mView.dismissPaymentView();
                         }
                     }
@@ -168,18 +171,15 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
                     @Override
                     public void onComplete() {
-                        if (mView.isActive()) {
-                            mView.setLoadingIndicator(false);
-                        }
                     }
                 });
 
         mDisposables.add(disposable);
     }
 
-    public void processWXResponse(BaseResp response) {
-        LogUtils.i(TAG, "onResp " + response.errCode + ",message :" + response.errStr+","
-        + response.transaction);
+    @Override
+    public void processWXPayResponse(BaseResp response) {
+        LogUtils.i(TAG, "onResp " + response.errCode);
 
         switch (response.errCode) {
             case BaseResp.ErrCode.ERR_OK:

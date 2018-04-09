@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.payment;
 
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
@@ -36,5 +37,7 @@ public interface PaymentContract {
         void addToPlaylist(Audient audient);
 
         void postOrder(Audient audient);
+
+        void processWXPayResponse(BaseResp response);
     }
 }

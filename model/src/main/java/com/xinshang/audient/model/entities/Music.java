@@ -35,11 +35,11 @@ public class Music {
     @SerializedName("albumName")
     public String albumName;
     @SerializedName("price")
-    public int price;
+    public float price;
     @SerializedName("discount")
     public int discount;
     @SerializedName("discountPrice")
-    public int discountPrice;
+    public float discountPrice;
     @SerializedName("paymentWay")
     public String paymentWay;
     @SerializedName("free")
