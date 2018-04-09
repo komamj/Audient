@@ -12,6 +12,7 @@
     <application
         android:name=".AudientApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -78,8 +79,8 @@
         <activity
             android:name=".favorite.MyFavoritesActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/add_to_favorites"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -107,8 +108,8 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <activity
             android:name=".setting.SettingsActivity"
@@ -117,12 +118,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".store.StoresActivity"
+        <activity
+            android:name=".store.StoresActivity"
             android:exported="false"
-            android:launchMode="singleTop"
             android:label="@string/store_title"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--audition-->
         <service
