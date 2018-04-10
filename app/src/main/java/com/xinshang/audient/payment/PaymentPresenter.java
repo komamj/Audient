@@ -7,7 +7,6 @@ import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.OrderResponse;
-import com.xinshang.audient.model.entities.PayRequestInfo;
 import com.xinshang.audient.model.entities.WXPayRequest;
 import com.xinshang.audient.util.WXPayEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
@@ -41,7 +40,9 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
     private final CompositeDisposable mDisposables;
 
-    private Audient mAudient;
+    // private Audient mAudient;
+
+    private String mOrderId;
 
     @Inject
     public PaymentPresenter(PaymentContract.View view, AudientRepository repository) {
@@ -123,7 +124,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
     @Override
     public void postOrder(Audient audient) {
-        mAudient = audient;
+        // mAudient = audient;
 
         if (mView.isActive()) {
             mView.setLoadingIndicator(true);
@@ -148,19 +149,15 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                         return orderResponseApiResponse.data;
                     }
                 })
-                .map(new Function<OrderResponse, PayRequestInfo>() {
-                    @Override
-                    public PayRequestInfo apply(OrderResponse orderResponse) throws Exception {
-                        return orderResponse.payRequestInfo;
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<PayRequestInfo>() {
+                .subscribeWith(new DisposableSubscriber<OrderResponse>() {
                     @Override
-                    public void onNext(PayRequestInfo payRequestInfo) {
+                    public void onNext(OrderResponse orderResponse) {
+                        mOrderId = orderResponse.order.id;
+
                         if (mView.isActive()) {
-                            mRepository.sendWXPayRequest(payRequestInfo);
+                            mRepository.sendWXPayRequest(orderResponse.payRequestInfo);
                         }
                     }
 
@@ -183,7 +180,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
         switch (response.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                addToPlaylist(mAudient);
+                postOrderResult(null, mOrderId);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 break;
@@ -192,5 +189,32 @@ public class PaymentPresenter implements PaymentContract.Presenter {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void postOrderResult(String tid, String oid) {
+        mRepository.getOrderResult(tid, oid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        LogUtils.i(TAG, "postOrderResult code : " + baseResponse.resultCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "postOrderResult");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+
+                            mView.dismissPaymentView();
+                        }
+                    }
+                });
     }
 }

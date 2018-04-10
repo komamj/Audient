@@ -39,5 +39,7 @@ public interface PaymentContract {
         void postOrder(Audient audient);
 
         void processWXPayResponse(BaseResp response);
+
+        void postOrderResult(String tid,String oid);
     }
 }

@@ -113,4 +113,6 @@ public interface IRemoteDataSource {
     Flowable<ApiResponse> sendFeedback(Feedback feedback);
 
     Flowable<ApiResponse<OrderResponse>> postOrder(WXPayRequest wxPayRequest);
+
+    Flowable<BaseResponse> getOrderResult(String tid,String oid);
 }

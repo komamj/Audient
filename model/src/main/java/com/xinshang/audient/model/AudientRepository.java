@@ -207,6 +207,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public Flowable<BaseResponse> getOrderResult(String tid, String oid) {
+        return mRemoteDataSource.getOrderResult(tid,oid);
+    }
+
+    @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mRemoteDataSource.thumbUpComment(commentId);
     }

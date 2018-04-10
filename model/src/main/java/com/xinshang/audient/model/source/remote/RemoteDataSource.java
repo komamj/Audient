@@ -251,6 +251,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
+    public Flowable<BaseResponse> getOrderResult(String tid, String oid) {
+        return mAudientApi.getOrderResult(tid,oid);
+    }
+
+    @Override
     public Flowable<BaseResponse> thumbUpComment(String commentId) {
         return mAudientApi.thumbUpComment(commentId);
     }
