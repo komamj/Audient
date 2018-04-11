@@ -29,6 +29,7 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
 import com.xinshang.audient.model.entities.OrderResponse;
 import com.xinshang.audient.model.entities.PayRequestInfo;
+import com.xinshang.audient.model.entities.PlaylistResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
@@ -59,7 +60,9 @@ public interface IRemoteDataSource {
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int size);
 
-    Flowable<SearchResult> getSearchReult(String keyword);
+    Flowable<SearchResult> searchSongs(String keyword, int page, int size);
+
+    Flowable<ApiResponse<PlaylistResponse>> getSearchPlaylists(String keyword, int page, int size);
 
     Flowable<LyricResult> getLyricResult(String id);
 

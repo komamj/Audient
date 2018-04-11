@@ -27,6 +27,7 @@ import com.xinshang.audient.model.entities.FileResult;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.OrderResponse;
+import com.xinshang.audient.model.entities.PlaylistResponse;
 import com.xinshang.audient.model.entities.SearchResult;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
@@ -76,14 +77,14 @@ public interface AudientApi {
      * @param keyword 关键字.
      */
     @GET("api/v1/openmusic/search")
-    Flowable<SearchResult> getSeachResults(@Query("w") String keyword, @Query("p") int page,
-                                           @Query("n") int pageCount, @Query("f") boolean filter);
+    Flowable<SearchResult> searchSongs(@Query("w") String keyword, @Query("p") int page,
+                                       @Query("n") int pageCount, @Query("f") boolean filter);
     /**
      * 搜索歌单
      */
     @GET("api/v1/openmusic/songlist/search")
-    Flowable<ApiResponse> searchPlaylists(@Query("w") String keyword, @Query("p") int page,
-                                          @Query("n") int pageCount);
+    Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(@Query("w") String keyword, @Query("p") int page,
+                                                            @Query("n") int pageCount);
     /**
      * 获取歌词.
      *

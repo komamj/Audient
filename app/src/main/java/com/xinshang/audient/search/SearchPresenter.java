@@ -84,7 +84,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             mView.showProgressBar(true);
         }
 
-        Disposable disposable = mRepository.getSearchReult(keyword)
+        Disposable disposable = mRepository.searchSongs(keyword, 0, 300)
                 .map(new Function<SearchResult, List<Audient>>() {
                     @Override
                     public List<Audient> apply(SearchResult searchResult) throws Exception {

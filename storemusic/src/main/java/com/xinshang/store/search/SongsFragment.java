@@ -18,13 +18,14 @@ package com.xinshang.store.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xinshang.store.R;
+import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.AudientAdapter;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.TencentMusic;
@@ -36,28 +37,37 @@ import com.xinshang.store.widget.AudientItemDecoration;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
-public class SearchFragment extends BaseFragment implements SearchContract.View {
-    private static final String TAG = SearchFragment.class.getSimpleName();
+/**
+ * Created by koma on 4/11/18.
+ */
+
+public class SongsFragment extends BaseFragment implements SongsContract.View,
+        SearchActivity.OnSearchListener {
+    private static final String TAG = SongsFragment.class.getSimpleName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
-    ContentLoadingProgressBar mProgressBar;
-    @BindView(R.id.tv_empty)
-    TextView mEmptyView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private TextView mEmpty;
+
+    private String mKeyword;
 
     private AudientAdapter mAdapter;
 
-    private SearchContract.Presenter mPresenter;
+    @Inject
+    SongsPresenter mPresenter;
 
-    public SearchFragment() {
+    public static SongsFragment newInstance() {
+        return new SongsFragment();
     }
 
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
-        return fragment;
+    public SongsFragment() {
     }
 
     @Override
@@ -65,6 +75,8 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         super.onAttach(context);
 
         LogUtils.i(TAG, "onAttach");
+
+        ((SearchActivity) mContext).addListener(this);
     }
 
     @Override
@@ -72,6 +84,13 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         super.onCreate(savedInstanceState);
 
         LogUtils.i(TAG, "onCreate");
+
+        DaggerSongsComponent.builder()
+                .audientRepositoryComponent(
+                        ((StoreMusicApplication) ((SearchActivity) mContext).getApplication()).getRepositoryComponent())
+                .songsPresenterModule(new SongsPresenterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -80,7 +99,16 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
         LogUtils.i(TAG, "onViewCreated");
 
-        showProgressBar(false);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadSongs("");
+                }
+            }
+        });
 
         mAdapter = new AudientAdapter(mContext);
         mAdapter.setEventListener(new AudientAdapter.EventListener() {
@@ -114,20 +142,32 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onDestroyView() {
+        super.onDestroyView();
 
-        LogUtils.i(TAG, "onActivityCreated");
+        LogUtils.i(TAG, "onDestroyView");
+
+        if (mPresenter != null) {
+            mPresenter.unSubscribe();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        LogUtils.i(TAG, "onDetach");
+
+        ((SearchActivity) mContext).removeListener(this);
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_search;
+        return R.layout.fragment_base;
     }
 
     @Override
-    public void setPresenter(SearchContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void setPresenter(SongsContract.Presenter presenter) {
     }
 
     @Override
@@ -137,42 +177,43 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     @Override
     public void showLoadingError() {
-        LogUtils.i(TAG, "showLoadingError");
+
     }
 
     @Override
     public void showEmpty(boolean forceShow) {
-        LogUtils.i(TAG, "showEmpty forceShow :" + forceShow);
-
         if (forceShow) {
             mRecyclerView.setVisibility(View.GONE);
 
-            mEmptyView.setVisibility(View.VISIBLE);
+            mEmpty.setVisibility(View.VISIBLE);
         } else {
-            mEmptyView.setVisibility(View.GONE);
+            mEmpty.setVisibility(View.GONE);
         }
     }
 
-
     @Override
-    public void showProgressBar(boolean forceShow) {
-        LogUtils.i(TAG, "showProressBar forceShow :" + forceShow);
-
-        showEmpty(false);
-
-        if (forceShow) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+    public void setLoadingIndictor(final boolean isActive) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
     }
 
     @Override
     public void showAudients(List<TencentMusic> audients) {
-        LogUtils.i(TAG, "showFavoritesSong count:" + audients.size());
-
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.replace(audients);
+    }
+
+    @Override
+    public void onSearch(String keyword) {
+        mKeyword = keyword;
+
+        if (mPresenter != null) {
+            mPresenter.loadSongs(keyword);
+        }
     }
 }

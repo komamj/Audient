@@ -9,6 +9,7 @@ import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -34,7 +35,9 @@ public interface IRemoteDataSource {
 
     Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count);
 
-    Flowable<SearchResult> getSearchReult(String keyword, int page, int count);
+    Flowable<SearchResult> searchSongs(String keyword, int page, int size);
+
+    Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page, int size);
 
     Flowable<LyricResult> getLyricResult(String id);
 

@@ -21,7 +21,11 @@ import com.xinshang.store.data.entities.TencentMusic;
 
 import java.util.List;
 
-public interface SearchContract {
+/**
+ * Created by koma on 4/11/18.
+ */
+
+public interface SongsContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
@@ -29,13 +33,13 @@ public interface SearchContract {
 
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIndictor(boolean isActive);
 
         void showAudients(List<TencentMusic> audients);
     }
 
     interface Presenter extends BasePresenter {
-        void loadSearchResults(String keyword);
+        void loadSongs(String keyword);
 
         void addToPlaylist(TencentMusic tencentMusic);
     }

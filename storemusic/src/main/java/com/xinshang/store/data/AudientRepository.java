@@ -25,6 +25,7 @@ import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -82,8 +83,13 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<SearchResult> getSearchReult(String keyword, int page, int count) {
-        return mRemoteDataSource.getSearchReult(keyword, page, count);
+    public Flowable<SearchResult> searchSongs(String keyword, int page, int count) {
+        return mRemoteDataSource.searchSongs(keyword, page, count);
+    }
+
+    @Override
+    public Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page, int size) {
+        return mRemoteDataSource.searchPlaylists(keyword, page, size);
     }
 
     @Override

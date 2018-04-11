@@ -44,7 +44,9 @@ import butterknife.OnClick;
 
 public class AudientAdapter extends BaseAdapter<TencentMusic, AudientAdapter.AudientViewHolder> {
     private static final String TAG = AudientAdapter.class.getSimpleName();
+
     private final GlideRequest<Bitmap> mGlideRequest;
+
     private EventListener mEventListener;
 
     public AudientAdapter(Context context) {

@@ -25,6 +25,7 @@ import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -50,6 +51,7 @@ import io.reactivex.FlowableOnSubscribe;
 @Singleton
 public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     private static final String TAG = RemoteDataSource.class.getSimpleName();
+
     private final AudientApi mAudientApi;
 
     @Inject
@@ -73,13 +75,20 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count) {
+    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page,
+                                                          int count) {
         return mAudientApi.getToplistDetail(topId, showTime, page, count);
     }
 
     @Override
-    public Flowable<SearchResult> getSearchReult(String keyword, int page, int count) {
+    public Flowable<SearchResult> searchSongs(String keyword, int page, int count) {
         return mAudientApi.getSeachResults(keyword, page, count, false);
+    }
+
+    @Override
+    public Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page,
+                                                                   int size) {
+        return mAudientApi.searchPlaylists(keyword, page, size);
     }
 
     @Override

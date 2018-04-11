@@ -15,21 +15,25 @@
  */
 package com.xinshang.store.search;
 
-import android.support.annotation.NonNull;
+import com.xinshang.store.base.BasePresenter;
+import com.xinshang.store.base.BaseView;
 
-import dagger.Module;
-import dagger.Provides;
+/**
+ * Created by koma on 4/11/18.
+ */
 
-@Module
-public class SearchPresenterModule {
-    private final SearchContract.View mView;
+public interface PlaylistsContract {
+    interface View extends BaseView<Presenter> {
+        boolean isActive();
 
-    public SearchPresenterModule(@NonNull SearchContract.View view) {
-        mView = view;
+        void showLoadingError();
+
+        void showEmpty(boolean forceShow);
+
+        void setLoadingIndictor(boolean isActive);
     }
 
-    @Provides
-    SearchContract.View provideSearchContractView() {
-        return mView;
+    interface Presenter extends BasePresenter {
+        void loadPlaylists(String keyword);
     }
 }

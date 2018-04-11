@@ -16,18 +16,24 @@
 package com.xinshang.store.search;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.xinshang.store.R;
-import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
-import com.xinshang.store.utils.ActivityUtils;
 import com.xinshang.store.utils.LogUtils;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindArray;
 import butterknife.BindView;
 
 public class SearchActivity extends BaseActivity {
@@ -37,9 +43,23 @@ public class SearchActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.search_view)
     SearchView mSearchView;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
 
-    @Inject
-    SearchPresenter mPresenter;
+    @BindArray(R.array.search_page_title)
+    String[] mPageTitles;
+
+    private List<OnSearchListener> mListeners = new ArrayList<>();
+
+    public void addListener(OnSearchListener listener) {
+        this.mListeners.add(listener);
+    }
+
+    public void removeListener(OnSearchListener listener) {
+        this.mListeners.remove(listener);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,33 +74,21 @@ public class SearchActivity extends BaseActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
-
-        SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.content_main);
-
-        if (searchFragment == null) {
-            searchFragment = SearchFragment.newInstance();
-
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), searchFragment,
-                    R.id.content_main);
-        }
-
-        DaggerSearchComponent.builder()
-                .audientRepositoryComponent(
-                        ((StoreMusicApplication) getApplication()).getRepositoryComponent())
-                .searchPresenterModule(new SearchPresenterModule(searchFragment))
-                .build()
-                .inject(this);
 
         mSearchView.onActionViewExpanded();
         mSearchView.setIconifiedByDefault(true);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String keyword) {
                 mSearchView.clearFocus();
-                mPresenter.loadSearchResults(query);
+
+                for (OnSearchListener listener : mListeners) {
+                    listener.onSearch(keyword);
+                }
+
                 return true;
             }
 
@@ -89,45 +97,19 @@ public class SearchActivity extends BaseActivity {
                 return true;
             }
         });
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        List<Fragment> fragments = new ArrayList<>();
+        SongsFragment songsFragment = SongsFragment.newInstance();
+        fragments.add(songsFragment);
+        PlaylistsFragment playlistsFragment = PlaylistsFragment.newInstance();
+        fragments.add(playlistsFragment);
 
-        LogUtils.i(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        LogUtils.i(TAG, "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        LogUtils.i(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        LogUtils.i(TAG, "onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        LogUtils.i(TAG, "onDestroy");
-
-        if (mPresenter != null) {
-            mPresenter.unSubscribe();
-        }
+        SearchFragmentPagerAdapter adapter = new SearchFragmentPagerAdapter(getSupportFragmentManager(),
+                fragments, mPageTitles);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setCurrentItem(0);
+        mViewPager.setOffscreenPageLimit(1);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -148,5 +130,40 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_search;
+    }
+
+    private static class SearchFragmentPagerAdapter extends FragmentPagerAdapter {
+        private static final int TAB_COUNT = 2;
+
+        private List<Fragment> mFragments;
+
+        private String[] mTitles;
+
+        public SearchFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments, String[] titles) {
+            super(fm);
+
+            mFragments = fragments;
+
+            mTitles = titles;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Nullable
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return TAB_COUNT;
+        }
+    }
+
+    public interface OnSearchListener {
+        void onSearch(String keyword);
     }
 }

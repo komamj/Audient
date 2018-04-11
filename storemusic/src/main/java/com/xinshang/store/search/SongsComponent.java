@@ -16,13 +16,15 @@
 package com.xinshang.store.search;
 
 import com.xinshang.store.data.AudientRepositoryComponent;
-import com.xinshang.store.utils.ActivityScoped;
+import com.xinshang.store.utils.FragmentScoped;
 
 import dagger.Component;
 
-@ActivityScoped
-@Component(dependencies = AudientRepositoryComponent.class,
-        modules = SearchPresenterModule.class)
-public interface SearchComponent {
-    void inject(SearchActivity activity);
+/**
+ * Created by koma on 4/11/18.
+ */
+@FragmentScoped
+@Component(dependencies = AudientRepositoryComponent.class, modules = SongsPresenterModule.class)
+public interface SongsComponent {
+    void inject(SongsFragment songsFragment);
 }

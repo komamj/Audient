@@ -38,13 +38,17 @@
     <string name="added_failed_message">"播放列表更新失败。"</string>
 
     <!--Search-->
+    <string-array name="search_page_title">
+        <item>"单曲"</item>
+        <item>"歌单"</item>
+    </string-array>
     <string name="action_playlist">"添加到播放列表"</string>
     <string name="action_favorite">"加入收藏"</string>
     <string name="action_comment">"查看评论"</string>
     <string name="search_no_result">"没有相关音乐,请换个关键词试试。"</string>
 
     <!--TabLayout-->
-    <string-array name="page_title">
+    <string-array name="main_page_title">
         <item>"店铺"</item>
         <item>"播放列表"</item>
         <item>"发现"</item>

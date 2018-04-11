@@ -33,17 +33,21 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class SearchPresenter implements SearchContract.Presenter {
-    public static final String TAG = SearchPresenter.class.getSimpleName();
+/**
+ * Created by koma on 4/11/18.
+ */
 
-    private SearchContract.View mView;
+public class SongsPresenter implements SongsContract.Presenter {
+    private static final String TAG = SongsPresenter.class.getSimpleName();
+
+    private SongsContract.View mView;
 
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
 
     @Inject
-    public SearchPresenter(SearchContract.View view, AudientRepository repository) {
+    public SongsPresenter(SongsContract.View view, AudientRepository repository) {
         mView = view;
 
         mRepository = repository;
@@ -69,16 +73,12 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void loadSearchResults(String keyword) {
-        LogUtils.i(TAG, "loadSearchResults :" + keyword);
-
-        mDisposables.clear();
-
-        if (mView != null) {
-            mView.showProgressBar(true);
+    public void loadSongs(String keyword) {
+        if (mView.isActive()) {
+            mView.setLoadingIndictor(true);
         }
 
-        Disposable disposable = mRepository.getSearchReult(keyword, 0, 300)
+        Disposable disposable = mRepository.searchSongs(keyword, 0, 300)
                 .map(new Function<SearchResult, List<TencentMusic>>() {
                     @Override
                     public List<TencentMusic> apply(SearchResult searchResult) throws Exception {
@@ -91,10 +91,11 @@ public class SearchPresenter implements SearchContract.Presenter {
                     @Override
                     public void onNext(List<TencentMusic> audients) {
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIndictor(false);
+
                             mView.showAudients(audients);
 
-                            mView.showEmpty(audients.isEmpty());
+                            // mView.showEmpty(audients.isEmpty());
                         }
                     }
 
@@ -103,7 +104,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                         LogUtils.e(TAG, "loadSearchResults error :" + t.toString());
 
                         if (mView.isActive()) {
-                            mView.showProgressBar(false);
+                            mView.setLoadingIndictor(false);
 
                             mView.showLoadingError();
                         }

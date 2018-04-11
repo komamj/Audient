@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
-    @BindArray(R.array.page_title)
+    @BindArray(R.array.main_page_title)
     String[] mPageTitles;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
