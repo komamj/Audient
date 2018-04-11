@@ -26,8 +26,11 @@ import android.widget.TextView;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
+import com.xinshang.store.data.entities.Playlist;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -47,6 +50,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TextView mEmpty;
+
+    private PlaylistsAdapter mAdapter;
 
     @Inject
     PlaylistsPresenter mPresenter;
@@ -98,11 +103,20 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
             }
         });
 
+        mAdapter = new PlaylistsAdapter(mContext);
+        mAdapter.setListener(new PlaylistsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Playlist playlist) {
+
+            }
+        });
+
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -151,6 +165,11 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     }
 
     @Override
+    public void showPlaylists(List<Playlist> playlists) {
+        mAdapter.update(playlists);
+    }
+
+    @Override
     public void setLoadingIndictor(final boolean isActive) {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -161,7 +180,9 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     }
 
     @Override
-    public void onSearch(String ketword) {
-
+    public void onSearch(String keyword) {
+        if (mPresenter != null) {
+            mPresenter.loadPlaylists(keyword);
+        }
     }
 }

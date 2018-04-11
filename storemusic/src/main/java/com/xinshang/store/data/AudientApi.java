@@ -25,6 +25,7 @@ import com.xinshang.store.data.entities.LyricResult;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.PlaylistResponse;
+import com.xinshang.store.data.entities.PlaylistSongResponse;
 import com.xinshang.store.data.entities.SearchResult;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -80,6 +81,12 @@ public interface AudientApi {
     Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(@Query("w") String keyword,
                                                             @Query("p") int page,
                                                             @Query("n") int pageCount);
+
+    /**
+     * 获取歌单详情
+     */
+    @GET("api/v1/openmusic/songlist/{id}")
+    Flowable<ApiResponse<PlaylistSongResponse>> getPlaylistDetails(@Path("id") String id);
 
     /**
      * 获取歌词.

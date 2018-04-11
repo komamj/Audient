@@ -17,6 +17,9 @@ package com.xinshang.store.search;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
+import com.xinshang.store.data.entities.Playlist;
+
+import java.util.List;
 
 /**
  * Created by koma on 4/11/18.
@@ -29,6 +32,8 @@ public interface PlaylistsContract {
         void showLoadingError();
 
         void showEmpty(boolean forceShow);
+
+        void showPlaylists(List<Playlist> playlists);
 
         void setLoadingIndictor(boolean isActive);
     }

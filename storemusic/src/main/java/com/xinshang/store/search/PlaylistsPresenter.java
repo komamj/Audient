@@ -16,11 +16,21 @@
 package com.xinshang.store.search;
 
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.ApiResponse;
+import com.xinshang.store.data.entities.Playlist;
+import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.utils.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Created by koma on 4/11/18.
@@ -66,5 +76,44 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
         if (mView.isActive()) {
             mView.setLoadingIndictor(true);
         }
+
+        mDisposables.clear();
+
+        Disposable disposable = mRepository.searchPlaylists(keyword, 0, 20)
+                .map(new Function<ApiResponse<PlaylistResponse>, List<Playlist>>() {
+                    @Override
+                    public List<Playlist> apply(ApiResponse<PlaylistResponse> playlistResponseApiResponse) throws Exception {
+                        return playlistResponseApiResponse.data.playlists;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Playlist>>() {
+                    @Override
+                    public void onNext(List<Playlist> playlists) {
+                        LogUtils.i(TAG, "searchPlaylists : " + playlists.size());
+
+                        if (mView.isActive()) {
+                            mView.showPlaylists(playlists);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.i(TAG, "searchPlaylists error : " + t.getMessage());
+
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
+                        }
+                    }
+                });
+        mDisposables.add(disposable);
     }
 }
