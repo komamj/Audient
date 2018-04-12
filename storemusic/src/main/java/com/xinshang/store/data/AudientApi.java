@@ -24,6 +24,7 @@ import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.PlaylistSongResponse;
 import com.xinshang.store.data.entities.SearchResult;
@@ -214,4 +215,10 @@ public interface AudientApi {
     @POST("api/v1/storeplaylist/{id}/playfav")
     Flowable<BaseResponse> addAllToPlaylist(@Path("id") String storeId,
                                             @Field("favoritesId") String favoritesId);
+
+    /**
+     * 播放所有歌曲
+     */
+    @POST("api/v1/storeplaylist/{id}/playall")
+    Flowable<BaseResponse> playAllSongs(@Path("id") String id, @Body PlayAllRequest playAllRequest);
 }

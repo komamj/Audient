@@ -90,7 +90,12 @@ public class PlaylistsAdapter extends BaseAdapter<Playlist, PlaylistsAdapter.Pla
     }
 
     private String buildDescription(Playlist playlist) {
-        StringBuilder builder = new StringBuilder(playlist.songCount);
+        StringBuilder builder = new StringBuilder();
+        builder.append(playlist.songCount);
+        builder.append("首音乐");
+        /*builder.append(" | ");
+        builder.append("播放");
+        builder.append(playlist.listenNum);*/
 
         return builder.toString();
     }
