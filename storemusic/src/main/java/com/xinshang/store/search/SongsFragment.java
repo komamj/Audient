@@ -105,7 +105,7 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadSongs("");
+                    mPresenter.loadSongs(mKeyword);
                 }
             }
         });

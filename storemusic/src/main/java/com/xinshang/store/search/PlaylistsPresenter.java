@@ -79,7 +79,7 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
 
         mDisposables.clear();
 
-        Disposable disposable = mRepository.searchPlaylists(keyword, 0, 20)
+        Disposable disposable = mRepository.searchPlaylists(keyword, 0, 30)
                 .map(new Function<ApiResponse<PlaylistResponse>, List<Playlist>>() {
                     @Override
                     public List<Playlist> apply(ApiResponse<PlaylistResponse> playlistResponseApiResponse) throws Exception {

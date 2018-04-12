@@ -20,15 +20,21 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.xinshang.store.R;
 import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
 import com.xinshang.store.data.entities.Playlist;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
+
+import butterknife.BindView;
 
 public class PlaylistsAdapter extends BaseAdapter<Playlist, PlaylistsAdapter.PlaylistsVH> {
     private final GlideRequest<Bitmap> mGlideRequest;
@@ -67,15 +73,36 @@ public class PlaylistsAdapter extends BaseAdapter<Playlist, PlaylistsAdapter.Pla
     @NonNull
     @Override
     public PlaylistsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_playlists,
+                parent, false);
+
+        return new PlaylistsVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PlaylistsVH holder, int position) {
+        Playlist playlist = mData.get(position);
 
+        mGlideRequest.load(playlist.imageUrl).into(holder.mAlbum);
+
+        holder.mName.setText(playlist.name);
+        holder.mDescription.setText(buildDescription(playlist));
+    }
+
+    private String buildDescription(Playlist playlist) {
+        StringBuilder builder = new StringBuilder(playlist.songCount);
+
+        return builder.toString();
     }
 
     class PlaylistsVH extends BaseViewHolder implements View.OnClickListener {
+        @BindView(R.id.iv_album)
+        ImageView mAlbum;
+        @BindView(R.id.tv_name)
+        TextView mName;
+        @BindView(R.id.tv_description)
+        TextView mDescription;
+
         public PlaylistsVH(View view) {
             super(view);
 

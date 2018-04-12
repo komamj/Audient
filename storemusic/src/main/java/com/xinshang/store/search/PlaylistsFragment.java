@@ -51,6 +51,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     private TextView mEmpty;
 
+    private String mKeyword;
+
     private PlaylistsAdapter mAdapter;
 
     @Inject
@@ -98,7 +100,7 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-
+                    mPresenter.loadPlaylists(mKeyword);
                 }
             }
         });
@@ -181,6 +183,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     @Override
     public void onSearch(String keyword) {
+        mKeyword = keyword;
+
         if (mPresenter != null) {
             mPresenter.loadPlaylists(keyword);
         }
