@@ -25,7 +25,7 @@ import android.view.View;
 import com.xinshang.store.R;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.Favorite;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.playlist.ConfirmDialog;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
@@ -104,7 +104,7 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
             }
 
             @Override
-            public void onPlaylistChanged(final TencentMusic audient) {
+            public void onPlaylistChanged(final Song audient) {
                 ConfirmDialog.showConfirmDialog(getChildFragmentManager(),
                         new ConfirmDialog.OnConfirmListener() {
                             @Override

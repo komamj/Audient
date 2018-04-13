@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
@@ -58,12 +58,12 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     ImageView mPauseButton;
     @Inject
     AuditionPresenter mPresenter;
-    private TencentMusic mAudient;
+    private Song mAudient;
 
     public AuditionDialogFragment() {
     }
 
-    public static AuditionDialogFragment newInstance(TencentMusic audient) {
+    public static AuditionDialogFragment newInstance(Song audient) {
         AuditionDialogFragment fragment = new AuditionDialogFragment();
 
         Bundle bundle = new Bundle();
@@ -171,7 +171,7 @@ public class AuditionDialogFragment extends DialogFragment implements AuditionCo
     }
 
     @Override
-    public void showAudient(TencentMusic audient) {
+    public void showAudient(Song audient) {
         GlideApp.with(this).load(audient)
                 .thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY))

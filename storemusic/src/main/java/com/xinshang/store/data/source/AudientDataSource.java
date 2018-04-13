@@ -15,12 +15,12 @@
  */
 package com.xinshang.store.data.source;
 
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 
 public interface AudientDataSource {
-    Flowable<List<TencentMusic>> getAudientTests();
+    Flowable<List<Song>> getAudientTests();
 }

@@ -29,7 +29,7 @@ import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.Comment;
 import com.xinshang.store.data.entities.CommentDataBean;
 import com.xinshang.store.data.entities.MessageEvent;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
@@ -56,12 +56,12 @@ public class CommentFragment extends BaseFragment implements CommentContract.Vie
 
     private CommentContract.Presenter mPresenter;
 
-    private TencentMusic mAudient;
+    private Song mAudient;
 
     public CommentFragment() {
     }
 
-    public static CommentFragment newInstance(TencentMusic audient) {
+    public static CommentFragment newInstance(Song audient) {
         CommentFragment fragment = new CommentFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.KEY_AUDIENT, audient);

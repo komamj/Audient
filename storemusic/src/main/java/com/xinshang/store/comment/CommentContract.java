@@ -19,7 +19,7 @@ import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
 import com.xinshang.store.data.entities.Comment;
 import com.xinshang.store.data.entities.CommentDataBean;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 
 import java.util.List;
 
@@ -41,6 +41,6 @@ public interface CommentContract {
     }
 
     interface Presenter extends BasePresenter {
-        void loadComments(TencentMusic audient);
+        void loadComments(Song audient);
     }
 }

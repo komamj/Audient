@@ -19,7 +19,7 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.Comment;
 import com.xinshang.store.data.entities.CommentDataBean;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class CommentPresenter implements CommentContract.Presenter {
     }
 
     @Override
-    public void loadComments(TencentMusic audient) {
+    public void loadComments(Song audient) {
         String storeId = mRepository.getStoreId();
 
         Disposable disposable = mRepository.getComments(audient.mediaId, null, storeId,

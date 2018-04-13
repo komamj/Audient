@@ -14,5 +14,5 @@ public class PlaylistSongResponse {
     @SerializedName("description")
     public String description;
     @SerializedName("items")
-    public List<TencentMusic> tencentMusics;
+    public List<Song> tencentMusics;
 }

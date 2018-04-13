@@ -21,8 +21,8 @@ import android.text.TextUtils;
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.File;
 import com.xinshang.store.data.entities.FileResult;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.SongDetailResult;
-import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
@@ -98,17 +98,17 @@ public class AuditionPresenter implements AuditionContract.Presenter,
     @Override
     public void loadAudient(String id) {
         Disposable disposable = mRepository.getSongDetailResult(id)
-                .map(new Function<SongDetailResult, TencentMusic>() {
+                .map(new Function<SongDetailResult, Song>() {
                     @Override
-                    public TencentMusic apply(SongDetailResult songDetailResult) throws Exception {
+                    public Song apply(SongDetailResult songDetailResult) throws Exception {
                         return songDetailResult.audient;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<TencentMusic>() {
+                .subscribeWith(new DisposableSubscriber<Song>() {
                     @Override
-                    public void onNext(TencentMusic audient) {
+                    public void onNext(Song audient) {
                         mView.showAudient(audient);
                     }
 

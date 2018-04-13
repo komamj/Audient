@@ -28,7 +28,7 @@ import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.StoreSong;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.utils.Constants;
@@ -135,7 +135,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         mAdapter = new PlaylistAdapter(mContext);
         mAdapter.setEventListener(new PlaylistAdapter.EventListener() {
             @Override
-            public void onFavoriteMenuClick(TencentMusic audient) {
+            public void onFavoriteMenuClick(Song audient) {
                 Intent intent = new Intent(mContext, MyFavoritesActivity.class);
                 intent.putExtra(Constants.KEY_AUDIENT, audient);
                 mContext.startActivity(intent);

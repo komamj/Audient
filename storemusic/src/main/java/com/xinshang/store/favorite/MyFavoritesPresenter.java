@@ -19,7 +19,7 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.FavoritesResult;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.LogUtils;
 
 import java.util.List;
@@ -104,7 +104,7 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
     }
 
     @Override
-    public void addToFavorite(String favoritesId, TencentMusic audient) {
+    public void addToFavorite(String favoritesId, Song audient) {
         mRepository.addToFavorite(favoritesId, audient)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

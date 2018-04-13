@@ -17,7 +17,7 @@ package com.xinshang.store.search;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 
 import java.util.List;
 
@@ -35,12 +35,12 @@ public interface SongsContract {
 
         void setLoadingIndictor(boolean isActive);
 
-        void showAudients(List<TencentMusic> audients);
+        void showAudients(List<Song> audients);
     }
 
     interface Presenter extends BasePresenter {
         void loadSongs(String keyword);
 
-        void addToPlaylist(TencentMusic tencentMusic);
+        void addToPlaylist(Song tencentMusic);
     }
 }

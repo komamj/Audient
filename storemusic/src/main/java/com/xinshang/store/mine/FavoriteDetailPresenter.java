@@ -20,7 +20,7 @@ import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.FavoriteListResult;
 import com.xinshang.store.data.entities.Music;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.LogUtils;
 
 import java.util.List;
@@ -107,7 +107,7 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
     }
 
     @Override
-    public void addToPlaylist(TencentMusic tencentMusic) {
+    public void addToPlaylist(Song tencentMusic) {
         Music music = new Music();
         music.storeId = mRepository.getStoreId();
         music.albumId = tencentMusic.albumId;

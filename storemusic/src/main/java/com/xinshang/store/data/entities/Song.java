@@ -25,17 +25,17 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "music")
-public class TencentMusic implements Parcelable {
-    public static final Creator<TencentMusic> CREATOR = new Creator<TencentMusic>() {
+@Entity(tableName = "song")
+public class Song implements Parcelable {
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
         @Override
-        public TencentMusic createFromParcel(Parcel in) {
-            return new TencentMusic(in);
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
         }
 
         @Override
-        public TencentMusic[] newArray(int size) {
-            return new TencentMusic[size];
+        public Song[] newArray(int size) {
+            return new Song[size];
         }
     };
     @NonNull
@@ -65,10 +65,10 @@ public class TencentMusic implements Parcelable {
     @SerializedName("albumName")
     public String albumName;
 
-    public TencentMusic() {
+    public Song() {
     }
 
-    protected TencentMusic(Parcel in) {
+    protected Song(Parcel in) {
         mediaId = in.readString();
         mediaName = in.readString();
         duration = in.readLong();
@@ -103,15 +103,15 @@ public class TencentMusic implements Parcelable {
             return false;
         }
 
-        TencentMusic audient = (TencentMusic) o;
+        Song song = (Song) o;
 
-        return TextUtils.equals(this.mediaId, audient.mediaId) && this.duration == audient.duration
-                && TextUtils.equals(this.title, audient.title)
-                && TextUtils.equals(mediaName, audient.mediaName)
-                && TextUtils.equals(this.artistId, audient.artistId)
-                && TextUtils.equals(this.artistName, audient.artistName)
-                && TextUtils.equals(this.albumId, audient.albumId)
-                && TextUtils.equals(this.albumName, audient.albumName);
+        return TextUtils.equals(this.mediaId, song.mediaId) && this.duration == song.duration
+                && TextUtils.equals(this.title, song.title)
+                && TextUtils.equals(mediaName, song.mediaName)
+                && TextUtils.equals(this.artistId, song.artistId)
+                && TextUtils.equals(this.artistName, song.artistName)
+                && TextUtils.equals(this.albumId, song.albumId)
+                && TextUtils.equals(this.albumName, song.albumName);
     }
 
     @Override

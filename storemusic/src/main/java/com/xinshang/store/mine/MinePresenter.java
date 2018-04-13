@@ -21,7 +21,7 @@ import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.FavoritesResult;
 import com.xinshang.store.data.entities.MessageEvent;
 import com.xinshang.store.data.entities.Music;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
@@ -127,9 +127,9 @@ public class MinePresenter implements MineContract.Presenter {
         Disposable disposable = mRepository.getAudientTests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<TencentMusic>>() {
+                .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
-                    public void onNext(List<TencentMusic> audients) {
+                    public void onNext(List<Song> audients) {
                         if (mView.isActive()) {
                             mView.showUserProgressBar(false);
 
@@ -180,7 +180,7 @@ public class MinePresenter implements MineContract.Presenter {
     }
 
     @Override
-    public void addToPlaylist(TencentMusic tencentMusic) {
+    public void addToPlaylist(Song tencentMusic) {
         Music music = new Music();
         music.storeId = mRepository.getStoreId();
         music.albumId = tencentMusic.albumId;

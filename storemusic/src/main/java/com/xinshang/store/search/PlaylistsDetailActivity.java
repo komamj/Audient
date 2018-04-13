@@ -26,9 +26,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.xinshang.store.R;
+import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
+import com.xinshang.store.data.entities.Playlist;
 import com.xinshang.store.helper.GlideApp;
-import com.xinshang.store.toplist.ToplistDetailPresenter;
+import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -47,12 +49,13 @@ public class PlaylistsDetailActivity extends BaseActivity {
     ImageView mAlbum;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+
     @Inject
-    ToplistDetailPresenter mPresenter;
+    PlaylistsDetailPresenter mPresenter;
 
     @OnClick(R.id.fab)
     void onFabClick() {
-
+        mPresenter.playAll();
     }
 
     @Override
@@ -76,27 +79,32 @@ public class PlaylistsDetailActivity extends BaseActivity {
 
         mFab.setImageResource(R.drawable.ic_playlist_play);
 
+        Playlist playlist = getIntent().getParcelableExtra(Constants.KEY_PLAYLISTS);
 
-        GlideApp.with(this).load("").thumbnail(0.1f)
-                .placeholder(new ColorDrawable(Color.GRAY)).into(mAlbum);
 
-        mCollapsingToolbarLayout.setTitle("");
+        GlideApp.with(this)
+                .load(playlist.imageUrl)
+                .thumbnail(0.1f)
+                .placeholder(new ColorDrawable(Color.GRAY))
+                .into(mAlbum);
+
+        mCollapsingToolbarLayout.setTitle(playlist.name);
         mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
 
         PlaylistsDetailFragment fragment = (PlaylistsDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
         if (fragment == null) {
-            fragment = PlaylistsDetailFragment.newInstance();
+            fragment = PlaylistsDetailFragment.newInstance(playlist);
 
             getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
         }
 
-       /* DaggerToplistDetailComponent.builder()
+        DaggerPlaylistsDetailComponent.builder()
                 .audientRepositoryComponent(
                         ((StoreMusicApplication) getApplication()).getRepositoryComponent())
-                .toplistDetailPresenterModule(new ToplistDetailPresenterModule(fragment))
+                .playlistsDetailPresenterModule(new PlaylistsDetailPresenterModule(fragment))
                 .build()
-                .inject(this);*/
+                .inject(this);
     }
 
     @Override

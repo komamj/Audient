@@ -21,21 +21,21 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 
 import java.util.List;
 
 @Dao
-public interface AudientDao {
-    @Query("SELECT * FROM music")
-    List<TencentMusic> getAllMusics();
+public interface SongDao {
+    @Query("SELECT * FROM Song")
+    List<Song> getAllSongs();
 
-    @Query("SELECT * FROM music WHERE mediaId = (:id)")
-    TencentMusic findById(String id);
+    @Query("SELECT * FROM Song WHERE mediaId = (:id)")
+    Song findById(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMusics(TencentMusic... musics);
+    void insertSongs(Song... songs);
 
     @Delete
-    int deleteMusics(TencentMusic... musics);
+    int deleteSongs(Song... songs);
 }

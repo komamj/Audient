@@ -30,7 +30,7 @@ import com.xinshang.store.R;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.MessageEvent;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.mine.AddFavoritesDialog;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
@@ -57,14 +57,14 @@ public class MyFavoritesFragment extends BaseFragment implements MyFavoritesCont
     @BindView(R.id.fab)
     FloatingActionButton mFab;
     private Context mContext;
-    private TencentMusic mAudient;
+    private Song mAudient;
     private MyFavoritesAdapter mAdapter;
     private MyFavoritesContract.Presenter mPresenter;
 
     public MyFavoritesFragment() {
     }
 
-    public static MyFavoritesFragment newInstance(TencentMusic audient) {
+    public static MyFavoritesFragment newInstance(Song audient) {
         final MyFavoritesFragment dialogFragment = new MyFavoritesFragment();
 
         Bundle bundle = new Bundle();

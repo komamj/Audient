@@ -18,7 +18,6 @@ package com.xinshang.store.playlist;
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
 import com.xinshang.store.data.entities.StoreSong;
-import com.xinshang.store.data.entities.TencentMusic;
 
 import java.util.List;
 

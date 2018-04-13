@@ -25,12 +25,15 @@ import android.view.View;
 import com.xinshang.store.R;
 import com.xinshang.store.base.AudientAdapter;
 import com.xinshang.store.base.BaseFragment;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Playlist;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.playlist.ConfirmDialog;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -46,8 +49,15 @@ public class PlaylistsDetailFragment extends BaseFragment implements PlaylistsDe
 
     private PlaylistsDetailContract.Presenter mPresenter;
 
-    public static PlaylistsDetailFragment newInstance() {
+    private Playlist mPlaylist;
+
+    public static PlaylistsDetailFragment newInstance(Playlist playlist) {
         PlaylistsDetailFragment fragment = new PlaylistsDetailFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.KEY_PLAYLISTS, playlist);
+
+        fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -55,6 +65,10 @@ public class PlaylistsDetailFragment extends BaseFragment implements PlaylistsDe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mPlaylist = getArguments().getParcelable(Constants.KEY_PLAYLISTS);
+        }
     }
 
     @Override
@@ -67,7 +81,7 @@ public class PlaylistsDetailFragment extends BaseFragment implements PlaylistsDe
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-
+                    mPresenter.loadPlaylistSongs(mPlaylist);
                 }
             }
         });
@@ -75,19 +89,19 @@ public class PlaylistsDetailFragment extends BaseFragment implements PlaylistsDe
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
                 R.color.colorPrimary);
 
-        mSwipeRefreshLayout.setRefreshing(true);
+        setLoadingIndicator(true);
 
         mAdapter = new AudientAdapter(mContext);
         mAdapter.setEventListener(new AudientAdapter.EventListener() {
             @Override
-            public void onFavoriteMenuClick(TencentMusic audient) {
+            public void onFavoriteMenuClick(Song audient) {
                 Intent intent = new Intent(mContext, MyFavoritesActivity.class);
                 intent.putExtra(Constants.KEY_AUDIENT, audient);
                 mContext.startActivity(intent);
             }
 
             @Override
-            public void onPlaylistChanged(final TencentMusic audient) {
+            public void onPlaylistChanged(final Song audient) {
                 ConfirmDialog.showConfirmDialog(getChildFragmentManager(),
                         new ConfirmDialog.OnConfirmListener() {
                             @Override
@@ -108,7 +122,7 @@ public class PlaylistsDetailFragment extends BaseFragment implements PlaylistsDe
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-
+            mPresenter.loadPlaylistSongs(mPlaylist);
         }
     }
 
@@ -131,6 +145,21 @@ public class PlaylistsDetailFragment extends BaseFragment implements PlaylistsDe
     @Override
     public boolean isActive() {
         return this.isAdded();
+    }
+
+    @Override
+    public void setLoadingIndicator(final boolean isActive) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
+    }
+
+    @Override
+    public void showSongs(List<Song> songs) {
+        mAdapter.replace(songs);
     }
 
     @Override

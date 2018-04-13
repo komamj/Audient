@@ -37,7 +37,7 @@ import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
 import com.xinshang.store.comment.CommentActivity;
 import com.xinshang.store.data.entities.Favorite;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
 import com.xinshang.store.utils.Constants;
@@ -60,8 +60,8 @@ public class FavoritesSongAdapter extends BaseAdapter<Favorite.FavoritesSong, Fa
                 .placeholder(new ColorDrawable(Color.GRAY));
     }
 
-    private static final TencentMusic buildAudient(Favorite.FavoritesSong favoritesSong) {
-        TencentMusic audient = new TencentMusic();
+    private static final Song buildAudient(Favorite.FavoritesSong favoritesSong) {
+        Song audient = new Song();
 
         audient.albumId = favoritesSong.albumId;
         audient.albumName = favoritesSong.albumName;
@@ -114,7 +114,7 @@ public class FavoritesSongAdapter extends BaseAdapter<Favorite.FavoritesSong, Fa
     public interface EventListener {
         void onDeleteEventChanged(Favorite.FavoritesSong audient);
 
-        void onPlaylistChanged(TencentMusic audient);
+        void onPlaylistChanged(Song audient);
     }
 
     class FavoriteSongVH extends BaseViewHolder implements View.OnClickListener {
@@ -173,7 +173,7 @@ public class FavoritesSongAdapter extends BaseAdapter<Favorite.FavoritesSong, Fa
 
             Favorite.FavoritesSong favoritesSong = mData.get(position);
 
-            TencentMusic audient = buildAudient(favoritesSong);
+            Song audient = buildAudient(favoritesSong);
 
             AuditionDialogFragment.newInstance(audient)
                     .show(((AppCompatActivity) mContext).getSupportFragmentManager(),

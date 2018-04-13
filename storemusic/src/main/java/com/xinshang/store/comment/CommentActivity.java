@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.utils.ActivityUtils;
 import com.xinshang.store.utils.Constants;
@@ -51,7 +51,7 @@ public class CommentActivity extends BaseActivity {
     FloatingActionButton mFab;
     @Inject
     CommentPresenter mPresenter;
-    private TencentMusic mAudient;
+    private Song mAudient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

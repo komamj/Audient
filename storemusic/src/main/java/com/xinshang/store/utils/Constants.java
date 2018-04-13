@@ -42,6 +42,8 @@ public final class Constants {
 
     public static final String KEY_AUDIENT = "key_auident";
 
+    public static final String KEY_PLAYLISTS = "key_playlists";
+
     // album format
     public static final String ALBUM_FORMAT = "jpg";
 

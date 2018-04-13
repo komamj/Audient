@@ -28,11 +28,11 @@ import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.PlaylistSongResponse;
 import com.xinshang.store.data.entities.SearchResult;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StoreSong;
-import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -151,7 +151,7 @@ public interface AudientApi {
      */
     @POST("api/v1/favorites/{id}/items")
     Flowable<BaseResponse> addToFavorite(@Path("id") String favoriteId,
-                                         @Body TencentMusic audient);
+                                         @Body Song audient);
 
     /**
      * 获取歌单下的所有歌曲

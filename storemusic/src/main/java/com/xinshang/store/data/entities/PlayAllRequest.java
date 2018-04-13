@@ -6,5 +6,5 @@ import java.util.List;
 
 public class PlayAllRequest {
     @SerializedName("items")
-    public List<TencentMusic> tencentMusics;
+    public List<Song> songs;
 }

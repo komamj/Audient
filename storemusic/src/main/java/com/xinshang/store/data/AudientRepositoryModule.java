@@ -26,7 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.xinshang.store.BuildConfig;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.source.AudientDataSource;
-import com.xinshang.store.data.source.local.AudientDao;
+import com.xinshang.store.data.source.local.SongDao;
 import com.xinshang.store.data.source.local.AudientDatabase;
 import com.xinshang.store.data.source.local.LocalDataSource;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
@@ -57,7 +57,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AudientRepositoryModule {
     private static final String TAG = AudientRepositoryModule.class.getSimpleName();
 
-    private static final String DB_NAME = "store-db";
+    private static final String DB_NAME = "song-db";
 
     private final String mBaseUrl;
 
@@ -67,7 +67,7 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    AudientDataSource provideLocalDataSource(Context context, AudientDao audientDao,
+    AudientDataSource provideLocalDataSource(Context context, SongDao audientDao,
                                              SharedPreferences sharedPreferences, Gson gson) {
         return new LocalDataSource(context, audientDao, sharedPreferences, gson);
     }
@@ -93,8 +93,8 @@ public class AudientRepositoryModule {
 
     @Singleton
     @Provides
-    AudientDao provideAudientDao(AudientDatabase db) {
-        return db.audientDao();
+    SongDao provideAudientDao(AudientDatabase db) {
+        return db.songDao();
     }
 
     @Singleton

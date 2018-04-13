@@ -25,13 +25,15 @@ import com.xinshang.store.data.entities.FileResult;
 import com.xinshang.store.data.entities.LyricResult;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.NowPlayingResponse;
+import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.PlaylistResponse;
+import com.xinshang.store.data.entities.PlaylistSongResponse;
 import com.xinshang.store.data.entities.SearchResult;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
 import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StoreSong;
-import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
 import com.xinshang.store.data.entities.ToplistDetailResult;
@@ -60,7 +62,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<List<TencentMusic>> getAudientTests() {
+    public Flowable<List<Song>> getAudientTests() {
         return null;
     }
 
@@ -92,6 +94,11 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
+    public Flowable<ApiResponse<PlaylistSongResponse>> getPlaylistDetails(String id) {
+        return mAudientApi.getPlaylistDetails(id);
+    }
+
+    @Override
     public Flowable<LyricResult> getLyricResult(String id) {
         return mAudientApi.getLyricResult(id);
     }
@@ -112,7 +119,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
             @Override
             public void subscribe(FlowableEmitter<NowPlayingResponse> emitter) throws Exception {
                 NowPlayingResponse nowPlayingResult = new NowPlayingResponse();
-                TencentMusic audient = new TencentMusic();
+                Song audient = new Song();
                 audient.mediaId = "003evjhg3qIe9S";
                 audient.duration = 260;
                 audient.artistId = "0040D7gK4aI54k";
@@ -170,7 +177,12 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> addToFavorite(String favoriteId, TencentMusic audient) {
+    public Flowable<BaseResponse> playAllSongs(String id, PlayAllRequest playAllRequest) {
+        return mAudientApi.playAllSongs(id, playAllRequest);
+    }
+
+    @Override
+    public Flowable<BaseResponse> addToFavorite(String favoriteId, Song audient) {
         return mAudientApi.addToFavorite(favoriteId, audient);
     }
 

@@ -17,7 +17,7 @@ package com.xinshang.store.toplist;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 
 import java.util.List;
 
@@ -29,12 +29,12 @@ public interface ToplistDetailContract {
 
         String getShowTime();
 
-        void showToplistDetail(List<TencentMusic> audients);
+        void showToplistDetail(List<Song> audients);
     }
 
     interface Presenter extends BasePresenter {
         void loadToplistDetail(int topId, String showTime);
 
-        void addToPlaylist(TencentMusic tencentMusic);
+        void addToPlaylist(Song tencentMusic);
     }
 }

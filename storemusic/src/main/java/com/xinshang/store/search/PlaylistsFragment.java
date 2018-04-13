@@ -16,6 +16,7 @@
 package com.xinshang.store.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
 import com.xinshang.store.data.entities.Playlist;
+import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 import com.xinshang.store.widget.AudientItemDecoration;
 
@@ -109,7 +111,9 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
         mAdapter.setListener(new PlaylistsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Playlist playlist) {
-
+                Intent intent = new Intent(mContext, PlaylistsDetailActivity.class);
+                intent.putExtra(Constants.KEY_PLAYLISTS, playlist);
+                mContext.startActivity(intent);
             }
         });
 

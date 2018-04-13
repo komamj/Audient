@@ -25,7 +25,7 @@ import android.view.View;
 import com.xinshang.store.R;
 import com.xinshang.store.base.AudientAdapter;
 import com.xinshang.store.base.BaseFragment;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.playlist.ConfirmDialog;
 import com.xinshang.store.utils.Constants;
@@ -100,14 +100,14 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         mAdapter = new AudientAdapter(mContext);
         mAdapter.setEventListener(new AudientAdapter.EventListener() {
             @Override
-            public void onFavoriteMenuClick(TencentMusic audient) {
+            public void onFavoriteMenuClick(Song audient) {
                 Intent intent = new Intent(mContext, MyFavoritesActivity.class);
                 intent.putExtra(Constants.KEY_AUDIENT, audient);
                 mContext.startActivity(intent);
             }
 
             @Override
-            public void onPlaylistChanged(final TencentMusic audient) {
+            public void onPlaylistChanged(final Song audient) {
                 ConfirmDialog.showConfirmDialog(getChildFragmentManager(),
                         new ConfirmDialog.OnConfirmListener() {
                             @Override
@@ -169,7 +169,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     }
 
     @Override
-    public void showToplistDetail(List<TencentMusic> audients) {
+    public void showToplistDetail(List<Song> audients) {
         mSwipeRefreshLayout.setRefreshing(false);
 
         mAdapter.update(audients);

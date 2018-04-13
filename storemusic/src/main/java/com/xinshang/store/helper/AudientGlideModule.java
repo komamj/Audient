@@ -26,8 +26,8 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.xinshang.store.data.entities.Favorite;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.StoreSong;
-import com.xinshang.store.data.entities.TencentMusic;
 
 import java.io.InputStream;
 
@@ -49,7 +49,7 @@ public class AudientGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide,
                                    @NonNull Registry registry) {
-        registry.prepend(TencentMusic.class, InputStream.class, new AudientUrlLoader.Factory());
+        registry.prepend(Song.class, InputStream.class, new AudientUrlLoader.Factory());
         registry.append(Favorite.FavoritesSong.class, InputStream.class,
                 new FavoritesSongUrlLoader.Factory());
         registry.append(StoreSong.class, InputStream.class,

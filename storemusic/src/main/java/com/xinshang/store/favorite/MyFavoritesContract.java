@@ -18,7 +18,7 @@ package com.xinshang.store.favorite;
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
 import com.xinshang.store.data.entities.Favorite;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 
 import java.util.List;
 
@@ -38,6 +38,6 @@ public interface MyFavoritesContract {
     interface Presenter extends BasePresenter {
         void loadMyFavorites();
 
-        void addToFavorite(String favoritesId, TencentMusic audient);
+        void addToFavorite(String favoritesId, Song audient);
     }
 }

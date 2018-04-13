@@ -19,7 +19,7 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.SearchResult;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.LogUtils;
 
 import java.util.List;
@@ -79,17 +79,17 @@ public class SongsPresenter implements SongsContract.Presenter {
         }
 
         Disposable disposable = mRepository.searchSongs(keyword, 0, 300)
-                .map(new Function<SearchResult, List<TencentMusic>>() {
+                .map(new Function<SearchResult, List<Song>>() {
                     @Override
-                    public List<TencentMusic> apply(SearchResult searchResult) throws Exception {
+                    public List<Song> apply(SearchResult searchResult) throws Exception {
                         return searchResult.dataBean.audients;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<TencentMusic>>() {
+                .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
-                    public void onNext(List<TencentMusic> audients) {
+                    public void onNext(List<Song> audients) {
                         if (mView.isActive()) {
                             mView.setLoadingIndictor(false);
 
@@ -120,7 +120,7 @@ public class SongsPresenter implements SongsContract.Presenter {
     }
 
     @Override
-    public void addToPlaylist(TencentMusic tencentMusic) {
+    public void addToPlaylist(Song tencentMusic) {
         Music music = new Music();
         music.storeId = mRepository.getStoreId();
         music.albumId = tencentMusic.albumId;

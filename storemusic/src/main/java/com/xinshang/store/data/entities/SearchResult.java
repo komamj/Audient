@@ -28,6 +28,6 @@ public class SearchResult {
 
     public static class DataBean {
         @SerializedName("items")
-        public List<TencentMusic> audients;
+        public List<Song> audients;
     }
 }

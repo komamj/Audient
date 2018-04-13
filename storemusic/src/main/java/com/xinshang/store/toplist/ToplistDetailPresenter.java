@@ -18,7 +18,7 @@ package com.xinshang.store.toplist;
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Music;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.ToplistDetailResult;
 import com.xinshang.store.utils.LogUtils;
 
@@ -74,17 +74,17 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
         mDisposables.clear();
 
         Disposable disposable = mRepository.getToplistDetail(topId, showTime, 0, 40)
-                .map(new Function<ToplistDetailResult, List<TencentMusic>>() {
+                .map(new Function<ToplistDetailResult, List<Song>>() {
                     @Override
-                    public List<TencentMusic> apply(ToplistDetailResult toplistDetailResult) throws Exception {
+                    public List<Song> apply(ToplistDetailResult toplistDetailResult) throws Exception {
                         return toplistDetailResult.dataBean.audients;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<TencentMusic>>() {
+                .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
-                    public void onNext(List<TencentMusic> audients) {
+                    public void onNext(List<Song> audients) {
                         if (mView.isActive()) {
                             mView.showToplistDetail(audients);
                         }
@@ -105,7 +105,7 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     }
 
     @Override
-    public void addToPlaylist(TencentMusic tencentMusic) {
+    public void addToPlaylist(Song tencentMusic) {
         Music music = new Music();
         music.storeId = mRepository.getStoreId();
         music.albumId = tencentMusic.albumId;

@@ -25,35 +25,35 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.Utils;
 
 import java.io.InputStream;
 
-public class AudientUrlLoader extends BaseGlideUrlLoader<TencentMusic> {
+public class AudientUrlLoader extends BaseGlideUrlLoader<Song> {
 
     private AudientUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader,
-                             @Nullable ModelCache<TencentMusic, GlideUrl> modelCache) {
+                             @Nullable ModelCache<Song, GlideUrl> modelCache) {
         super(concreteLoader, modelCache);
     }
 
     @Override
-    protected String getUrl(TencentMusic audient, int width, int height, Options options) {
+    protected String getUrl(Song audient, int width, int height, Options options) {
         return Utils.buildUrl(audient.albumId);
     }
 
 
     @Override
-    public boolean handles(@NonNull TencentMusic audient) {
+    public boolean handles(@NonNull Song audient) {
         return true;
     }
 
-    public static class Factory implements ModelLoaderFactory<TencentMusic, InputStream> {
-        private final ModelCache<TencentMusic, GlideUrl> modelCache = new ModelCache<>(500);
+    public static class Factory implements ModelLoaderFactory<Song, InputStream> {
+        private final ModelCache<Song, GlideUrl> modelCache = new ModelCache<>(500);
 
         @NonNull
         @Override
-        public ModelLoader<TencentMusic, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<Song, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
             return new AudientUrlLoader(multiFactory.build(GlideUrl.class, InputStream.class),
                     modelCache);
         }

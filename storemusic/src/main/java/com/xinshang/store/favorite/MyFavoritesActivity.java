@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.Constants;
 
 import javax.inject.Inject;
@@ -47,7 +47,7 @@ public class MyFavoritesActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        TencentMusic audient = getIntent().getParcelableExtra(Constants.KEY_AUDIENT);
+        Song audient = getIntent().getParcelableExtra(Constants.KEY_AUDIENT);
 
         MyFavoritesFragment fragment = (MyFavoritesFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);

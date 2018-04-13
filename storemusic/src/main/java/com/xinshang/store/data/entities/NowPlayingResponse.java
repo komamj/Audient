@@ -20,5 +20,5 @@ package com.xinshang.store.data.entities;
  */
 
 public class NowPlayingResponse {
-    public TencentMusic tencentMusic;
+    public Song tencentMusic;
 }

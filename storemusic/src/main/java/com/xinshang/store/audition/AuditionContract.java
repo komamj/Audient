@@ -17,7 +17,7 @@ package com.xinshang.store.audition;
 
 import com.xinshang.store.base.BasePresenter;
 import com.xinshang.store.base.BaseView;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.Constants;
 
 public interface AuditionContract {
@@ -26,7 +26,7 @@ public interface AuditionContract {
 
         String getAudientId();
 
-        void showAudient(TencentMusic audient);
+        void showAudient(Song audient);
 
         void setMaxProgress(int progress);
 

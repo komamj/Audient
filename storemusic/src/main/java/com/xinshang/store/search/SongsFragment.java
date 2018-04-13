@@ -28,7 +28,7 @@ import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.AudientAdapter;
 import com.xinshang.store.base.BaseFragment;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.playlist.ConfirmDialog;
 import com.xinshang.store.utils.Constants;
@@ -113,14 +113,14 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
         mAdapter = new AudientAdapter(mContext);
         mAdapter.setEventListener(new AudientAdapter.EventListener() {
             @Override
-            public void onFavoriteMenuClick(TencentMusic audient) {
+            public void onFavoriteMenuClick(Song audient) {
                 Intent intent = new Intent(mContext, MyFavoritesActivity.class);
                 intent.putExtra(Constants.KEY_AUDIENT, audient);
                 mContext.startActivity(intent);
             }
 
             @Override
-            public void onPlaylistChanged(final TencentMusic audient) {
+            public void onPlaylistChanged(final Song audient) {
                 ConfirmDialog.showConfirmDialog(getChildFragmentManager(),
                         new ConfirmDialog.OnConfirmListener() {
                             @Override
@@ -202,7 +202,7 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
     }
 
     @Override
-    public void showAudients(List<TencentMusic> audients) {
+    public void showAudients(List<Song> audients) {
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.replace(audients);

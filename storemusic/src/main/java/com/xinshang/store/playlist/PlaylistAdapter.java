@@ -34,8 +34,8 @@ import com.xinshang.store.R;
 import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
 import com.xinshang.store.comment.CommentActivity;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.StoreSong;
-import com.xinshang.store.data.entities.TencentMusic;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
 import com.xinshang.store.utils.Constants;
@@ -122,7 +122,7 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
     }
 
     public interface EventListener {
-        void onFavoriteMenuClick(TencentMusic audient);
+        void onFavoriteMenuClick(Song audient);
 
         void onDeleteMenuClick(StoreSong storeSong);
     }
@@ -147,7 +147,7 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     StoreSong storeSong = mData.get(getAdapterPosition());
-                    TencentMusic tencentMusic = new TencentMusic();
+                    Song tencentMusic = new Song();
                     tencentMusic.duration = Long.parseLong(storeSong.mediaInterval);
                     tencentMusic.albumId = storeSong.albumId;
                     tencentMusic.artistId = storeSong.artistId;

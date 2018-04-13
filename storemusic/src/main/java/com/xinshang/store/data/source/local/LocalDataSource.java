@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.xinshang.store.data.entities.CommandResponse;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.utils.Constants;
 
@@ -45,12 +45,12 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
 
     private final SharedPreferences mSharedPreferences;
 
-    private final AudientDao mAudientDao;
+    private final SongDao mAudientDao;
 
     private final Gson mGson;
 
     @Inject
-    public LocalDataSource(Context context, AudientDao audientDao,
+    public LocalDataSource(Context context, SongDao audientDao,
                            SharedPreferences sharedPreferences, Gson gson) {
         mContext = context;
 
@@ -62,12 +62,12 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
     }
 
     @Override
-    public Flowable<List<TencentMusic>> getAudientTests() {
-        return Flowable.create(new FlowableOnSubscribe<List<TencentMusic>>() {
+    public Flowable<List<Song>> getAudientTests() {
+        return Flowable.create(new FlowableOnSubscribe<List<Song>>() {
             @Override
-            public void subscribe(FlowableEmitter<List<TencentMusic>> emitter) throws Exception {
-                List<TencentMusic> audients = new ArrayList<>();
-                TencentMusic audient1 = new TencentMusic();
+            public void subscribe(FlowableEmitter<List<Song>> emitter) throws Exception {
+                List<Song> audients = new ArrayList<>();
+                Song audient1 = new Song();
                 audient1.mediaId = "001yS0N33yPm1B";
                 audient1.duration = 324;
                 audient1.artistId = "002pUZT93gF4Cu";
@@ -76,7 +76,7 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
                 audient1.albumId = "002qcJuX3lO3EZ";
                 audient1.albumName = "乐与怒";
                 audients.add(audient1);
-                TencentMusic audient2 = new TencentMusic();
+                Song audient2 = new Song();
                 audient2.mediaId = "002pKRoX4Qbafa";
                 audient2.duration = 298;
                 audient2.artistId = "002pUZT93gF4Cu";
@@ -85,7 +85,7 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
                 audient2.albumId = "001C2BRX15iE4B";
                 audient2.albumName = "命运派对";
                 audients.add(audient2);
-                TencentMusic audient3 = new TencentMusic();
+                Song audient3 = new Song();
                 audient3.mediaId = "000DIFHv0PjOHH";
                 audient3.duration = 250;
                 audient3.artistId = "002pUZT93gF4Cu";
@@ -94,7 +94,7 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
                 audient3.albumId = "000DWELJ4Y7U3P";
                 audient3.albumName = "黄家驹原作精选集";
                 audients.add(audient3);
-                TencentMusic audient4 = new TencentMusic();
+                Song audient4 = new Song();
                 audient4.mediaId = "004Gyue33FERTT";
                 audient4.duration = 275;
                 audient4.artistId = "002pUZT93gF4Cu";
@@ -103,7 +103,7 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
                 audient4.albumId = "000eOgmK1fN8Cs";
                 audient4.albumName = "BEYOND IV";
                 audients.add(audient4);
-                TencentMusic audient5 = new TencentMusic();
+                Song audient5 = new Song();
                 audient5.mediaId = "00247u9f23fivj";
                 audient5.duration = 251;
                 audient5.artistId = "002pUZT93gF4Cu";
@@ -112,7 +112,7 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
                 audient5.albumId = "000DWELJ4Y7U3P";
                 audient5.albumName = "黄家驹原作精选集";
                 audients.add(audient5);
-                TencentMusic audient6 = new TencentMusic();
+                Song audient6 = new Song();
                 audient6.mediaId = "001mbYZr3QR68r";
                 audient6.duration = 273;
                 audient6.artistId = "002pUZT93gF4Cu";

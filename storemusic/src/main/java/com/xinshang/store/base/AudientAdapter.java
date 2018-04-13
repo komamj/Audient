@@ -34,7 +34,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.store.R;
 import com.xinshang.store.audition.AuditionDialogFragment;
 import com.xinshang.store.comment.CommentActivity;
-import com.xinshang.store.data.entities.TencentMusic;
+import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.helper.GlideRequest;
 import com.xinshang.store.utils.Constants;
@@ -42,7 +42,7 @@ import com.xinshang.store.utils.Constants;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AudientAdapter extends BaseAdapter<TencentMusic, AudientAdapter.AudientViewHolder> {
+public class AudientAdapter extends BaseAdapter<Song, AudientAdapter.AudientViewHolder> {
     private static final String TAG = AudientAdapter.class.getSimpleName();
 
     private final GlideRequest<Bitmap> mGlideRequest;
@@ -64,17 +64,17 @@ public class AudientAdapter extends BaseAdapter<TencentMusic, AudientAdapter.Aud
     }
 
     @Override
-    protected boolean areItemsTheSame(TencentMusic oldItem, TencentMusic newItem) {
+    protected boolean areItemsTheSame(Song oldItem, Song newItem) {
         return TextUtils.equals(oldItem.mediaId, newItem.mediaId);
     }
 
     @Override
-    protected boolean areContentsTheSame(TencentMusic oldItem, TencentMusic newItem) {
+    protected boolean areContentsTheSame(Song oldItem, Song newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    protected Object getChangePayload(TencentMusic oldItem, TencentMusic newItem) {
+    protected Object getChangePayload(Song oldItem, Song newItem) {
         return null;
     }
 
@@ -88,7 +88,7 @@ public class AudientAdapter extends BaseAdapter<TencentMusic, AudientAdapter.Aud
 
     @Override
     public void onBindViewHolder(AudientViewHolder holder, int position) {
-        TencentMusic audient = mData.get(position);
+        Song audient = mData.get(position);
 
         mGlideRequest.load(audient).into(holder.mAlbum);
 
@@ -97,9 +97,9 @@ public class AudientAdapter extends BaseAdapter<TencentMusic, AudientAdapter.Aud
     }
 
     public interface EventListener {
-        void onFavoriteMenuClick(TencentMusic audient);
+        void onFavoriteMenuClick(Song audient);
 
-        void onPlaylistChanged(TencentMusic audient);
+        void onPlaylistChanged(Song audient);
     }
 
     public class AudientViewHolder extends BaseViewHolder implements View.OnClickListener {
@@ -130,7 +130,7 @@ public class AudientAdapter extends BaseAdapter<TencentMusic, AudientAdapter.Aud
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    TencentMusic audient = mData.get(getAdapterPosition());
+                    Song audient = mData.get(getAdapterPosition());
 
                     switch (item.getItemId()) {
                         case R.id.action_favorite:
