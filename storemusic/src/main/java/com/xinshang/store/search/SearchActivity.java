@@ -103,12 +103,14 @@ public class SearchActivity extends BaseActivity {
         fragments.add(songsFragment);
         PlaylistsFragment playlistsFragment = PlaylistsFragment.newInstance();
         fragments.add(playlistsFragment);
+        AlbumsFragment albumsFragment = AlbumsFragment.newInstance();
+        fragments.add(albumsFragment);
 
         SearchFragmentPagerAdapter adapter = new SearchFragmentPagerAdapter(getSupportFragmentManager(),
                 fragments, mPageTitles);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -133,7 +135,7 @@ public class SearchActivity extends BaseActivity {
     }
 
     private static class SearchFragmentPagerAdapter extends FragmentPagerAdapter {
-        private static final int TAB_COUNT = 2;
+        private static final int TAB_COUNT = 3;
 
         private List<Fragment> mFragments;
 

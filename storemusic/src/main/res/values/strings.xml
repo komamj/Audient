@@ -41,6 +41,7 @@
     <string-array name="search_page_title">
         <item>"单曲"</item>
         <item>"歌单"</item>
+        <item>"专辑"</item>
     </string-array>
     <string name="action_playlist">"添加到播放列表"</string>
     <string name="action_favorite">"加入收藏"</string>

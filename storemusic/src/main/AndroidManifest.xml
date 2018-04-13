@@ -71,6 +71,12 @@
             android:theme="@style/FullScreenTheme" />
 
         <activity
+            android:name=".search.AlbumDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+
+        <activity
             android:name=".favorite.MyFavoritesActivity"
             android:exported="false"
             android:screenOrientation="portrait"
