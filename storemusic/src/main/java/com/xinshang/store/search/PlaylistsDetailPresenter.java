@@ -67,7 +67,7 @@ public class PlaylistsDetailPresenter implements PlaylistsDetailContract.Present
                 .map(new Function<ApiResponse<PlaylistSongResponse>, List<Song>>() {
                     @Override
                     public List<Song> apply(ApiResponse<PlaylistSongResponse> playlistSongResponseApiResponse) throws Exception {
-                        return playlistSongResponseApiResponse.data.tencentMusics;
+                        return playlistSongResponseApiResponse.data.songs;
                     }
                 })
                 .subscribeOn(Schedulers.io())

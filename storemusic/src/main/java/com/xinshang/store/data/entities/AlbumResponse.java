@@ -18,13 +18,33 @@ package com.xinshang.store.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by koma on 4/13/18.
  */
 
 public class AlbumResponse {
+    @SerializedName("list")
+    public List<Album> albums;
+
     public static class Album implements Parcelable {
+        @SerializedName("albumMID")
+        public String id;
+        @SerializedName("albumName")
+        public String name;
+        @SerializedName("albumName_hilight")
+        public String title;
+        @SerializedName("albumPic")
+        public String picUrl;
+
         protected Album(Parcel in) {
+            id = in.readString();
+            name = in.readString();
+            title = in.readString();
+            picUrl = in.readString();
         }
 
         public static final Creator<Album> CREATOR = new Creator<Album>() {
@@ -45,7 +65,11 @@ public class AlbumResponse {
         }
 
         @Override
-        public void writeToParcel(Parcel parcel, int i) {
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(name);
+            dest.writeString(title);
+            dest.writeString(picUrl);
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.xinshang.store.data.source.remote;
 
+import com.xinshang.store.data.entities.AlbumResponse;
+import com.xinshang.store.data.entities.AlbumSongResponse;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommentDataBean;
@@ -42,6 +44,10 @@ public interface IRemoteDataSource {
     Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page, int size);
 
     Flowable<ApiResponse<PlaylistSongResponse>> getPlaylistDetails(String id);
+
+    Flowable<ApiResponse<AlbumResponse>> searchAlbums(String keyword, int page, int size);
+
+    Flowable<ApiResponse<AlbumSongResponse>> getAlbumSongs(String id);
 
     Flowable<LyricResult> getLyricResult(String id);
 

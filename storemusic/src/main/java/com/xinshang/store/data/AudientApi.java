@@ -15,6 +15,8 @@
  */
 package com.xinshang.store.data;
 
+import com.xinshang.store.data.entities.AlbumResponse;
+import com.xinshang.store.data.entities.AlbumSongResponse;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommentDataBean;
@@ -88,6 +90,19 @@ public interface AudientApi {
      */
     @GET("api/v1/openmusic/songlist/{id}")
     Flowable<ApiResponse<PlaylistSongResponse>> getPlaylistDetails(@Path("id") String id);
+
+    /**
+     * 获取专辑
+     */
+    @GET("api/v1/openmusic/album/search")
+    Flowable<ApiResponse<AlbumResponse>> searchAlbums(@Query("w") String keyword, @Query("p") int page,
+                                                      @Query("n") int pageCount);
+
+    /**
+     * 获取专辑详情
+     */
+    @GET("api/v1/openmusic/album/{id}")
+    Flowable<ApiResponse<AlbumSongResponse>> getAlbumSongs(@Path("id") String id);
 
     /**
      * 获取歌词.

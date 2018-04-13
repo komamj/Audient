@@ -16,16 +16,22 @@
 package com.xinshang.store.search;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.xinshang.store.R;
 import com.xinshang.store.base.BaseAdapter;
 import com.xinshang.store.base.BaseViewHolder;
 import com.xinshang.store.data.entities.AlbumResponse;
+import com.xinshang.store.helper.GlideApp;
+import com.xinshang.store.helper.GlideRequest;
 
 import butterknife.BindView;
 
@@ -34,11 +40,18 @@ import butterknife.BindView;
  */
 
 public class AlbumsAdapter extends BaseAdapter<AlbumResponse.Album, AlbumsAdapter.AlbumsVH> {
+    private final GlideRequest<Bitmap> mGlideRequest;
 
     private OnItemClickListener mListener;
 
     public AlbumsAdapter(Context context) {
         super(context);
+
+        mGlideRequest = GlideApp.with(mContext)
+                .asBitmap()
+                .thumbnail(0.1f)
+                .transition(new BitmapTransitionOptions().crossFade())
+                .placeholder(new ColorDrawable(Color.GRAY));
     }
 
     public void setListener(OnItemClickListener listener) {

@@ -16,6 +16,8 @@
 package com.xinshang.store.data.source.remote;
 
 import com.xinshang.store.data.AudientApi;
+import com.xinshang.store.data.entities.AlbumResponse;
+import com.xinshang.store.data.entities.AlbumSongResponse;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommentDataBean;
@@ -96,6 +98,16 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<ApiResponse<PlaylistSongResponse>> getPlaylistDetails(String id) {
         return mAudientApi.getPlaylistDetails(id);
+    }
+
+    @Override
+    public Flowable<ApiResponse<AlbumResponse>> searchAlbums(String keyword, int page, int size) {
+        return mAudientApi.searchAlbums(keyword, page, size);
+    }
+
+    @Override
+    public Flowable<ApiResponse<AlbumSongResponse>> getAlbumSongs(String id) {
+        return mAudientApi.getAlbumSongs(id);
     }
 
     @Override

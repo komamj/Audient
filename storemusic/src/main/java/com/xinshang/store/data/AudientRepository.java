@@ -15,6 +15,8 @@
  */
 package com.xinshang.store.data;
 
+import com.xinshang.store.data.entities.AlbumResponse;
+import com.xinshang.store.data.entities.AlbumSongResponse;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommandResponse;
@@ -97,6 +99,16 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<ApiResponse<PlaylistSongResponse>> getPlaylistDetails(String id) {
         return mRemoteDataSource.getPlaylistDetails(id);
+    }
+
+    @Override
+    public Flowable<ApiResponse<AlbumResponse>> searchAlbums(String keyword, int page, int size) {
+        return mRemoteDataSource.searchAlbums(keyword, page, size);
+    }
+
+    @Override
+    public Flowable<ApiResponse<AlbumSongResponse>> getAlbumSongs(String id) {
+        return mRemoteDataSource.getAlbumSongs(id);
     }
 
     @Override
