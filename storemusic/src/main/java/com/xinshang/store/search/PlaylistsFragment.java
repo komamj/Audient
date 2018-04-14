@@ -53,6 +53,9 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     private TextView mEmpty;
 
+    private boolean mIsPrepared;
+    private boolean mIsLoaded;
+
     private String mKeyword;
 
     private PlaylistsAdapter mAdapter;
@@ -91,6 +94,19 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
+
+        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.loadPlaylists(mKeyword);
+            }
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -123,6 +139,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
+
+        mIsPrepared = true;
     }
 
     @Override
@@ -172,6 +190,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     @Override
     public void showPlaylists(List<Playlist> playlists) {
+        mIsLoaded = true;
+
         mAdapter.update(playlists);
     }
 
@@ -189,8 +209,12 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     public void onSearch(String keyword) {
         mKeyword = keyword;
 
-        if (mPresenter != null) {
-            mPresenter.loadPlaylists(keyword);
+        mIsLoaded = false;
+
+        if (getUserVisibleHint() && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.loadPlaylists(mKeyword);
+            }
         }
     }
 }

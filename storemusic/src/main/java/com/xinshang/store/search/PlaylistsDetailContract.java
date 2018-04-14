@@ -14,6 +14,10 @@ public interface PlaylistsDetailContract {
         void setLoadingIndicator(boolean isActive);
 
         void showSongs(List<Song> songs);
+
+        void showPlaySuccessfulMessage();
+
+        void showPlayFailedMessage();
     }
 
     interface Presenter extends BasePresenter {

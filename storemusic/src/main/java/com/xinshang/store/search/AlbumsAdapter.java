@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -76,12 +77,27 @@ public class AlbumsAdapter extends BaseAdapter<AlbumResponse.Album, AlbumsAdapte
     @NonNull
     @Override
     public AlbumsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_album, parent,
+                false);
+        return new AlbumsVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AlbumsVH holder, int position) {
+        AlbumResponse.Album album = mData.get(position);
 
+        mGlideRequest.load(album.picUrl).into(holder.mAlbum);
+
+        holder.mName.setText(album.name);
+        holder.mDescription.setText(buildDescription(album));
+    }
+
+    private String buildDescription(AlbumResponse.Album album) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(album.singerName);
+        builder.append(" | ");
+        builder.append(album.publishTime);
+        return builder.toString();
     }
 
     class AlbumsVH extends BaseViewHolder implements View.OnClickListener {

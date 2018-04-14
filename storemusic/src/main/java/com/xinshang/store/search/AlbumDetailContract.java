@@ -32,6 +32,12 @@ public interface AlbumDetailContract {
 
         void setLoadingIndicator(boolean isActive);
 
+        void showLoadingErrorMessage();
+
+        void showPlaySuccessfulMessage();
+
+        void showPlayFailedMessage();
+
         void showSongs(List<Song> songs);
     }
 

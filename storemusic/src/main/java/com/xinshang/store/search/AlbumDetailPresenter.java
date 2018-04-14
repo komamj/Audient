@@ -17,13 +17,24 @@ package com.xinshang.store.search;
 
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.AlbumResponse;
+import com.xinshang.store.data.entities.AlbumSongResponse;
+import com.xinshang.store.data.entities.ApiResponse;
+import com.xinshang.store.data.entities.BaseResponse;
+import com.xinshang.store.data.entities.Music;
+import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.Song;
+import com.xinshang.store.utils.LogUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Created by koma on 4/13/18.
@@ -65,17 +76,113 @@ public class AlbumDetailPresenter implements AlbumDetailContract.Presenter {
     }
 
     @Override
-    public void loadAlbumSongs(AlbumResponse.Album album) {
+    public void loadAlbumSongs(final AlbumResponse.Album album) {
+        Disposable disposable = mRepository.getAlbumSongs(album.id)
+                .map(new Function<ApiResponse<AlbumSongResponse>, List<Song>>() {
+                    @Override
+                    public List<Song> apply(ApiResponse<AlbumSongResponse> albumSongResponseApiResponse) throws Exception {
+                        return albumSongResponseApiResponse.data.songs;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Song>>() {
+                    @Override
+                    public void onNext(List<Song> songs) {
+                        mSongs = songs;
 
+                        if (mView.isActive()) {
+                            mView.showSongs(songs);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+
+                            mView.showLoadingErrorMessage();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
+                    }
+                });
+        mDisposables.add(disposable);
     }
 
     @Override
     public void addToPlaylist(Song tencentMusic) {
+        Music music = new Music();
+        music.storeId = mRepository.getStoreId();
+        music.albumId = tencentMusic.albumId;
+        music.albumName = tencentMusic.albumName;
+        music.artistId = tencentMusic.artistId;
+        music.artistName = tencentMusic.artistName;
+        music.mediaInterval = String.valueOf(tencentMusic.duration);
+        music.mediaId = tencentMusic.mediaId;
+        music.mediaName = tencentMusic.mediaName;
 
+        mRepository.addToPlaylist(music)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "addToPlaylist completed");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.i(TAG, "addToPlaylist completed");
+                    }
+                });
     }
 
     @Override
     public void playAll() {
+        if (mSongs == null || mSongs.isEmpty()) {
+            return;
+        }
 
+        PlayAllRequest playAllRequest = new PlayAllRequest();
+        playAllRequest.songs = mSongs;
+
+        String storeId = mRepository.getStoreId();
+
+        mRepository.playAllSongs(storeId, playAllRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        if (mView.isActive()) {
+                            if (response.resultCode == 0) {
+                                mView.showPlaySuccessfulMessage();
+                            } else {
+                                mView.showPlayFailedMessage();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

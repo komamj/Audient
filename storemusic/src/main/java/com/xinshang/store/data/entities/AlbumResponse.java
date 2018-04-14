@@ -39,12 +39,18 @@ public class AlbumResponse {
         public String title;
         @SerializedName("albumPic")
         public String picUrl;
+        @SerializedName("publicTime")
+        public String publishTime;
+        @SerializedName("singerName")
+        public String singerName;
 
         protected Album(Parcel in) {
             id = in.readString();
             name = in.readString();
             title = in.readString();
             picUrl = in.readString();
+            publishTime = in.readString();
+            singerName = in.readString();
         }
 
         public static final Creator<Album> CREATOR = new Creator<Album>() {
@@ -70,6 +76,8 @@ public class AlbumResponse {
             dest.writeString(name);
             dest.writeString(title);
             dest.writeString(picUrl);
+            dest.writeString(publishTime);
+            dest.writeString(singerName);
         }
     }
 }

@@ -89,7 +89,6 @@ public class PlaylistsDetailActivity extends BaseActivity {
                 .into(mAlbum);
 
         mCollapsingToolbarLayout.setTitle(playlist.name);
-        mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
 
         PlaylistsDetailFragment fragment = (PlaylistsDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);

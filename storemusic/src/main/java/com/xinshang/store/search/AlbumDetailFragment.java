@@ -2,6 +2,7 @@ package com.xinshang.store.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -144,6 +145,29 @@ public class AlbumDetailFragment extends BaseFragment implements AlbumDetailCont
                 mSwipeRefreshLayout.setRefreshing(isActive);
             }
         });
+    }
+
+    @Override
+    public void showLoadingErrorMessage() {
+
+    }
+
+    @Override
+    public void showPlaySuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.added_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showPlayFailedMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.added_failed_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override

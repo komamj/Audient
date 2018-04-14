@@ -150,8 +150,14 @@ public class PlaylistsDetailPresenter implements PlaylistsDetailContract.Present
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
-
+                    public void onNext(BaseResponse response) {
+                        if (mView.isActive()) {
+                            if (response.resultCode == 0) {
+                                mView.showPlaySuccessfulMessage();
+                            } else {
+                                mView.showPlayFailedMessage();
+                            }
+                        }
                     }
 
                     @Override

@@ -56,6 +56,9 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     private TextView mEmpty;
 
+    private boolean mIsPrepared;
+    private boolean mIsLoaded;
+
     private String mKeyword;
 
     private AudientAdapter mAdapter;
@@ -91,6 +94,19 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
                 .songsPresenterModule(new SongsPresenterModule(this))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
+
+        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.loadSongs(mKeyword);
+            }
+        }
     }
 
     @Override
@@ -139,6 +155,8 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
+
+        mIsPrepared = true;
     }
 
     @Override
@@ -203,6 +221,8 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     @Override
     public void showAudients(List<Song> audients) {
+        mIsLoaded = true;
+
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.replace(audients);
@@ -212,8 +232,12 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
     public void onSearch(String keyword) {
         mKeyword = keyword;
 
-        if (mPresenter != null) {
-            mPresenter.loadSongs(keyword);
+        mIsLoaded = false;
+
+        if (getUserVisibleHint() && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.loadSongs(mKeyword);
+            }
         }
     }
 }

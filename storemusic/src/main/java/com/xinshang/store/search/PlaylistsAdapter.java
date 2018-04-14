@@ -93,10 +93,10 @@ public class PlaylistsAdapter extends BaseAdapter<Playlist, PlaylistsAdapter.Pla
         StringBuilder builder = new StringBuilder();
         builder.append(playlist.songCount);
         builder.append("首音乐");
-        /*builder.append(" | ");
+        builder.append(" | ");
         builder.append("播放");
-        builder.append(playlist.listenNum);*/
-
+        builder.append(playlist.listenNum);
+        builder.append("次");
         return builder.toString();
     }
 

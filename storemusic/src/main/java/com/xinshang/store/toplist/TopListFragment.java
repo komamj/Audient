@@ -48,7 +48,6 @@ public class TopListFragment extends BaseFragment implements TopListContract.Vie
     TopListPresenter mPresenter;
 
     private boolean mIsPrepared;
-
     private boolean mIsLoaded;
 
     private TopListAdapter mAdapter;

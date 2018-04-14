@@ -42,7 +42,8 @@ import butterknife.BindView;
  * Created by koma on 4/13/18.
  */
 
-public class AlbumsFragment extends BaseFragment implements AlbumsContract.View, SearchActivity.OnSearchListener {
+public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
+        SearchActivity.OnSearchListener {
     private static final String TAG = AlbumsFragment.class.getSimpleName();
 
     @BindView(R.id.recycler_view)
@@ -51,6 +52,9 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TextView mEmpty;
+
+    private boolean mIsPrepared;
+    private boolean mIsLoaded;
 
     private String mKeyword;
 
@@ -95,6 +99,19 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser :" + isVisibleToUser);
+
+        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.loadAlbums(mKeyword);
+            }
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -105,7 +122,9 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                if (mPresenter != null) {
+                    mPresenter.loadAlbums(mKeyword);
+                }
             }
         });
 
@@ -125,6 +144,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new AudientItemDecoration(mContext));
         mRecyclerView.setAdapter(mAdapter);
+
+        mIsPrepared = true;
     }
 
     @Override
@@ -155,6 +176,14 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
     @Override
     public void onSearch(String keyword) {
         mKeyword = keyword;
+
+        mIsLoaded = false;
+
+        if (getUserVisibleHint() && mIsPrepared && !mIsLoaded) {
+            if (mPresenter != null) {
+                mPresenter.loadAlbums(mKeyword);
+            }
+        }
     }
 
     @Override
@@ -179,11 +208,18 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
     @Override
     public void showAlbums(List<AlbumResponse.Album> albums) {
+        mIsLoaded = true;
 
+        mAdapter.replace(albums);
     }
 
     @Override
-    public void setLoadingIndictor(boolean isActive) {
-
+    public void setLoadingIndictor(final boolean isActive) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
     }
 }

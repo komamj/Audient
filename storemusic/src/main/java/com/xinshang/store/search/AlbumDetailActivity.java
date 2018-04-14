@@ -28,7 +28,10 @@ import android.widget.ImageView;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseActivity;
+import com.xinshang.store.data.entities.AlbumResponse;
 import com.xinshang.store.helper.GlideApp;
+import com.xinshang.store.utils.ActivityUtils;
+import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -57,7 +60,9 @@ public class AlbumDetailActivity extends BaseActivity {
 
     @OnClick(R.id.fab)
     void onFabClick() {
-
+        if (mPresenter != null) {
+            mPresenter.playAll();
+        }
     }
 
     @Override
@@ -81,22 +86,23 @@ public class AlbumDetailActivity extends BaseActivity {
 
         mFab.setImageResource(R.drawable.ic_playlist_play);
 
+        AlbumResponse.Album album = getIntent().getParcelableExtra(Constants.KEY_ALBUMS);
 
         GlideApp.with(this)
-                .load("")
+                .load(album.picUrl)
                 .thumbnail(0.1f)
                 .placeholder(new ColorDrawable(Color.GRAY))
                 .into(mAlbum);
 
-        mCollapsingToolbarLayout.setTitle("");
-        mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+        mCollapsingToolbarLayout.setTitle(album.name);
 
         AlbumDetailFragment fragment = (AlbumDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);
         if (fragment == null) {
-            fragment = AlbumDetailFragment.newInstance(null);
+            fragment = AlbumDetailFragment.newInstance(album);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment,
+                    R.id.content_main);
         }
 
         DaggerAlbumDetailComponent.builder()
