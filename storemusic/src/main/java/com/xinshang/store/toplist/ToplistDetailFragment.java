@@ -120,6 +120,20 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             }
         });
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager)
+                        recyclerView.getLayoutManager();
+                int lastPosition = layoutManager
+                        .findLastVisibleItemPosition();
+                if (lastPosition == mAdapter.getItemCount() - 1) {
+                    // load next page
+                }
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
