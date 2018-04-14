@@ -69,6 +69,12 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
 
     @Override
     public void loadAlbums(String keyword) {
+        if (mView.isActive()) {
+            mView.setLoadingIndictor(true);
+        }
+
+        mDisposables.clear();
+
         Disposable disposable = mRepository.searchAlbums(keyword, 0, 30)
                 .map(new Function<ApiResponse<AlbumResponse>, List<AlbumResponse.Album>>() {
                     @Override
