@@ -21,10 +21,13 @@ import com.xinshang.store.data.entities.Playlist;
 import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.utils.LogUtils;
 
+import org.reactivestreams.Publisher;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -44,6 +47,10 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
+
+    private String mKeyword;
+
+    private int mPage = 0;
 
     @Inject
     public PlaylistsPresenter(PlaylistsContract.View view, AudientRepository repository) {
@@ -72,27 +79,26 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
     }
 
     @Override
+    public void setKeyword(String keyword) {
+        mKeyword = keyword;
+    }
+
+    @Override
     public void loadPlaylists(String keyword) {
+        mPage = 0;
+
         if (mView.isActive()) {
             mView.setLoadingIndictor(true);
         }
 
         mDisposables.clear();
 
-        Disposable disposable = mRepository.searchPlaylists(keyword, 0, 30)
-                .map(new Function<ApiResponse<PlaylistResponse>, List<Playlist>>() {
-                    @Override
-                    public List<Playlist> apply(ApiResponse<PlaylistResponse> playlistResponseApiResponse) throws Exception {
-                        return playlistResponseApiResponse.data.playlists;
-                    }
-                })
+        Disposable disposable = getPlaylists(keyword, mPage, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Playlist>>() {
                     @Override
                     public void onNext(List<Playlist> playlists) {
-                        LogUtils.i(TAG, "searchPlaylists : " + playlists.size());
-
                         if (mView.isActive()) {
                             mView.showPlaylists(playlists);
                         }
@@ -111,6 +117,57 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
                     public void onComplete() {
                         if (mView.isActive()) {
                             mView.setLoadingIndictor(false);
+                        }
+                    }
+                });
+        mDisposables.add(disposable);
+    }
+
+    private Flowable<List<Playlist>> getPlaylists(String keyword, int page, int size) {
+        return mRepository.searchPlaylists(keyword, page, size)
+                .flatMap(new Function<ApiResponse<PlaylistResponse>, Publisher<List<Playlist>>>() {
+                    @Override
+                    public Publisher<List<Playlist>> apply(ApiResponse<PlaylistResponse> response) {
+                        return Flowable.just(response.data.playlists);
+                    }
+                });
+    }
+
+
+    @Override
+    public void loadNextPagePlaylists(String keyword) {
+        if (mView.isActive()) {
+            mView.setLoadingMoreIndicator(true);
+        }
+
+        mDisposables.clear();
+
+        Disposable disposable = getPlaylists(keyword, mPage + 1, 20)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Playlist>>() {
+                    @Override
+                    public void onNext(List<Playlist> playlists) {
+                        if (mView.isActive()) {
+                            mView.showPlaylists(playlists);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.i(TAG, "searchPlaylists error : " + t.getMessage());
+
+                        if (mView.isActive()) {
+                            mView.setLoadingMoreIndicator(false);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ++mPage;
+
+                        if (mView.isActive()) {
+                            mView.setLoadingMoreIndicator(false);
                         }
                     }
                 });

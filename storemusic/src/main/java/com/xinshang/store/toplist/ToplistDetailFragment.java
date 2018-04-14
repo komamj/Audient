@@ -36,6 +36,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 public class ToplistDetailFragment extends BaseFragment implements ToplistDetailContract.View {
     private static final String TAG = ToplistDetailFragment.class.getSimpleName();
 
@@ -43,6 +45,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.loading_layout)
+    View mLoding;
 
     private int mTopId;
 
@@ -87,15 +91,18 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             @Override
             public void onRefresh() {
                 if (mPresenter != null) {
-                    mPresenter.loadToplistDetail(mTopId, mShowTime);
+                    mPresenter.loadToplistSongs(mTopId, mShowTime);
                 }
             }
         });
-
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
                 R.color.colorPrimary);
-
-        mSwipeRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
 
         mAdapter = new AudientAdapter(mContext);
         mAdapter.setEventListener(new AudientAdapter.EventListener() {
@@ -125,12 +132,19 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                LinearLayoutManager layoutManager = (LinearLayoutManager)
-                        recyclerView.getLayoutManager();
-                int lastPosition = layoutManager
-                        .findLastVisibleItemPosition();
-                if (lastPosition == mAdapter.getItemCount() - 1) {
-                    // load next page
+                LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
+
+                if (newState == SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager)
+                            recyclerView.getLayoutManager();
+                    int lastPosition = layoutManager
+                            .findLastVisibleItemPosition();
+                    if (lastPosition == mAdapter.getItemCount() - 1) {
+                        // load next page
+                        if (mPresenter != null) {
+                            mPresenter.loadNextPage(mTopId, mShowTime);
+                        }
+                    }
                 }
             }
         });
@@ -142,7 +156,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPresenter != null) {
-            mPresenter.loadToplistDetail(mTopId, mShowTime);
+            mPresenter.loadToplistSongs(mTopId, mShowTime);
         }
     }
 
@@ -159,7 +173,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_base;
+        return R.layout.fragment_loading;
     }
 
     @Override
@@ -173,19 +187,28 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     }
 
     @Override
-    public int getTopId() {
-        return this.mTopId;
-    }
-
-    @Override
-    public String getShowTime() {
-        return this.mShowTime;
-    }
-
-    @Override
-    public void showToplistDetail(List<Song> audients) {
-        mSwipeRefreshLayout.setRefreshing(false);
+    public void showToplistSongs(List<Song> audients) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         mAdapter.update(audients);
+    }
+
+    @Override
+    public void showNextPageSongs(List<Song> songs) {
+        mAdapter.appendData(songs);
+    }
+
+    @Override
+    public void setLoadingIndicator(final boolean isActive) {
+        if (isActive) {
+            mLoding.setVisibility(View.VISIBLE);
+        } else {
+            mLoding.setVisibility(View.GONE);
+        }
     }
 }

@@ -16,16 +16,20 @@
 package com.xinshang.store.toplist;
 
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Music;
 import com.xinshang.store.data.entities.Song;
-import com.xinshang.store.data.entities.ToplistDetailResult;
+import com.xinshang.store.data.entities.ToplistSongResponse;
 import com.xinshang.store.utils.LogUtils;
+
+import org.reactivestreams.Publisher;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -41,6 +45,8 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     private final AudientRepository mRepository;
 
     private final CompositeDisposable mDisposables;
+
+    private int mPage = 0;
 
     @Inject
     public ToplistDetailPresenter(ToplistDetailContract.View view, AudientRepository repository) {
@@ -59,40 +65,35 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     @Override
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
-
-        loadToplistDetail(mView.getTopId(), mView.getShowTime());
     }
 
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
+
         mDisposables.clear();
     }
 
     @Override
-    public void loadToplistDetail(int topId, String showTime) {
+    public void loadToplistSongs(int topId, String showTime) {
+        mPage = 0;
+
         mDisposables.clear();
 
-        Disposable disposable = mRepository.getToplistDetail(topId, showTime, 0, 40)
-                .map(new Function<ToplistDetailResult, List<Song>>() {
-                    @Override
-                    public List<Song> apply(ToplistDetailResult toplistDetailResult) throws Exception {
-                        return toplistDetailResult.dataBean.audients;
-                    }
-                })
+        Disposable disposable = loadToplistSongs(topId, showTime, mPage, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
-                    public void onNext(List<Song> audients) {
+                    public void onNext(List<Song> songs) {
                         if (mView.isActive()) {
-                            mView.showToplistDetail(audients);
+                            mView.showToplistSongs(songs);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "getToplistDetail error :" + t.toString());
+                        LogUtils.e(TAG, "getToplistSongs error :" + t.getMessage());
                     }
 
                     @Override
@@ -100,7 +101,59 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
 
                     }
                 });
+        mDisposables.add(disposable);
+    }
 
+    private Flowable<List<Song>> loadToplistSongs(final int topId, final String showTime,
+                                                  final int page, final int size) {
+        LogUtils.i(TAG, "loadToplistSongs page : " + page);
+
+        return mRepository.getToplistSongs(topId, showTime, page, size)
+                .flatMap(new Function<ApiResponse<ToplistSongResponse>, Publisher<List<Song>>>() {
+                    @Override
+                    public Publisher<List<Song>> apply(ApiResponse<ToplistSongResponse> response) {
+                        return Flowable.just(response.data.songs);
+                    }
+                });
+    }
+
+    @Override
+    public void loadNextPage(final int topId, final String showTime) {
+        mDisposables.clear();
+
+        if (mView.isActive()) {
+            mView.setLoadingIndicator(true);
+        }
+
+        Disposable disposable = loadToplistSongs(topId, showTime, mPage + 1, 20)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Song>>() {
+                    @Override
+                    public void onNext(List<Song> songs) {
+                        if (mView.isActive()) {
+                            mView.showNextPageSongs(songs);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadNextPage error :" + t.getMessage());
+
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ++mPage;
+
+                        if (mView.isActive()) {
+                            mView.setLoadingIndicator(false);
+                        }
+                    }
+                });
         mDisposables.add(disposable);
     }
 

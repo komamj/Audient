@@ -41,6 +41,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 /**
  * Created by koma on 4/11/18.
  */
@@ -53,6 +55,8 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.loading_layout)
+    View mLoading;
 
     private TextView mEmpty;
 
@@ -149,6 +153,27 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
             }
         });
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
+
+                if (newState == SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager)
+                            recyclerView.getLayoutManager();
+                    int lastPosition = layoutManager
+                            .findLastVisibleItemPosition();
+                    if (lastPosition == mAdapter.getItemCount() - 1) {
+                        // load next page
+                        if (mPresenter != null) {
+                            mPresenter.loadNextPageSongs(mKeyword);
+                        }
+                    }
+                }
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -181,7 +206,7 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_base;
+        return R.layout.fragment_loading;
     }
 
     @Override
@@ -220,12 +245,33 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
     }
 
     @Override
-    public void showAudients(List<Song> audients) {
+    public void setLoadingMoreIndicator(final boolean isActive) {
+        mLoading.post(new Runnable() {
+            @Override
+            public void run() {
+                if (isActive) {
+                    mLoading.setVisibility(View.VISIBLE);
+                } else {
+                    mLoading.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void showSongs(List<Song> audients) {
         mIsLoaded = true;
 
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.replace(audients);
+    }
+
+    @Override
+    public void showNextPageSongs(List<Song> songs) {
+        mRecyclerView.setVisibility(View.VISIBLE);
+
+        mAdapter.appendData(songs);
     }
 
     @Override

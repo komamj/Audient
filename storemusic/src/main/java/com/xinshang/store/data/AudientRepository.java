@@ -30,7 +30,7 @@ import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.PlaylistSongResponse;
-import com.xinshang.store.data.entities.SearchResult;
+import com.xinshang.store.data.entities.SearchResponse;
 import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -38,7 +38,7 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
-import com.xinshang.store.data.entities.ToplistDetailResult;
+import com.xinshang.store.data.entities.ToplistSongResponse;
 import com.xinshang.store.data.source.AudientDataSource;
 import com.xinshang.store.data.source.local.ILocalDataSource;
 import com.xinshang.store.data.source.local.LocalDataSource;
@@ -82,17 +82,19 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count) {
-        return mRemoteDataSource.getToplistDetail(topId, showTime, page, count);
+    public Flowable<ApiResponse<ToplistSongResponse>> getToplistSongs(int topId, String showTime,
+                                                                      int page, int count) {
+        return mRemoteDataSource.getToplistSongs(topId, showTime, page, count);
     }
 
     @Override
-    public Flowable<SearchResult> searchSongs(String keyword, int page, int count) {
+    public Flowable<ApiResponse<SearchResponse>> searchSongs(String keyword, int page, int count) {
         return mRemoteDataSource.searchSongs(keyword, page, count);
     }
 
     @Override
-    public Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page, int size) {
+    public Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page,
+                                                                   int size) {
         return mRemoteDataSource.searchPlaylists(keyword, page, size);
     }
 
@@ -132,7 +134,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord, String storeId, int page, int size) {
+    public Flowable<ApiResponse<CommentDataBean>> getComments(String mid, String sortord,
+                                                              String storeId, int page, int size) {
         return mRemoteDataSource.getComments(mid, sortord, storeId, page, size);
     }
 

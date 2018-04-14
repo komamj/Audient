@@ -29,7 +29,7 @@ import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.PlaylistSongResponse;
-import com.xinshang.store.data.entities.SearchResult;
+import com.xinshang.store.data.entities.SearchResponse;
 import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -37,7 +37,7 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
-import com.xinshang.store.data.entities.ToplistDetailResult;
+import com.xinshang.store.data.entities.ToplistSongResponse;
 
 import java.util.List;
 
@@ -63,19 +63,21 @@ public interface AudientApi {
      * 获取榜单详情
      */
     @GET("api/v1/openmusic/toplist/{id}")
-    Flowable<ToplistDetailResult> getToplistDetail(@Path("id") long topId,
-                                                   @Query("k") String updateKey,
-                                                   @Query("p") int page,
-                                                   @Query("n") int pageCount);
+    Flowable<ApiResponse<ToplistSongResponse>> getToplistSongs(@Path("id") long topId,
+                                                               @Query("k") String updateKey,
+                                                               @Query("p") int page,
+                                                               @Query("n") int pageCount);
 
     /**
-     * 获取搜索结果.
+     * 获取单曲.
      *
      * @param keyword 关键字.
      */
     @GET("api/v1/openmusic/search")
-    Flowable<SearchResult> getSeachResults(@Query("w") String keyword, @Query("p") int page,
-                                           @Query("n") int pageCount, @Query("f") boolean filter);
+    Flowable<ApiResponse<SearchResponse>> searchSongs(@Query("w") String keyword,
+                                                      @Query("p") int page,
+                                                      @Query("n") int pageCount,
+                                                      @Query("f") boolean filter);
 
     /**
      * 搜索歌单

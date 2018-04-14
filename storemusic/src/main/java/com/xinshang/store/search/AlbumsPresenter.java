@@ -19,10 +19,13 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.AlbumResponse;
 import com.xinshang.store.data.entities.ApiResponse;
 
+import org.reactivestreams.Publisher;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -42,6 +45,10 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
     private final AudientRepository mRepository;
 
     private final CompositeDisposable mDisposables;
+
+    private int mPage = 0;
+
+    private String mKeyword;
 
     @Inject
     public AlbumsPresenter(AlbumsContract.View view, AudientRepository repository) {
@@ -68,20 +75,21 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
     }
 
     @Override
+    public void setKeyword(String keyword) {
+        mKeyword = keyword;
+    }
+
+    @Override
     public void loadAlbums(String keyword) {
+        mPage = 0;
+
         if (mView.isActive()) {
             mView.setLoadingIndictor(true);
         }
 
         mDisposables.clear();
 
-        Disposable disposable = mRepository.searchAlbums(keyword, 0, 30)
-                .map(new Function<ApiResponse<AlbumResponse>, List<AlbumResponse.Album>>() {
-                    @Override
-                    public List<AlbumResponse.Album> apply(ApiResponse<AlbumResponse> albumResponseApiResponse) throws Exception {
-                        return albumResponseApiResponse.data.albums;
-                    }
-                })
+        Disposable disposable = getAlbums(keyword, mPage, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<AlbumResponse.Album>>() {
@@ -105,6 +113,56 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
                     public void onComplete() {
                         if (mView.isActive()) {
                             mView.setLoadingIndictor(false);
+                        }
+                    }
+                });
+        mDisposables.add(disposable);
+    }
+
+    private Flowable<List<AlbumResponse.Album>> getAlbums(String keyword, int page, int size) {
+        return mRepository.searchAlbums(keyword, page, size)
+                .flatMap(new Function<ApiResponse<AlbumResponse>, Publisher<List<AlbumResponse.Album>>>() {
+                    @Override
+                    public Publisher<List<AlbumResponse.Album>> apply(ApiResponse<AlbumResponse> response) {
+                        return Flowable.just(response.data.albums);
+                    }
+                });
+    }
+
+    @Override
+    public void loadNextPageAlbums(String keyword) {
+        if (mView.isActive()) {
+            mView.setLoadingMoreIndicator(true);
+        }
+
+        mDisposables.clear();
+
+        Disposable disposable = getAlbums(keyword, mPage + 1, 20)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<AlbumResponse.Album>>() {
+                    @Override
+                    public void onNext(List<AlbumResponse.Album> albums) {
+                        if (mView.isActive()) {
+                            mView.showAlbums(albums);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        if (mView.isActive()) {
+                            mView.setLoadingMoreIndicator(false);
+
+                            mView.showLoadingError();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ++mPage;
+
+                        if (mView.isActive()) {
+                            mView.setLoadingMoreIndicator(false);
                         }
                     }
                 });

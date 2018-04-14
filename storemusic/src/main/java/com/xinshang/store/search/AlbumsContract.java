@@ -35,10 +35,18 @@ public interface AlbumsContract {
 
         void showAlbums(List<AlbumResponse.Album> albums);
 
+        void showNextPageAlbums(List<AlbumResponse.Album> albums);
+
         void setLoadingIndictor(boolean isActive);
+
+        void setLoadingMoreIndicator(boolean isActive);
     }
 
     interface Presenter extends BasePresenter {
+        void setKeyword(String keyword);
+
         void loadAlbums(String keyword);
+
+        void loadNextPageAlbums(String keyword);
     }
 }

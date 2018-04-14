@@ -19,12 +19,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ToplistDetailResult {
-    @SerializedName("data")
-    public DataBean dataBean;
-
-    public static class DataBean {
-        @SerializedName("items")
-        public List<Song> audients;
-    }
+public class SearchResponse {
+    @SerializedName("items")
+    public List<Song> songs;
 }

@@ -38,6 +38,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 /**
  * Created by koma on 4/13/18.
  */
@@ -50,6 +52,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.loading_layout)
+    View mLoading;
 
     private TextView mEmpty;
 
@@ -138,6 +142,27 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
             }
         });
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
+
+                if (newState == SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager)
+                            recyclerView.getLayoutManager();
+                    int lastPosition = layoutManager
+                            .findLastVisibleItemPosition();
+                    if (lastPosition == mAdapter.getItemCount() - 1) {
+                        // load next page
+                        if (mPresenter != null) {
+                            mPresenter.loadNextPageAlbums(mKeyword);
+                        }
+                    }
+                }
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -170,7 +195,7 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_base;
+        return R.layout.fragment_loading;
     }
 
     @Override
@@ -214,11 +239,30 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
     }
 
     @Override
+    public void showNextPageAlbums(List<AlbumResponse.Album> albums) {
+        mAdapter.appendData(albums);
+    }
+
+    @Override
     public void setLoadingIndictor(final boolean isActive) {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
+    }
+
+    @Override
+    public void setLoadingMoreIndicator(final boolean isActive) {
+        mLoading.post(new Runnable() {
+            @Override
+            public void run() {
+                if (isActive) {
+                    mLoading.setVisibility(View.VISIBLE);
+                } else {
+                    mLoading.setVisibility(View.GONE);
+                }
             }
         });
     }

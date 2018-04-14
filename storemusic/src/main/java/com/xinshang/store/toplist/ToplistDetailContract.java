@@ -25,15 +25,17 @@ public interface ToplistDetailContract {
     interface View extends BaseView<Presenter> {
         boolean isActive();
 
-        int getTopId();
+        void showToplistSongs(List<Song> songs);
 
-        String getShowTime();
+        void showNextPageSongs(List<Song> songs);
 
-        void showToplistDetail(List<Song> audients);
+        void setLoadingIndicator(boolean isActive);
     }
 
     interface Presenter extends BasePresenter {
-        void loadToplistDetail(int topId, String showTime);
+        void loadToplistSongs(int topId, String showTime);
+
+        void loadNextPage(int topId, String showTime);
 
         void addToPlaylist(Song tencentMusic);
     }

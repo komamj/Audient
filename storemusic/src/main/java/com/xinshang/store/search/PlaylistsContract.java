@@ -35,10 +35,18 @@ public interface PlaylistsContract {
 
         void showPlaylists(List<Playlist> playlists);
 
+        void showNextPagePlaylists(List<Playlist> playlists);
+
         void setLoadingIndictor(boolean isActive);
+
+        void setLoadingMoreIndicator(boolean isActive);
     }
 
     interface Presenter extends BasePresenter {
+        void setKeyword(String keyword);
+
         void loadPlaylists(String keyword);
+
+        void loadNextPagePlaylists(String keyword);
     }
 }

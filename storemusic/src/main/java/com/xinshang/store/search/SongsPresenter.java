@@ -16,16 +16,20 @@
 package com.xinshang.store.search;
 
 import com.xinshang.store.data.AudientRepository;
+import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Music;
-import com.xinshang.store.data.entities.SearchResult;
+import com.xinshang.store.data.entities.SearchResponse;
 import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.utils.LogUtils;
+
+import org.reactivestreams.Publisher;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -45,6 +49,10 @@ public class SongsPresenter implements SongsContract.Presenter {
     private AudientRepository mRepository;
 
     private CompositeDisposable mDisposables;
+
+    private int mPage = 0;
+
+    private String mKeyword;
 
     @Inject
     public SongsPresenter(SongsContract.View view, AudientRepository repository) {
@@ -73,38 +81,102 @@ public class SongsPresenter implements SongsContract.Presenter {
     }
 
     @Override
+    public void setKeyword(String keyword) {
+        mKeyword = keyword;
+    }
+
+    @Override
     public void loadSongs(String keyword) {
+        LogUtils.i(TAG, "loadSongs : keyword : " + keyword);
+
+        mPage = 0;
+
+        if (isValid(keyword)) {
+            if (mView.isActive()) {
+                mView.setLoadingIndictor(true);
+            }
+
+            mDisposables.clear();
+
+            Disposable disposable = getSongs(keyword, mPage, 20)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<List<Song>>() {
+                        @Override
+                        public void onNext(List<Song> songs) {
+                            if (mView.isActive()) {
+                                mView.showSongs(songs);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            if (mView.isActive()) {
+                                mView.setLoadingIndictor(false);
+
+                                mView.showLoadingError();
+                            }
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            if (mView.isActive()) {
+                                mView.setLoadingIndictor(false);
+                            }
+                        }
+                    });
+            mDisposables.add(disposable);
+        } else {
+            if (mView.isActive()) {
+                // todo
+            }
+        }
+    }
+
+    private boolean isValid(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private Flowable<List<Song>> getSongs(String keyword, int page, int size) {
+        LogUtils.i(TAG, "getSongs page : " + page);
+
+        return mRepository.searchSongs(keyword, page, size)
+                .flatMap(new Function<ApiResponse<SearchResponse>, Publisher<List<Song>>>() {
+                    @Override
+                    public Publisher<List<Song>> apply(ApiResponse<SearchResponse> response) {
+                        return Flowable.just(response.data.songs);
+                    }
+                });
+    }
+
+    @Override
+    public void loadNextPageSongs(String keyword) {
+        LogUtils.i(TAG, "loadNextPageSongs : keyword : " + keyword);
+
+        mDisposables.clear();
+
         if (mView.isActive()) {
-            mView.setLoadingIndictor(true);
+            mView.setLoadingMoreIndicator(true);
         }
 
-        Disposable disposable = mRepository.searchSongs(keyword, 0, 300)
-                .map(new Function<SearchResult, List<Song>>() {
-                    @Override
-                    public List<Song> apply(SearchResult searchResult) throws Exception {
-                        return searchResult.dataBean.audients;
-                    }
-                })
+        Disposable disposable = getSongs(keyword, mPage + 1, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
-                    public void onNext(List<Song> audients) {
+                    public void onNext(List<Song> songs) {
                         if (mView.isActive()) {
-                            mView.setLoadingIndictor(false);
-
-                            mView.showAudients(audients);
-
-                            // mView.showEmpty(audients.isEmpty());
+                            mView.showNextPageSongs(songs);
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadSearchResults error :" + t.toString());
-
                         if (mView.isActive()) {
-                            mView.setLoadingIndictor(false);
+                            mView.setLoadingMoreIndicator(false);
 
                             mView.showLoadingError();
                         }
@@ -112,10 +184,13 @@ public class SongsPresenter implements SongsContract.Presenter {
 
                     @Override
                     public void onComplete() {
+                        ++mPage;
 
+                        if (mView.isActive()) {
+                            mView.setLoadingMoreIndicator(false);
+                        }
                     }
                 });
-
         mDisposables.add(disposable);
     }
 

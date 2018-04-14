@@ -38,6 +38,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 /**
  * Created by koma on 4/11/18.
  */
@@ -50,6 +52,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.loading_layout)
+    View mLoading;
 
     private TextView mEmpty;
 
@@ -133,6 +137,27 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
             }
         });
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
+
+                if (newState == SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager)
+                            recyclerView.getLayoutManager();
+                    int lastPosition = layoutManager
+                            .findLastVisibleItemPosition();
+                    if (lastPosition == mAdapter.getItemCount() - 1) {
+                        // load next page
+                        if (mPresenter != null) {
+                            mPresenter.loadNextPagePlaylists(mKeyword);
+                        }
+                    }
+                }
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -165,7 +190,7 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_base;
+        return R.layout.fragment_loading;
     }
 
     @Override
@@ -196,11 +221,30 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
     }
 
     @Override
+    public void showNextPagePlaylists(List<Playlist> playlists) {
+        mAdapter.appendData(playlists);
+    }
+
+    @Override
     public void setLoadingIndictor(final boolean isActive) {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
+    }
+
+    @Override
+    public void setLoadingMoreIndicator(final boolean isActive) {
+        mLoading.post(new Runnable() {
+            @Override
+            public void run() {
+                if (isActive) {
+                    mLoading.setVisibility(View.VISIBLE);
+                } else {
+                    mLoading.setVisibility(View.GONE);
+                }
             }
         });
     }

@@ -14,7 +14,7 @@ import com.xinshang.store.data.entities.NowPlayingResponse;
 import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.PlaylistResponse;
 import com.xinshang.store.data.entities.PlaylistSongResponse;
-import com.xinshang.store.data.entities.SearchResult;
+import com.xinshang.store.data.entities.SearchResponse;
 import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.SongDetailResult;
 import com.xinshang.store.data.entities.Store;
@@ -22,7 +22,7 @@ import com.xinshang.store.data.entities.StoreKeeperResponse;
 import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.entities.ToplistDataBean;
-import com.xinshang.store.data.entities.ToplistDetailResult;
+import com.xinshang.store.data.entities.ToplistSongResponse;
 
 import java.util.List;
 
@@ -37,9 +37,9 @@ public interface IRemoteDataSource {
 
     Flowable<ApiResponse<List<ToplistDataBean>>> getToplists();
 
-    Flowable<ToplistDetailResult> getToplistDetail(int topId, String showTime, int page, int count);
+    Flowable<ApiResponse<ToplistSongResponse>> getToplistSongs(int topId, String showTime, int page, int count);
 
-    Flowable<SearchResult> searchSongs(String keyword, int page, int size);
+    Flowable<ApiResponse<SearchResponse>> searchSongs(String keyword, int page, int size);
 
     Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(String keyword, int page, int size);
 

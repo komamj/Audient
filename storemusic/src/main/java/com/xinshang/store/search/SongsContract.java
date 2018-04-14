@@ -35,12 +35,20 @@ public interface SongsContract {
 
         void setLoadingIndictor(boolean isActive);
 
-        void showAudients(List<Song> audients);
+        void setLoadingMoreIndicator(boolean isActive);
+
+        void showSongs(List<Song> songs);
+
+        void showNextPageSongs(List<Song> songs);
     }
 
     interface Presenter extends BasePresenter {
+        void setKeyword(String keyword);
+
         void loadSongs(String keyword);
 
-        void addToPlaylist(Song tencentMusic);
+        void loadNextPageSongs(String keyword);
+
+        void addToPlaylist(Song song);
     }
 }
