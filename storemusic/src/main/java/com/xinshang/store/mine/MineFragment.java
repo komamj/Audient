@@ -75,6 +75,8 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
+        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser : " + isVisibleToUser);
+
         if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
             if (mPresenter != null) {
                 mPresenter.subscribe();
@@ -145,6 +147,8 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
         if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_MY_FAVORITES_CHANGED)) {
             if (mPresenter != null) {
+                mIsLoaded = false;
+
                 mPresenter.loadFavorites();
             }
         }

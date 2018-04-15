@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class PlaylistsAdapter extends BaseAdapter<Playlist, PlaylistsAdapter.Pla
 
         mGlideRequest.load(playlist.imageUrl).into(holder.mAlbum);
 
-        holder.mName.setText(playlist.name);
+        holder.mName.setText(Html.fromHtml(playlist.name).toString());
         holder.mDescription.setText(buildDescription(playlist));
     }
 

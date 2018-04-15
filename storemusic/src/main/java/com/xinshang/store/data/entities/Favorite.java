@@ -94,6 +94,7 @@ public class Favorite implements Parcelable {
 
         return TextUtils.equals(this.favoritesId, favorite.favoritesId)
                 && TextUtils.equals(userId, favorite.userId)
+                && TextUtils.equals(this.coverImageUrl, favorite.coverImageUrl)
                 && TextUtils.equals(this.favoriteName, favorite.favoriteName)
                 && TextUtils.equals(this.createDate, favorite.createDate)
                 && TextUtils.equals(this.modifyDate, favorite.modifyDate);

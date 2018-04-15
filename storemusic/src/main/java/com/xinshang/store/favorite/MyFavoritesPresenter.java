@@ -19,8 +19,12 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Favorite;
 import com.xinshang.store.data.entities.FavoritesResult;
+import com.xinshang.store.data.entities.MessageEvent;
 import com.xinshang.store.data.entities.Song;
+import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -115,6 +119,8 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
                         if (mView.isActive()) {
                             if (response.resultCode == 0) {
                                 mView.showSuccessfullyAddedMessage();
+
+                                EventBus.getDefault().post(new MessageEvent(Constants.MESSAGE_MY_FAVORITES_CHANGED));
                             } else {
                                 mView.showFailedMessage();
                             }

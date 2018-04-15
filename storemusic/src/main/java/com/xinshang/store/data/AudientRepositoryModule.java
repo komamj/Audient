@@ -109,7 +109,9 @@ public class AudientRepositoryModule {
     @Provides
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss");
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                /*.setPrettyPrinting()
+                .disableHtmlEscaping()*/;
         return gsonBuilder.create();
     }
 
