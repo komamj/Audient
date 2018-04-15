@@ -18,6 +18,7 @@ package com.xinshang.store.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -157,8 +158,6 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
                     if (lastPosition == mAdapter.getItemCount() - 1) {
                         // load next page
                         if (mPresenter != null) {
-                            mIsLoading = true;
-
                             mPresenter.loadNextPagePlaylists(mKeyword);
                         }
                     }
@@ -229,8 +228,6 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     @Override
     public void showNextPagePlaylists(List<Playlist> playlists) {
-        mIsLoading = false;
-
         mAdapter.appendData(playlists);
     }
 
@@ -246,6 +243,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     @Override
     public void setLoadingMoreIndicator(final boolean isActive) {
+        mIsLoading = isActive;
+
         mLoading.post(new Runnable() {
             @Override
             public void run() {
@@ -269,5 +268,14 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
                 mPresenter.loadPlaylists(mKeyword);
             }
         }
+    }
+
+    @Override
+    public void showNoMoreMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.no_more_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 }

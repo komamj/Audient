@@ -33,6 +33,8 @@ public interface PlaylistsContract {
 
         void showEmpty(boolean forceShow);
 
+        void showNoMoreMessage();
+
         void showPlaylists(List<Playlist> playlists);
 
         void showNextPagePlaylists(List<Playlist> playlists);

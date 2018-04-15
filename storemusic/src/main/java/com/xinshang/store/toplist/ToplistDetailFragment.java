@@ -37,8 +37,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-
 public class ToplistDetailFragment extends BaseFragment implements ToplistDetailContract.View {
     private static final String TAG = ToplistDetailFragment.class.getSimpleName();
 
@@ -47,7 +45,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.loading_layout)
-    View mLoding;
+    View mLoading;
 
     private int mTopId;
 
@@ -130,7 +128,7 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             }
         });
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -141,22 +139,20 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
                     return;
                 }
 
-                if (newState == SCROLL_STATE_IDLE) {
-                    LinearLayoutManager layoutManager = (LinearLayoutManager)
-                            recyclerView.getLayoutManager();
-                    int lastPosition = layoutManager
-                            .findLastVisibleItemPosition();
-                    if (lastPosition == mAdapter.getItemCount() - 1) {
-                        // load next page
-                        if (mPresenter != null) {
-                            mIsLoading = true;
+                LinearLayoutManager layoutManager = (LinearLayoutManager)
+                        recyclerView.getLayoutManager();
+                int lastPosition = layoutManager
+                        .findLastVisibleItemPosition();
+                if (lastPosition == mAdapter.getItemCount() - 1) {
+                    // load next page
+                    if (mPresenter != null) {
+                        mIsLoading = true;
 
-                            mPresenter.loadNextPage(mTopId, mShowTime);
-                        }
+                        mPresenter.loadNextPage(mTopId, mShowTime);
                     }
                 }
             }
-        });
+        });*/
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -216,11 +212,16 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
     @Override
     public void setLoadingIndicator(final boolean isActive) {
-        if (isActive) {
-            mLoding.setVisibility(View.VISIBLE);
-        } else {
-            mLoding.setVisibility(View.GONE);
-        }
+        mLoading.post(new Runnable() {
+            @Override
+            public void run() {
+                if (isActive) {
+                    mLoading.setVisibility(View.VISIBLE);
+                } else {
+                    mLoading.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -238,6 +239,15 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
             return;
         }
         Snackbar.make(getView(), R.string.added_failed_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showNoMoreMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.no_more_message, Snackbar.LENGTH_SHORT)
                 .show();
     }
 }

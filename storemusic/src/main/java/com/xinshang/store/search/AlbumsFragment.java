@@ -18,6 +18,7 @@ package com.xinshang.store.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -162,8 +163,6 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
                     if (lastPosition == mAdapter.getItemCount() - 1) {
                         // load next page
                         if (mPresenter != null) {
-                            mIsLoading = true;
-
                             mPresenter.loadNextPageAlbums(mKeyword);
                         }
                     }
@@ -247,8 +246,6 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
     @Override
     public void showNextPageAlbums(List<AlbumResponse.Album> albums) {
-        mIsLoading = false;
-
         mAdapter.appendData(albums);
     }
 
@@ -264,6 +261,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
     @Override
     public void setLoadingMoreIndicator(final boolean isActive) {
+        mIsLoading = isActive;
+
         mLoading.post(new Runnable() {
             @Override
             public void run() {
@@ -274,5 +273,14 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
                 }
             }
         });
+    }
+
+    @Override
+    public void showNoMoreMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.no_more_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 }

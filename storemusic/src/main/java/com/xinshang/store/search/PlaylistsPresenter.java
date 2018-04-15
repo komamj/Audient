@@ -85,6 +85,10 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
 
     @Override
     public void loadPlaylists(String keyword) {
+        if (!isValid(keyword)) {
+            return;
+        }
+
         mPage = 0;
 
         if (mView.isActive()) {
@@ -136,6 +140,10 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
 
     @Override
     public void loadNextPagePlaylists(String keyword) {
+        if (!isValid(keyword)) {
+            return;
+        }
+
         if (mView.isActive()) {
             mView.setLoadingMoreIndicator(true);
         }
@@ -149,7 +157,12 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
                     @Override
                     public void onNext(List<Playlist> playlists) {
                         if (mView.isActive()) {
-                            mView.showNextPagePlaylists(playlists);
+                            if (playlists.isEmpty()) {
+                                mView.showNoMoreMessage();
+                            } else {
+                                ++mPage;
+                                mView.showNextPagePlaylists(playlists);
+                            }
                         }
                     }
 
@@ -159,18 +172,25 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
 
                         if (mView.isActive()) {
                             mView.setLoadingMoreIndicator(false);
+
+                            mView.showNoMoreMessage();
                         }
                     }
 
                     @Override
                     public void onComplete() {
-                        ++mPage;
-
                         if (mView.isActive()) {
                             mView.setLoadingMoreIndicator(false);
                         }
                     }
                 });
         mDisposables.add(disposable);
+    }
+
+    private boolean isValid(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

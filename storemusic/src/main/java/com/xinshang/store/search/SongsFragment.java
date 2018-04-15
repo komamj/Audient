@@ -18,6 +18,7 @@ package com.xinshang.store.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -161,19 +162,19 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
                 LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
 
+                if (mIsLoading) {
+                    return;
+                }
+
                 if (newState == SCROLL_STATE_IDLE) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager)
                             recyclerView.getLayoutManager();
                     int lastPosition = layoutManager
                             .findLastVisibleItemPosition();
                     if (lastPosition == mAdapter.getItemCount() - 1) {
-                        if (!mIsLoading) {
-                            // load next page
-                            if (mPresenter != null) {
-                                mIsLoading = true;
-                                
-                                mPresenter.loadNextPageSongs(mKeyword);
-                            }
+                        // load next page
+                        if (mPresenter != null) {
+                            mPresenter.loadNextPageSongs(mKeyword);
                         }
                     }
                 }
@@ -251,6 +252,8 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     @Override
     public void setLoadingMoreIndicator(final boolean isActive) {
+        mIsLoading = isActive;
+
         mLoading.post(new Runnable() {
             @Override
             public void run() {
@@ -274,8 +277,6 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     @Override
     public void showNextPageSongs(List<Song> songs) {
-        mIsLoading = false;
-
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.appendData(songs);
@@ -292,5 +293,14 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
                 mPresenter.loadSongs(mKeyword);
             }
         }
+    }
+
+    @Override
+    public void showNoMoreMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.no_more_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 }

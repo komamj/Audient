@@ -34,6 +34,8 @@ public interface ToplistDetailContract {
         void showPlaySuccessfulMessage();
 
         void showPlayFailedMessage();
+
+        void showNoMoreMessage();
     }
 
     interface Presenter extends BasePresenter {

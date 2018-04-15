@@ -31,6 +31,8 @@ public interface AlbumsContract {
 
         void showLoadingError();
 
+        void showNoMoreMessage();
+
         void showEmpty(boolean forceShow);
 
         void showAlbums(List<AlbumResponse.Album> albums);

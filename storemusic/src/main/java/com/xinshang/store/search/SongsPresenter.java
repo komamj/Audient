@@ -89,48 +89,46 @@ public class SongsPresenter implements SongsContract.Presenter {
     public void loadSongs(String keyword) {
         LogUtils.i(TAG, "loadSongs : keyword : " + keyword);
 
+        if (!isValid(keyword)) {
+            return;
+        }
+
+        if (mView.isActive()) {
+            mView.setLoadingIndictor(true);
+        }
+
         mPage = 0;
 
-        if (isValid(keyword)) {
-            if (mView.isActive()) {
-                mView.setLoadingIndictor(true);
-            }
+        mDisposables.clear();
 
-            mDisposables.clear();
-
-            Disposable disposable = getSongs(keyword, mPage, 20)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<List<Song>>() {
-                        @Override
-                        public void onNext(List<Song> songs) {
-                            if (mView.isActive()) {
-                                mView.showSongs(songs);
-                            }
+        Disposable disposable = getSongs(keyword, mPage, 20)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<List<Song>>() {
+                    @Override
+                    public void onNext(List<Song> songs) {
+                        if (mView.isActive()) {
+                            mView.showSongs(songs);
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable t) {
-                            if (mView.isActive()) {
-                                mView.setLoadingIndictor(false);
+                    @Override
+                    public void onError(Throwable t) {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
 
-                                mView.showLoadingError();
-                            }
+                            mView.showLoadingError();
                         }
+                    }
 
-                        @Override
-                        public void onComplete() {
-                            if (mView.isActive()) {
-                                mView.setLoadingIndictor(false);
-                            }
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()) {
+                            mView.setLoadingIndictor(false);
                         }
-                    });
-            mDisposables.add(disposable);
-        } else {
-            if (mView.isActive()) {
-                // todo
-            }
-        }
+                    }
+                });
+        mDisposables.add(disposable);
     }
 
     private boolean isValid(String keyword) {
@@ -156,6 +154,10 @@ public class SongsPresenter implements SongsContract.Presenter {
     public void loadNextPageSongs(String keyword) {
         LogUtils.i(TAG, "loadNextPageSongs : keyword : " + keyword);
 
+        if (!isValid(keyword)) {
+            return;
+        }
+
         mDisposables.clear();
 
         if (mView.isActive()) {
@@ -168,8 +170,15 @@ public class SongsPresenter implements SongsContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
                     public void onNext(List<Song> songs) {
+                        LogUtils.i(TAG, "loadNextPageSongs size : " + songs.size());
                         if (mView.isActive()) {
-                            mView.showNextPageSongs(songs);
+                            if (songs.isEmpty()) {
+                                mView.showNoMoreMessage();
+                            } else {
+                                ++mPage;
+
+                                mView.showNextPageSongs(songs);
+                            }
                         }
                     }
 
@@ -179,13 +188,13 @@ public class SongsPresenter implements SongsContract.Presenter {
                             mView.setLoadingMoreIndicator(false);
 
                             mView.showLoadingError();
+
+                            mView.showNoMoreMessage();
                         }
                     }
 
                     @Override
                     public void onComplete() {
-                        ++mPage;
-
                         if (mView.isActive()) {
                             mView.setLoadingMoreIndicator(false);
                         }

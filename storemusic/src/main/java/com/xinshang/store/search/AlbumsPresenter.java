@@ -81,11 +81,15 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
 
     @Override
     public void loadAlbums(String keyword) {
-        mPage = 0;
+        if (!isValid(keyword)) {
+            return;
+        }
 
         if (mView.isActive()) {
             mView.setLoadingIndictor(true);
         }
+
+        mPage = 0;
 
         mDisposables.clear();
 
@@ -131,6 +135,10 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
 
     @Override
     public void loadNextPageAlbums(String keyword) {
+        if (!isValid(keyword)) {
+            return;
+        }
+
         if (mView.isActive()) {
             mView.setLoadingMoreIndicator(true);
         }
@@ -144,7 +152,13 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
                     @Override
                     public void onNext(List<AlbumResponse.Album> albums) {
                         if (mView.isActive()) {
-                            mView.showNextPageAlbums(albums);
+                            if (albums.isEmpty()) {
+                                mView.showNoMoreMessage();
+                            } else {
+                                ++mPage;
+
+                                mView.showNextPageAlbums(albums);
+                            }
                         }
                     }
 
@@ -154,18 +168,25 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
                             mView.setLoadingMoreIndicator(false);
 
                             mView.showLoadingError();
+
+                            mView.showNoMoreMessage();
                         }
                     }
 
                     @Override
                     public void onComplete() {
-                        ++mPage;
-
                         if (mView.isActive()) {
                             mView.setLoadingMoreIndicator(false);
                         }
                     }
                 });
         mDisposables.add(disposable);
+    }
+
+    private boolean isValid(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

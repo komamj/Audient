@@ -83,7 +83,7 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
 
         mDisposables.clear();
 
-        Disposable disposable = loadToplistSongs(topId, showTime, mPage, 20)
+        Disposable disposable = loadToplistSongs(topId, showTime, mPage, 300)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<Song>>() {
@@ -124,11 +124,11 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
 
     @Override
     public void loadNextPage(final int topId, final String showTime) {
-        mDisposables.clear();
-
         if (mView.isActive()) {
             mView.setLoadingIndicator(true);
         }
+
+        mDisposables.clear();
 
         Disposable disposable = loadToplistSongs(topId, showTime, mPage + 1, 20)
                 .subscribeOn(Schedulers.io())

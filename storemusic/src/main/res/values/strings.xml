@@ -14,6 +14,7 @@
     <!--Loading-->
     <string name="loading_error_message">"加载出错了，请稍后再试"</string>
     <string name="loading_successful_message">"加载完成"</string>
+    <string name="no_more_message">"没有更多。"</string>
 
     <!--Login-->
     <string name="login_label">"登录"</string>

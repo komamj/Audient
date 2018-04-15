@@ -33,6 +33,8 @@ public interface SongsContract {
 
         void showEmpty(boolean forceShow);
 
+        void showNoMoreMessage();
+
         void setLoadingIndictor(boolean isActive);
 
         void setLoadingMoreIndicator(boolean isActive);
