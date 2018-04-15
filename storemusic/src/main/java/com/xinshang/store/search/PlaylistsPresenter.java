@@ -149,7 +149,7 @@ public class PlaylistsPresenter implements PlaylistsContract.Presenter {
                     @Override
                     public void onNext(List<Playlist> playlists) {
                         if (mView.isActive()) {
-                            mView.showPlaylists(playlists);
+                            mView.showNextPagePlaylists(playlists);
                         }
                     }
 

@@ -144,7 +144,7 @@ public class AlbumsPresenter implements AlbumsContract.Presenter {
                     @Override
                     public void onNext(List<AlbumResponse.Album> albums) {
                         if (mView.isActive()) {
-                            mView.showAlbums(albums);
+                            mView.showNextPageAlbums(albums);
                         }
                     }
 

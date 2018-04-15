@@ -62,6 +62,7 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     private boolean mIsPrepared;
     private boolean mIsLoaded;
+    private boolean mIsLoading = false;
 
     private String mKeyword;
 
@@ -166,9 +167,13 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
                     int lastPosition = layoutManager
                             .findLastVisibleItemPosition();
                     if (lastPosition == mAdapter.getItemCount() - 1) {
-                        // load next page
-                        if (mPresenter != null) {
-                            mPresenter.loadNextPageSongs(mKeyword);
+                        if (!mIsLoading) {
+                            // load next page
+                            if (mPresenter != null) {
+                                mIsLoading = true;
+                                
+                                mPresenter.loadNextPageSongs(mKeyword);
+                            }
                         }
                     }
                 }
@@ -269,6 +274,8 @@ public class SongsFragment extends BaseFragment implements SongsContract.View,
 
     @Override
     public void showNextPageSongs(List<Song> songs) {
+        mIsLoading = false;
+
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.appendData(songs);

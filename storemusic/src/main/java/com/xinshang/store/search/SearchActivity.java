@@ -85,10 +85,8 @@ public class SearchActivity extends BaseActivity {
             public boolean onQueryTextSubmit(String keyword) {
                 mSearchView.clearFocus();
 
-                if(isValid(keyword)){
-                    for (OnSearchListener listener : mListeners) {
-                        listener.onSearch(keyword);
-                    }
+                for (OnSearchListener listener : mListeners) {
+                    listener.onSearch(keyword);
                 }
 
                 return true;
@@ -114,13 +112,6 @@ public class SearchActivity extends BaseActivity {
         mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
-    }
-
-    private boolean isValid(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return false;
-        }
-        return true;
     }
 
     @Override
