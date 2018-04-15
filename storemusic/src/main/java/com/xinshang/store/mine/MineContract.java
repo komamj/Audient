@@ -28,21 +28,15 @@ public interface MineContract {
 
         void showLoadingError();
 
+        void setLoadingIndicator(boolean isActive);
+
         void showEmpty(boolean forceShow);
 
-        void showFavoriteProgressBar(boolean forceShow);
-
-        void showUserProgressBar(boolean forceShow);
-
         void showFavorites(List<Favorite> favorites);
-
-        void showDynamics(List<Song> audients);
     }
 
     interface Presenter extends BasePresenter {
         void loadFavorites();
-
-        void loadDynamics();
 
         void deleteMyFavorite(Favorite favorite);
 
