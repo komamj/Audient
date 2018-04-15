@@ -53,7 +53,7 @@ public class TopListDetailActivity extends BaseActivity {
 
     @OnClick(R.id.fab)
     void onFabClick() {
-
+        mPresenter.playAll();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class TopListDetailActivity extends BaseActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         }
 
-        mFab.setImageResource(R.drawable.ic_unfavorite);
+        mFab.setImageResource(R.drawable.ic_playlist_play);
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
         String toplistName = getIntent().getStringExtra(Constants.KEY_top_list_name);

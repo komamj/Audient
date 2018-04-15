@@ -59,6 +59,7 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     private boolean mIsPrepared;
     private boolean mIsLoaded;
+    private boolean mIsLoading;
 
     private String mKeyword;
 
@@ -144,6 +145,10 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
                 LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
 
+                if (mIsLoading) {
+                    return;
+                }
+
                 if (newState == SCROLL_STATE_IDLE) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager)
                             recyclerView.getLayoutManager();
@@ -152,6 +157,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
                     if (lastPosition == mAdapter.getItemCount() - 1) {
                         // load next page
                         if (mPresenter != null) {
+                            mIsLoading = true;
+
                             mPresenter.loadNextPagePlaylists(mKeyword);
                         }
                     }
@@ -222,6 +229,8 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistsContract
 
     @Override
     public void showNextPagePlaylists(List<Playlist> playlists) {
+        mIsLoading = false;
+
         mAdapter.appendData(playlists);
     }
 

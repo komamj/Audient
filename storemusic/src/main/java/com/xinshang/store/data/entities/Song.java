@@ -25,6 +25,8 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+
 @Entity(tableName = "song")
 public class Song implements Parcelable {
     public static final Creator<Song> CREATOR = new Creator<Song>() {
@@ -112,6 +114,12 @@ public class Song implements Parcelable {
                 && TextUtils.equals(this.artistName, song.artistName)
                 && TextUtils.equals(this.albumId, song.albumId)
                 && TextUtils.equals(this.albumName, song.albumName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{mediaId, mediaName, artistId, artistName, albumId,
+                albumName});
     }
 
     @Override

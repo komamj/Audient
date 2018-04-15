@@ -19,6 +19,7 @@ import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.Music;
+import com.xinshang.store.data.entities.PlayAllRequest;
 import com.xinshang.store.data.entities.Song;
 import com.xinshang.store.data.entities.ToplistSongResponse;
 import com.xinshang.store.utils.LogUtils;
@@ -47,6 +48,8 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
     private final CompositeDisposable mDisposables;
 
     private int mPage = 0;
+
+    private List<Song> mSongs;
 
     @Inject
     public ToplistDetailPresenter(ToplistDetailContract.View view, AudientRepository repository) {
@@ -86,6 +89,8 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
                     public void onNext(List<Song> songs) {
+                        mSongs = songs;
+
                         if (mView.isActive()) {
                             mView.showToplistSongs(songs);
                         }
@@ -131,6 +136,8 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<List<Song>>() {
                     @Override
                     public void onNext(List<Song> songs) {
+                        mSongs.addAll(songs);
+
                         if (mView.isActive()) {
                             mView.showNextPageSongs(songs);
                         }
@@ -186,6 +193,44 @@ public class ToplistDetailPresenter implements ToplistDetailContract.Presenter {
                     @Override
                     public void onComplete() {
                         LogUtils.i(TAG, "addToPlaylist completed");
+                    }
+                });
+    }
+
+    @Override
+    public void playAll() {
+        if (mSongs == null || mSongs.isEmpty()) {
+            return;
+        }
+
+        PlayAllRequest playAllRequest = new PlayAllRequest();
+        playAllRequest.songs = mSongs;
+
+        String storeId = mRepository.getStoreId();
+
+        mRepository.playAllSongs(storeId, playAllRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BaseResponse>() {
+                    @Override
+                    public void onNext(BaseResponse response) {
+                        if (mView.isActive()) {
+                            if (response.resultCode == 0) {
+                                mView.showPlaySuccessfulMessage();
+                            } else {
+                                mView.showPlayFailedMessage();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

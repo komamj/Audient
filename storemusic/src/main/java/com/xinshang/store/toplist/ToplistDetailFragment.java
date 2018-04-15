@@ -17,6 +17,7 @@ package com.xinshang.store.toplist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +50,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
     View mLoding;
 
     private int mTopId;
+
+    private boolean mIsLoading = false;
 
     private String mShowTime;
 
@@ -134,6 +137,10 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
                 LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
 
+                if (mIsLoading) {
+                    return;
+                }
+
                 if (newState == SCROLL_STATE_IDLE) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager)
                             recyclerView.getLayoutManager();
@@ -142,6 +149,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
                     if (lastPosition == mAdapter.getItemCount() - 1) {
                         // load next page
                         if (mPresenter != null) {
+                            mIsLoading = true;
+
                             mPresenter.loadNextPage(mTopId, mShowTime);
                         }
                     }
@@ -200,6 +209,8 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
 
     @Override
     public void showNextPageSongs(List<Song> songs) {
+        mIsLoading = false;
+
         mAdapter.appendData(songs);
     }
 
@@ -210,5 +221,23 @@ public class ToplistDetailFragment extends BaseFragment implements ToplistDetail
         } else {
             mLoding.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showPlaySuccessfulMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.added_successful_message, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void showPlayFailedMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.added_failed_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 }

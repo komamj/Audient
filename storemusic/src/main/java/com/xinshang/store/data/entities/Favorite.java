@@ -22,6 +22,8 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+
 public class Favorite implements Parcelable {
     public static final Creator<Favorite> CREATOR = new Creator<Favorite>() {
         @Override
@@ -95,6 +97,12 @@ public class Favorite implements Parcelable {
                 && TextUtils.equals(this.favoriteName, favorite.favoriteName)
                 && TextUtils.equals(this.createDate, favorite.createDate)
                 && TextUtils.equals(this.modifyDate, favorite.modifyDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{favoritesId, favoriteName, userId, coverImageUrl,
+                createDate});
     }
 
     @Override

@@ -59,6 +59,7 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
     private boolean mIsPrepared;
     private boolean mIsLoaded;
+    private boolean mIsLoading = false;
 
     private String mKeyword;
 
@@ -149,6 +150,10 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
                 LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
 
+                if (mIsLoading) {
+                    return;
+                }
+
                 if (newState == SCROLL_STATE_IDLE) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager)
                             recyclerView.getLayoutManager();
@@ -157,6 +162,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
                     if (lastPosition == mAdapter.getItemCount() - 1) {
                         // load next page
                         if (mPresenter != null) {
+                            mIsLoading = true;
+
                             mPresenter.loadNextPageAlbums(mKeyword);
                         }
                     }
@@ -240,6 +247,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumsContract.View,
 
     @Override
     public void showNextPageAlbums(List<AlbumResponse.Album> albums) {
+        mIsLoading = false;
+
         mAdapter.appendData(albums);
     }
 

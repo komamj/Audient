@@ -30,6 +30,10 @@ public interface ToplistDetailContract {
         void showNextPageSongs(List<Song> songs);
 
         void setLoadingIndicator(boolean isActive);
+
+        void showPlaySuccessfulMessage();
+
+        void showPlayFailedMessage();
     }
 
     interface Presenter extends BasePresenter {
@@ -38,5 +42,7 @@ public interface ToplistDetailContract {
         void loadNextPage(int topId, String showTime);
 
         void addToPlaylist(Song tencentMusic);
+
+        void playAll();
     }
 }

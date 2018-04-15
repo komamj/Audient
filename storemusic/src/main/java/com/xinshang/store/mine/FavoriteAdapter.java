@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,12 +63,12 @@ public class FavoriteAdapter extends BaseAdapter<Favorite, FavoriteAdapter.Favor
 
     @Override
     protected boolean areItemsTheSame(Favorite oldItem, Favorite newItem) {
-        return false;
+        return TextUtils.equals(oldItem.favoritesId, newItem.favoritesId);
     }
 
     @Override
     protected boolean areContentsTheSame(Favorite oldItem, Favorite newItem) {
-        return false;
+        return oldItem.equals(newItem);
     }
 
     @Override
