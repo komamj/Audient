@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -88,7 +89,7 @@ public class PlaylistsDetailActivity extends BaseActivity {
                 .placeholder(new ColorDrawable(Color.GRAY))
                 .into(mAlbum);
 
-        mCollapsingToolbarLayout.setTitle(playlist.name);
+        mCollapsingToolbarLayout.setTitle(Html.fromHtml(playlist.name).toString());
 
         PlaylistsDetailFragment fragment = (PlaylistsDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);

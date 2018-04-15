@@ -26,9 +26,9 @@ import com.google.gson.GsonBuilder;
 import com.xinshang.store.BuildConfig;
 import com.xinshang.store.data.entities.Token;
 import com.xinshang.store.data.source.AudientDataSource;
-import com.xinshang.store.data.source.local.SongDao;
 import com.xinshang.store.data.source.local.AudientDatabase;
 import com.xinshang.store.data.source.local.LocalDataSource;
+import com.xinshang.store.data.source.local.SongDao;
 import com.xinshang.store.data.source.remote.RemoteDataSource;
 import com.xinshang.store.helper.TokenInterceptor;
 import com.xinshang.store.utils.Constants;
@@ -123,7 +123,7 @@ public class AudientRepositoryModule {
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            //logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
 
         return new OkHttpClient.Builder()
