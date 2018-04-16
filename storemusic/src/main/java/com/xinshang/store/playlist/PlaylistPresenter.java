@@ -389,10 +389,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
-    public void deleteStoreSong(StoreSong storeSong) {
+    public void deleteStoreSong(StoreSong storeSong, String reason) {
         String id = storeSong.id;
 
-        mRepository.deleteSongFromPlaylist(id)
+        mRepository.removeSongFromPlaylist(id, reason)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {

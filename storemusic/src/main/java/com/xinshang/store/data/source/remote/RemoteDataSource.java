@@ -169,8 +169,8 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse> deleteSongFromPlaylist(String id) {
-        return mAudientApi.deleteSongFromPlaylist(id);
+    public Flowable<BaseResponse> removeSongFromPlaylist(String id, String reason) {
+        return mAudientApi.removeSongFromPlaylist(id, reason);
     }
 
     @Override

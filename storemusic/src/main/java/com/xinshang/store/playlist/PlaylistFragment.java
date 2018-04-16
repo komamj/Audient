@@ -27,8 +27,8 @@ import android.widget.TextView;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
-import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.data.entities.Song;
+import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.favorite.MyFavoritesActivity;
 import com.xinshang.store.helper.GlideApp;
 import com.xinshang.store.utils.Constants;
@@ -144,7 +144,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
             @Override
             public void onDeleteMenuClick(StoreSong storeSong) {
                 if (mPresenter != null) {
-                    mPresenter.deleteStoreSong(storeSong);
+                    mPresenter.deleteStoreSong(storeSong, "");
                 }
             }
         });

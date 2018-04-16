@@ -211,10 +211,12 @@ public interface AudientApi {
     Flowable<ApiResponse<List<StoreSong>>> getStorePlaylist(@Path("id") String storeId);
 
     /**
-     * 移除播放列表
+     * 移除指定播放项
      */
-    @DELETE("api/v1/storeplaylist/{id}")
-    Flowable<BaseResponse> deleteSongFromPlaylist(@Path("id") String id);
+    @FormUrlEncoded
+    @POST("api/v1/storeplaylist/{id}")
+    Flowable<BaseResponse> removeSongFromPlaylist(@Path("id") String id,
+                                                  @Field("reason") String reason);
 
     /**
      * 点播歌曲

@@ -155,8 +155,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<BaseResponse> deleteSongFromPlaylist(String id) {
-        return mRemoteDataSource.deleteSongFromPlaylist(id);
+    public Flowable<BaseResponse> removeSongFromPlaylist(String id, String reason) {
+        return mRemoteDataSource.removeSongFromPlaylist(id, reason);
     }
 
     @Override

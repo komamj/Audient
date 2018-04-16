@@ -118,9 +118,9 @@ public class AudientRepositoryModule {
                                      final Gson gson) {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
 
-       // if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-       // }
+        }
 
         return new OkHttpClient.Builder()
                 .authenticator(new Authenticator() {
@@ -155,7 +155,7 @@ public class AudientRepositoryModule {
                                         sharedPreferences.edit().putBoolean(Constants.LOGIN_STATUS, false)
                                                 .commit();
 
-                                       android.os.Process.killProcess(android.os.Process.myPid());
+                                        android.os.Process.killProcess(android.os.Process.myPid());
                                     }
 
                                     @Override

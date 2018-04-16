@@ -78,7 +78,7 @@ public interface IRemoteDataSource {
 
     Flowable<BaseResponse> addToPlaylist(Music music);
 
-    Flowable<BaseResponse> deleteSongFromPlaylist(String id);
+    Flowable<BaseResponse> removeSongFromPlaylist(String id, String reason);
 
     Flowable<BaseResponse> addAllToPlaylist(String storeId, String favoritesId);
 
