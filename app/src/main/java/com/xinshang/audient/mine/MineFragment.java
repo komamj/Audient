@@ -15,9 +15,9 @@
  */
 package com.xinshang.audient.mine;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,13 +25,8 @@ import android.view.View;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
-import com.xinshang.audient.base.AudientAdapter;
-import com.xinshang.audient.favorite.MyFavoritesActivity;
-import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.MessageEvent;
-import com.xinshang.audient.payment.PaymentDialogFragment;
-import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
@@ -50,28 +45,18 @@ import butterknife.OnClick;
 public class MineFragment extends BaseFragment implements MineContract.View {
     private static final String TAG = MineFragment.class.getSimpleName();
 
-    @BindView(R.id.recycler_view_favorite)
-    RecyclerView mRecyclerViewFavorite;
-    @BindView(R.id.recycler_view_dynamic)
-    RecyclerView mRecyclerViewUser;
-    @BindView(R.id.progress_bar_favorite)
-    ContentLoadingProgressBar mFavoriteProgressBar;
-    @BindView(R.id.progress_bar_user)
-    ContentLoadingProgressBar mUserProgressBar;
-
-    @OnClick(R.id.iv_add_playlist)
-    void showAddPlaylistDilog() {
-        AddFavoritesDialog.show(getChildFragmentManager());
-    }
-
-    private boolean mIsPrepared;
-
-    private AudientAdapter mDynamicAdapter;
-
-    private FavoriteAdapter mFavoriteAdapter;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Inject
     MinePresenter mPresenter;
+
+    private boolean mIsPrepared;
+    private boolean mIsLoaded;
+
+    private FavoriteAdapter mAdapter;
 
     public MineFragment() {
     }
@@ -81,11 +66,18 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         return fragment;
     }
 
+    @OnClick(R.id.iv_add_playlist)
+    void showAddPlaylistDilog() {
+        AddFavoritesDialog.show(getChildFragmentManager());
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (isVisibleToUser && mIsPrepared) {
+        LogUtils.i(TAG, "setUserVisibleHint isVisibleToUser : " + isVisibleToUser);
+
+        if (isVisibleToUser && mIsPrepared && !mIsLoaded) {
             if (mPresenter != null) {
                 mPresenter.subscribe();
             }
@@ -112,23 +104,19 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
         LogUtils.i(TAG, "onViewCreated");
 
-        mDynamicAdapter = new AudientAdapter(mContext);
-        mDynamicAdapter.setEventListener(new AudientAdapter.EventListener() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onFavoriteMenuClick(Audient audient) {
-                Intent intent = new Intent(mContext, MyFavoritesActivity.class);
-                intent.putExtra(Constants.KEY_AUDIENT, audient);
-                mContext.startActivity(intent);
-            }
-
-            @Override
-            public void onPlaylistChanged(Audient audient) {
-                PaymentDialogFragment.show(getChildFragmentManager(), audient);
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadFavorites();
+                }
             }
         });
 
-        mFavoriteAdapter = new FavoriteAdapter(mContext);
-        mFavoriteAdapter.setListener(new FavoriteAdapter.EventListner() {
+        mAdapter = new FavoriteAdapter(mContext);
+        mAdapter.setListener(new FavoriteAdapter.EventListner() {
             @Override
             public void onModifyEventChange(Favorite favorite) {
                 EditNameDialogFragment.show(getChildFragmentManager(), favorite);
@@ -142,25 +130,13 @@ public class MineFragment extends BaseFragment implements MineContract.View {
             }
         });
 
-        LinearLayoutManager layoutManagerFavorite = new LinearLayoutManager(mContext);
-        layoutManagerFavorite.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerViewFavorite.setLayoutManager(layoutManagerFavorite);
-        mRecyclerViewFavorite.setAdapter(mFavoriteAdapter);
-
-        LinearLayoutManager layoutManagerUser = new LinearLayoutManager(mContext);
-        layoutManagerUser.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerViewUser.setLayoutManager(layoutManagerUser);
-        mRecyclerViewUser.addItemDecoration(new AudientItemDecoration(mContext));
-        mRecyclerViewUser.setAdapter(mDynamicAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
         mIsPrepared = true;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        LogUtils.i(TAG, "onStart");
 
         EventBus.getDefault().register(this);
     }
@@ -171,18 +147,11 @@ public class MineFragment extends BaseFragment implements MineContract.View {
 
         if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_MY_FAVORITES_CHANGED)) {
             if (mPresenter != null) {
+                mIsLoaded = false;
+
                 mPresenter.loadFavorites();
             }
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        LogUtils.i(TAG, "onStop");
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -190,6 +159,8 @@ public class MineFragment extends BaseFragment implements MineContract.View {
         super.onDestroy();
 
         LogUtils.i(TAG, "onDestroy");
+
+        EventBus.getDefault().unregister(this);
 
         if (mPresenter != null) {
             mPresenter.unSubscribe();
@@ -217,35 +188,24 @@ public class MineFragment extends BaseFragment implements MineContract.View {
     }
 
     @Override
+    public void setLoadingIndicator(final boolean isActive) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
+    }
+
+    @Override
     public void showEmpty(boolean forceShow) {
 
     }
 
     @Override
-    public void showFavoriteProgressBar(boolean forceShow) {
-        if (forceShow) {
-            mFavoriteProgressBar.show();
-        } else {
-            mFavoriteProgressBar.hide();
-        }
-    }
-
-    @Override
-    public void showUserProgressBar(boolean forceShow) {
-        if (forceShow) {
-            mUserProgressBar.show();
-        } else {
-            mUserProgressBar.hide();
-        }
-    }
-
-    @Override
     public void showFavorites(List<Favorite> favorites) {
-        mFavoriteAdapter.replace(favorites);
-    }
+        mIsLoaded = true;
 
-    @Override
-    public void showDynamics(List<Audient> audients) {
-        mDynamicAdapter.replace(audients);
+        mAdapter.replace(favorites);
     }
 }

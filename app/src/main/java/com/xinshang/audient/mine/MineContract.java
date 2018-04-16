@@ -15,7 +15,6 @@
  */
 package com.xinshang.audient.mine;
 
-import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
@@ -28,21 +27,15 @@ public interface MineContract {
 
         void showLoadingError();
 
+        void setLoadingIndicator(boolean isActive);
+
         void showEmpty(boolean forceShow);
 
-        void showFavoriteProgressBar(boolean forceShow);
-
-        void showUserProgressBar(boolean forceShow);
-
         void showFavorites(List<Favorite> favorites);
-
-        void showDynamics(List<Audient> audients);
     }
 
     interface Presenter extends BasePresenter {
         void loadFavorites();
-
-        void loadDynamics();
 
         void deleteMyFavorite(Favorite favorite);
     }

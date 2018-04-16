@@ -20,7 +20,11 @@ import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.FavoritesResult;
+import com.xinshang.audient.model.entities.MessageEvent;
+import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -122,6 +126,8 @@ public class MyFavoritesPresenter implements MyFavoritesContract.Presenter {
                         LogUtils.i(TAG, "addToFavorite " + response.message);
                         if (mView.isActive()) {
                             if (response.resultCode == 0) {
+                                EventBus.getDefault().post(new MessageEvent(Constants.MESSAGE_MY_FAVORITES_CHANGED));
+
                                 mView.showSuccessfullyAddedMessage();
                             } else {
                                 mView.showFailedMessage();

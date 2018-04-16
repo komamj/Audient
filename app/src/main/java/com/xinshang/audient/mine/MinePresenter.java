@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 package com.xinshang.audient.mine;
-
 import com.xinshang.audient.model.AudientRepository;
-import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.FavoritesResult;
@@ -65,8 +63,6 @@ public class MinePresenter implements MineContract.Presenter {
         LogUtils.i(TAG, "subscribe");
 
         loadFavorites();
-
-        loadDynamics();
     }
 
     @Override
@@ -80,6 +76,12 @@ public class MinePresenter implements MineContract.Presenter {
     public void loadFavorites() {
         LogUtils.i(TAG, "loadFavorites");
 
+        if (mView.isActive()) {
+            mView.setLoadingIndicator(true);
+        }
+
+        mDisposables.clear();
+
         Disposable disposable = mRepository.getFavoriteResult()
                 .map(new Function<FavoritesResult, List<Favorite>>() {
                     @Override
@@ -92,8 +94,6 @@ public class MinePresenter implements MineContract.Presenter {
                 .subscribeWith(new DisposableSubscriber<List<Favorite>>() {
                     @Override
                     public void onNext(List<Favorite> favorites) {
-                        LogUtils.i(TAG, "loadfavorites " + favorites.toString());
-
                         if (mView.isActive()) {
                             mView.showFavorites(favorites);
                         }
@@ -104,44 +104,15 @@ public class MinePresenter implements MineContract.Presenter {
                         LogUtils.e(TAG, "loadFavorites error " + t.toString());
 
                         if (mView.isActive()) {
-                            mView.showFavoriteProgressBar(false);
+                            mView.setLoadingIndicator(false);
                         }
                     }
 
                     @Override
                     public void onComplete() {
                         if (mView.isActive()) {
-                            mView.showFavoriteProgressBar(false);
+                            mView.setLoadingIndicator(false);
                         }
-                    }
-                });
-
-        mDisposables.add(disposable);
-    }
-
-    @Override
-    public void loadDynamics() {
-        Disposable disposable = mRepository.getAudientTests()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Audient>>() {
-                    @Override
-                    public void onNext(List<Audient> audients) {
-                        if (mView.isActive()) {
-                            mView.showUserProgressBar(false);
-
-                            mView.showDynamics(audients);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "loadDynamics error " + t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
 
