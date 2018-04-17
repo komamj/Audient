@@ -15,16 +15,20 @@
  */
 package com.xinshang.audient.splash;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.common.base.BaseActivity;
 import com.xinshang.common.util.ActivityUtils;
+import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
 public class SplashActivity extends BaseActivity {
+    private static final String TAG = SplashActivity.class.getSimpleName();
+
     @Inject
     SplashPresenter mPresenter;
 
@@ -49,6 +53,15 @@ public class SplashActivity extends BaseActivity {
                 .splashPresenterModule(new SplashPresenterModule(fragment))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent newIntent) {
+        super.onNewIntent(newIntent);
+
+        LogUtils.i(TAG, "onNewIntent");
+
+        setIntent(newIntent);
     }
 
     @Override

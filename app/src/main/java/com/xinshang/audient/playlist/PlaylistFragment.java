@@ -31,7 +31,6 @@ import com.xinshang.audient.favorite.MyFavoritesActivity;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.StoreSong;
-import com.xinshang.audient.nowplaying.NowPlayingActivity;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
 import com.xinshang.common.util.Constants;
@@ -42,7 +41,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class PlaylistFragment extends BaseFragment implements PlaylistContract.View {
     private static final String TAG = PlaylistFragment.class.getSimpleName();
@@ -56,11 +54,11 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @BindView(R.id.tv_name)
     TextView mName;
 
-    @OnClick(R.id.fab)
+    /*@OnClick(R.id.fab)
     void launchNowPlayingUI() {
         Intent intent = new Intent(mContext, NowPlayingActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     private PlaylistAdapter mAdapter;
 

@@ -282,7 +282,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         mRepository.getStorePlaylist(storeId)
                 .map(new Function<ApiResponse<List<StoreSong>>, List<StoreSong>>() {
                     @Override
-                    public List<StoreSong> apply(ApiResponse<List<StoreSong>> listApiResponse) throws Exception {
+                    public List<StoreSong> apply(ApiResponse<List<StoreSong>> listApiResponse) {
                         return listApiResponse.data;
                     }
                 })

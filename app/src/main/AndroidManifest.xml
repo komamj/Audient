@@ -21,6 +21,7 @@
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,11 +44,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
+        <!--<activity
             android:name=".nowplaying.NowPlayingActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />-->
 
         <activity
             android:name=".comment.CommentActivity"

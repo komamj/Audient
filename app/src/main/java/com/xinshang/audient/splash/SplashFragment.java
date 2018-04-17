@@ -28,6 +28,7 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.login.LoginDialogFragment;
 import com.xinshang.audient.main.MainActivity;
 import com.xinshang.audient.model.entities.Store;
+import com.xinshang.audient.store.StoresActivity;
 import com.xinshang.audient.store.StoresAdapter;
 import com.xinshang.audient.widget.AudientItemDecoration;
 import com.xinshang.common.base.BaseFragment;
@@ -128,11 +129,18 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void showStoresUI(boolean forceShow) {
-        if (forceShow) {
+        Intent intent = new Intent(mContext, StoresActivity.class);
+        startActivity(intent);
+        SplashActivity activity = ((SplashActivity) mContext);
+        activity.overridePendingTransition(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        activity.fileList();
+
+       /* if (forceShow) {
             mCardView.setVisibility(View.VISIBLE);
         } else {
             mCardView.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     @Override
