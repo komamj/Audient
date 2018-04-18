@@ -53,6 +53,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     ImageView mAlbum;
     @BindView(R.id.tv_name)
     TextView mName;
+    @BindView(R.id.mv_indictor)
+    View mIndicator;
 
     /*@OnClick(R.id.fab)
     void launchNowPlayingUI() {
@@ -154,7 +156,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     @Override
     public void showNowPlaying(StoreSong storeSong) {
         if (storeSong == null) {
+            mIndicator.setVisibility(View.GONE);
             return;
+        } else {
+            mIndicator.setVisibility(View.VISIBLE);
         }
 
         GlideApp.with(this)

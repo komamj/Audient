@@ -76,7 +76,7 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/iv_playing"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -84,13 +84,18 @@
             android:layout_margin="@dimen/nav_header_vertical_spacing"
             android:background="@drawable/bg_playing"
             android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_equalizer" />
+            app:srcCompat="@drawable/ic_equalizer" />-->
 
-        <com.xinshang.audient.widget.MusicVisualizer
+        <com.koma.musicvisualizerlibrary.MusicVisualizer
+            android:id="@+id/mv_indictor"
+            android:layout_gravity="bottom|end"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="bottom|start"
-            android:background="@drawable/bg_playing" />
+            android:layout_margin="@dimen/nav_header_vertical_spacing"
+            android:paddingEnd="2dp"
+            android:paddingStart="4dp"
+            android:visibility="gone"
+            app:bar_color="@color/colorDivider" />
 
     </android.support.v7.widget.CardView>
 
