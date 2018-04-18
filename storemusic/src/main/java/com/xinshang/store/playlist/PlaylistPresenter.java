@@ -389,6 +389,16 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
+    public void play(String id) {
+        CommandRequest commandRequest = new CommandRequest();
+        commandRequest.action = "play";
+        commandRequest.store = mRepository.getStoreId();
+        String message = new Gson().toJson(commandRequest);
+
+        mWebSocket.send(message);
+    }
+
+    @Override
     public void deleteStoreSong(StoreSong storeSong, String reason) {
         String id = storeSong.id;
 

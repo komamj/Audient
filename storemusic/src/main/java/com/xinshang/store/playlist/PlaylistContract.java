@@ -59,6 +59,8 @@ public interface PlaylistContract {
 
         boolean isPlaying();
 
+        void play(String id);
+
         void deleteStoreSong(StoreSong storeSong, String reason);
     }
 }
