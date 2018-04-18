@@ -7,9 +7,11 @@
         <item
             android:id="@+id/nav_user_info"
             android:icon="@drawable/ic_user"
+            android:visible="false"
             android:title="@string/nav_user_info" />
         <item
             android:id="@+id/nav_track"
+            android:visible="false"
             android:icon="@drawable/ic_track"
             android:title="@string/nav_track" />
     </group>

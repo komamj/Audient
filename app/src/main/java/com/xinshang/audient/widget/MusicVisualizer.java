@@ -56,10 +56,6 @@ public class MusicVisualizer extends View {
 
     public MusicVisualizer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        /*//start runnable
-        removeCallbacks(mAnimateRunnable);
-        post(mAnimateRunnable);*/
     }
 
     @Override

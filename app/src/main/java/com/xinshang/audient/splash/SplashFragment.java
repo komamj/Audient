@@ -134,7 +134,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         SplashActivity activity = ((SplashActivity) mContext);
         activity.overridePendingTransition(android.R.anim.fade_in,
                 android.R.anim.fade_out);
-        activity.fileList();
+        activity.finish();
 
        /* if (forceShow) {
             mCardView.setVisibility(View.VISIBLE);

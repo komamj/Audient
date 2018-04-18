@@ -120,6 +120,7 @@ public class StoresPresenter implements StoresContract.Presenter {
     @Override
     public void persistenceStore(Store store) {
         mRepository.persistenceStoreId(store.id);
+        mRepository.persistenceLoginStatus(true);
 
         mView.showMainView();
     }
