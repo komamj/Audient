@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_album"
-        app:layout_constraintEnd_toStartOf="@+id/iv_more"
+        app:layout_constraintEnd_toStartOf="@+id/tv_user"
         app:layout_constraintStart_toEndOf="@+id/iv_album"
         app:layout_constraintTop_toTopOf="@+id/iv_album">
 
@@ -54,6 +54,18 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点播歌曲"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_album"
+        app:layout_constraintEnd_toStartOf="@id/iv_more"
+        app:layout_constraintStart_toEndOf="@id/info_layout"
+        app:layout_constraintTop_toTopOf="@id/iv_album" />
+
     <ImageView
         android:id="@+id/iv_more"
         android:layout_width="wrap_content"
@@ -62,7 +74,7 @@
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@id/iv_album"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/info_layout"
+        app:layout_constraintStart_toEndOf="@id/tv_user"
         app:layout_constraintTop_toTopOf="@id/iv_album"
         app:srcCompat="@drawable/ic_more" />
 
