@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -144,7 +145,11 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
             @Override
             public void onDeleteMenuClick(StoreSong storeSong) {
                 if (mPresenter != null) {
-                    mPresenter.deleteStoreSong(storeSong, "");
+                    if (TextUtils.isEmpty(storeSong.demandId)) {
+                        mPresenter.deleteStoreSong(storeSong, null);
+                    } else {
+                        ReasonDialogFragment.showReasonDialog(getChildFragmentManager(), storeSong.id);
+                    }
                 }
             }
         });

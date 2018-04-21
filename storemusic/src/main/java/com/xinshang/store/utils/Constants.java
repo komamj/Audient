@@ -46,6 +46,8 @@ public final class Constants {
 
     public static final String KEY_ALBUMS = "key_albums";
 
+    public static final String KEY_STORE_SONG_ID = "key_store_song_id";
+
     // album format
     public static final String ALBUM_FORMAT = "jpg";
 
