@@ -14,8 +14,10 @@ import android.widget.RadioGroup;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseDialogFragment;
+import com.xinshang.store.data.entities.MessageEvent;
 import com.xinshang.store.utils.Constants;
-import com.xinshang.store.utils.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -119,6 +121,8 @@ public class ReasonDialogFragment extends BaseDialogFragment implements ReasonCo
 
     @Override
     public void dismissReasonDialogFragment() {
+        EventBus.getDefault().post(new MessageEvent(Constants.MESSAGE_PLAYLIST_CHANGED));
+
         this.dismiss();
     }
 }

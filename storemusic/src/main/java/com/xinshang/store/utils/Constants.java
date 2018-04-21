@@ -21,8 +21,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public final class Constants {
-    public static final String STORE_MUSIC_HOST = "http://193.112.0.111:80/";
-    public static final String PLAYLIST_STATUS_HOST = "ws://193.112.0.111:80/ws/client";
+    public static final String STORE_MUSIC_HOST = "http://101.132.122.196:8080/";
+    public static final String PLAYLIST_STATUS_HOST = "ws://101.132.122.196:8080/ws/client";
     public static final String CLIENT_ID = "STORE_CLIENT";
     public static final String CLIENT_SECRET = "ee6c85b4cf1142fbb9aaf484216af74c";
     public static final String GRANT_TYPE = "password";
@@ -71,6 +71,7 @@ public final class Constants {
     // message
     public static final String MESSAGE_MY_FAVORITES_CHANGED = "messge_my_favorites_changed";
     public static final String MESSAGE_COMMENT_CHANGED = "message_comment_changed";
+    public static final String MESSAGE_PLAYLIST_CHANGED = "message_playlist_changed";
 
     private Constants() {
     }

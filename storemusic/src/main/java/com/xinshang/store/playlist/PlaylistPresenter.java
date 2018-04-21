@@ -23,10 +23,14 @@ import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
 import com.xinshang.store.data.entities.CommandRequest;
 import com.xinshang.store.data.entities.CommandResponse;
+import com.xinshang.store.data.entities.MessageEvent;
 import com.xinshang.store.data.entities.StoreSong;
 import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.reactivestreams.Publisher;
 
 import java.net.SocketTimeoutException;
@@ -109,6 +113,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
+        EventBus.getDefault().register(this);
+
         Request request = new Request.Builder()
                 .url(Constants.PLAYLIST_STATUS_HOST)
                 .build();
@@ -116,6 +122,15 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         mWebSocket = mClient.newWebSocket(request, this);
 
         loadStorePlaylist();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent) {
+        LogUtils.i(TAG, "onMessageEvent");
+
+        if (TextUtils.equals(messageEvent.getMessage(), Constants.MESSAGE_PLAYLIST_CHANGED)) {
+            loadStorePlaylist();
+        }
     }
 
     /**
@@ -253,6 +268,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void unSubscribe() {
         LogUtils.i(TAG, "unSubscribe");
+
+        EventBus.getDefault().unregister(this);
 
         mWebSocket.cancel();
 

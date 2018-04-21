@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_album"
-        app:layout_constraintEnd_toStartOf="@+id/iv_more"
+        app:layout_constraintEnd_toStartOf="@+id/tv_user"
         app:layout_constraintStart_toEndOf="@+id/iv_album"
         app:layout_constraintTop_toTopOf="@+id/iv_album">
 
@@ -35,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textColor="@color/colorPrimaryText"
             android:singleLine="true"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,11 +42,10 @@
 
         <TextView
             android:id="@+id/tv_artist_name"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/colorSecondaryText"
             style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:singleLine="true"
             android:textSize="13sp"
@@ -55,6 +53,19 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点播歌曲"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
+        app:layout_constraintBottom_toBottomOf="@id/iv_album"
+        app:layout_constraintEnd_toStartOf="@id/iv_more"
+        app:layout_constraintStart_toEndOf="@id/info_layout"
+        app:layout_constraintTop_toTopOf="@id/iv_album" />
 
     <ImageView
         android:id="@+id/iv_more"
@@ -64,7 +75,7 @@
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@id/iv_album"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/info_layout"
+        app:layout_constraintStart_toEndOf="@id/tv_user"
         app:layout_constraintTop_toTopOf="@id/iv_album"
         app:srcCompat="@drawable/ic_more" />
 

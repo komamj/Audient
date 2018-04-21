@@ -61,6 +61,7 @@
         android:text="点播歌曲"
         android:textColor="@color/colorPrimary"
         android:visibility="gone"
+        android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
         app:layout_constraintBottom_toBottomOf="@id/iv_album"
         app:layout_constraintEnd_toStartOf="@id/iv_more"
         app:layout_constraintStart_toEndOf="@id/info_layout"

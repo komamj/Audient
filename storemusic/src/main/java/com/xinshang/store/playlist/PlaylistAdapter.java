@@ -118,6 +118,11 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
         } else {
             holder.mName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryText));
         }
+        if (TextUtils.isEmpty(storePlaylist.demandId)) {
+            holder.mUserIndicator.setVisibility(View.GONE);
+        } else {
+            holder.mUserIndicator.setVisibility(View.VISIBLE);
+        }
         holder.mArtistName.setText(storePlaylist.artistName);
     }
 
@@ -134,6 +139,8 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
         TextView mName;
         @BindView(R.id.tv_artist_name)
         TextView mArtistName;
+        @BindView(R.id.tv_user)
+        TextView mUserIndicator;
 
         PlaylistViewHolder(View itemView) {
             super(itemView);
