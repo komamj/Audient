@@ -23,6 +23,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import com.xinshang.audient.R;
 import com.xinshang.audient.login.LoginDialogFragment;
@@ -37,6 +38,7 @@ import com.xinshang.common.util.LogUtils;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by koma on 3/5/18.
@@ -51,6 +53,15 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     CardView mCardView;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.btn_login)
+    Button mLogin;
+
+    @OnClick(R.id.btn_login)
+    void login() {
+        if (mPresenter != null) {
+            mPresenter.sendLoginRequest();
+        }
+    }
 
     private StoresAdapter mAdapter;
 
@@ -120,6 +131,15 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         SplashActivity activity = (SplashActivity) mContext;
         activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         activity.finish();
+    }
+
+    @Override
+    public void showLoginButton(boolean forceShow) {
+        if (forceShow) {
+            mLogin.setVisibility(View.VISIBLE);
+        } else {
+            mLogin.setVisibility(View.GONE);
+        }
     }
 
     @Override

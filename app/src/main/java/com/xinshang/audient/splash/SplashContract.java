@@ -32,6 +32,8 @@ public interface SplashContract {
 
         void showMainView();
 
+        void showLoginButton(boolean forceShow);
+
         void showLoginDialog();
 
         void showStoresUI(boolean forceShow);
@@ -47,6 +49,8 @@ public interface SplashContract {
 
     interface Presenter extends BasePresenter {
         void delayLaunchMainView();
+
+        void sendLoginRequest();
 
         void loadAccessToken(String code);
 

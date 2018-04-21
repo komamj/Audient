@@ -340,10 +340,10 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void loadStorePlaylist() {
         String storeId = mRepository.getStoreId();
-        mRepository.getStorePlaylist(storeId)
+        Disposable disposable = mRepository.getStorePlaylist(storeId)
                 .map(new Function<ApiResponse<List<StoreSong>>, List<StoreSong>>() {
                     @Override
-                    public List<StoreSong> apply(ApiResponse<List<StoreSong>> listApiResponse) throws Exception {
+                    public List<StoreSong> apply(ApiResponse<List<StoreSong>> listApiResponse) {
                         return listApiResponse.data;
                     }
                 })
@@ -369,6 +369,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                         sendCommand(COMMAND_BIND);
                     }
                 });
+        mDisposables.add(disposable);
     }
 
     @Override

@@ -61,6 +61,25 @@
 
     </android.support.v7.widget.CardView>
 
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/bg_login_button"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:drawableStart="@mipmap/ic_wx_logo"
+        android:gravity="center"
+        android:paddingEnd="48dp"
+        android:paddingStart="48dp"
+        android:text="微信登录"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/iv_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/iv_launcher"
         android:layout_width="wrap_content"

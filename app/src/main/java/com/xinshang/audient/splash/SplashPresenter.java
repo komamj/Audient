@@ -77,7 +77,7 @@ public class SplashPresenter implements SplashContract.Presenter {
         if (mRepository.getLoginStatus()) {
             delayLaunchMainView();
         } else {
-            mView.showLoginDialog();
+            mView.showLoginButton(true);
         }
 
         EventBus.getDefault().register(this);
@@ -123,6 +123,11 @@ public class SplashPresenter implements SplashContract.Presenter {
                 });
 
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void sendLoginRequest() {
+        mRepository.sendLoginRequest();
     }
 
     @Override
