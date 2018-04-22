@@ -130,9 +130,11 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
         void onFavoriteMenuClick(Song audient);
 
         void onDeleteMenuClick(StoreSong storeSong);
+
+        void onItemClick(StoreSong storeSong);
     }
 
-    class PlaylistViewHolder extends BaseViewHolder {
+    class PlaylistViewHolder extends BaseViewHolder implements View.OnClickListener {
         @BindView(R.id.iv_album)
         ImageView mAlbum;
         @BindView(R.id.tv_name)
@@ -144,6 +146,8 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
 
         PlaylistViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
         }
 
         @OnClick(R.id.iv_more)
@@ -186,6 +190,13 @@ public class PlaylistAdapter extends BaseAdapter<StoreSong, PlaylistAdapter.Play
                 }
             });
             popupMenu.show();
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                mListener.onItemClick(mData.get(getAdapterPosition()));
+            }
         }
     }
 }

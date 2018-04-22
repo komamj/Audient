@@ -152,6 +152,17 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                     }
                 }
             }
+
+            @Override
+            public void onItemClick(StoreSong storeSong) {
+                PlayItemDialogFragment.showDialog(getChildFragmentManager(),
+                        new PlayItemDialogFragment.OnConfirmListener() {
+                            @Override
+                            public void onConfirm() {
+
+                            }
+                        }, mContext.getString(R.string.play_specified_item));
+            }
         });
 
         mRecyclerView.setHasFixedSize(true);

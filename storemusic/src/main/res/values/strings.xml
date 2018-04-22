@@ -78,6 +78,7 @@
 
     <!--Playlist-->
     <string name="now_playing">"当前门店正在播放："</string>
+    <string name="play_specified_item">"跳至当前项播放"</string>
 
     <!--About-->
     <string name="about_label">"关于我们"</string>
