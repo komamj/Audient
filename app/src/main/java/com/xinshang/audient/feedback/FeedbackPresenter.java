@@ -115,11 +115,11 @@ public class FeedbackPresenter implements FeedbackContract.Presenter {
     }
 
     private boolean isInValid(String title, String content) {
-        if (TextUtils.isEmpty(title)) {
+        if (TextUtils.isEmpty(title) || TextUtils.getTrimmedLength(title) < 5) {
             mView.showErrorTitle();
 
             return true;
-        } else if (TextUtils.isEmpty(content)) {
+        } else if (TextUtils.isEmpty(content) || TextUtils.getTrimmedLength(content) < 5) {
             mView.showErrorContent();
 
             return true;

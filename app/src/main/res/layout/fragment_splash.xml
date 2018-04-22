@@ -74,13 +74,14 @@
         android:paddingStart="48dp"
         android:text="微信登录"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        style="@style/TextAppearance.AppCompat.Title"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/iv_launcher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/iv_launcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

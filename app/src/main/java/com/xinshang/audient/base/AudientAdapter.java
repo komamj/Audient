@@ -106,7 +106,7 @@ public class AudientAdapter extends BaseAdapter<Audient, AudientAdapter.AudientV
         @BindView(R.id.tv_artist_name)
         TextView mArtistName;
 
-        @OnClick(R.id.iv_playlist_add)
+        @OnClick(R.id.tv_demand)
         void addToPlaylis() {
             if (mEventListener != null) {
                 mEventListener.onPlaylistChanged(mData.get(getAdapterPosition()));

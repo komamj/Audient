@@ -56,9 +56,9 @@ public class FeedbackDialogFragment extends BaseDialogFragment implements Feedba
     @BindView(R.id.fab)
     FloatingActionButton mFab;
 
-    @BindString(R.string.empty_title_error_message)
+    @BindString(R.string.error_title_message)
     String mEmptyTitleMessage;
-    @BindString(R.string.empty_content_error_message)
+    @BindString(R.string.error_content_message)
     String mEmptyContentMessage;
 
     @OnClick(R.id.fab)

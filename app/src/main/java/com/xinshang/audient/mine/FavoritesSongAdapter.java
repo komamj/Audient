@@ -105,7 +105,7 @@ public class FavoritesSongAdapter extends BaseAdapter<Favorite.FavoritesSong, Fa
         @BindView(R.id.tv_artist_name)
         TextView mArtistName;
 
-        @OnClick(R.id.iv_playlist_add)
+        @OnClick(R.id.tv_demand)
         void addToPlaylis() {
             if (mEventListener != null) {
                 Favorite.FavoritesSong favoritesSong = mData.get(getAdapterPosition());
