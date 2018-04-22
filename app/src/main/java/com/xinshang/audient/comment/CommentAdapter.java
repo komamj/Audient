@@ -101,6 +101,11 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
                 return VIEW_TYPE_HEADER;
             }
         }
+        if (mCommentDataBean.inStoreComment.comments.isEmpty()) {
+            if (position == 0) {
+                return VIEW_TYPE_HEADER;
+            }
+        }
         return VIEW_TYPE_NORMAL;
     }
 
@@ -124,12 +129,19 @@ public class CommentAdapter extends BaseAdapter<Comment, CommentAdapter.CommentV
         Comment comment = mData.get(position);
 
         if (getItemViewType(position) == VIEW_TYPE_HEADER) {
-            if (position == 0) {
-                ((CommentHeaderViewHolder) holder).mTitle.setText(
-                        mContext.getString(R.string.store_comment_description));
+            if (mCommentDataBean.inStoreComment.comments.isEmpty()) {
+                if (position == 0) {
+                    ((CommentHeaderViewHolder) holder).mTitle.setText(
+                            mContext.getString(R.string.all_comment_description));
+                }
             } else {
-                ((CommentHeaderViewHolder) holder).mTitle.setText(
-                        mContext.getString(R.string.all_comment_description));
+                if (position == 0) {
+                    ((CommentHeaderViewHolder) holder).mTitle.setText(
+                            mContext.getString(R.string.store_comment_description));
+                } else {
+                    ((CommentHeaderViewHolder) holder).mTitle.setText(
+                            mContext.getString(R.string.all_comment_description));
+                }
             }
         }
 
