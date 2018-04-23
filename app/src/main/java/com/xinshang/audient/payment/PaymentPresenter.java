@@ -32,7 +32,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
     private static final String TAG = PaymentPresenter.class.getSimpleName();
     private static final String PAYMENT_WAY = "微信支付";
 
-    private static final float PRICE = 0.01f;
+    private static final float PRICE = 1.00f;
 
     private final PaymentContract.View mView;
 

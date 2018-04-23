@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.mine;
 
+import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
@@ -30,11 +31,17 @@ public interface FavoriteDetailContract {
         String getFavoritesId();
 
         void showFavoritesSong(List<Favorite.FavoritesSong> favoritesSongs);
+
+        void showPaymentDialog(Audient audient);
+
+        void showHintDialog(Audient audient);
     }
 
     interface Presenter extends BasePresenter {
         void loadData(String favoriteId);
 
         void deleteFavoriteSong(Favorite.FavoritesSong favoritesSong);
+
+        void demand(Audient audient);
     }
 }

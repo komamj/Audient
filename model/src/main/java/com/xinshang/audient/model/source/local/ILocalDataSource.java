@@ -41,4 +41,8 @@ public interface ILocalDataSource {
     String getStoreId();
 
     Flowable<CommandResponse<String>> parsingCommandResponse(String response);
+
+    boolean isFirstDemand();
+
+    void persistenceDemandStatus(boolean demandStatus);
 }

@@ -16,6 +16,7 @@
 package com.xinshang.audient.mine;
 
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.model.entities.FavoriteListResult;
@@ -131,5 +132,16 @@ public class FavoriteDetailPresenter implements FavoriteDetailContract.Presenter
 
                     }
                 });
+    }
+
+    @Override
+    public void demand(Audient audient) {
+        if (mView.isActive()) {
+            if (mRepository.isFirstDemand()) {
+                mView.showHintDialog(audient);
+            } else {
+                mView.showPaymentDialog(audient);
+            }
+        }
     }
 }

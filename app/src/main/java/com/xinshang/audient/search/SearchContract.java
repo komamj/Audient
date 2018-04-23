@@ -31,10 +31,16 @@ public interface SearchContract {
 
         void showProgressBar(boolean forceShow);
 
+        void showPaymentDialog(Audient audient);
+
+        void showHintDialog(Audient audient);
+
         void showAudients(List<Audient> audients);
     }
 
     interface Presenter extends BasePresenter {
         void loadSearchResults(String keyword);
+
+        void demand(Audient audient);
     }
 }

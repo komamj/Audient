@@ -286,4 +286,14 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     public Flowable<CommandResponse<String>> parsingCommandResponse(String response) {
         return mLocalDataSource.parsingCommandResponse(response);
     }
+
+    @Override
+    public boolean isFirstDemand() {
+        return mLocalDataSource.isFirstDemand();
+    }
+
+    @Override
+    public void persistenceDemandStatus(boolean demandStatus) {
+        mLocalDataSource.persistenceDemandStatus(demandStatus);
+    }
 }

@@ -30,9 +30,15 @@ public interface ToplistDetailContract {
         String getShowTime();
 
         void showToplistDetail(List<Audient> audients);
+
+        void showPaymentDialog(Audient audient);
+
+        void showHintDialog(Audient audient);
     }
 
     interface Presenter extends BasePresenter {
         void loadToplistDetail(int topId, String showTime, int page, int pageCount);
+
+        void demand(Audient audient);
     }
 }

@@ -186,4 +186,16 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
             }
         }, BackpressureStrategy.LATEST);
     }
+
+    @Override
+    public boolean isFirstDemand() {
+        return mSharedPreferences.getBoolean(Constants.KEY_FIRST_DEMAND, true);
+    }
+
+    @Override
+    public void persistenceDemandStatus(boolean demandStatus) {
+        mSharedPreferences.edit()
+                .putBoolean(Constants.KEY_FIRST_DEMAND, demandStatus)
+                .apply();
+    }
 }

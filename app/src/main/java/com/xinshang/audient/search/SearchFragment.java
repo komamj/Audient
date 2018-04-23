@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.xinshang.audient.R;
 import com.xinshang.audient.base.AudientAdapter;
 import com.xinshang.audient.favorite.MyFavoritesActivity;
+import com.xinshang.audient.hint.HintDialogFragment;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.payment.PaymentDialogFragment;
 import com.xinshang.audient.widget.AudientItemDecoration;
@@ -93,7 +94,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
             @Override
             public void onPlaylistChanged(Audient audient) {
-                PaymentDialogFragment.show(getChildFragmentManager(), audient);
+                if (mPresenter != null) {
+                    mPresenter.demand(audient);
+                }
             }
         });
 
@@ -157,6 +160,16 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         } else {
             mProgressBar.hide();
         }
+    }
+
+    @Override
+    public void showPaymentDialog(Audient audient) {
+        PaymentDialogFragment.show(getChildFragmentManager(), audient);
+    }
+
+    @Override
+    public void showHintDialog(Audient audient) {
+        HintDialogFragment.show(getChildFragmentManager(), audient);
     }
 
     @Override

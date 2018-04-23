@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xinshang.audient.R;
+import com.xinshang.audient.hint.HintDialogFragment;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.Favorite;
 import com.xinshang.audient.payment.PaymentDialogFragment;
@@ -104,7 +105,9 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
 
             @Override
             public void onPlaylistChanged(Audient audient) {
-                PaymentDialogFragment.show(getChildFragmentManager(), audient);
+                if (mPresenter != null) {
+                    mPresenter.demand(audient);
+                }
             }
         });
 
@@ -159,5 +162,15 @@ public class FavoriteDetailFragment extends BaseFragment implements FavoriteDeta
     @Override
     public void showFavoritesSong(List<Favorite.FavoritesSong> favoritesSongs) {
         mAdapter.replace(favoritesSongs);
+    }
+
+    @Override
+    public void showPaymentDialog(Audient audient) {
+        PaymentDialogFragment.show(getChildFragmentManager(), audient);
+    }
+
+    @Override
+    public void showHintDialog(Audient audient) {
+        HintDialogFragment.show(getChildFragmentManager(), audient);
     }
 }

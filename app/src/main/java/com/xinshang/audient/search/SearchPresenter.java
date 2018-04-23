@@ -124,6 +124,17 @@ public class SearchPresenter implements SearchContract.Presenter {
         mDisposables.add(disposable);
     }
 
+    @Override
+    public void demand(Audient audient) {
+        if (mView.isActive()) {
+            if (mRepository.isFirstDemand()) {
+                mView.showHintDialog(audient);
+            } else {
+                mView.showPaymentDialog(audient);
+            }
+        }
+    }
+
     private boolean isInvalid(String word) {
         String keyword = word.trim().toUpperCase();
 
