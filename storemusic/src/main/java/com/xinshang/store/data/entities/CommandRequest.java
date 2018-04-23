@@ -26,6 +26,6 @@ public class CommandRequest {
     public String store;
     @SerializedName("action")
     public String action;
-    @SerializedName("item")
+    @SerializedName("data")
     public String songId;
 }
