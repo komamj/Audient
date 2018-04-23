@@ -62,5 +62,7 @@ public interface PlaylistContract {
         void play(String id);
 
         void deleteStoreSong(StoreSong storeSong, String reason);
+
+        void reboot();
     }
 }

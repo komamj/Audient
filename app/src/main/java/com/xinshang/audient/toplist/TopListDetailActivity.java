@@ -76,6 +76,7 @@ public class TopListDetailActivity extends BaseActivity {
         }
 
         mFab.setImageResource(R.drawable.ic_unfavorite);
+        mFab.setVisibility(View.GONE);
 
         int topId = getIntent().getIntExtra(Constants.KEY_TOP_ID, -1);
         String toplistName = getIntent().getStringExtra(Constants.KEY_top_list_name);

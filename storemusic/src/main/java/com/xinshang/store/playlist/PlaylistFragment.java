@@ -15,8 +15,12 @@
  */
 package com.xinshang.store.playlist;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -66,6 +70,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
     private PlaylistAdapter mAdapter;
 
+    private LocalBroadcastManager mLocalBroadcastManager;
+
+    private LocalReceiver mLocalReceiver;
+
     public PlaylistFragment() {
     }
 
@@ -114,6 +122,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(mContext);
+
+        mLocalReceiver = new LocalReceiver();
+
         setStopActive(false);
         setNextActive(false);
         setPauseActive(false);
@@ -154,12 +166,14 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
             }
 
             @Override
-            public void onItemClick(StoreSong storeSong) {
+            public void onItemClick(final StoreSong storeSong) {
                 PlayItemDialogFragment.showDialog(getChildFragmentManager(),
                         new PlayItemDialogFragment.OnConfirmListener() {
                             @Override
                             public void onConfirm() {
-
+                                if (mPresenter != null) {
+                                    mPresenter.play(storeSong.id);
+                                }
                             }
                         }, mContext.getString(R.string.play_specified_item));
             }
@@ -179,8 +193,23 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
         LogUtils.i(TAG, "onResume");
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.ACTION_REBOOT);
+        mLocalBroadcastManager.registerReceiver(mLocalReceiver, intentFilter);
+
         if (mPresenter != null) {
             mPresenter.subscribe();
+        }
+    }
+
+    private class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == Constants.ACTION_REBOOT) {
+                if (mPresenter != null) {
+                    mPresenter.reboot();
+                }
+            }
         }
     }
 
@@ -189,6 +218,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         super.onPause();
 
         LogUtils.i(TAG, "onPause");
+
+        mLocalBroadcastManager.unregisterReceiver(mLocalReceiver);
 
         if (mPresenter != null) {
             mPresenter.unSubscribe();

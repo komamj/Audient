@@ -23,4 +23,9 @@
             android:title="@string/action_settings" />
     </group>
 
+    <item
+        android:id="@+id/nav_reboot"
+        android:icon="@drawable/ic_reboot"
+        android:title="@string/nav_reboot" />
+
 </menu>

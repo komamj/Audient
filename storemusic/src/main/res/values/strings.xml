@@ -10,6 +10,9 @@
     <string name="nav_setting">设置</string>
     <string name="nav_share">"分享"</string>
     <string name="nav_send">"反馈"</string>
+    <string name="nav_reboot">"重启"</string>
+
+    <string name="reboot">"确认重启后音乐播放盒启动需要1-3分钟。\n重启后会从播放列表第一首歌曲开始播放。"</string>
 
     <!--Loading-->
     <string name="loading_error_message">"加载出错了，请稍后再试"</string>

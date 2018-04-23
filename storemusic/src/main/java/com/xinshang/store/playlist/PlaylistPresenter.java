@@ -69,6 +69,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private static final String FINISHED = "finished";
     private static final String STOPPED = "stoped";
     private static final String PAUSED = "paused";
+    private static final String REBOOT = "reboot";
 
     private PlaylistContract.View mView;
 
@@ -409,8 +410,9 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     @Override
     public void play(String id) {
         CommandRequest commandRequest = new CommandRequest();
-        commandRequest.action = "play";
+        commandRequest.action = COMMAND_PLAY;
         commandRequest.store = mRepository.getStoreId();
+        commandRequest.songId = id;
         String message = new Gson().toJson(commandRequest);
 
         mWebSocket.send(message);
@@ -443,5 +445,15 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
                     }
                 });
+    }
+
+    @Override
+    public void reboot() {
+        CommandRequest commandRequest = new CommandRequest();
+        commandRequest.action = REBOOT;
+        commandRequest.store = mRepository.getStoreId();
+        String message = new Gson().toJson(commandRequest);
+
+        mWebSocket.send(message);
     }
 }

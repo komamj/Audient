@@ -86,6 +86,7 @@ public class FavoriteDetailActivity extends BaseActivity {
                 .load(favorite.coverImageUrl).into(mAlbum);
 
         mFab.setImageResource(R.drawable.ic_unfavorite);
+        mFab.setVisibility(View.GONE);
 
         FavoriteDetailFragment fragment = (FavoriteDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_main);

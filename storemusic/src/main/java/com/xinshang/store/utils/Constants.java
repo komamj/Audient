@@ -37,6 +37,8 @@ public final class Constants {
 
     public static final int PAYLOAD_PLAYING = 0;
 
+    public static final String ACTION_REBOOT = "com.xinshang.store.action_reboot";
+
     // favorite
     public static final String KEY_FAVORITE = "key_favorite";
 

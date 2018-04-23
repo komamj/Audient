@@ -200,6 +200,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_reboot) {
+            RebootDialogFragment.showRebootDialog(getSupportFragmentManager());
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
