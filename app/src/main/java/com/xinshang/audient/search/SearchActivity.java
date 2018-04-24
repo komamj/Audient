@@ -41,6 +41,12 @@ public class SearchActivity extends BaseActivity {
     @Inject
     SearchPresenter mPresenter;
 
+    private OnSearchListener mListener;
+
+    public void setListener(OnSearchListener listener) {
+        this.mListener = listener;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +85,13 @@ public class SearchActivity extends BaseActivity {
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String keyword) {
                 mSearchView.clearFocus();
-                mPresenter.loadSearchResults(query);
+
+                if (mListener != null) {
+                    mListener.onSearch(keyword);
+                }
+
                 return true;
             }
 
@@ -149,5 +159,9 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_search;
+    }
+
+    public interface OnSearchListener {
+        void onSearch(String keyword);
     }
 }

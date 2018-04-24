@@ -35,6 +35,8 @@ public interface PlaylistContract {
         void showNowPlaying(StoreSong storePlaylist);
 
         void showPlaylist(List<StoreSong> storePlaylists);
+
+        void setPlayingIndicator(boolean isActive);
     }
 
     interface Presenter extends BasePresenter {

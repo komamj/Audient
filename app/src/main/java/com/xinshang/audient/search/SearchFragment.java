@@ -18,7 +18,9 @@ package com.xinshang.audient.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.constraint.Group;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -39,19 +41,27 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class SearchFragment extends BaseFragment implements SearchContract.View {
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
+public class SearchFragment extends BaseFragment implements SearchContract.View, SearchActivity.OnSearchListener {
     private static final String TAG = SearchFragment.class.getSimpleName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
-    ContentLoadingProgressBar mProgressBar;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.group_loading)
+    Group mLoadingMore;
     @BindView(R.id.tv_empty)
     TextView mEmptyView;
 
     private AudientAdapter mAdapter;
 
     private SearchContract.Presenter mPresenter;
+
+    private boolean mIsLoadingMore;
+
+    private String mKeyword;
 
     public SearchFragment() {
     }
@@ -66,6 +76,8 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         super.onAttach(context);
 
         LogUtils.i(TAG, "onAttach");
+
+        ((SearchActivity) mContext).setListener(this);
     }
 
     @Override
@@ -81,7 +93,19 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
         LogUtils.i(TAG, "onViewCreated");
 
-        showProgressBar(false);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark,
+                R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.loadSongs(mKeyword);
+                }
+            }
+        });
+
+        setLoadingIndicator(false);
+        setLoadingMoreIndicator(false);
 
         mAdapter = new AudientAdapter(mContext);
         mAdapter.setEventListener(new AudientAdapter.EventListener() {
@@ -100,6 +124,30 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             }
         });
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LogUtils.i(TAG, "onScrollStateChanged newState : " + newState);
+
+                if (mIsLoadingMore) {
+                    return;
+                }
+
+                if (newState == SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager)
+                            recyclerView.getLayoutManager();
+                    int lastPosition = layoutManager
+                            .findLastVisibleItemPosition();
+                    if (lastPosition == mAdapter.getItemCount() - 1) {
+                        // load next page
+                        if (mPresenter != null) {
+                            mPresenter.loadNextPageSongs(mKeyword);
+                        }
+                    }
+                }
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -150,16 +198,42 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
 
     @Override
-    public void showProgressBar(boolean forceShow) {
-        LogUtils.i(TAG, "showProressBar forceShow :" + forceShow);
+    public void setLoadingIndicator(final boolean isActive) {
+        LogUtils.i(TAG, "showProressBar forceShow :" + isActive);
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
 
         showEmpty(false);
+    }
 
-        if (forceShow) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
+    @Override
+    public void setLoadingMoreIndicator(final boolean isActive) {
+        mIsLoadingMore = isActive;
+
+        mLoadingMore.post(new Runnable() {
+            @Override
+            public void run() {
+                if (isActive) {
+                    mLoadingMore.setVisibility(View.VISIBLE);
+                } else {
+                    mLoadingMore.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void showNoMoreMessage() {
+        if (getView() == null) {
+            return;
         }
+        Snackbar.make(getView(), R.string.no_more_message, Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override
@@ -179,5 +253,19 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter.replace(audients);
+    }
+
+    @Override
+    public void showNextPageSongs(List<Audient> songs) {
+        mAdapter.appendData(songs);
+    }
+
+    @Override
+    public void onSearch(String keyword) {
+        mKeyword = keyword;
+
+        if (mPresenter != null) {
+            mPresenter.loadSongs(keyword);
+        }
     }
 }

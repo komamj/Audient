@@ -41,13 +41,13 @@ import butterknife.OnCheckedChanged;
 public class LoginDialogFragment extends BaseDialogFragment implements LoginContract.View {
     private static final String DIALOG_TAG = "login_dialog";
 
-    @BindView(R.id.rb_wechat)
+    @BindView(R.id.cb_wechat)
     RadioButton mRadioButton;
 
     @Inject
     LoginPresenter mPresenter;
 
-    @OnCheckedChanged(R.id.rb_wechat)
+    @OnCheckedChanged(R.id.cb_wechat)
     void onCheckedChange() {
 
     }

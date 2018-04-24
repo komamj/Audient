@@ -44,7 +44,7 @@ ext {
     compileSdkVersion = 27
 
     // App dependencies
-    constraint_version = '1.0.2'
+    constraint_version = '1.1.0'
     dagger_version = '2.11'
     support_version = '27.1.0'
     glide_version = '4.6.1'

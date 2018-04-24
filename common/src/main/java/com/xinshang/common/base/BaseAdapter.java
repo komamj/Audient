@@ -41,6 +41,18 @@ public abstract class BaseAdapter<T, V extends BaseViewHolder> extends RecyclerV
         notifyDataSetChanged();
     }
 
+    public void appendData(final List<T> data) {
+        if (mData == null || data == null || data.isEmpty()) {
+            return;
+        }
+
+        int positionStart = mData.size();
+
+        mData.addAll(data);
+
+        notifyItemRangeInserted(positionStart, data.size());
+    }
+
     @SuppressLint("StaticFieldLeak")
     @MainThread
     public void replace(final List<T> update) {

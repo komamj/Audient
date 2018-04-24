@@ -29,17 +29,25 @@ public interface SearchContract {
 
         void showEmpty(boolean forceShow);
 
-        void showProgressBar(boolean forceShow);
+        void setLoadingIndicator(boolean isActive);
+
+        void setLoadingMoreIndicator(boolean isActive);
+
+        void showNoMoreMessage();
 
         void showPaymentDialog(Audient audient);
 
         void showHintDialog(Audient audient);
 
         void showAudients(List<Audient> audients);
+
+        void showNextPageSongs(List<Audient> songs);
     }
 
     interface Presenter extends BasePresenter {
-        void loadSearchResults(String keyword);
+        void loadSongs(String keyword);
+
+        void loadNextPageSongs(String keyWord);
 
         void demand(Audient audient);
     }

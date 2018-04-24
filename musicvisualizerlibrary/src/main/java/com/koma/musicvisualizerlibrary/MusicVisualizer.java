@@ -35,7 +35,9 @@ public class MusicVisualizer extends View {
 
     private Paint mPaint;
 
-    private Runnable animateView = new Runnable() {
+    private boolean mIsPlaying = true;
+
+    private Runnable mAnimateRunnable = new Runnable() {
         @Override
         public void run() {
             postDelayed(this, 120);
@@ -43,6 +45,19 @@ public class MusicVisualizer extends View {
             invalidate();
         }
     };
+
+    public void setPlayingStatus(boolean isPlaying) {
+        mIsPlaying = isPlaying;
+
+        if (mIsPlaying) {
+            removeCallbacks(mAnimateRunnable);
+            post(mAnimateRunnable);
+        } else {
+            removeCallbacks(mAnimateRunnable);
+
+            invalidate();
+        }
+    }
 
     public MusicVisualizer(Context context) {
         this(context, null);
@@ -88,11 +103,14 @@ public class MusicVisualizer extends View {
     @Override
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
-        if (visibility == VISIBLE) {
-            removeCallbacks(animateView);
-            post(animateView);
-        } else if (visibility == GONE) {
-            removeCallbacks(animateView);
+
+        if (mIsPlaying) {
+            if (visibility == VISIBLE) {
+                removeCallbacks(mAnimateRunnable);
+                post(mAnimateRunnable);
+            } else if (visibility == GONE) {
+                removeCallbacks(mAnimateRunnable);
+            }
         }
     }
 }

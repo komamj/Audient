@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/rb_wechat"
+            android:id="@+id/cb_wechat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"

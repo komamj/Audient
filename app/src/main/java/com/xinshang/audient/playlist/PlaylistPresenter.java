@@ -140,11 +140,25 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
                         if (TextUtils.equals(COMMAND_STATUS, commandResponse.action)
                                 && commandResponse.code == 0) {
                             String message = commandResponse.data;
-                            if (TextUtils.equals(message, PLAYING)) {
+                            if (TextUtils.equals(message, STOPPED)) {
+                                if (mView.isActive()) {
+                                    mView.setPlayingIndicator(false);
+                                }
+                            } else if (TextUtils.equals(message, PAUSED)) {
+                                if (mView.isActive()) {
+                                    mView.setPlayingIndicator(false);
+                                }
+                            } else if (TextUtils.equals(message, PLAYING)) {
+                                if (mView.isActive()) {
+                                    mView.setPlayingIndicator(true);
+                                }
                                 loadNowPlaying(commandResponse.message);
                             }
                         } else if (TextUtils.equals(COMMAND_PLAY, commandResponse.action)
                                 && commandResponse.code == 0) {
+                            if (mView.isActive()) {
+                                mView.setPlayingIndicator(true);
+                            }
                             loadNowPlaying(commandResponse.message);
                         }
                     }

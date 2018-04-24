@@ -186,6 +186,15 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     }
 
     @Override
+    public void setPlayingIndicator(boolean isActive) {
+        if (isActive) {
+            mIndicator.setVisibility(View.VISIBLE);
+        } else {
+            mIndicator.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public boolean isActive() {
         return this.isAdded();
     }
