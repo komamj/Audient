@@ -41,6 +41,7 @@ import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.UserResponse;
+import com.xinshang.audient.model.entities.Version;
 import com.xinshang.audient.model.entities.WXPayRequest;
 
 import java.util.List;
@@ -118,4 +119,6 @@ public interface IRemoteDataSource {
     Flowable<ApiResponse<OrderResponse>> postOrder(WXPayRequest wxPayRequest);
 
     Flowable<BaseResponse> getOrderResult(String tid,String oid);
+
+    Flowable<Version> getNewestVersionCode();
 }

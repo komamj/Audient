@@ -45,4 +45,6 @@ public interface ILocalDataSource {
     boolean isFirstDemand();
 
     void persistenceDemandStatus(boolean demandStatus);
+
+    Flowable<Integer> getCurrentVersionCode();
 }

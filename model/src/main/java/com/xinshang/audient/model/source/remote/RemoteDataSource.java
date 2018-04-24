@@ -47,11 +47,14 @@ import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.UserResponse;
+import com.xinshang.audient.model.entities.Version;
 import com.xinshang.audient.model.entities.WXPayRequest;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -260,6 +263,12 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<BaseResponse> getOrderResult(String tid, String oid) {
         return mAudientApi.getOrderResult(tid, oid);
+    }
+
+    @Override
+    public Flowable<Version> getNewestVersionCode() {
+        return mAudientApi.getNewestVersionCode(SimpleDateFormat.getDateTimeInstance()
+                .format(new Date()));
     }
 
     @Override

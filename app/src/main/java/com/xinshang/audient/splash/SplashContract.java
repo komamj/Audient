@@ -59,5 +59,7 @@ public interface SplashContract {
         void loadStores();
 
         void persistenceStore(Store store);
+
+        void checkVersion();
     }
 }

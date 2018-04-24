@@ -242,4 +242,28 @@ public class SplashPresenter implements SplashContract.Presenter {
 
         mView.showMainView();
     }
+
+    @Override
+    public void checkVersion() {
+        Disposable disposable = mRepository.getCurrentVersionCode()
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Integer>() {
+                    @Override
+                    public void onNext(Integer integer) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "checkVersion error : " + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
+    }
 }

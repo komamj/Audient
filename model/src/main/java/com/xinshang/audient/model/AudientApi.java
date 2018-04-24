@@ -40,6 +40,7 @@ import com.xinshang.audient.model.entities.ToplistDataBean;
 import com.xinshang.audient.model.entities.ToplistDetailResult;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
+import com.xinshang.audient.model.entities.Version;
 import com.xinshang.audient.model.entities.WXPayRequest;
 
 import java.util.List;
@@ -79,12 +80,14 @@ public interface AudientApi {
     @GET("api/v1/openmusic/search")
     Flowable<SearchResult> searchSongs(@Query("w") String keyword, @Query("p") int page,
                                        @Query("n") int pageCount, @Query("f") boolean filter);
+
     /**
      * 搜索歌单
      */
     @GET("api/v1/openmusic/songlist/search")
     Flowable<ApiResponse<PlaylistResponse>> searchPlaylists(@Query("w") String keyword, @Query("p") int page,
                                                             @Query("n") int pageCount);
+
     /**
      * 获取歌词.
      *
@@ -287,4 +290,7 @@ public interface AudientApi {
      */
     @GET("api/v1/modorder/wxpay/tradestate")
     Flowable<BaseResponse> getOrderResult(@Query("tid") String tid, @Query("oid") String oid);
+
+    @GET("update/audient.json")
+    Flowable<Version> getNewestVersionCode(@Query("t") String timeStamp);
 }

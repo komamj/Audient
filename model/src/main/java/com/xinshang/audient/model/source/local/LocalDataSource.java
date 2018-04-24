@@ -17,12 +17,14 @@ package com.xinshang.audient.model.source.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 
 import com.google.gson.Gson;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.CommandResponse;
 import com.xinshang.audient.model.source.AudientDataSource;
 import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,5 +199,24 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
         mSharedPreferences.edit()
                 .putBoolean(Constants.KEY_FIRST_DEMAND, demandStatus)
                 .apply();
+    }
+
+    @Override
+    public Flowable<Integer> getCurrentVersionCode() {
+        return Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> emitter) {
+                int versionCode = 0;
+                try {
+                    versionCode = mContext.getPackageManager()
+                            .getPackageInfo(mContext.getPackageName(), 0)
+                            .versionCode;
+                } catch (PackageManager.NameNotFoundException e) {
+                    LogUtils.e(TAG, "getCurrentVerisonCode error : " + e.getMessage());
+                }
+                emitter.onNext(versionCode);
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
     }
 }
