@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Version {
     @SerializedName("version")
-    public String version;
+    public int version;
     @SerializedName("versionName")
     public String versionName;
     @SerializedName("url")

@@ -266,7 +266,7 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     }
 
     @Override
-    public Flowable<Version> getNewestVersionCode() {
+    public Flowable<Version> getNewestVersion() {
         return mAudientApi.getNewestVersionCode(SimpleDateFormat.getDateTimeInstance()
                 .format(new Date()));
     }

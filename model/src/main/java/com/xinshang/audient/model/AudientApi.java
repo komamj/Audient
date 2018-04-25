@@ -291,6 +291,9 @@ public interface AudientApi {
     @GET("api/v1/modorder/wxpay/tradestate")
     Flowable<BaseResponse> getOrderResult(@Query("tid") String tid, @Query("oid") String oid);
 
+    /**
+     * 获取最新版本信息
+     */
     @GET("update/audient.json")
     Flowable<Version> getNewestVersionCode(@Query("t") String timeStamp);
 }

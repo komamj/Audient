@@ -17,6 +17,7 @@ package com.xinshang.audient.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.CardView;
@@ -193,5 +194,20 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         } else {
             mProgressBar.hide();
         }
+    }
+
+    @Override
+    public void showUpdateMessage() {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), R.string.update_message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.confirm_description, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Process.killProcess(Process.myPid());
+                    }
+                })
+                .show();
     }
 }

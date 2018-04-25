@@ -219,8 +219,8 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
-    public Flowable<Version> getNewestVersionCode() {
-        return mRemoteDataSource.getNewestVersionCode();
+    public Flowable<Version> getNewestVersion() {
+        return mRemoteDataSource.getNewestVersion();
     }
 
     @Override

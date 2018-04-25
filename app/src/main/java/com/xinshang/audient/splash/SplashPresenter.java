@@ -22,6 +22,7 @@ import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
 import com.xinshang.audient.model.entities.Token;
+import com.xinshang.audient.model.entities.Version;
 import com.xinshang.audient.util.WXEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
 
@@ -74,11 +75,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     public void subscribe() {
         LogUtils.i(TAG, "subscribe");
 
-        if (mRepository.getLoginStatus()) {
-            delayLaunchMainView();
-        } else {
-            mView.showLoginButton(true);
-        }
+        checkVersion();
 
         EventBus.getDefault().register(this);
     }
@@ -245,13 +242,35 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void checkVersion() {
-        Disposable disposable = mRepository.getCurrentVersionCode()
+        Disposable disposable = mRepository.getNewestVersion()
+                .map(new Function<Version, Integer>() {
+                    @Override
+                    public Integer apply(Version version) throws Exception {
+                        return version.version;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<Integer>() {
                     @Override
-                    public void onNext(Integer integer) {
-
+                    public void onNext(final Integer newestVersion) {
+                        mRepository.getCurrentVersionCode()
+                                .subscribe(new Consumer<Integer>() {
+                                    @Override
+                                    public void accept(Integer currentVersion) throws Exception {
+                                        if (currentVersion < newestVersion) {
+                                            if (mView.isActive()) {
+                                                mView.showUpdateMessage();
+                                            }
+                                        } else {
+                                            if (mRepository.getLoginStatus()) {
+                                                delayLaunchMainView();
+                                            } else {
+                                                mView.showLoginButton(true);
+                                            }
+                                        }
+                                    }
+                                });
                     }
 
                     @Override

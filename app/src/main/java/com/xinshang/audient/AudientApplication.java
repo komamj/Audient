@@ -48,7 +48,9 @@ public class AudientApplication extends Application {
                 .audientRepositoryModule(new AudientRepositoryModule(mWeChatApi))
                 .build();
 
-        enableStrictMode();
+        if (BuildConfig.DEBUG) {
+          //  enableStrictMode();
+        }
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -92,7 +94,9 @@ public class AudientApplication extends Application {
 
     private void enableStrictMode() {
         final StrictMode.ThreadPolicy.Builder threadPolicyBuilder =
-                new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog();
+                new StrictMode.ThreadPolicy.Builder().detectAll()
+                        .penaltyDialog()
+                        .penaltyLog();
 
         final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
                 .detectAll().penaltyLog();

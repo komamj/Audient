@@ -118,4 +118,6 @@
     <string name="error_content_message">"内容应不少于5个字符"</string>
     <string name="feedback_successful_message">"反馈成功"</string>
     <string name="feedback_failed_message">"反馈失败，请稍后再试。"</string>
+
+    <string name="update_message">"即乐新版本已发布，请在前台重新扫描二维码下载使用。"</string>
 </resources>

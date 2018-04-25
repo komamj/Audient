@@ -45,6 +45,8 @@ public interface SplashContract {
         void showLoadingError();
 
         void setLoadingIndicator(boolean isActive);
+
+        void showUpdateMessage();
     }
 
     interface Presenter extends BasePresenter {

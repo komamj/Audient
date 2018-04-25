@@ -120,5 +120,5 @@ public interface IRemoteDataSource {
 
     Flowable<BaseResponse> getOrderResult(String tid,String oid);
 
-    Flowable<Version> getNewestVersionCode();
+    Flowable<Version> getNewestVersion();
 }
