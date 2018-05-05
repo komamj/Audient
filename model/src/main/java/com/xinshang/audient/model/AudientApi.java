@@ -20,10 +20,12 @@ import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.Feedback;
 import com.xinshang.audient.model.entities.FileResult;
+import com.xinshang.audient.model.entities.FreeSong;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.OrderResponse;
@@ -296,4 +298,25 @@ public interface AudientApi {
      */
     @GET("update/audient.json")
     Flowable<Version> getNewestVersionCode(@Query("t") String timeStamp);
+
+    /**
+     * 当前登录用户的优惠卷列表
+     *
+     * @param type 类型（all:所有, available:可用的）
+     */
+    @GET("api/v1/user/cupons")
+    Flowable<ApiResponse<List<Coupon>>> getMyCoupon(@Query("type") String type);
+
+    /**
+     * 领取指定优惠券
+     */
+    @FormUrlEncoded
+    @POST("api/v1/user/cupons")
+    Flowable<ApiResponse> getCoupon(@Field("cuponId") String couponId);
+
+    /**
+     * 优惠券点歌
+     */
+    @POST("api/v1/modorder/freecupon")
+    Flowable<ApiResponse> postOrderByCoupon(@Body FreeSong freeSong);
 }
