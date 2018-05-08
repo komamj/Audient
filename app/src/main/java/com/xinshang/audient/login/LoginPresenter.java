@@ -18,6 +18,8 @@ package com.xinshang.audient.login;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinshang.audient.model.AudientRepository;
+import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.audient.model.entities.Token;
 import com.xinshang.audient.util.WXEntryMessageEvent;
 import com.xinshang.common.util.LogUtils;
@@ -26,12 +28,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -85,7 +90,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void loadAccessToken(String code) {
+    public void loadAccessToken(final String code) {
         mView.setLoadIndicator(true);
 
         Disposable disposable = mRepository.getAccessToken(code)
@@ -94,6 +99,30 @@ public class LoginPresenter implements LoginContract.Presenter {
                     public void accept(Token token) throws Exception {
                         mRepository.persistenceAccessToken(token.accessToken);
                         mRepository.persistenceRefreshToken(token.refreshToken);
+
+                        mRepository.getMyCoupon("available")
+                                .map(new Function<ApiResponse<List<Coupon>>, List<Coupon>>() {
+                                    @Override
+                                    public List<Coupon> apply(ApiResponse<List<Coupon>> response) {
+                                        return response.data;
+                                    }
+                                })
+                                .doOnNext(new Consumer<List<Coupon>>() {
+                                    @Override
+                                    public void accept(List<Coupon> coupons) throws Exception {
+                                        for (Coupon coupon : coupons) {
+                                            LogUtils.i(TAG, "coupon : " + coupon.id);
+                                            mRepository.getCoupon(coupon.id)
+                                                    .subscribe();
+                                        }
+                                    }
+                                })
+                                .subscribe(new Consumer<List<Coupon>>() {
+                                    @Override
+                                    public void accept(List<Coupon> coupons) throws Exception {
+                                        LogUtils.i(TAG, "hha : " + coupons.size());
+                                    }
+                                });
                     }
                 })
                 .subscribeOn(Schedulers.io())

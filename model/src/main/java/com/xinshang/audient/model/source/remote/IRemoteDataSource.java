@@ -20,10 +20,12 @@ import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.Feedback;
 import com.xinshang.audient.model.entities.FileResult;
+import com.xinshang.audient.model.entities.FreeSong;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
@@ -121,4 +123,10 @@ public interface IRemoteDataSource {
     Flowable<BaseResponse> getOrderResult(String tid,String oid);
 
     Flowable<Version> getNewestVersion();
+
+    Flowable<ApiResponse<List<Coupon>>> getMyCoupon(String type);
+
+    Flowable<ApiResponse> getCoupon(String couponId);
+
+    Flowable<ApiResponse> postOrderByCoupon(FreeSong freeSong);
 }

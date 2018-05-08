@@ -21,10 +21,12 @@ import com.xinshang.audient.model.entities.BaseResponse;
 import com.xinshang.audient.model.entities.CommandResponse;
 import com.xinshang.audient.model.entities.CommentDataBean;
 import com.xinshang.audient.model.entities.CommentRequest;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.audient.model.entities.FavoriteListResult;
 import com.xinshang.audient.model.entities.FavoritesResult;
 import com.xinshang.audient.model.entities.Feedback;
 import com.xinshang.audient.model.entities.FileResult;
+import com.xinshang.audient.model.entities.FreeSong;
 import com.xinshang.audient.model.entities.LyricResult;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.NowPlayingResponse;
@@ -221,6 +223,21 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<Version> getNewestVersion() {
         return mRemoteDataSource.getNewestVersion();
+    }
+
+    @Override
+    public Flowable<ApiResponse<List<Coupon>>> getMyCoupon(String type) {
+        return mRemoteDataSource.getMyCoupon(type);
+    }
+
+    @Override
+    public Flowable<ApiResponse> getCoupon(String couponId) {
+        return mRemoteDataSource.getCoupon(couponId);
+    }
+
+    @Override
+    public Flowable<ApiResponse> postOrderByCoupon(FreeSong freeSong) {
+        return mRemoteDataSource.postOrderByCoupon(freeSong);
     }
 
     @Override
