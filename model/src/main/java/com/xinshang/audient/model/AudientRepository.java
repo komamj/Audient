@@ -226,6 +226,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public Flowable<ApiResponse<List<Coupon>>> getToReceiverCoupons() {
+        return mRemoteDataSource.getToReceiverCoupons();
+    }
+
+    @Override
     public Flowable<ApiResponse<List<Coupon>>> getMyCoupon(String type) {
         return mRemoteDataSource.getMyCoupon(type);
     }

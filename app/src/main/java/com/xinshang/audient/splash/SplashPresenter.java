@@ -19,6 +19,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
 import com.xinshang.audient.model.entities.Token;
@@ -132,9 +133,33 @@ public class SplashPresenter implements SplashContract.Presenter {
         Disposable disposable = mRepository.getAccessToken(code)
                 .doOnNext(new Consumer<Token>() {
                     @Override
-                    public void accept(Token token) throws Exception {
+                    public void accept(Token token) {
                         mRepository.persistenceAccessToken(token.accessToken);
                         mRepository.persistenceRefreshToken(token.refreshToken);
+
+                        mRepository.getToReceiverCoupons()
+                                .map(new Function<ApiResponse<List<Coupon>>, List<Coupon>>() {
+                                    @Override
+                                    public List<Coupon> apply(ApiResponse<List<Coupon>> response) {
+                                        return response.data;
+                                    }
+                                })
+                                .doOnNext(new Consumer<List<Coupon>>() {
+                                    @Override
+                                    public void accept(List<Coupon> coupons) {
+                                        for (Coupon coupon : coupons) {
+                                            LogUtils.i(TAG, "coupon : " + coupon.id);
+                                            mRepository.getCoupon(coupon.id)
+                                                    .subscribe();
+                                        }
+                                    }
+                                })
+                                .subscribe(new Consumer<List<Coupon>>() {
+                                    @Override
+                                    public void accept(List<Coupon> coupons) {
+                                        LogUtils.i(TAG, "hha : " + coupons.size());
+                                    }
+                                });
                     }
                 })
                 .subscribeOn(Schedulers.io())

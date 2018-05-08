@@ -300,6 +300,11 @@ public interface AudientApi {
     Flowable<Version> getNewestVersionCode(@Query("t") String timeStamp);
 
     /**
+     * 获取待领取的优惠券列表
+     */
+    @GET("api/v1/cupon")
+    Flowable<ApiResponse<List<Coupon>>> getToReceiveCoupons();
+    /**
      * 当前登录用户的优惠卷列表
      *
      * @param type 类型（all:所有, available:可用的）

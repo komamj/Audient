@@ -110,8 +110,8 @@ dependencies {
     //WeChat
     implementation "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:$rootProject.ext.wechat_sdk_version"
     //leakcanary
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
     implementation project(':musicvisualizerlibrary')
     implementation project(':common')
     implementation project(':model')

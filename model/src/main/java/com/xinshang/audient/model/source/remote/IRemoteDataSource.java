@@ -124,6 +124,8 @@ public interface IRemoteDataSource {
 
     Flowable<Version> getNewestVersion();
 
+    Flowable<ApiResponse<List<Coupon>>> getToReceiverCoupons();
+
     Flowable<ApiResponse<List<Coupon>>> getMyCoupon(String type);
 
     Flowable<ApiResponse> getCoupon(String couponId);
