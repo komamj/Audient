@@ -5,6 +5,7 @@
     <string name="nav_track">"我的足迹"</string>
     <string name="nav_recommend">"发现"</string>
     <string name="nav_user_info">"用户信息"</string>
+    <string name="nav_coupon">"领取优惠券"</string>
     <string name="more">"更多"</string>
     <string name="nav_setting">设置</string>
     <string name="nav_share">"分享"</string>
@@ -96,6 +97,12 @@
 
     <!--Playlist-->
     <string name="now_playing">"当前门店正在播放："</string>
+
+    <!--Payment-->
+    <string name="free_description">"-1.0元"</string>
+    <string name="no_coupon">"无可用优惠券"</string>
+    <string name="confirm_free">"确认支付0.0元"</string>
+    <string name="confirm_pay">确认支付1.0元</string>
 
     <!--About-->
     <string name="about_label">"关于我们"</string>

@@ -5,6 +5,8 @@ import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.audient.model.entities.BaseResponse;
+import com.xinshang.audient.model.entities.Coupon;
+import com.xinshang.audient.model.entities.FreeSong;
 import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.OrderResponse;
 import com.xinshang.audient.model.entities.WXPayRequest;
@@ -14,13 +16,18 @@ import com.xinshang.common.util.LogUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.reactivestreams.Publisher;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -44,6 +51,8 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
     private String mOrderId;
 
+    private Coupon mCoupon;
+
     @Inject
     public PaymentPresenter(PaymentContract.View view, AudientRepository repository) {
         mView = view;
@@ -58,6 +67,8 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
     @Override
     public void subscribe() {
+        loadMyCoupons("available");
+
         EventBus.getDefault().register(this);
     }
 
@@ -71,6 +82,52 @@ public class PaymentPresenter implements PaymentContract.Presenter {
         EventBus.getDefault().unregister(this);
 
         mDisposables.clear();
+    }
+
+    @Override
+    public void loadMyCoupons(String type) {
+        Disposable disposable = mRepository.getMyCoupon(type)
+                .map(new Function<ApiResponse<List<Coupon>>, List<Coupon>>() {
+                    @Override
+                    public List<Coupon> apply(ApiResponse<List<Coupon>> response) throws Exception {
+                        return response.data;
+                    }
+                })
+                .filter(new Predicate<List<Coupon>>() {
+                    @Override
+                    public boolean test(List<Coupon> coupons) throws Exception {
+                        return coupons != null && !coupons.isEmpty();
+                    }
+                })
+                .flatMap(new Function<List<Coupon>, Publisher<Coupon>>() {
+                    @Override
+                    public Publisher<Coupon> apply(List<Coupon> coupons) throws Exception {
+                        return Flowable.just(coupons.get(0));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Coupon>() {
+                    @Override
+                    public void onNext(Coupon coupon) {
+                        mCoupon = coupon;
+
+                        if (mView.isActive()) {
+                            mView.setFreeIndicator(mCoupon != null);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "getMyCoupons error : " + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
     }
 
     @Override
@@ -131,47 +188,83 @@ public class PaymentPresenter implements PaymentContract.Presenter {
         }
 
         String storeId = mRepository.getStoreId();
-        WXPayRequest wxPayRequest = new WXPayRequest();
-        wxPayRequest.storeId = storeId;
-        wxPayRequest.mediaId = audient.mediaId;
-        wxPayRequest.mediaName = audient.mediaName;
-        wxPayRequest.mediaInterval = String.valueOf(audient.duration);
-        wxPayRequest.albumId = audient.albumId;
-        wxPayRequest.albumName = audient.albumName;
-        wxPayRequest.artistId = audient.artistId;
-        wxPayRequest.artistName = audient.artistName;
-        wxPayRequest.price = PRICE;
 
-        Disposable disposable = mRepository.postOrder(wxPayRequest)
-                .map(new Function<ApiResponse<OrderResponse>, OrderResponse>() {
-                    @Override
-                    public OrderResponse apply(ApiResponse<OrderResponse> orderResponseApiResponse) throws Exception {
-                        return orderResponseApiResponse.data;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<OrderResponse>() {
-                    @Override
-                    public void onNext(OrderResponse orderResponse) {
-                        mOrderId = orderResponse.order.id;
-
-                        if (mView.isActive()) {
-                            mRepository.sendWXPayRequest(orderResponse.payRequestInfo);
+        if (mCoupon != null) {
+            FreeSong freeSong = new FreeSong();
+            freeSong.albumId = audient.albumId;
+            freeSong.albumName = audient.albumName;
+            freeSong.artistId = audient.artistId;
+            freeSong.artistName = audient.artistName;
+            freeSong.cuponId = mCoupon.cuponId;
+            freeSong.mediaId = audient.mediaId;
+            freeSong.mediaName = audient.mediaName;
+            freeSong.mediaInterval = String.valueOf(audient.duration);
+            freeSong.storeId = storeId;
+            Disposable disposable = mRepository.postOrderByCoupon(freeSong)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<ApiResponse>() {
+                        @Override
+                        public void onNext(ApiResponse response) {
+                            if (response.resultCode == 0) {
+                                LogUtils.e(TAG, "postOrder successful");
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        LogUtils.e(TAG, "postOrder error : " + t.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable t) {
+                            LogUtils.e(TAG, "postOrder error : " + t.getMessage());
+                        }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                        @Override
+                        public void onComplete() {
 
-        mDisposables.add(disposable);
+                        }
+                    });
+            mDisposables.add(disposable);
+        } else {
+            WXPayRequest wxPayRequest = new WXPayRequest();
+            wxPayRequest.storeId = storeId;
+            wxPayRequest.mediaId = audient.mediaId;
+            wxPayRequest.mediaName = audient.mediaName;
+            wxPayRequest.mediaInterval = String.valueOf(audient.duration);
+            wxPayRequest.albumId = audient.albumId;
+            wxPayRequest.albumName = audient.albumName;
+            wxPayRequest.artistId = audient.artistId;
+            wxPayRequest.artistName = audient.artistName;
+            wxPayRequest.price = PRICE;
+
+            Disposable disposable = mRepository.postOrder(wxPayRequest)
+                    .map(new Function<ApiResponse<OrderResponse>, OrderResponse>() {
+                        @Override
+                        public OrderResponse apply(ApiResponse<OrderResponse> response) {
+                            return response.data;
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<OrderResponse>() {
+                        @Override
+                        public void onNext(OrderResponse orderResponse) {
+                            mOrderId = orderResponse.order.id;
+
+                            if (mView.isActive()) {
+                                mRepository.sendWXPayRequest(orderResponse.payRequestInfo);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            LogUtils.e(TAG, "postOrder error : " + t.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+
+            mDisposables.add(disposable);
+        }
     }
 
     @Override

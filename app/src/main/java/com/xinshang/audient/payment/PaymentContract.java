@@ -31,9 +31,13 @@ public interface PaymentContract {
         void setLoadingIndicator(boolean isActive);
 
         void dismissPaymentView();
+
+        void setFreeIndicator(boolean free);
     }
 
     interface Presenter extends BasePresenter {
+        void loadMyCoupons(String type);
+
         void addToPlaylist(Audient audient);
 
         void postOrder(Audient audient);

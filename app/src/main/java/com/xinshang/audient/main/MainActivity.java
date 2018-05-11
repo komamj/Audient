@@ -42,6 +42,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
+import com.xinshang.audient.coupon.CouponDialogFragment;
 import com.xinshang.audient.feedback.FeedbackDialogFragment;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.mine.MineFragment;
@@ -237,6 +238,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             }
         } else if (id == R.id.nav_feedback) {
             FeedbackDialogFragment.show(getSupportFragmentManager());
+        } else if (id == R.id.nav_coupon) {
+            CouponDialogFragment.show(getSupportFragmentManager());
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);

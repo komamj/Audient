@@ -19,12 +19,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.Group;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,12 +46,19 @@ import butterknife.OnClick;
  * Created by koma on 3/1/18.
  */
 
-public class PaymentDialogFragment extends BottomSheetDialogFragment implements PaymentContract.View {
+public class PaymentDialogFragment extends BottomSheetDialogFragment implements
+        PaymentContract.View {
     private static final String TAG = PaymentDialogFragment.class.getSimpleName();
     private static final String DIALOG_TAG = "dialog_payment";
 
     @BindView(R.id.tv_name)
     TextView mName;
+    @BindView(R.id.group_coupon)
+    Group mGroupCoupon;
+    @BindView(R.id.btn_confirm)
+    Button mPay;
+    @BindView(R.id.tv_free)
+    TextView mFree;
     @BindView(R.id.iv_album)
     ImageView mAlbum;
     @BindView(R.id.progress_bar)
@@ -150,5 +159,18 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements 
     @Override
     public void dismissPaymentView() {
         dismiss();
+    }
+
+    @Override
+    public void setFreeIndicator(boolean free) {
+        if (free) {
+            mGroupCoupon.setEnabled(true);
+            mFree.setText(R.string.free_description);
+            mPay.setText(R.string.confirm_free);
+        } else {
+            mFree.setText(R.string.no_coupon);
+            mGroupCoupon.setEnabled(false);
+            mPay.setText(R.string.confirm_pay);
+        }
     }
 }

@@ -7,13 +7,19 @@
         <item
             android:id="@+id/nav_user_info"
             android:icon="@drawable/ic_user"
-            android:visible="false"
-            android:title="@string/nav_user_info" />
+            android:title="@string/nav_user_info"
+            android:visible="false" />
         <item
             android:id="@+id/nav_track"
-            android:visible="false"
             android:icon="@drawable/ic_track"
-            android:title="@string/nav_track" />
+            android:title="@string/nav_track"
+            android:visible="false" />
+
+        <item
+            android:id="@+id/nav_coupon"
+            android:icon="@drawable/ic_coupon"
+            android:title="@string/nav_coupon"
+            android:visible="true" />
     </group>
 
     <group android:id="@+id/more">
