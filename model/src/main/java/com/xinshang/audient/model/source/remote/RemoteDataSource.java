@@ -39,6 +39,7 @@ import com.xinshang.audient.model.entities.OrderResponse;
 import com.xinshang.audient.model.entities.PayRequestInfo;
 import com.xinshang.audient.model.entities.PlaylistResponse;
 import com.xinshang.audient.model.entities.SearchResult;
+import com.xinshang.audient.model.entities.ShareCode;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
@@ -291,6 +292,16 @@ public class RemoteDataSource implements AudientDataSource, IRemoteDataSource {
     @Override
     public Flowable<ApiResponse> postOrderByCoupon(FreeSong freeSong) {
         return mAudientApi.postOrderByCoupon(freeSong);
+    }
+
+    @Override
+    public Flowable<ApiResponse<ShareCode>> getMyShareCode() {
+        return mAudientApi.getMyShareCode();
+    }
+
+    @Override
+    public Flowable<ApiResponse> shareMyCode(String code) {
+        return mAudientApi.shareMyCode(code);
     }
 
     @Override

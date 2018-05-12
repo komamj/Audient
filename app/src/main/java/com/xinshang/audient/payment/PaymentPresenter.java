@@ -16,18 +16,15 @@ import com.xinshang.common.util.LogUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.reactivestreams.Publisher;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -87,22 +84,15 @@ public class PaymentPresenter implements PaymentContract.Presenter {
     @Override
     public void loadMyCoupons(String type) {
         Disposable disposable = mRepository.getMyCoupon(type)
-                .map(new Function<ApiResponse<List<Coupon>>, List<Coupon>>() {
+                .map(new Function<ApiResponse<List<Coupon>>, Coupon>() {
                     @Override
-                    public List<Coupon> apply(ApiResponse<List<Coupon>> response) throws Exception {
-                        return response.data;
-                    }
-                })
-                .filter(new Predicate<List<Coupon>>() {
-                    @Override
-                    public boolean test(List<Coupon> coupons) throws Exception {
-                        return coupons != null && !coupons.isEmpty();
-                    }
-                })
-                .flatMap(new Function<List<Coupon>, Publisher<Coupon>>() {
-                    @Override
-                    public Publisher<Coupon> apply(List<Coupon> coupons) throws Exception {
-                        return Flowable.just(coupons.get(0));
+                    public Coupon apply(ApiResponse<List<Coupon>> response) {
+                        for (Coupon coupon : response.data) {
+                            if (coupon != null && !coupon.used) {
+                                return coupon;
+                            }
+                        }
+                        return new Coupon();
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -113,7 +103,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                         mCoupon = coupon;
 
                         if (mView.isActive()) {
-                            mView.setFreeIndicator(mCoupon != null);
+                            mView.setFreeIndicator(coupon.id != null && !coupon.used);
                         }
                     }
 
@@ -189,13 +179,13 @@ public class PaymentPresenter implements PaymentContract.Presenter {
 
         String storeId = mRepository.getStoreId();
 
-        if (mCoupon != null) {
+        if (mCoupon != null && mCoupon.id != null && !mCoupon.used) {
             FreeSong freeSong = new FreeSong();
             freeSong.albumId = audient.albumId;
             freeSong.albumName = audient.albumName;
             freeSong.artistId = audient.artistId;
             freeSong.artistName = audient.artistName;
-            freeSong.cuponId = mCoupon.cuponId;
+            freeSong.cuponId = mCoupon.id;
             freeSong.mediaId = audient.mediaId;
             freeSong.mediaName = audient.mediaName;
             freeSong.mediaInterval = String.valueOf(audient.duration);
@@ -214,10 +204,21 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                         @Override
                         public void onError(Throwable t) {
                             LogUtils.e(TAG, "postOrder error : " + t.getMessage());
+
+                            if (mView.isActive()) {
+                                mView.setLoadingIndicator(false);
+
+                                mView.dismissPaymentView();
+                            }
                         }
 
                         @Override
                         public void onComplete() {
+                            if (mView.isActive()) {
+                                mView.setLoadingIndicator(false);
+
+                                mView.dismissPaymentView();
+                            }
 
                         }
                     });

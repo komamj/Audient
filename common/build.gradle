@@ -71,8 +71,8 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger_version"
 
     //leakcanary
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

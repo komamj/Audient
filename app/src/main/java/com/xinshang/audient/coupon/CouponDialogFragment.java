@@ -27,7 +27,7 @@ public class CouponDialogFragment extends BaseDialogFragment implements CouponCo
     @Inject
     CouponPresenter mPresenter;
 
-    @OnClick(R.id.tv_comfirm)
+    @OnClick(R.id.tv_confirm)
     void onConfirmClicked() {
         this.dismiss();
     }

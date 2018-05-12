@@ -31,6 +31,7 @@ import com.xinshang.audient.model.entities.Music;
 import com.xinshang.audient.model.entities.OrderResponse;
 import com.xinshang.audient.model.entities.PlaylistResponse;
 import com.xinshang.audient.model.entities.SearchResult;
+import com.xinshang.audient.model.entities.ShareCode;
 import com.xinshang.audient.model.entities.SongDetailResult;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
@@ -324,4 +325,18 @@ public interface AudientApi {
      */
     @POST("api/v1/modorder/freecupon")
     Flowable<ApiResponse> postOrderByCoupon(@Body FreeSong freeSong);
+
+    /**
+     * 获取我的分享码
+     */
+    @GET("api/v1/user/sharecode")
+    Flowable<ApiResponse<ShareCode>> getMyShareCode();
+
+    /**
+     * 分享码领取
+     */
+    @FormUrlEncoded
+    @POST("api/v1/user/cupons/code")
+    Flowable<ApiResponse> shareMyCode(@Field("code") String code);
+
 }

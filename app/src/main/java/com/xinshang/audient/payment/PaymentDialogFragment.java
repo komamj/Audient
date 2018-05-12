@@ -35,6 +35,7 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
