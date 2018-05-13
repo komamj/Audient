@@ -296,6 +296,11 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         }
     }
 
+    @Override
+    public void showCoupons(int count) {
+
+    }
+
     static class AudientAdapter extends FragmentPagerAdapter {
         private static final int TAB_COUNT = 3;
 

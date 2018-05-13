@@ -31,9 +31,13 @@ public interface MainContract {
         void showBlurBackground(Drawable drawable);
 
         void showStoreInfo(Store store);
+
+        void showCoupons(int count);
     }
 
     interface Presenter extends BasePresenter {
+        void loadMyCoupons();
+
         void loadUserInfo();
 
         void blurBitmap(Bitmap bitmap, Context context, int inSampleSize);

@@ -21,11 +21,14 @@ import android.graphics.drawable.Drawable;
 
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ApiResponse;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.User;
 import com.xinshang.audient.model.entities.UserResponse;
 import com.xinshang.audient.util.ImageUtils;
 import com.xinshang.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -77,6 +80,44 @@ public class MainPresenter implements MainContract.Presenter {
         LogUtils.i(TAG, "unSubscribe");
 
         mDisposables.clear();
+    }
+
+    @Override
+    public void loadMyCoupons() {
+        Disposable disposable = mRepository.getMyCoupon("available")
+                .map(new Function<ApiResponse<List<Coupon>>, Integer>() {
+                    @Override
+                    public Integer apply(ApiResponse<List<Coupon>> response) {
+                        int count = 0;
+                        for (Coupon coupon : response.data) {
+                            if (coupon != null && coupon.id != null && !coupon.used) {
+                                count++;
+                            }
+                        }
+                        return count;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Integer>() {
+                    @Override
+                    public void onNext(Integer count) {
+                        if (mView != null && count != 0) {
+                            mView.showCoupons(count);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        LogUtils.e(TAG, "loadMyCoupons error :" + t.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mDisposables.add(disposable);
     }
 
     @Override
