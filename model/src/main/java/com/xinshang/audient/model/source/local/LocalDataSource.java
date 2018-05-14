@@ -219,4 +219,16 @@ public class LocalDataSource implements AudientDataSource, ILocalDataSource {
             }
         }, BackpressureStrategy.LATEST);
     }
+
+    @Override
+    public String getShareCode() {
+        return mSharedPreferences.getString(Constants.KEY_MY_SHARE_CODE, "");
+    }
+
+    @Override
+    public void persistenceMyShareCode(String shareCode) {
+        mSharedPreferences.edit()
+                .putString(Constants.KEY_MY_SHARE_CODE, shareCode)
+                .apply();
+    }
 }

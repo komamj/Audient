@@ -47,4 +47,8 @@ public interface ILocalDataSource {
     void persistenceDemandStatus(boolean demandStatus);
 
     Flowable<Integer> getCurrentVersionCode();
+
+    String getShareCode();
+
+    void persistenceMyShareCode(String shareCode);
 }

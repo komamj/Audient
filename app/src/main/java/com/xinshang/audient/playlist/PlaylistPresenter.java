@@ -233,7 +233,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         Disposable disposable = Flowable.just(id)
                 .flatMap(new Function<String, Publisher<List<StoreSong>>>() {
                     @Override
-                    public Publisher<List<StoreSong>> apply(String s) throws Exception {
+                    public Publisher<List<StoreSong>> apply(String s) {
                         List<StoreSong> storePlaylists = new ArrayList<>();
                         for (StoreSong storePlaylist : mPlaylist) {
                             StoreSong playlist = new StoreSong();

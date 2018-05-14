@@ -127,4 +127,8 @@
     <string name="feedback_failed_message">"反馈失败，请稍后再试。"</string>
 
     <string name="update_message">"即乐新版本已发布，请在前台重新扫描二维码下载使用。"</string>
+
+    <!--Coupon-->
+    <string name="share_my_code_successfull_message">"领取成功。"</string>
+    <string name="share_my_code_failed_message">"领取失败，请稍后再试。"</string>
 </resources>

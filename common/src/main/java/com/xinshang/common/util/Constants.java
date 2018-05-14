@@ -36,6 +36,7 @@ public final class Constants {
     public static final String USER_PASSWORD = "user_password";
 
     public static final String KEY_FIRST_DEMAND = "key_first_demand";
+    public static final String KEY_MY_SHARE_CODE = "key_my_share_code";
 
     // wechat
     public static final String WECHAT_APP_ID = "wxc80eb13e9ed3e040";

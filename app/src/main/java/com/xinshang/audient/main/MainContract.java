@@ -43,5 +43,7 @@ public interface MainContract {
         void blurBitmap(Bitmap bitmap, Context context, int inSampleSize);
 
         void loadStoreInfo();
+
+        String getMyShareCode();
     }
 }

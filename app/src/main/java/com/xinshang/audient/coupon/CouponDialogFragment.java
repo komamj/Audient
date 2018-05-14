@@ -2,6 +2,8 @@ package com.xinshang.audient.coupon;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import com.xinshang.audient.base.BaseDialogFragment;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,12 +27,15 @@ import butterknife.OnClick;
 public class CouponDialogFragment extends BaseDialogFragment implements CouponContract.View {
     private static final String DIALOG_TAG = "dialog_coupon";
 
+    @BindView(R.id.tv_content)
+    TextInputEditText mEditText;
+
     @Inject
     CouponPresenter mPresenter;
 
     @OnClick(R.id.tv_confirm)
     void onConfirmClicked() {
-        this.dismiss();
+        mPresenter.loadMyCoupons(mEditText.getText().toString());
     }
 
     @OnClick(R.id.tv_cancell)
@@ -78,12 +84,34 @@ public class CouponDialogFragment extends BaseDialogFragment implements CouponCo
 
     @Override
     public void showSuccessfulMessage() {
-
+        if (getView() != null) {
+            Snackbar.make(getView(), R.string.share_my_code_successfull_message,
+                    Snackbar.LENGTH_SHORT)
+                    .addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar,
+                                                @DismissEvent int event) {
+                            CouponDialogFragment.this.dismiss();
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override
     public void showFailedMessage() {
-
+        if (getView() != null) {
+            Snackbar.make(getView(), R.string.share_my_code_failed_message,
+                    Snackbar.LENGTH_SHORT)
+                    .addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar,
+                                                @DismissEvent int event) {
+                            CouponDialogFragment.this.dismiss();
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override

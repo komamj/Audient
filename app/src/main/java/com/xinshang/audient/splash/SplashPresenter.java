@@ -20,6 +20,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinshang.audient.model.AudientRepository;
 import com.xinshang.audient.model.entities.ApiResponse;
 import com.xinshang.audient.model.entities.Coupon;
+import com.xinshang.audient.model.entities.ShareCode;
 import com.xinshang.audient.model.entities.Store;
 import com.xinshang.audient.model.entities.StoreDataBean;
 import com.xinshang.audient.model.entities.Token;
@@ -136,6 +137,34 @@ public class SplashPresenter implements SplashContract.Presenter {
                     public void accept(Token token) {
                         mRepository.persistenceAccessToken(token.accessToken);
                         mRepository.persistenceRefreshToken(token.refreshToken);
+
+                        mRepository.getMyShareCode()
+                                .map(new Function<ApiResponse<ShareCode>, String>() {
+                                    @Override
+                                    public String apply(ApiResponse<ShareCode> response) {
+                                        return response.data.code;
+                                    }
+                                }).doOnNext(new Consumer<String>() {
+                            @Override
+                            public void accept(String shareCode) {
+                                mRepository.persistenceMyShareCode(shareCode);
+                            }
+                        }).subscribeWith(new DisposableSubscriber<String>() {
+                            @Override
+                            public void onNext(String s) {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
 
                         mRepository.getToReceiverCoupons()
                                 .map(new Function<ApiResponse<List<Coupon>>, List<Coupon>>() {

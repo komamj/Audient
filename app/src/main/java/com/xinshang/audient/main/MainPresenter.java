@@ -219,4 +219,9 @@ public class MainPresenter implements MainContract.Presenter {
 
         mDisposables.add(disposable);
     }
+
+    @Override
+    public String getMyShareCode() {
+        return mRepository.getShareCode();
+    }
 }

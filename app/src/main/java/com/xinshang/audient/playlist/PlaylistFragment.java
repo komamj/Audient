@@ -179,7 +179,15 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
 
         for (int i = 0; i < storeSongs.size(); i++) {
             if (storeSongs.get(i).isPlaying) {
-                mRecyclerView.scrollToPosition(i);
+                final int position = i;
+
+                mRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerView.scrollToPosition(position);
+                    }
+                });
+
                 break;
             }
         }

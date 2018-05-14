@@ -92,7 +92,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     }
 
     TextView mName;
-    ImageView mUserImage, mBlurImage;
+    TextView mShareCode;
+    ImageView mUserImage;
+    View mBlurImage;
 
     @Inject
     MainPresenter mPresenter;
@@ -125,8 +127,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
         View headerView = mNavigationView.getHeaderView(0);
         mName = headerView.findViewById(R.id.tv_user_name);
+        mShareCode = headerView.findViewById(R.id.tv_share_code);
         mUserImage = headerView.findViewById(R.id.iv_user);
-        mBlurImage = headerView.findViewById(R.id.iv_blur);
+        mBlurImage = headerView.findViewById(R.id.header_layout);
 
         // inject presenter layer
         DaggerMainComponent.builder().audientRepositoryComponent(
@@ -134,6 +137,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
                 .mainPresenterModule(new MainPresenterModule(this))
                 .build()
                 .inject(this);
+
+        mShareCode.setText(mPresenter.getMyShareCode());
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(MineFragment.newInstance());
@@ -229,10 +234,12 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else if (id == R.id.nav_share) {
+            String myShareCode = mPresenter.getMyShareCode();
+            LogUtils.i(TAG, "myShareCode : " + myShareCode);
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, "哎哟，不错哦！我用“即乐”成功在店内点歌，你也来试试。https://fir.im/2sq8点击下载。");
+            intent.putExtra(Intent.EXTRA_TEXT, "哎哟，不错哦！我用“即乐”成功在店内点歌，你也来试试。https://fir.im/2sq8点击下载，复制优惠码进入app可领取5张优惠券 " + mShareCode.getText());
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             }
@@ -275,17 +282,17 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     @Override
     public void showBlurBackground(Drawable drawable) {
-        if (mBlurImage.getDrawable() != null) {
+        if (mBlurImage.getBackground() != null) {
             final TransitionDrawable td =
                     new TransitionDrawable(new Drawable[]{
-                            mBlurImage.getDrawable(),
+                            mBlurImage.getBackground(),
                             drawable
                     });
-            mBlurImage.setImageDrawable(td);
+            mBlurImage.setBackground(td);
             td.startTransition(400);
 
         } else {
-            mBlurImage.setImageDrawable(drawable);
+            mBlurImage.setBackground(drawable);
         }
     }
 
@@ -301,14 +308,14 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     }
 
-    static class AudientAdapter extends FragmentPagerAdapter {
+    private static class AudientAdapter extends FragmentPagerAdapter {
         private static final int TAB_COUNT = 3;
 
         private List<Fragment> mFragments;
 
         private String[] mTitles;
 
-        public AudientAdapter(FragmentManager fm, List<Fragment> fragments, String[] titles) {
+        AudientAdapter(FragmentManager fm, List<Fragment> fragments, String[] titles) {
             super(fm);
 
             mFragments = fragments;
@@ -321,7 +328,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             return mFragments.get(position);
         }
 
-        @Nullable
+        @Override
         public CharSequence getPageTitle(int position) {
             return mTitles[position];
         }

@@ -252,6 +252,11 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     }
 
     @Override
+    public void persistenceMyShareCode(String shareCode) {
+        mLocalDataSource.persistenceMyShareCode(shareCode);
+    }
+
+    @Override
     public Flowable<ApiResponse> shareMyCode(String code) {
         return mRemoteDataSource.shareMyCode(code);
     }
@@ -339,5 +344,10 @@ public class AudientRepository implements AudientDataSource, IRemoteDataSource, 
     @Override
     public Flowable<Integer> getCurrentVersionCode() {
         return mLocalDataSource.getCurrentVersionCode();
+    }
+
+    @Override
+    public String getShareCode() {
+        return mLocalDataSource.getShareCode();
     }
 }
