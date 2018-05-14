@@ -11,7 +11,7 @@
     <string name="nav_share">"分享"</string>
     <string name="nav_send">"反馈"</string>
 
-    <string name="hint">"点播前请确认门店在线（播放歌曲为播放列表显示歌曲）；点播即代表您已确认并接受门店播放环境，包括音量、音质、噪音等；\n点播歌曲在当前歌曲播放完后播放；若播放列表已有“点播歌曲”，则所有点播歌曲播放完才播放本次点播歌曲；任何情况造成的点播歌曲未正常播放均会退款；若有包括搜不到指定歌手或歌曲在内的任何问题，请点击左上角“三”形状符号“反馈”处反馈，我们将第一时间处理您的问题。"</string>
+    <string name="hint">"点播前请确认门店在线（播放歌曲为播放列表显示歌曲）；点播即代表您已确认并接受门店播放环境，包括音量、音质、噪音等；\n点播歌曲在当前歌曲播放完后播放；若播放列表顶端已有“点播歌曲”，则所有点播歌曲播放完才播放本次点播歌曲；任何情况造成的点播歌曲未正常播放均会退款；若有包括搜不到指定歌手或歌曲在内的任何问题，请点击左上角“三”形状符号“反馈”处反馈，我们将第一时间处理您的问题。"</string>
 
     <!--Login-->
     <string name="login_successful_message">"微信登录成功"</string>
@@ -129,6 +129,6 @@
     <string name="update_message">"即乐新版本已发布，请在前台重新扫描二维码下载使用。"</string>
 
     <!--Coupon-->
-    <string name="share_my_code_successfull_message">"领取成功。"</string>
+    <string name="share_my_code_successfull_message">"领取成功，您已获得5张免费券。"</string>
     <string name="share_my_code_failed_message">"领取失败，请稍后再试。"</string>
 </resources>

@@ -35,6 +35,16 @@
         tools:text="koma_mj" />
 
     <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+        android:text="分享码：" />
+
+    <TextView
         android:id="@+id/tv_share_code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,7 +52,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_description"
         app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
         tools:text="sadasdasd" />
 

@@ -36,6 +36,7 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.util.Constants;
+import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
@@ -173,7 +174,8 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
     @Override
     public void showSuccessfullyMessage() {
         if (getView() != null) {
-            Snackbar.make(getView(), "点播成功，请返回播放列表查看。", Snackbar.LENGTH_SHORT)
+            LogUtils.i(TAG,"showSuccessfullyMessage");
+            Snackbar.make(mAlbum, "点播成功，请返回播放列表查看。", Snackbar.LENGTH_INDEFINITE)
                     .addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
@@ -186,7 +188,7 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
     @Override
     public void showFailedMessage() {
         if (getView() != null) {
-            Snackbar.make(getView(), "点播失败，请稍后再试", Snackbar.LENGTH_SHORT)
+            Snackbar.make(mAlbum, "点播失败，请稍后再试", Snackbar.LENGTH_SHORT)
                     .addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {

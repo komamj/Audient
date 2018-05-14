@@ -24,13 +24,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:hint="请输入优惠码"
+        android:hint="请输入兑换码"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_label">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/tv_content"
+            android:hint="只能领取一次"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="start" />
