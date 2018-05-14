@@ -310,7 +310,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     public void showCoupons(int count) {
         Snackbar.make(mViewPager,
                 "您还有" + count + "张免费点歌优惠券未使用，现在就去点歌吧！",
-                Snackbar.LENGTH_LONG).show();
+                Snackbar.LENGTH_INDEFINITE).setAction("确定", null)
+                .show();
     }
 
     private static class AudientAdapter extends FragmentPagerAdapter {

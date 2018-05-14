@@ -161,7 +161,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                         if (mView.isActive()) {
                             mView.setLoadingIndicator(false);
 
-                            mView.dismissPaymentView();
+                            mView.showSuccessfullyMessage();
                         }
                     }
                 });
@@ -198,6 +198,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                         public void onNext(ApiResponse response) {
                             if (response.resultCode == 0) {
                                 LogUtils.e(TAG, "postOrder successful");
+                                mView.showSuccessfullyMessage();
                             }
                         }
 
@@ -208,7 +209,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                             if (mView.isActive()) {
                                 mView.setLoadingIndicator(false);
 
-                                mView.dismissPaymentView();
+                                mView.showFailedMessage();
                             }
                         }
 
@@ -216,10 +217,7 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                         public void onComplete() {
                             if (mView.isActive()) {
                                 mView.setLoadingIndicator(false);
-
-                                mView.dismissPaymentView();
                             }
-
                         }
                     });
             mDisposables.add(disposable);
@@ -292,8 +290,10 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<BaseResponse>() {
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
-                        LogUtils.i(TAG, "postOrderResult code : " + baseResponse.resultCode);
+                    public void onNext(BaseResponse response) {
+                        if (mView.isActive() && response.resultCode == 0) {
+                            mView.showSuccessfullyMessage();
+                        }
                     }
 
                     @Override
@@ -305,8 +305,6 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                     public void onComplete() {
                         if (mView.isActive()) {
                             mView.setLoadingIndicator(false);
-
-                            mView.dismissPaymentView();
                         }
                     }
                 });

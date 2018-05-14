@@ -30,9 +30,11 @@ public interface PaymentContract {
 
         void setLoadingIndicator(boolean isActive);
 
-        void dismissPaymentView();
-
         void setFreeIndicator(boolean free);
+
+        void showSuccessfullyMessage();
+
+        void showFailedMessage();
     }
 
     interface Presenter extends BasePresenter {

@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
@@ -35,7 +36,6 @@ import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.model.entities.Audient;
 import com.xinshang.common.util.Constants;
-import com.xinshang.common.util.LogUtils;
 
 import javax.inject.Inject;
 
@@ -158,11 +158,6 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
     }
 
     @Override
-    public void dismissPaymentView() {
-        dismiss();
-    }
-
-    @Override
     public void setFreeIndicator(boolean free) {
         if (free) {
             mGroupCoupon.setEnabled(true);
@@ -172,6 +167,32 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
             mFree.setText(R.string.no_coupon);
             mGroupCoupon.setEnabled(false);
             mPay.setText(R.string.confirm_pay);
+        }
+    }
+
+    @Override
+    public void showSuccessfullyMessage() {
+        if (getView() != null) {
+            Snackbar.make(getView(), "点播成功，请返回播放列表查看。", Snackbar.LENGTH_SHORT)
+                    .addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
+                            PaymentDialogFragment.this.dismiss();
+                        }
+                    }).show();
+        }
+    }
+
+    @Override
+    public void showFailedMessage() {
+        if (getView() != null) {
+            Snackbar.make(getView(), "点播失败，请稍后再试", Snackbar.LENGTH_SHORT)
+                    .addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
+                            PaymentDialogFragment.this.dismiss();
+                        }
+                    }).show();
         }
     }
 }
