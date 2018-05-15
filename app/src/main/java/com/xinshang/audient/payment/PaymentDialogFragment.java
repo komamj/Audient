@@ -15,6 +15,7 @@
  */
 package com.xinshang.audient.payment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -35,8 +36,11 @@ import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.model.entities.Audient;
+import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.common.util.Constants;
 import com.xinshang.common.util.LogUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,6 +59,8 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
 
     @BindView(R.id.tv_name)
     TextView mName;
+    @BindView(R.id.tv_count)
+    TextView mCount;
     @BindView(R.id.group_coupon)
     Group mGroupCoupon;
     @BindView(R.id.btn_confirm)
@@ -83,8 +89,17 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
         dialogFragment.show(fragmentManager, DIALOG_TAG);
     }
 
+    private Context mContext;
+
     @Inject
     PaymentPresenter mPresenter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mContext = context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,12 +176,11 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
     @Override
     public void setFreeIndicator(boolean free) {
         if (free) {
-            mGroupCoupon.setEnabled(true);
+            mGroupCoupon.setVisibility(View.VISIBLE);
             mFree.setText(R.string.free_description);
             mPay.setText(R.string.confirm_free);
         } else {
-            mFree.setText(R.string.no_coupon);
-            mGroupCoupon.setEnabled(false);
+            mGroupCoupon.setVisibility(View.GONE);
             mPay.setText(R.string.confirm_pay);
         }
     }
@@ -175,7 +189,7 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
     public void showSuccessfullyMessage() {
         if (getView() != null) {
             LogUtils.i(TAG,"showSuccessfullyMessage");
-            Snackbar.make(mAlbum, "点播成功，请返回播放列表查看。", Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mAlbum, "点播成功，请返回播放列表查看。", Snackbar.LENGTH_SHORT)
                     .addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
@@ -196,5 +210,10 @@ public class PaymentDialogFragment extends BottomSheetDialogFragment implements
                         }
                     }).show();
         }
+    }
+
+    @Override
+    public void showCoupons(List<Coupon> coupons) {
+        mCount.setText(mContext.getString(R.string.coupon_count, coupons.size()));
     }
 }

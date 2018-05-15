@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -84,26 +85,34 @@ public class PaymentPresenter implements PaymentContract.Presenter {
     @Override
     public void loadMyCoupons(String type) {
         Disposable disposable = mRepository.getMyCoupon(type)
-                .map(new Function<ApiResponse<List<Coupon>>, Coupon>() {
+                .map(new Function<ApiResponse<List<Coupon>>, List<Coupon>>() {
                     @Override
-                    public Coupon apply(ApiResponse<List<Coupon>> response) {
+                    public List<Coupon> apply(ApiResponse<List<Coupon>> response) {
+                        List<Coupon> coupons = new ArrayList<>();
+
                         for (Coupon coupon : response.data) {
-                            if (coupon != null && !coupon.used) {
-                                return coupon;
+                            if (coupon != null && coupon.id != null && !coupon.used) {
+                                coupons.add(coupon);
                             }
                         }
-                        return new Coupon();
+                        return coupons;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<Coupon>() {
+                .subscribeWith(new DisposableSubscriber<List<Coupon>>() {
                     @Override
-                    public void onNext(Coupon coupon) {
-                        mCoupon = coupon;
+                    public void onNext(List<Coupon> coupons) {
+                        if (!coupons.isEmpty()) {
+                            mCoupon = coupons.get(0);
 
-                        if (mView.isActive()) {
-                            mView.setFreeIndicator(coupon.id != null && !coupon.used);
+                            if (mView.isActive()) {
+                                mView.showCoupons(coupons);
+                            }
+                        } else {
+                            if (mView.isActive()) {
+                                mView.setFreeIndicator(false);
+                            }
                         }
                     }
 

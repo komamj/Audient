@@ -45,6 +45,7 @@ import com.xinshang.audient.AudientApplication;
 import com.xinshang.audient.R;
 import com.xinshang.audient.coupon.CouponDialogFragment;
 import com.xinshang.audient.feedback.FeedbackDialogFragment;
+import com.xinshang.audient.help.HelpDialogFragment;
 import com.xinshang.audient.helper.GlideApp;
 import com.xinshang.audient.mine.MineFragment;
 import com.xinshang.audient.model.entities.Store;
@@ -250,6 +251,8 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             FeedbackDialogFragment.show(getSupportFragmentManager());
         } else if (id == R.id.nav_coupon) {
             CouponDialogFragment.show(getSupportFragmentManager());
+        } else if (id == R.id.nav_help) {
+            HelpDialogFragment.show(getSupportFragmentManager());
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">"即乐"</string>
 
     <!--Drawer-->
@@ -10,6 +10,7 @@
     <string name="nav_setting">设置</string>
     <string name="nav_share">"分享"</string>
     <string name="nav_send">"反馈"</string>
+    <string name="nav_help">"帮助"</string>
 
     <string name="hint">"点播前请确认门店在线（播放歌曲为播放列表显示歌曲）；点播即代表您已确认并接受门店播放环境，包括音量、音质、噪音等；\n点播歌曲在当前歌曲播放完后播放；若播放列表顶端已有“点播歌曲”，则所有点播歌曲播放完才播放本次点播歌曲；任何情况造成的点播歌曲未正常播放均会退款；若有包括搜不到指定歌手或歌曲在内的任何问题，请点击左上角“三”形状符号“反馈”处反馈，我们将第一时间处理您的问题。"</string>
 
@@ -103,6 +104,7 @@
     <string name="no_coupon">"无可用优惠券"</string>
     <string name="confirm_free">"确认支付0.0元"</string>
     <string name="confirm_pay">确认支付1.0元</string>
+    <string name="coupon_count">（1张，共<xliff:g id="number">%d</xliff:g>张）</string>
 
     <!--About-->
     <string name="about_label">"关于我们"</string>
