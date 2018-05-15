@@ -33,7 +33,7 @@
         android:id="@+id/tv_answer1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="使用“分享“功能分享好友（内含下载地址），好友下载登录后在“领取优惠券”处填写您的分享码，您和好友将免费获得数量不等的免费券"
+        android:text="使用“分享“功能分享好友（内含下载地址），好友下载登录后在“领取优惠券”处填写您的分享码，您和好友将免费获得数量不等的免费券。"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_question1" />
@@ -109,7 +109,7 @@
         android:id="@+id/tv_answer5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="请在“反馈”中填写您搜不到的歌曲或歌手名，我们会即时处理"
+        android:text="请在“反馈”中填写您搜不到的歌曲或歌手名，我们会即时处理。"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_question5" />
@@ -137,6 +137,7 @@
         android:id="@+id/tv_question7"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         android:text="若您还有其他任何问题，请点击“反馈”填写您的问题，并留下您的联系方式，我们将第一时间处理。"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -151,8 +152,8 @@
         android:background="?attr/selectableItemBackground"
         android:padding="@dimen/nav_header_vertical_spacing"
         android:text="确定"
-        app:layout_constraintTop_toBottomOf="@id/tv_question7"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_question7" />
 
 </android.support.constraint.ConstraintLayout>

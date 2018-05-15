@@ -243,7 +243,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, "哎哟，不错哦！我用“即乐”成功在店内点歌，你也来试试。https://fir.im/2sq8点击下载，复制优惠码进入app可领取5张优惠券 " + mShareCode.getText());
+            intent.putExtra(Intent.EXTRA_TEXT, "哎哟，不错哦！我用“即乐”成功在店内点歌，你也来试试。https://fir.im/2sq8点击下载，复制优惠码进入app可领取免费点歌优惠券 " + mShareCode.getText());
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             }
