@@ -82,13 +82,13 @@ public class TopListPresenter implements TopListContract.Presenter {
         Disposable disposable = mRepository.getToplists()
                 .map(new Function<ApiResponse<List<ToplistDataBean>>, List<ToplistDataBean>>() {
                     @Override
-                    public List<ToplistDataBean> apply(ApiResponse<List<ToplistDataBean>> listApiResponse) throws Exception {
+                    public List<ToplistDataBean> apply(ApiResponse<List<ToplistDataBean>> listApiResponse) {
                         return listApiResponse.data;
                     }
                 })
                 .map(new Function<List<ToplistDataBean>, List<Toplist>>() {
                     @Override
-                    public List<Toplist> apply(List<ToplistDataBean> toplistDataBeans) throws Exception {
+                    public List<Toplist> apply(List<ToplistDataBean> toplistDataBeans) {
                         List<Toplist> topLists = new ArrayList<>();
 
                         for (ToplistDataBean toplistDataBean : toplistDataBeans) {
@@ -110,10 +110,8 @@ public class TopListPresenter implements TopListContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ConnectException) {
-                            LogUtils.e(TAG, "loadTopList connect error :");
-                        }
                         LogUtils.e(TAG, "loadTopList error :" + t.toString());
+
                         if (mView.isActive()) {
                             mView.setLoadingIndictor(false);
                             mView.showLoadingError();

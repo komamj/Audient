@@ -21,8 +21,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public final class Constants {
-    public static final String PLAYLIST_STATUS_HOST = "ws://101.132.122.196:8080/ws/client";
-    public static final String AUDIENT_HOST = "http://101.132.122.196:8080/";
+    public static final String PLAYLIST_STATUS_HOST = "ws://193.112.0.111:80/ws/client";
+    public static final String AUDIENT_HOST = "http://193.112.0.111:80/";
     public static final String CLIENT_ID = "USER_CLIENT";
     public static final String CLIENT_SECRET = "187897f409c644d4809eb4fee2658a1e";
     public static final String GRANT_TYPE = "password";
