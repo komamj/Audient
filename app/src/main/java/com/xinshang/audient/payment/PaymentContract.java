@@ -17,11 +17,8 @@ package com.xinshang.audient.payment;
 
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.xinshang.audient.model.entities.Audient;
-import com.xinshang.audient.model.entities.Coupon;
 import com.xinshang.common.base.BasePresenter;
 import com.xinshang.common.base.BaseView;
-
-import java.util.List;
 
 /**
  * Created by koma on 3/1/18.
@@ -33,13 +30,11 @@ public interface PaymentContract {
 
         void setLoadingIndicator(boolean isActive);
 
-        void setFreeIndicator(boolean free);
+        void setFreeIndicator(boolean free, int count);
 
         void showSuccessfullyMessage();
 
         void showFailedMessage();
-
-        void showCoupons(List<Coupon> coupons);
     }
 
     interface Presenter extends BasePresenter {

@@ -107,11 +107,13 @@ public class PaymentPresenter implements PaymentContract.Presenter {
                             mCoupon = coupons.get(0);
 
                             if (mView.isActive()) {
-                                mView.showCoupons(coupons);
+                                mView.setFreeIndicator(true, coupons.size());
                             }
                         } else {
+                            mCoupon = null;
+
                             if (mView.isActive()) {
-                                mView.setFreeIndicator(false);
+                                mView.setFreeIndicator(false, 0);
                             }
                         }
                     }
