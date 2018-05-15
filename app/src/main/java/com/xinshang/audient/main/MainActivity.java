@@ -312,7 +312,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     public void showCoupons(int count) {
         Snackbar.make(mViewPager,
-                "您还有" + count + "张免费点歌免费券未使用，现在就去点歌吧！",
+                "您还有" + count + "张免费点歌券未使用，现在就去点歌吧！",
                 Snackbar.LENGTH_INDEFINITE).setAction("确定", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
