@@ -24,7 +24,6 @@ import com.xinshang.store.data.ApplicationModule;
 import com.xinshang.store.data.AudientRepositoryComponent;
 import com.xinshang.store.data.AudientRepositoryModule;
 import com.xinshang.store.data.DaggerAudientRepositoryComponent;
-import com.xinshang.store.utils.Constants;
 import com.xinshang.store.utils.LogUtils;
 
 public class StoreMusicApplication extends Application {
@@ -38,11 +37,13 @@ public class StoreMusicApplication extends Application {
 
         mRepositoryComponent = DaggerAudientRepositoryComponent.builder()
                 .applicationModule(new ApplicationModule(this))
-                .audientRepositoryModule(new AudientRepositoryModule(Constants.STORE_MUSIC_HOST))
+                .audientRepositoryModule(new AudientRepositoryModule(BuildConfig.ENDPOINT))
                 .build();
 
-        enableStrictMode();
-
+        /*if (BuildConfig.LOG_DEBUG) {
+            enableStrictMode();
+        }
+*/
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.

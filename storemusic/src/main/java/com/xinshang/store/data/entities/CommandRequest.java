@@ -27,5 +27,5 @@ public class CommandRequest {
     @SerializedName("action")
     public String action;
     @SerializedName("data")
-    public String songId;
+    public String data;
 }

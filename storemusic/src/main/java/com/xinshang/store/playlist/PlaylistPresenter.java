@@ -18,6 +18,7 @@ package com.xinshang.store.playlist;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.xinshang.store.BuildConfig;
 import com.xinshang.store.data.AudientRepository;
 import com.xinshang.store.data.entities.ApiResponse;
 import com.xinshang.store.data.entities.BaseResponse;
@@ -34,7 +35,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.reactivestreams.Publisher;
 
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -70,6 +75,8 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     private static final String STOPPED = "stoped";
     private static final String PAUSED = "paused";
     private static final String REBOOT = "reboot";
+    private static final String COMMAND_PLAY_MODE = "playmod";
+    private static final String COMMAND_PLAY_STATE = "playstate";
 
     private PlaylistContract.View mView;
 
@@ -117,7 +124,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         EventBus.getDefault().register(this);
 
         Request request = new Request.Builder()
-                .url(Constants.PLAYLIST_STATUS_HOST)
+                .url(BuildConfig.WEBSOCKET_ENDPOINT)
                 .build();
 
         mWebSocket = mClient.newWebSocket(request, this);
@@ -148,13 +155,14 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
      */
     @Override
     public void onMessage(WebSocket webSocket, final String text) {
+        LogUtils.i(TAG, "onMessage text : " + text);
+
         final Disposable disposable = mRepository.parsingCommandResponse(text)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<CommandResponse<String>>() {
                     @Override
                     public void onNext(CommandResponse<String> commandResponse) {
-                        LogUtils.i(TAG, "onMessage text : " + commandResponse.toString());
                         if (TextUtils.equals(COMMAND_STATUS, commandResponse.action)
                                 && commandResponse.code == 0) {
                             if (mView.isActive()) {
@@ -203,6 +211,22 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
 
                             if (mView.isActive()) {
                                 mView.setNextActive(false);
+                            }
+                        } else if (TextUtils.equals(COMMAND_PLAY_STATE, commandResponse.action)
+                                && commandResponse.code == 0) {
+                            if (mView.isActive()) {
+                                SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+                                try {
+                                    Date date = format.parse(commandResponse.data);
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.setTime(date);
+                                    int second = calendar.get(Calendar.SECOND)
+                                            + calendar.get(Calendar.MINUTE) * 60
+                                            + calendar.get(Calendar.HOUR) * 60 * 60;
+                                    mView.updateProgress(second);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                         if (mView.isActive()) {
@@ -393,6 +417,16 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
     }
 
     @Override
+    public void shuffle(String mode) {
+        CommandRequest commandRequest = new CommandRequest();
+        commandRequest.action = COMMAND_PLAY_MODE;
+        commandRequest.store = mRepository.getStoreId();
+        commandRequest.data = mode;
+        String message = new Gson().toJson(commandRequest);
+        mWebSocket.send(message);
+    }
+
+    @Override
     public void sendCommand(String command) {
         CommandRequest commandRequest = new CommandRequest();
         commandRequest.action = command;
@@ -412,7 +446,7 @@ public class PlaylistPresenter extends WebSocketListener implements PlaylistCont
         CommandRequest commandRequest = new CommandRequest();
         commandRequest.action = COMMAND_PLAY;
         commandRequest.store = mRepository.getStoreId();
-        commandRequest.songId = id;
+        commandRequest.data = id;
         String message = new Gson().toJson(commandRequest);
 
         mWebSocket.send(message);

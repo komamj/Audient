@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.xinshang.store.R;
 import com.xinshang.store.StoreMusicApplication;
 import com.xinshang.store.base.BaseFragment;
@@ -49,6 +50,10 @@ import butterknife.OnClick;
 
 public class PlaylistFragment extends BaseFragment implements PlaylistContract.View {
     private static final String TAG = PlaylistFragment.class.getSimpleName();
+    private static final String SHUFFLE_MODE = "random";
+    private static final String REPEAT_MODE = "sequence";
+
+    private boolean isShuffleMode = false;
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -64,6 +69,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
     ImageView mStop;
     @BindView(R.id.iv_next)
     ImageView mNext;
+    @BindView(R.id.iv_shuffle)
+    ImageView mPlayMode;
+    @BindView(R.id.progress_bar)
+    CircularProgressBar progressBar;
 
     @Inject
     PlaylistPresenter mPresenter;
@@ -101,6 +110,21 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         if (mPresenter != null) {
             setNextActive(false);
             mPresenter.next();
+        }
+    }
+
+    @OnClick(R.id.iv_shuffle)
+    void onShuffleClick() {
+        if (mPresenter != null) {
+            if (isShuffleMode) {
+                mPresenter.shuffle(REPEAT_MODE);
+                mPlayMode.setImageResource(R.drawable.ic_repeat);
+                isShuffleMode = false;
+            } else {
+                mPresenter.shuffle(SHUFFLE_MODE);
+                mPlayMode.setImageResource(R.drawable.ic_shuffle);
+                isShuffleMode = true;
+            }
         }
     }
 
@@ -276,6 +300,10 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
                 .into(mAlbum);
 
         mName.setText(storeSong.mediaName);
+
+        progressBar.setProgressMax(Integer.parseInt(storeSong.mediaInterval));
+
+        LogUtils.d(TAG, "showNowPlaying :" + Integer.parseInt(storeSong.mediaInterval));
     }
 
     @Override
@@ -297,6 +325,12 @@ public class PlaylistFragment extends BaseFragment implements PlaylistContract.V
         } else {
             mPause.setImageResource(R.drawable.ic_play);
         }
+    }
+
+    @Override
+    public void updateProgress(int progress) {
+        LogUtils.d(TAG, "updateProgress :" + progress);
+        progressBar.setProgress(progress);
     }
 
     @Override

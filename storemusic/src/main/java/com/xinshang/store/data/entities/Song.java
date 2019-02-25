@@ -40,6 +40,7 @@ public class Song implements Parcelable {
             return new Song[size];
         }
     };
+    @SuppressWarnings("NullableProblems")
     @NonNull
     @SerializedName("mediaId")
     @PrimaryKey

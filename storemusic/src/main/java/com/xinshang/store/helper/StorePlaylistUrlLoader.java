@@ -15,10 +15,6 @@ import com.xinshang.store.utils.Utils;
 
 import java.io.InputStream;
 
-/**
- * Created by koma_20 on 2018/3/17.
- */
-
 public class StorePlaylistUrlLoader extends BaseGlideUrlLoader<StoreSong> {
     protected StorePlaylistUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader,
                                      @Nullable ModelCache<StoreSong, GlideUrl> modelCache) {

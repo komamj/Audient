@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion as int
 
@@ -19,6 +25,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     //签名配置
     signingConfigs {
         release {
@@ -31,6 +42,8 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField 'String', 'ENDPOINT', "\"http://101.132.122.196:8080/\""
+            buildConfigField 'String', 'WEBSOCKET_ENDPOINT', "\"ws://101.132.122.196:8080/ws/client\""
             // 显示Log
             buildConfigField "boolean", "LOG_DEBUG", "true"
             //不去除无用代码
@@ -42,6 +55,8 @@ android {
         }
 
         release {
+            buildConfigField 'String', 'ENDPOINT', "\"http://193.112.0.111:80/\""
+            buildConfigField 'String', 'WEBSOCKET_ENDPOINT', "\"ws://193.112.0.111:80/ws/client\""
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             // 去除无用代码
@@ -65,43 +80,45 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$rootProject.ext.support_version"
     implementation "com.android.support:design:$rootProject.ext.support_version"
     implementation "com.android.support:recyclerview-v7:$rootProject.ext.support_version"
     implementation "com.android.support:cardview-v7:$rootProject.ext.support_version"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_version"
+    implementation "com.mikhaellopez:circularprogressbar:$circularprogressbar_version"
 
-    implementation "com.jakewharton:butterknife:$rootProject.ext.butterknife_version"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknife_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava_version"
-    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glide_version"
-    implementation("com.github.bumptech.glide:recyclerview-integration:$rootProject.ext.glide_version") {
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation("com.github.bumptech.glide:recyclerview-integration:$glide_version") {
         // Excludes the support library because it's already included by Glide.
         transitive = false
     }
-    implementation("com.github.bumptech.glide:okhttp3-integration:$rootProject.ext.glide_version") {
+    implementation("com.github.bumptech.glide:okhttp3-integration:$glide_version") {
         transitive = false
     }
     //dagger2
-    implementation "com.google.dagger:dagger:$rootProject.ext.dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger_version"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
     //room
-    implementation "android.arch.persistence.room:runtime:$rootProject.room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
     //retrofit
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.interceptor_version"
-    implementation "org.greenrobot:eventbus:$rootProject.eventbus_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+    implementation "org.greenrobot:eventbus:$eventbus_version"
     //leakcanary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary_version"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

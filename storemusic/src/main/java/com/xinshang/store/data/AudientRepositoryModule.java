@@ -122,10 +122,7 @@ public class AudientRepositoryModule {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        } else {
-            //logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
-
         return new OkHttpClient.Builder()
                 .authenticator(new Authenticator() {
                     @Nullable
@@ -138,7 +135,7 @@ public class AudientRepositoryModule {
                                 .client(new OkHttpClient.Builder()
                                         .addInterceptor(logInterceptor)
                                         .build())
-                                .baseUrl(Constants.STORE_MUSIC_HOST)
+                                .baseUrl(mBaseUrl)
                                 .addConverterFactory(GsonConverterFactory.create(gson))
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .build();

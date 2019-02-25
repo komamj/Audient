@@ -18,6 +18,8 @@ package com.xinshang.store.utils;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 
+import com.xinshang.store.BuildConfig;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,7 +28,7 @@ public class Utils {
     }
 
     public static String buildUrl(String albumId) {
-        StringBuilder builder = new StringBuilder(Constants.STORE_MUSIC_HOST);
+        StringBuilder builder = new StringBuilder(BuildConfig.ENDPOINT);
         builder.append("api/v1/openmusic/album/");
         builder.append(albumId);
         builder.append("/pic");

@@ -42,6 +42,8 @@ public interface PlaylistContract {
         void showPlaylist(List<StoreSong> storePlaylists);
 
         void updatePlayIcon(boolean isPlaying);
+
+        void updateProgress(int progress);
     }
 
     interface Presenter extends BasePresenter {
@@ -60,6 +62,8 @@ public interface PlaylistContract {
         boolean isPlaying();
 
         void play(String id);
+
+        void shuffle(String mode);
 
         void deleteStoreSong(StoreSong storeSong, String reason);
 
